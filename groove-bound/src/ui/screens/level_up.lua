@@ -108,11 +108,11 @@ function LevelUpScreen:draw()
   love.graphics.setFont(Fonts.get(15))
   love.graphics.printf(
     string.format(
-      "Level %d  •  %d weapon slots free  •  %d support slots free  •  Resolve %d",
+      "Level %d  •  %d weapon slots free  •  %d support slots free  •  %d fusions ready",
       self.combat.xp.level,
       self.combat.inventory.capacity - self.combat.inventory:count(),
       self.combat.progression.passives.capacity - self.combat.progression.passives:count(),
-      self.combat.progression.resolve_tokens),
+      #self.combat.progression:eligible_evolutions()),
     0, h * 0.21, w, "center")
 
   self.buttons:draw()
@@ -161,8 +161,23 @@ end
 function LevelUpScreen:_draw_choice_icon(choice, x, y, size, color)
   local weapon = self:_weapon_for_choice(choice)
   if weapon then
-    self.app.assets:draw_weapon_icon(weapon.icon, x, y, size, { color = color })
+    self.app.assets:draw_weapon_icon(weapon.icon, x, y, size, { color = { 1, 1, 1, 1 } })
+    if choice.kind == "evolution" then
+      local recipe = self.app.content.evolutions[choice.id]
+      local base = self.app.content.weapons[recipe.base_weapon]
+      local support = self.app.content.passives[recipe.required_passives[1].id]
+      self.app.assets:draw_weapon_icon(base.icon, x - 39, y + 30, 38)
+      self.app.assets:draw_support_icon(support.icon, x + 39, y + 30, 38)
+    end
     return
+  end
+
+  if choice.kind == "passive_add" or choice.kind == "passive_level" then
+    local passive = self.app.content.passives[choice.id]
+    if passive and passive.icon then
+      self.app.assets:draw_support_icon(passive.icon, x, y, size)
+      return
+    end
   end
 
   love.graphics.setColor(color[1], color[2], color[3], 0.16)

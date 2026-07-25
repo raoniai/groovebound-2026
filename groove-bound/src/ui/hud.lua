@@ -47,12 +47,14 @@ function HUD:draw()
   love.graphics.setColor(settings.ui.text_color)
   local weapon = self.combat.inventory:get_slot(1)
   love.graphics.print(
-    string.format("LV %d  %s R%d  W%d/4  P%d/4",
+    string.format("LV %d  %s R%d  W%d/%d  P%d/%d",
       self.combat.xp.level,
       self.combat.content.weapons[weapon.id].name,
       weapon.level,
       self.combat.inventory:count(),
-      self.combat.progression.passives:count()),
+      self.combat.inventory.capacity,
+      self.combat.progression.passives:count(),
+      self.combat.progression.passives.capacity),
     bar_x, xp_y + 14)
 
   -- Always-visible weapon rack. This mirrors the authoritative inventory so
@@ -78,6 +80,25 @@ function HUD:draw()
     end
   end
 
+  local support_y = rack_y + 50
+  for slot = 1, self.combat.progression.passives.capacity do
+    local support_x = bar_x + (slot - 1) * 52
+    love.graphics.setColor(0.08, 0.07, 0.13, 0.88)
+    love.graphics.rectangle("fill", support_x, support_y, 44, 36, 5, 5)
+    local instance = self.combat.progression.passives.slots[slot]
+    if instance then
+      local definition = self.combat.content.passives[instance.id]
+      self.combat.assets:draw_support_icon(
+        definition.icon, support_x + 20, support_y + 18, 32)
+      love.graphics.setColor(0.78, 0.48, 1.0, 1)
+      love.graphics.setFont(Fonts.get(9))
+      love.graphics.printf("R" .. instance.level, support_x, support_y + 26, 44, "right")
+    else
+      love.graphics.setColor(0.27, 0.24, 0.35, 1)
+      love.graphics.rectangle("line", support_x, support_y, 44, 36, 5, 5)
+    end
+  end
+
   -- Run timer, top-center.
   local minutes = math.floor(self.ctx.time / 60)
   local seconds = math.floor(self.ctx.time % 60)
@@ -86,10 +107,14 @@ function HUD:draw()
   love.graphics.printf(string.format("%02d:%02d", minutes, seconds), 0, 14, w, "center")
   love.graphics.setFont(Fonts.get(11))
   love.graphics.setColor(0.78, 0.72, 0.88, 1)
+  local stage = self.combat.stage_director
+  local remaining = math.ceil(stage:remaining(self.ctx.time))
   love.graphics.printf(
-    string.format("STATIC BARON AT %02d:%02d",
-      math.floor(settings.run.final_boss_at / 60),
-      settings.run.final_boss_at % 60),
+    string.format("STAGE %d/%d  •  NEXT IN %02d:%02d",
+      stage.stage,
+      stage.count,
+      math.floor(remaining / 60),
+      remaining % 60),
     0, 42, w, "center")
 
   if self.combat.xp.notification > 0 then
@@ -98,10 +123,32 @@ function HUD:draw()
     love.graphics.printf("LEVEL UP!", 0, 92, w, "center")
   end
 
+  if self.combat.progression.evolution_notice > 0 then
+    local alpha = math.min(1, self.combat.progression.evolution_notice)
+    love.graphics.setColor(0.08, 0.04, 0.14, 0.92 * alpha)
+    love.graphics.rectangle("fill", w / 2 - 250, 104, 500, 48, 7, 7)
+    love.graphics.setColor(1.0, 0.76, 0.22, alpha)
+    love.graphics.setLineWidth(2)
+    love.graphics.rectangle("line", w / 2 - 250, 104, 500, 48, 7, 7)
+    love.graphics.setFont(Fonts.get(18))
+    love.graphics.printf(
+      self.combat.progression.evolution_notice_text or "YOU CAN EVOLVE NOW",
+      w / 2 - 238, 119, 476, "center")
+  end
+
   if self.combat.wave_notice_time > 0 then
     love.graphics.setFont(Fonts.get(28))
     love.graphics.setColor(0.96, 0.42, 0.65, math.min(1, self.combat.wave_notice_time))
     love.graphics.printf(self.combat.wave_notice, 0, 132, w, "center")
+  end
+
+  if stage.notice > 0 then
+    local alpha = math.min(1, stage.notice)
+    love.graphics.setColor(0.04, 0.02, 0.08, 0.86 * alpha)
+    love.graphics.rectangle("fill", w / 2 - 300, 164, 600, 64, 8, 8)
+    love.graphics.setColor(0.34, 1.0, 0.74, alpha)
+    love.graphics.setFont(Fonts.get(28))
+    love.graphics.printf(stage.notice_text, w / 2 - 280, 181, 560, "center")
   end
 
   local boss

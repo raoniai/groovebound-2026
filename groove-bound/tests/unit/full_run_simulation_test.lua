@@ -37,7 +37,7 @@ local function choose_progression(combat)
   end
 end
 
-T["seeded complete run reaches miniboss Resolve evolution and final victory"] = function()
+T["seeded complete run reaches fusion evolution and final victory"] = function()
   local tuning = Tuning(definitions)
   tuning:set("player.invincible", true)
   tuning:set("combat.damage_multiplier", 2)
@@ -72,7 +72,7 @@ T["seeded complete run reaches miniboss Resolve evolution and final victory"] = 
   H.is_true(combat.xp.level >= 10)
   H.eq(combat.inventory:get_slot(1).id, "brass_barrage")
   H.eq(combat.weapon_runtime:get(1).weapon_id, "brass_barrage")
-  H.eq(combat.progression.evolutions[1].branch, "studio")
+  H.eq(combat.progression.evolutions[1].branch, "fusion")
 end
 
 T["player death produces deterministic defeat before timeout"] = function()
@@ -160,12 +160,12 @@ T["boss rewards cannot be claimed twice"] = function()
   local boss = combat:spawn_enemy(Content.enemies.metronome_guardian, cx, cy)
   H.is_true(combat:_kill_enemy(boss))
   H.is_false(combat:_kill_enemy(boss))
-  H.eq(combat.progression.resolve_tokens, 1)
+  H.eq(combat.progression.rerolls, 2)
   H.eq(combat.stats.minibosses, 1)
   H.eq(ctx.world:count("xp_gem"), 1)
 end
 
-T["admin evolution preparation creates a legal two-branch choice"] = function()
+T["admin evolution preparation creates a legal consumable fusion"] = function()
   local tuning = Tuning(definitions)
   local ctx = RunContext({ seed = 10, tuning = tuning })
   local arena = Arena()
@@ -183,7 +183,6 @@ T["admin evolution preparation creates a legal two-branch choice"] = function()
   H.is_true(combat:admin_prepare_evolution())
   H.eq(combat.inventory:get("kazoo_pistol").level, 10)
   H.eq(combat.progression.passives:get("breath_control").level, 1)
-  H.eq(combat.progression.resolve_tokens, 1)
   H.is_true(combat.xp:has_pending_choice())
   local offer = combat.progression:create_offer()
   local branches = {}
@@ -191,7 +190,6 @@ T["admin evolution preparation creates a legal two-branch choice"] = function()
     if choice.kind == "evolution" then branches[choice.id] = true end
   end
   H.is_true(branches.kazoo_studio)
-  H.is_true(branches.kazoo_live)
 end
 
 return T

@@ -55,12 +55,12 @@ When opened over a run, the panel adds:
 | Tool | Key | Behavior |
 |---|---|---|
 | Grant Level | G | Grants exactly enough XP for the next queued card choice |
-| Prepare Evolution | E | Sets Kazoo to rank 10, adds Breath Control and Resolve, then queues the real legal choice |
+| Prepare Evolution | E | Sets Kazoo to rank 10, adds Breath Control, then queues the real consumable fusion |
 | Spawn Baron | B | Spawns the final boss once; duplicate claims are refused |
 
 The evolution tool still passes through the normal stable-ID eligibility and
-inventory/runtime transaction. The resulting menu presents both Studio and
-Live branches and the selected emitter begins firing immediately.
+inventory/support/runtime transaction. The fusion consumes Breath Control,
+replaces the exact Kazoo emitter, and opens new support and weapon capacity.
 
 “Registered” must never be reported as “connected.” A control is connected
 only when a system consumes it and an integration test verifies the effect.

@@ -55,12 +55,29 @@ function PassiveInventory:level_up(id)
   return passive
 end
 
+function PassiveInventory:remove(id)
+  local slot = self:find_slot(id)
+  if not slot then return nil, "not_owned" end
+  local removed = table.remove(self.slots, slot)
+  return removed, slot
+end
+
 function PassiveInventory:snapshot()
   local result = { capacity = self.capacity, slots = {} }
   for slot, passive in ipairs(self.slots) do
     result.slots[slot] = { id = passive.id, level = passive.level }
   end
   return result
+end
+
+function PassiveInventory:restore(snapshot)
+  assert(type(snapshot) == "table" and type(snapshot.slots) == "table",
+    "invalid passive snapshot")
+  self.capacity = snapshot.capacity
+  self.slots = {}
+  for slot, passive in ipairs(snapshot.slots) do
+    self.slots[slot] = { id = passive.id, level = passive.level }
+  end
 end
 
 return PassiveInventory

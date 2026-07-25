@@ -11,6 +11,7 @@ local filters = {
   { id = "all", label = "ALL" },
   { id = "base", label = "BASE" },
   { id = "evolved", label = "EVOLVED" },
+  { id = "supports", label = "SUPPORTS" },
   { id = "owned", label = "OWNED" },
   { id = "level_up", label = "LEVEL-UP POOL" },
 }
@@ -21,6 +22,25 @@ local rarity_colors = {
   rare = { 0.78, 0.40, 1.0, 1 },
   evolved = { 1.0, 0.70, 0.18, 1 },
 }
+
+local support_color = { 0.72, 0.42, 1.0, 1 }
+local support_stat_names = {
+  speed = "MOVE SPEED",
+  max_hp = "MAX HEALTH",
+  damage = "DAMAGE",
+  magnet = "PICKUP RANGE",
+  cooldown_stability = "COOLDOWN",
+  fire_rate = "FIRE RATE",
+  amount = "PROJECTILE AMOUNT",
+  guard = "GUARD",
+}
+
+local function support_value(definition)
+  if definition.stat == "amount" or definition.stat == "guard" then
+    return "+" .. definition.per_level .. " PER RANK"
+  end
+  return "+" .. math.floor(definition.per_level * 100 + 0.5) .. "% PER RANK"
+end
 
 function ArsenalScreen:init(app)
   self.app = app
@@ -131,6 +151,32 @@ function ArsenalScreen:_draw_header(w)
 end
 
 function ArsenalScreen:_draw_card(entry, rect, index)
+  if entry.kind == "support" then
+    local selected = index == self.selected
+    love.graphics.setColor(
+      selected and { 0.18, 0.15, 0.28, 1 } or { 0.09, 0.08, 0.14, 0.96 })
+    love.graphics.rectangle("fill", rect.x, rect.y, rect.w, rect.h, 7, 7)
+    love.graphics.setColor(selected and settings.ui.accent_color or support_color)
+    love.graphics.setLineWidth(selected and 3 or 1)
+    love.graphics.rectangle("line", rect.x, rect.y, rect.w, rect.h, 7, 7)
+    self.app.assets:draw_support_icon(
+      entry.icon, rect.x + 62, rect.y + rect.h / 2, 100)
+    local text_x = rect.x + 122
+    love.graphics.setColor(settings.ui.text_color)
+    love.graphics.setFont(Fonts.get(16))
+    love.graphics.print(entry.definition.name, text_x, rect.y + 14)
+    love.graphics.setColor(support_color)
+    love.graphics.setFont(Fonts.get(11))
+    love.graphics.print(
+      support_stat_names[entry.definition.stat] or string.upper(entry.definition.stat),
+      text_x, rect.y + 39)
+    draw_chip(entry.status, text_x, rect.y + 63, support_color)
+    love.graphics.setColor(0.68, 0.66, 0.76, 1)
+    love.graphics.setFont(Fonts.get(11))
+    love.graphics.print(support_value(entry.definition), text_x, rect.y + 98)
+    return
+  end
+
   local selected = index == self.selected
   local rarity = rarity_colors[entry.definition.rarity] or rarity_colors.common
   love.graphics.setColor(selected and { 0.18, 0.15, 0.28, 1 } or { 0.09, 0.08, 0.14, 0.96 })
@@ -160,6 +206,10 @@ function ArsenalScreen:_draw_card(entry, rect, index)
 end
 
 function ArsenalScreen:_draw_detail(entry)
+  if entry.kind == "support" then
+    self:_draw_support_detail(entry)
+    return
+  end
   local rect = self.detail
   local compact = rect.h < 500
   love.graphics.setColor(0.075, 0.065, 0.12, 0.98)
@@ -218,10 +268,12 @@ function ArsenalScreen:_draw_detail(entry)
   love.graphics.setFont(Fonts.get(12))
   local acquisition
   if entry.recipe then
+    local support = self.app.content.passives[
+      entry.recipe.required_passives[1].id]
     acquisition = "Evolution only: "
       .. self.app.content.weapons[entry.recipe.base_weapon].name
       .. " R" .. entry.recipe.required_weapon_level
-      .. " + Breath Control + Resolve."
+      .. " + " .. support.name .. ". Both components are consumed."
   elseif entry.active then
     acquisition = "Active in weapon slot " .. entry.slot
       .. ". Rank upgrades remain in the level-up pool."
@@ -236,6 +288,62 @@ function ArsenalScreen:_draw_detail(entry)
     y + (compact and 141 or 163),
     rect.w - 48,
     "left")
+end
+
+function ArsenalScreen:_draw_support_detail(entry)
+  local rect = self.detail
+  local compact = rect.h < 500
+  love.graphics.setColor(0.075, 0.065, 0.12, 0.98)
+  love.graphics.rectangle("fill", rect.x, rect.y, rect.w, rect.h, 8, 8)
+  love.graphics.setColor(support_color)
+  love.graphics.setLineWidth(2)
+  love.graphics.rectangle("line", rect.x, rect.y, rect.w, rect.h, 8, 8)
+  self.app.assets:draw_support_icon(
+    entry.icon, rect.x + rect.w / 2, rect.y + (compact and 68 or 108),
+    compact and 105 or 178)
+
+  love.graphics.setColor(settings.ui.text_color)
+  love.graphics.setFont(Fonts.get(compact and 19 or 23))
+  love.graphics.printf(
+    entry.definition.name, rect.x + 16, rect.y + (compact and 126 or 200),
+    rect.w - 32, "center")
+  love.graphics.setColor(support_color)
+  love.graphics.setFont(Fonts.get(12))
+  love.graphics.printf(
+    support_stat_names[entry.definition.stat] or string.upper(entry.definition.stat),
+    rect.x + 16, rect.y + (compact and 154 or 234), rect.w - 32, "center")
+  love.graphics.setColor(0.76, 0.74, 0.84, 1)
+  love.graphics.setFont(Fonts.get(13))
+  love.graphics.printf(
+    entry.definition.description,
+    rect.x + 24, rect.y + (compact and 184 or 270), rect.w - 48, "left")
+
+  local y = rect.y + (compact and 242 or 334)
+  love.graphics.setColor(settings.ui.accent_color)
+  love.graphics.setFont(Fonts.get(13))
+  love.graphics.print("ENHANCEMENT", rect.x + 24, y)
+  love.graphics.setColor(settings.ui.text_color)
+  love.graphics.setFont(Fonts.get(12))
+  love.graphics.print(support_value(entry.definition), rect.x + 24, y + 28)
+  love.graphics.print(
+    "Maximum rank  " .. entry.definition.max_level,
+    rect.x + 24, y + 51)
+
+  love.graphics.setColor(support_color)
+  love.graphics.setFont(Fonts.get(13))
+  love.graphics.print("FUSION PAIRINGS", rect.x + 24, y + 90)
+  love.graphics.setColor(0.76, 0.74, 0.84, 1)
+  love.graphics.setFont(Fonts.get(12))
+  if #entry.recipes == 0 then
+    love.graphics.print("No fusion recipe authored yet.", rect.x + 24, y + 116)
+  else
+    for index, record in ipairs(entry.recipes) do
+      love.graphics.printf(
+        record.base.name .. " R" .. record.recipe.required_weapon_level
+          .. "  →  " .. record.result.name,
+        rect.x + 24, y + 116 + (index - 1) * 24, rect.w - 48, "left")
+    end
+  end
 end
 
 function ArsenalScreen:draw()

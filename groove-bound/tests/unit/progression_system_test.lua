@@ -104,26 +104,53 @@ T["passives respect slots and apply real player/runtime modifiers"] = function()
   H.is_true(runtime:assert_consistent(inventory))
 end
 
-T["Resolve exposes both legal evolution branches at rank ten"] = function()
+T["new supports change damage fire rate amount magnet health and guard"] = function()
+  local progression, _, runtime, player = fresh()
+  local baseline = runtime:projectile_snapshot(1)
+  progression:apply({ kind = "passive_add", id = "power_amplifier" })
+  progression:apply({ kind = "passive_add", id = "overdrive_pedal" })
+  progression:apply({ kind = "passive_add", id = "echo_chamber" })
+  progression:apply({ kind = "passive_add", id = "safety_vest" })
+  local enhanced = runtime:projectile_snapshot(1)
+  H.is_true(enhanced.damage > baseline.damage)
+  H.is_true(runtime:get(1).cooldown < Content.weapons.kazoo_pistol.levels[1].cooldown)
+  H.eq(enhanced.count, baseline.count + 1)
+  H.eq(player.guard, 12)
+  H.eq(progression:passive_bonus("guard"), 12)
+
+  local magnet_progression = fresh()
+  magnet_progression:apply({ kind = "passive_add", id = "pickup_magnet" })
+  H.near(magnet_progression:passive_bonus("magnet"), 0.20)
+end
+
+T["a rank-ten weapon and its paired support expose a fusion card"] = function()
   local progression = fresh(10)
   progression:apply({ kind = "passive_add", id = "breath_control" })
-  progression:grant_resolve()
   local offer = progression:create_offer()
   H.is_true(find(offer, "evolution", "kazoo_studio") ~= nil)
-  H.is_true(find(offer, "evolution", "kazoo_live") ~= nil)
+end
+
+T["fusion readiness raises an explicit player-facing notification"] = function()
+  local progression = fresh(10)
+  progression:apply({ kind = "passive_add", id = "breath_control" })
+  progression:update(0.1)
+  H.is_true(progression.evolution_notice > 0)
+  H.is_true(
+    progression.evolution_notice_text:find("YOU CAN EVOLVE NOW", 1, true) ~= nil)
 end
 
 T["evolution replaces the exact firing slot and preserves shots in flight"] = function()
   local progression, inventory, runtime = fresh(10)
   progression:apply({ kind = "passive_add", id = "breath_control" })
-  progression:grant_resolve()
   local old_shot = runtime:projectile_snapshot(1)
   progression:apply({ kind = "evolution", id = "kazoo_studio" })
   H.eq(inventory:get_slot(1).id, "brass_barrage")
   H.eq(runtime:get(1).weapon_id, "brass_barrage")
   H.eq(old_shot.source_weapon_id, "kazoo_pistol")
-  H.eq(progression.resolve_tokens, 0)
-  H.eq(progression.evolutions[1].branch, "studio")
+  H.is_nil(progression.passives:get("breath_control"))
+  H.eq(progression.passives:count(), 0)
+  H.eq(inventory.capacity, 5)
+  H.eq(progression.evolutions[1].branch, "fusion")
 end
 
 T["reroll is finite and skip returns a bounded reward"] = function()

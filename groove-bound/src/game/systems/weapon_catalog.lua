@@ -36,12 +36,12 @@ function WeaponCatalog:entry(id, run)
   local recipe_record = self.recipe_by_result[id]
   local evolution_eligible = false
 
-  if recipe_record and progression and progression.resolve_tokens > 0 then
+  if recipe_record and progression then
     evolution_eligible = progression.evolution:can_evolve(
       recipe_record.id,
       inventory,
-      progression.passives:levels(),
-      "resolve_reward",
+      progression.passives,
+      "level_up",
       runtime) == true
   end
 
@@ -74,6 +74,7 @@ function WeaponCatalog:entry(id, run)
 end
 
 function WeaponCatalog:list(run, filter)
+  if filter == "supports" then return self:list_supports(run) end
   filter = filter or "all"
   local result = {}
   for id in pairs(self.content.weapons) do
@@ -94,9 +95,71 @@ function WeaponCatalog:list(run, filter)
   return result
 end
 
+function WeaponCatalog:support_entry(id, run)
+  local definition = assert(self.content.passives[id], "unknown support " .. tostring(id))
+  local progression = run and run.combat and run.combat.progression
+  local inventory = progression and progression.passives
+  local instance, slot
+  if inventory then instance, slot = inventory:get(id) end
+  local upgradeable = instance ~= nil and instance.level < definition.max_level
+  local available_to_offer = not instance
+    and (not inventory or inventory:count() < inventory.capacity)
+  local recipes = {}
+  for recipe_id, recipe in pairs(self.content.evolutions) do
+    for _, requirement in ipairs(recipe.required_passives) do
+      if requirement.id == id then
+        recipes[#recipes + 1] = {
+          id = recipe_id,
+          recipe = recipe,
+          result = self.content.weapons[recipe.result_weapon],
+          base = self.content.weapons[recipe.base_weapon],
+        }
+      end
+    end
+  end
+  table.sort(recipes, function(a, b) return a.result.name < b.result.name end)
+  local status
+  if instance and upgradeable then status = "OWNED R" .. instance.level
+  elseif instance then status = "MAX RANK"
+  elseif available_to_offer then status = "LEVEL-UP POOL"
+  else status = "SLOTS FULL" end
+  return {
+    kind = "support",
+    id = id,
+    definition = definition,
+    icon = definition.icon,
+    owned = instance ~= nil,
+    slot = slot,
+    level = instance and instance.level or nil,
+    upgradeable = upgradeable,
+    available_to_offer = available_to_offer,
+    in_level_pool = available_to_offer or upgradeable,
+    recipes = recipes,
+    status = status,
+  }
+end
+
+function WeaponCatalog:list_supports(run)
+  local result = {}
+  for id in pairs(self.content.passives) do
+    result[#result + 1] = self:support_entry(id, run)
+  end
+  table.sort(result, function(a, b)
+    return a.definition.name < b.definition.name
+  end)
+  return result
+end
+
 function WeaponCatalog:counts(run)
   local all = self:list(run, "all")
-  local counts = { all = #all, base = 0, evolved = 0, owned = 0, level_up = 0 }
+  local counts = {
+    all = #all,
+    base = 0,
+    evolved = 0,
+    owned = 0,
+    level_up = 0,
+    supports = #self:list_supports(run),
+  }
   for _, entry in ipairs(all) do
     if entry.definition.evolved then counts.evolved = counts.evolved + 1
     else counts.base = counts.base + 1 end

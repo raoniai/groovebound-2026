@@ -83,15 +83,14 @@ The companion
 changes several requirements from optional ideas into the working vertical-slice
 direction:
 
-- four active weapon slots;
+- four initial active weapon slots, expandable through evolution to six;
 - four passive/support slots;
 - ten ranks per base weapon;
 - behavioral changes at ranks 4 and 7;
 - evolution eligibility at rank 10;
-- one compatible passive plus a miniboss Resolve reward;
-- a visible Studio/Live evolution choice:
-  - Studio is reliable, readable, and consistent;
-  - Live has a higher groove-dependent ceiling and greater volatility;
+- one compatible support per evolution;
+- a visible fusion choice that consumes the rank-10 base weapon and paired
+  support, replaces the exact emitter, and frees future build space;
 - on-beat play adds upside but never disables baseline combat;
 - the initial groove meter combines survival/collection with kill-flow variety;
 - defense is designed across health, guard, avoidance, and sustain;
@@ -154,9 +153,8 @@ implementing dozens of weapons.
 - Admin values clamp, reset, and format correctly.
 - F1 opens/closes the admin modal from title, run, and pause.
 - Player speed and game speed use live tuning values.
-- A rank-10 Kazoo Pistol plus Breath Control can evolve only from a Resolve
-  reward.
-- The eligible choice contains both Studio and Live recipes.
+- A rank-10 Kazoo Pistol plus Breath Control produces exactly one legal
+  stable-ID fusion offer.
 - The selected result replaces the exact inventory slot.
 - The active emitter becomes that selected result in the same slot.
 - A stale emitter blocks evolution.
@@ -167,8 +165,8 @@ implementing dozens of weapons.
 
 Locally complete:
 
-- 164 tests pass with zero failures;
-- luacheck reports zero warnings/errors across 84 files;
+- 172 tests pass with zero failures;
+- luacheck reports zero warnings/errors across 86 files;
 - LÖVE 11.5 source and packaged-build smoke checks pass;
 - the title entry and admin panel were visually verified at 1280×720;
 - a live fire-rate adjustment was verified.
@@ -186,13 +184,15 @@ loop:
 - Stage 2: pooled enemies/projectiles, knockback, four enemy brains, combat
   counters and the 300-enemy/150-projectile reference gate.
 - Stage 3: lossless multi-threshold XP, three-card offers every level, four
-  weapon/passive slots, reroll/skip, live passives and reachable Resolve-gated
-  Studio/Live evolution.
-- Stage 4: timed waves, miniboss, Resolve, Static Baron, boss health and attack,
-  score/combo, deterministic defeat/victory, complete results and restart.
+  initial weapon/passive slots, reroll/skip, eight live supports and eight
+  reachable consumable fusions.
+- Stage 4: timed waves, a three-phase countdown, miniboss, Static Baron, boss
+  health and attack, score/combo, deterministic defeat/victory, complete
+  results and restart.
 
-The seeded end-to-end simulation proves miniboss kill → Resolve → legal Studio
-evolution → active Brass Barrage emitter → final-boss kill → victory. The
+The seeded end-to-end simulation proves miniboss kill → bonus reroll → legal
+Kazoo/support fusion → active Brass Barrage emitter → final-boss kill →
+victory. The
 packaged clean-machine acceptance remains a Stage 8 release gate; local
 packaged boot and ZIP integrity are required at every checkpoint.
 
@@ -278,7 +278,7 @@ packaged boot and ZIP integrity are required at every checkpoint.
 - Three-card offers generated from actual inventory/content state.
 - New weapon, weapon level, passive, passive level, reroll, and skip.
 - Rarity and weighting.
-- Weapon evolution reward source: miniboss Resolve.
+- Weapon/support fusion offers at level-up when a recipe becomes legal.
 - HUD inventory with weapon/passive levels and evolution readiness.
 - Admin commands for:
   - grant XP;
@@ -294,7 +294,7 @@ packaged boot and ZIP integrity are required at every checkpoint.
 - No evolution appears when the base weapon is missing or under-levelled.
 - No evolution appears when a required passive is missing.
 - The result cannot be duplicated.
-- Studio and Live branches remain distinguishable stable-ID choices.
+- Every fusion result and ingredient remains a distinguishable stable ID.
 - Slot order is preserved.
 - Current emitter and future shots use the evolved weapon.
 - Existing shots preserve their original stats.
@@ -310,7 +310,7 @@ packaged boot and ZIP integrity are required at every checkpoint.
 - Wave announcements.
 - Miniboss.
 - Static Baron boss.
-- Miniboss Resolve reward.
+- Miniboss bonus-reroll reward.
 - Player death.
 - Victory.
 - Game-over and results screens.
@@ -360,10 +360,10 @@ packaged boot and ZIP integrity are required at every checkpoint.
 ### Deliverables
 
 - First production vertical slice:
-  - five active weapons;
-  - five compatible passives;
-  - five Studio and five Live evolutions;
-  - five ordinary enemy roles;
+  - at least 16 base weapons;
+  - at least eight compatible supports;
+  - at least eight fused evolutions;
+  - at least six ordinary enemy roles;
   - two elites;
   - one miniboss;
   - one final boss;
@@ -521,6 +521,7 @@ They are not considered connected until their named stage is verified.
 
 ## Current next gate
 
-Begin Stage 1 as a focused movement/options/lifecycle hardening pass. The local
-toolchain now runs unit tests, blocking lint, source boot smoke, and packaged
-boot smoke reliably.
+Begin Stage 5 with deterministic track metadata and BeatClock, then connect
+the existing BPM admin override, beat pulse, grace window, and groove meter.
+The local toolchain runs unit tests, blocking lint, source/package boot smoke,
+and package-integrity checks reliably.

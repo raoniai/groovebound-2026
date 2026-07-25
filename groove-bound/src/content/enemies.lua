@@ -12,6 +12,8 @@ return {
     coins  = 1,
     brain  = "chase",
     color  = { 0.85, 0.25, 0.25, 1 },
+    sprite = { col = 1, row = 1 },
+    sprite_size = 70,
   },
 
   tempo_leech = {
@@ -25,6 +27,8 @@ return {
     coins  = 2,
     brain  = "zigzag",
     color  = { 0.95, 0.55, 0.2, 1 },
+    sprite = { col = 2, row = 1 },
+    sprite_size = 76,
   },
 
   metronome_guardian = {
@@ -39,6 +43,8 @@ return {
     brain = "charger",
     boss_type = "miniboss",
     color = { 0.72, 0.35, 1.0, 1 },
+    sprite = { col = 3, row = 1 },
+    sprite_size = 108,
   },
 
   static_baron = {
@@ -55,5 +61,69 @@ return {
     attack_interval = 1.4,
     attack_range = 520,
     color = { 1.0, 0.18, 0.62, 1 },
+    sprite = { col = 4, row = 1 },
+    sprite_size = 132,
+  },
+
+  syncopation_skitter = {
+    id = "syncopation_skitter",
+    name = "Syncopation Skitter",
+    hp = 34,
+    speed = 138,
+    size = 14,
+    damage = 12,
+    xp = 15,
+    coins = 2,
+    brain = "zigzag",
+    color = { 0.25, 0.95, 1.0, 1 },
+    sprite = { col = 1, row = 2 },
+    sprite_size = 72,
+  },
+
+  feedback_phantom = {
+    id = "feedback_phantom",
+    name = "Feedback Phantom",
+    hp = 80,
+    speed = 76,
+    size = 20,
+    damage = 18,
+    xp = 30,
+    coins = 4,
+    brain = "chase",
+    color = { 0.36, 1.0, 0.54, 1 },
+    sprite = { col = 2, row = 2 },
+    sprite_size = 88,
+  },
+
+  bass_brute = {
+    id = "bass_brute",
+    name = "Bass Brute",
+    hp = 180,
+    speed = 52,
+    size = 27,
+    damage = 28,
+    xp = 48,
+    coins = 7,
+    brain = "charger",
+    color = { 1.0, 0.72, 0.20, 1 },
+    sprite = { col = 3, row = 2 },
+    sprite_size = 104,
+  },
+
+  noise_turret = {
+    id = "noise_turret",
+    name = "Noise Turret",
+    hp = 115,
+    speed = 0,
+    size = 22,
+    damage = 11,
+    xp = 38,
+    coins = 5,
+    brain = "static",
+    attack_interval = 2.1,
+    attack_range = 420,
+    color = { 0.28, 0.60, 1.0, 1 },
+    sprite = { col = 4, row = 2 },
+    sprite_size = 92,
   },
 }

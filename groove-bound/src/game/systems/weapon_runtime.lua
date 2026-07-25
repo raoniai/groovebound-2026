@@ -32,12 +32,26 @@ function WeaponRuntime:_value(id, fallback)
   return self.tuning:get(id)
 end
 
+function WeaponRuntime:_passive_bonus(stat)
+  local total = 0
+  for id, level in pairs(self.passives) do
+    local definition = self.content.passives and self.content.passives[id]
+    if definition and definition.stat == stat then
+      total = total + level * definition.per_level
+    end
+  end
+  return total
+end
+
 function WeaponRuntime:_build_emitter(slot, instance, previous)
   local definition = assert(self.content.weapons[instance.id], "unknown weapon: " .. instance.id)
   local stats = assert(definition.levels[instance.level], "missing weapon level stats")
   local fire_rate = self:_value("combat.fire_rate_multiplier", 1)
-  local breath = self.passives.breath_control or 0
-  local cooldown = stats.cooldown * (1 - math.min(0.30, breath * 0.04)) / fire_rate
+  local stability = self:_passive_bonus("cooldown_stability")
+  local overdrive = self:_passive_bonus("fire_rate")
+  local cooldown = stats.cooldown
+    * (1 - math.min(0.30, stability))
+    / (fire_rate * (1 + overdrive))
   local cooldown_remaining = 0
 
   if previous and previous.cooldown > 0 then
@@ -96,9 +110,14 @@ function WeaponRuntime:projectile_snapshot(slot)
   return {
     source_weapon_id = emitter.weapon_id,
     source_weapon_level = emitter.level,
-    damage = stats.damage * self:_value("combat.damage_multiplier", 1),
+    damage = stats.damage
+      * self:_value("combat.damage_multiplier", 1)
+      * (1 + self:_passive_bonus("damage")),
     speed = (stats.speed or 0) * self:_value("projectiles.speed_multiplier", 1),
-    count = math.max(1, (stats.count or 1) + self:_value("projectiles.per_shot_bonus", 0)),
+    count = math.max(1,
+      (stats.count or 1)
+      + self:_value("projectiles.per_shot_bonus", 0)
+      + math.floor(self:_passive_bonus("amount"))),
     size = stats.size,
     lifetime = stats.lifetime,
     spread = (stats.spread or 0)

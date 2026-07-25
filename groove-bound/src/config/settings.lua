@@ -35,6 +35,8 @@ return {
 
   run = {
     duration = 180,
+    stage_duration = 60,
+    stage_count = 3,
     final_boss_at = 145,
     hard_timeout = 210,
   },

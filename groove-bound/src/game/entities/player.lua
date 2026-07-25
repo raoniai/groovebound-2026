@@ -45,9 +45,15 @@ function Player:update(dt, input, camera, arena)
   local mx, my = input:move_vector()
   local speed_multiplier = self.tuning and self.tuning:get("player.speed_multiplier") or 1
   self.speed = self.base_speed * speed_multiplier * self.passive_speed_multiplier
-  self.x = self.x + mx * self.speed * dt
-  self.y = self.y + my * self.speed * dt
-  self.x, self.y = arena:clamp(self.x, self.y, self.radius)
+  local old_x, old_y = self.x, self.y
+  local next_x = self.x + mx * self.speed * dt
+  local next_y = self.y + my * self.speed * dt
+  if arena.resolve_movement then
+    self.x, self.y = arena:resolve_movement(
+      old_x, old_y, next_x, next_y, self.radius)
+  else
+    self.x, self.y = arena:clamp(next_x, next_y, self.radius)
+  end
 
   self.aim_x, self.aim_y = input:aim_vector(self.x, self.y, camera)
   self.moving = math.abs(mx) + math.abs(my) > 0.01
@@ -59,7 +65,8 @@ function Player:update(dt, input, camera, arena)
   end
   self.anim_time = self.anim_time + dt
   local fps = self.moving and 14 or 7
-  local frames = self.moving and 8 or 4
+  local frames = self.assets and self.assets.player.v2 and 4
+    or (self.moving and 8 or 4)
   self.anim_frame = math.floor(self.anim_time * fps) % frames + 1
 end
 
@@ -78,7 +85,11 @@ end
 
 function Player:draw()
   local tint = self.flash > 0 and { 1, 0.45, 0.45, 1 } or { 1, 1, 1, 1 }
-  if self.assets and self.assets.player then
+  if self.assets and self.assets.player and self.assets.player.v2 then
+    self.assets.player.v2:draw(
+      self.anim_frame, self.anim_row, self.x, self.y,
+      { scale = 0.31, color = tint, origin_y = 210 })
+  elseif self.assets and self.assets.player then
     local sheet = self.moving and self.assets.player.run or self.assets.player.idle
     local shadow = self.moving and self.assets.player.run_shadow or self.assets.player.idle_shadow
     shadow:draw(self.anim_frame, self.anim_row, self.x + 2, self.y + 5, {

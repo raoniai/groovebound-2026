@@ -24,6 +24,10 @@ function Assets.load()
   local self = setmetatable({}, Assets)
 
   self.player = {
+    v2 = SpriteSheet({
+      path = "assets/generated/player-v2-sheet.png",
+      frame_w = 256, frame_h = 256, cols = 4, rows = 4,
+    }),
     idle = SpriteSheet({
       path = "assets/legacy/images/player/idle.png",
       frame_w = 64, frame_h = 64, cols = 12, rows = 4,
@@ -53,6 +57,17 @@ function Assets.load()
     }),
   }
 
+  self.enemy.variants = image("assets/generated/enemy-variants-atlas.png")
+  self.enemy.variant_quads = {}
+  for row = 1, 2 do
+    self.enemy.variant_quads[row] = {}
+    for col = 1, 4 do
+      self.enemy.variant_quads[row][col] = love.graphics.newQuad(
+        (col - 1) * 256, (row - 1) * 256, 256, 256,
+        self.enemy.variants:getDimensions())
+    end
+  end
+
   self.floor = image("assets/legacy/images/floor-tiles1.jpg")
   self.floor_quads = {}
   for row = 0, 1 do
@@ -67,6 +82,8 @@ function Assets.load()
   self.gameover = image("assets/legacy/images/ui/gameover.png")
   self.icon = image("assets/legacy/images/ui/icon.png")
   self.weapon_icons = image("assets/generated/weapon-icons-atlas.png")
+  self.weapon_icons_2 = image("assets/generated/weapon-icons-atlas-2.png")
+  self.evolved_weapon_icons = image("assets/generated/evolved-weapon-icons-atlas.png")
   self.weapon_icon_quads = {}
   for row = 1, 2 do
     self.weapon_icon_quads[row] = {}
@@ -77,6 +94,23 @@ function Assets.load()
         256,
         256,
         self.weapon_icons:getDimensions())
+    end
+  end
+
+  self.support_icons = image("assets/generated/support-icons-atlas.png")
+  self.support_icon_quads = {}
+  self.environment = image("assets/generated/environment-atlas.png")
+  self.environment_quads = {}
+  for row = 1, 2 do
+    self.support_icon_quads[row] = {}
+    self.environment_quads[row] = {}
+    for col = 1, 4 do
+      self.support_icon_quads[row][col] = love.graphics.newQuad(
+        (col - 1) * 256, (row - 1) * 256, 256, 256,
+        self.support_icons:getDimensions())
+      self.environment_quads[row][col] = love.graphics.newQuad(
+        (col - 1) * 256, (row - 1) * 256, 256, 256,
+        self.environment:getDimensions())
     end
   end
 
@@ -101,10 +135,13 @@ function Assets:draw_weapon_icon(icon, x, y, size, opts)
   opts = opts or {}
   icon = icon or { col = 1, row = 1 }
   local quad = self.weapon_icon_quads[icon.row][icon.col]
+  local atlas = self.weapon_icons
+  if icon.atlas == "base2" then atlas = self.weapon_icons_2
+  elseif icon.atlas == "evolved" then atlas = self.evolved_weapon_icons end
   local scale = size / 256
   love.graphics.setColor(opts.color or { 1, 1, 1, 1 })
   love.graphics.draw(
-    self.weapon_icons,
+    atlas,
     quad,
     x,
     y,
@@ -113,6 +150,34 @@ function Assets:draw_weapon_icon(icon, x, y, size, opts)
     scale,
     128,
     128)
+end
+
+function Assets:draw_support_icon(icon, x, y, size, opts)
+  opts = opts or {}
+  local quad = self.support_icon_quads[icon.row][icon.col]
+  local scale = size / 256
+  love.graphics.setColor(opts.color or { 1, 1, 1, 1 })
+  love.graphics.draw(
+    self.support_icons, quad, x, y, opts.rotation or 0,
+    scale, scale, 128, 128)
+end
+
+function Assets:draw_enemy_variant(icon, x, y, size, opts)
+  opts = opts or {}
+  local quad = self.enemy.variant_quads[icon.row][icon.col]
+  local scale = size / 256
+  love.graphics.setColor(opts.color or { 1, 1, 1, 1 })
+  love.graphics.draw(
+    self.enemy.variants, quad, x, y, 0,
+    opts.flip_x and -scale or scale, scale, 128, 128)
+end
+
+function Assets:draw_environment(icon, x, y, size, opts)
+  opts = opts or {}
+  local quad = self.environment_quads[icon.row][icon.col]
+  local scale = size / 256
+  love.graphics.setColor(opts.color or { 1, 1, 1, 1 })
+  love.graphics.draw(self.environment, quad, x, y, 0, scale, scale, 128, 128)
 end
 
 function Assets:set_sfx_volume(value)

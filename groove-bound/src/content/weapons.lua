@@ -1,6 +1,26 @@
 -- Weapon definitions. Logic never reads `name` — only `id`.
 -- cooldown is always SECONDS between activations ("rate" terminology banned).
--- Stats are explicit per-level rows so balance is auditable at a glance.
+-- The launch roster keeps explicit rows. Expansion weapons use the same
+-- deterministic rank curve helper to keep a 16-weapon balance pass readable.
+
+local function ranked(opts)
+  local result = {}
+  for level = 1, 10 do
+    local step = level - 1
+    result[level] = {
+      damage = math.floor(opts.damage * (1 + step * opts.damage_growth) + 0.5),
+      cooldown = math.max(opts.min_cooldown, opts.cooldown - step * opts.cooldown_step),
+      count = opts.count + math.floor(step / opts.count_every),
+      speed = opts.speed + step * (opts.speed_step or 0),
+      size = opts.size + math.floor(step / (opts.size_every or 20)),
+      lifetime = opts.lifetime + step * (opts.lifetime_step or 0),
+      spread = math.max(0, opts.spread - step * (opts.spread_step or 0)),
+      pierce = (opts.pierce or 0) + math.floor(step / (opts.pierce_every or 20)),
+      knockback = (opts.knockback or 8) + step * (opts.knockback_step or 0),
+    }
+  end
+  return result
+end
 
 return {
   kazoo_pistol = {
@@ -203,15 +223,174 @@ return {
     },
   },
 
+  triangle_tracer = {
+    id = "triangle_tracer",
+    name = "Triangle Tracer",
+    description = "Rapid silver pings drill through a precise target line.",
+    archetype = "projectile",
+    role = "Rapid piercer",
+    pattern = "aimed",
+    rarity = "common",
+    icon = { atlas = "base2", col = 1, row = 1 },
+    projectile_color = { 0.45, 0.90, 1.0, 1 },
+    max_level = 10,
+    levels = ranked({
+      damage = 8, damage_growth = 0.13, cooldown = 0.42,
+      cooldown_step = 0.018, min_cooldown = 0.20, count = 1,
+      count_every = 4, speed = 650, speed_step = 12, size = 4,
+      lifetime = 1.6, spread = 2, pierce = 1, pierce_every = 3,
+    }),
+  },
+
+  cello_lance = {
+    id = "cello_lance",
+    name = "Cello Lance",
+    description = "A deliberate string thrust with extreme damage and pierce.",
+    archetype = "projectile",
+    role = "Precision sniper",
+    pattern = "aimed",
+    rarity = "rare",
+    icon = { atlas = "base2", col = 2, row = 1 },
+    projectile_color = { 1.0, 0.55, 0.16, 1 },
+    max_level = 10,
+    levels = ranked({
+      damage = 42, damage_growth = 0.17, cooldown = 1.65,
+      cooldown_step = 0.07, min_cooldown = 0.82, count = 1,
+      count_every = 7, speed = 760, speed_step = 8, size = 8,
+      size_every = 4, lifetime = 2.4, spread = 0, pierce = 3,
+      pierce_every = 2, knockback = 20, knockback_step = 1,
+    }),
+  },
+
+  maraca_orbit = {
+    id = "maraca_orbit",
+    name = "Maraca Orbit",
+    description = "Rotating percussion spirals continuously sweep nearby space.",
+    archetype = "spread",
+    role = "Spiral defense",
+    pattern = "spiral",
+    rarity = "uncommon",
+    icon = { atlas = "base2", col = 3, row = 1 },
+    projectile_color = { 0.32, 1.0, 0.62, 1 },
+    max_level = 10,
+    levels = ranked({
+      damage = 8, damage_growth = 0.12, cooldown = 0.86,
+      cooldown_step = 0.035, min_cooldown = 0.44, count = 3,
+      count_every = 2, speed = 330, speed_step = 8, size = 6,
+      lifetime = 2.2, lifetime_step = 0.04, spread = 0, pierce = 0,
+      pierce_every = 4,
+    }),
+  },
+
+  tuning_fork = {
+    id = "tuning_fork",
+    name = "Tuning Fork",
+    description = "Matched notes fire forward and backward through encirclement.",
+    archetype = "spread",
+    role = "Front-back lane",
+    pattern = "front_back",
+    rarity = "common",
+    icon = { atlas = "base2", col = 4, row = 1 },
+    projectile_color = { 0.32, 0.72, 1.0, 1 },
+    max_level = 10,
+    levels = ranked({
+      damage = 14, damage_growth = 0.14, cooldown = 0.82,
+      cooldown_step = 0.032, min_cooldown = 0.42, count = 2,
+      count_every = 3, speed = 510, speed_step = 10, size = 7,
+      lifetime = 1.9, spread = 7, spread_step = 0.3, pierce = 1,
+      pierce_every = 4,
+    }),
+  },
+
+  keytar_chord = {
+    id = "keytar_chord",
+    name = "Keytar Chord",
+    description = "A broad harmonic wall advances slowly through whole crowds.",
+    archetype = "spread",
+    role = "Broad formation",
+    pattern = "wall",
+    rarity = "uncommon",
+    icon = { atlas = "base2", col = 1, row = 2 },
+    projectile_color = { 0.44, 0.42, 1.0, 1 },
+    max_level = 10,
+    levels = ranked({
+      damage = 12, damage_growth = 0.15, cooldown = 1.08,
+      cooldown_step = 0.04, min_cooldown = 0.56, count = 4,
+      count_every = 3, speed = 285, speed_step = 7, size = 13,
+      size_every = 3, lifetime = 2.8, spread = 15,
+      spread_step = 0.45, pierce = 1, pierce_every = 3,
+    }),
+  },
+
+  bell_tower = {
+    id = "bell_tower",
+    name = "Bell Tower",
+    description = "Slow bronze tolls erupt outward with crushing knockback.",
+    archetype = "spread",
+    role = "Heavy nova",
+    pattern = "radial",
+    rarity = "rare",
+    icon = { atlas = "base2", col = 2, row = 2 },
+    projectile_color = { 1.0, 0.76, 0.22, 1 },
+    max_level = 10,
+    levels = ranked({
+      damage = 24, damage_growth = 0.16, cooldown = 1.85,
+      cooldown_step = 0.075, min_cooldown = 0.92, count = 4,
+      count_every = 2, speed = 260, speed_step = 8, size = 12,
+      size_every = 4, lifetime = 2.3, spread = 0, pierce = 1,
+      pierce_every = 3, knockback = 28, knockback_step = 2,
+    }),
+  },
+
+  tape_repeater = {
+    id = "tape_repeater",
+    name = "Tape Repeater",
+    description = "Recorded attacks echo from alternating side lanes.",
+    archetype = "spread",
+    role = "Side-lane repeat",
+    pattern = "sideways",
+    rarity = "uncommon",
+    icon = { atlas = "base2", col = 3, row = 2 },
+    projectile_color = { 0.38, 1.0, 0.82, 1 },
+    max_level = 10,
+    levels = ranked({
+      damage = 10, damage_growth = 0.15, cooldown = 0.64,
+      cooldown_step = 0.025, min_cooldown = 0.32, count = 2,
+      count_every = 3, speed = 470, speed_step = 9, size = 6,
+      lifetime = 2.0, spread = 6, spread_step = 0.25, pierce = 1,
+      pierce_every = 3,
+    }),
+  },
+
+  laser_harp = {
+    id = "laser_harp",
+    name = "Laser Harp",
+    description = "A brilliant fan of fast strings rewards close positioning.",
+    archetype = "spread",
+    role = "Rapid cone",
+    pattern = "aimed",
+    rarity = "rare",
+    icon = { atlas = "base2", col = 4, row = 2 },
+    projectile_color = { 0.26, 0.94, 1.0, 1 },
+    max_level = 10,
+    levels = ranked({
+      damage = 9, damage_growth = 0.14, cooldown = 0.48,
+      cooldown_step = 0.018, min_cooldown = 0.24, count = 4,
+      count_every = 2, speed = 620, speed_step = 11, size = 5,
+      lifetime = 1.35, spread = 10, spread_step = 0.4, pierce = 0,
+      pierce_every = 4,
+    }),
+  },
+
   brass_barrage = {
     id          = "brass_barrage",
     name        = "Brass Barrage",
-    description = "Studio evolution: a reliable piercing three-note burst.",
+    description = "Kazoo and Breath Control fuse into a piercing three-note burst.",
     archetype   = "spread",
-    role        = "Studio evolution",
+    role        = "Kazoo fusion",
     pattern     = "aimed",
     rarity      = "evolved",
-    icon        = { col = 1, row = 1 },
+    icon        = { atlas = "evolved", col = 1, row = 1 },
     projectile_color = { 1.0, 0.72, 0.18, 1 },
     max_level   = 1,
     evolved     = true,
@@ -232,12 +411,12 @@ return {
   improvised_solo = {
     id          = "improvised_solo",
     name        = "Improvised Solo",
-    description = "Live evolution: an accelerating phrase with a higher groove ceiling.",
+    description = "Feedback Loop and Overdrive fused into an accelerating electric phrase.",
     archetype   = "projectile",
-    role        = "Live evolution",
-    pattern     = "cross",
+    role        = "Feedback fusion",
+    pattern     = "front_back",
     rarity      = "evolved",
-    icon        = { col = 1, row = 1 },
+    icon        = { atlas = "evolved", col = 4, row = 1 },
     projectile_color = { 0.38, 1.0, 0.76, 1 },
     max_level   = 1,
     evolved     = true,
@@ -252,6 +431,114 @@ return {
         spread = 5,
         pierce = 2,
       },
+    },
+  },
+
+  subwoofer_supernova = {
+    id = "subwoofer_supernova",
+    name = "Subwoofer Supernova",
+    description = "Bass Drop and Power Amplifier collapse into a piercing shockwave.",
+    archetype = "spread",
+    role = "Bass fusion",
+    pattern = "radial",
+    rarity = "evolved",
+    icon = { atlas = "evolved", col = 2, row = 1 },
+    projectile_color = { 0.82, 0.52, 1.0, 1 },
+    max_level = 1,
+    evolved = true,
+    levels = {
+      { damage = 76, cooldown = 0.58, count = 12, speed = 410, size = 17,
+        lifetime = 2.8, spread = 0, pierce = 5, knockback = 32 },
+    },
+  },
+
+  orbital_ovation = {
+    id = "orbital_ovation",
+    name = "Orbital Ovation",
+    description = "Cymbal Slicer and Quickstep become a relentless golden orbit.",
+    archetype = "spread",
+    role = "Cymbal fusion",
+    pattern = "spiral",
+    rarity = "evolved",
+    icon = { atlas = "evolved", col = 3, row = 1 },
+    projectile_color = { 1.0, 0.86, 0.32, 1 },
+    max_level = 1,
+    evolved = true,
+    levels = {
+      { damage = 31, cooldown = 0.18, count = 8, speed = 610, size = 9,
+        lifetime = 2.1, spread = 0, pierce = 4, knockback = 14 },
+    },
+  },
+
+  thunderhead_ensemble = {
+    id = "thunderhead_ensemble",
+    name = "Thunderhead Ensemble",
+    description = "Drum Circle and Encore merge into a restorative thunder nova.",
+    archetype = "spread",
+    role = "Drum fusion",
+    pattern = "radial",
+    rarity = "evolved",
+    icon = { atlas = "evolved", col = 1, row = 2 },
+    projectile_color = { 1.0, 0.30, 0.38, 1 },
+    max_level = 1,
+    evolved = true,
+    levels = {
+      { damage = 48, cooldown = 0.48, count = 16, speed = 450, size = 12,
+        lifetime = 2.4, spread = 0, pierce = 3, knockback = 24 },
+    },
+  },
+
+  golden_fortissimo = {
+    id = "golden_fortissimo",
+    name = "Golden Fortissimo",
+    description = "Trumpet Burst and Safety Vest form an armored brass barrage.",
+    archetype = "spread",
+    role = "Trumpet fusion",
+    pattern = "aimed",
+    rarity = "evolved",
+    icon = { atlas = "evolved", col = 2, row = 2 },
+    projectile_color = { 1.0, 0.82, 0.24, 1 },
+    max_level = 1,
+    evolved = true,
+    levels = {
+      { damage = 58, cooldown = 0.30, count = 10, speed = 650, size = 11,
+        lifetime = 1.8, spread = 4, pierce = 3, knockback = 40 },
+    },
+  },
+
+  gravity_groove = {
+    id = "gravity_groove",
+    name = "Gravity Groove",
+    description = "Vinyl Scratch and Pickup Magnet cut four gravitational lanes.",
+    archetype = "spread",
+    role = "Vinyl fusion",
+    pattern = "cross",
+    rarity = "evolved",
+    icon = { atlas = "evolved", col = 3, row = 2 },
+    projectile_color = { 0.72, 0.38, 1.0, 1 },
+    max_level = 1,
+    evolved = true,
+    levels = {
+      { damage = 62, cooldown = 0.34, count = 8, speed = 590, size = 12,
+        lifetime = 2.8, spread = 0, pierce = 6, knockback = 18 },
+    },
+  },
+
+  neon_crescendo = {
+    id = "neon_crescendo",
+    name = "Neon Crescendo",
+    description = "Synth Wave and Echo Chamber become a repeating iridescent wall.",
+    archetype = "spread",
+    role = "Synth fusion",
+    pattern = "wall",
+    rarity = "evolved",
+    icon = { atlas = "evolved", col = 4, row = 2 },
+    projectile_color = { 0.34, 1.0, 0.92, 1 },
+    max_level = 1,
+    evolved = true,
+    levels = {
+      { damage = 68, cooldown = 0.52, count = 12, speed = 390, size = 21,
+        lifetime = 3.2, spread = 7, pierce = 5, knockback = 20 },
     },
   },
 }

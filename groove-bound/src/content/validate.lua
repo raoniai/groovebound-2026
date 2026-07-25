@@ -71,7 +71,10 @@ local schemas = {
     description = { type = "string" },
     stat        = {
       type = "string",
-      one_of = { "speed", "max_hp", "damage", "magnet", "luck", "cooldown_stability" },
+      one_of = {
+        "speed", "max_hp", "damage", "magnet", "luck",
+        "cooldown_stability", "fire_rate", "amount", "guard",
+      },
     },
     max_level   = { type = "number", min = 1 },
     per_level   = { type = "number" },
@@ -80,7 +83,7 @@ local schemas = {
     name                  = { type = "string" },
     base_weapon           = { type = "string", ref = "weapons" },
     result_weapon         = { type = "string", ref = "weapons" },
-    branch                = { type = "string", one_of = { "studio", "live" } },
+    branch                = { type = "string", one_of = { "studio", "live", "fusion" } },
     required_weapon_level = { type = "number", min = 1, max = 10 },
     required_passives     = { type = "table" },
     trigger               = {

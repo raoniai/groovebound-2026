@@ -1,79 +1,34 @@
-# Weapon Evolution Contract
+# Weapon and Support Fusion Contract
 
 ## Authoritative state
 
-- `WeaponInventory` owns weapon IDs, levels, slots, and evolution provenance.
-- `WeaponRuntime` owns the emitters that are actively firing.
-- `WeaponEvolution` is the only system allowed to transform one weapon into
-  another.
-- Evolution recipes are data in `src/content/evolutions.lua`.
+- `WeaponInventory` owns weapon IDs, ranks, capacity, and slots.
+- `PassiveInventory` owns support IDs, ranks, capacity, and slots.
+- `WeaponRuntime` owns the emitters actively firing.
+- `WeaponEvolution` is the only fusion transaction.
+- `src/content/evolutions.lua` owns the eight stable-ID recipes.
 
 ## Eligibility
 
-An evolution is legal only when all conditions are true:
+A fusion is legal only when:
 
-1. The recipe ID exists.
-2. The reward source supplies the exact declared trigger.
-3. The base weapon is actually in the inventory.
-4. That exact weapon instance meets the required level.
-5. Every passive requirement is owned at the required level.
-6. The result weapon is not already owned.
-7. The weapon runtime exactly matches the inventory before mutation.
+1. the recipe exists and uses the `level_up` trigger;
+2. the exact base weapon is owned at rank 10;
+3. the exact paired support is owned at its required rank;
+4. the evolved result is not already owned;
+5. every active emitter matches weapon inventory slot, ID, rank, and revision.
 
-Names and descriptions never participate in these checks.
+The HUD checks this contract continuously and emits a five-second
+**YOU CAN EVOLVE NOW** notification when a new recipe becomes legal.
 
-## Transaction
+## Atomic transaction
 
-1. Snapshot inventory, passive state, and active emitters.
-2. Replace the base weapon in its existing slot.
-3. Record `evolved_from` and `evolution_id`.
-4. Consume passive requirements only if the recipe explicitly requests it.
-5. Replace the emitter in the same slot.
-6. Assert inventory/runtime identity, level, slot, and revision equality.
-7. Roll everything back if any step fails.
+Inventory, support inventory, and weapon runtime are snapshotted before
+mutation. Fusion replaces the weapon in place, consumes the support, expands
+weapon capacity by one up to a six-slot cap, rebuilds support-derived
+modifiers, and verifies the new active emitter. Any failure restores all
+snapshots.
 
-## Projectiles already in flight
-
-Projectile stats are copied when the projectile is created:
-
-- source weapon ID and level;
-- damage;
-- speed;
-- count;
-- size;
-- lifetime;
-- spread;
-- pierce.
-
-Evolution does not mutate existing projectiles. Shots created after the
-transaction use the evolved emitter and evolved stats.
-
-## Initial Studio/Live branch
-
-Both initial recipes require:
-
-- Kazoo Pistol rank 10;
-- Breath Control rank 1 or higher;
-- a `resolve_reward` trigger earned from the miniboss.
-
-The reward presents two exact stable-ID results:
-
-- `kazoo_studio` → Brass Barrage, a reliable piercing three-note burst;
-- `kazoo_live` → Improvised Solo, a more volatile groove-dependent phrase.
-
-The chosen result replaces the same inventory slot at rank 1. Display names
-can change later without changing eligibility.
-
-## Integrated and verified
-
-- Normal level-up cards cannot bypass the evolution trigger.
-- The Metronome Guardian grants one Resolve token and cannot pay twice.
-- Resolve remains banked until the Kazoo/passive conditions are valid.
-- Studio and Live cards are derived from the same legal loadout.
-- The selected result updates inventory, HUD, results and active emitter.
-- Existing projectiles keep their original snapshot.
-- Result snapshots serialize stable IDs and evolution provenance.
-- Seeded offers are deterministic and reject capped, duplicate or slot-invalid
-  candidates.
-- The admin preparation tool constructs a legal state but still uses the same
-  two-branch menu and normal transaction.
+This means the player loses both original ingredients, gains the stronger
+recognizable fusion, receives a free support slot, and gains room to collect
+another base weapon.

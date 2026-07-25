@@ -7,6 +7,7 @@ local Enemy = require("src.game.entities.enemy")
 local Projectile = require("src.game.entities.projectile")
 local XPGem = require("src.game.entities.xp_gem")
 local SpawnDirector = require("src.game.systems.spawn_director")
+local StageDirector = require("src.game.systems.stage_director")
 local WeaponInventory = require("src.game.systems.weapon_inventory")
 local WeaponRuntime = require("src.game.systems.weapon_runtime")
 local XPSystem = require("src.game.systems.xp_system")
@@ -75,6 +76,10 @@ function CombatSystem:init(opts)
   self.final_boss_spawned = false
   self.wave_notice = nil
   self.wave_notice_time = 0
+  self.stage_director = StageDirector({
+    duration = settings.run.stage_duration,
+    count = settings.run.stage_count,
+  })
 
   self.spawner = SpawnDirector({
     waves = self.content.waves,
@@ -172,9 +177,20 @@ function CombatSystem:_update_weapons(dt)
         local angle
         if snapshot.pattern == "radial" then
           angle = (shot - 1) / count * math.pi * 2 + self.ctx.time * 0.35
+        elseif snapshot.pattern == "spiral" then
+          angle = (shot - 1) / count * math.pi * 2 + self.ctx.time * 2.2
         elseif snapshot.pattern == "cross" then
           local lane = (shot - 1) % 4
           angle = base_angle + lane * math.pi / 2
+        elseif snapshot.pattern == "front_back" then
+          local lane = (shot - 1) % 2
+          local pair = math.floor((shot - 1) / 2)
+          angle = base_angle + lane * math.pi + pair * spread
+        elseif snapshot.pattern == "sideways" then
+          local lane = (shot - 1) % 2
+          local pair = math.floor((shot - 1) / 2)
+          angle = base_angle + (lane == 0 and -math.pi / 2 or math.pi / 2)
+            + pair * spread
         elseif snapshot.pattern == "wall" then
           local offset = (shot - (count + 1) / 2) * spread
           angle = base_angle + offset
@@ -210,10 +226,10 @@ function CombatSystem:_kill_enemy(enemy)
   self.stats.coins = self.stats.coins + (enemy.definition.coins or 0)
   if enemy.definition.boss_type == "miniboss" then
     self.stats.minibosses = self.stats.minibosses + 1
-    self.progression:grant_resolve()
-    self.ctx.bus:emit("RESOLVE_GRANTED", {
+    self.progression.rerolls = self.progression.rerolls + 1
+    self.ctx.bus:emit("REROLL_GRANTED", {
       source = enemy.id,
-      tokens = self.progression.resolve_tokens,
+      rerolls = self.progression.rerolls,
     })
   elseif enemy.definition.boss_type == "final" then
     self.stats.bosses = self.stats.bosses + 1
@@ -250,9 +266,13 @@ function CombatSystem:_update_projectiles(dt)
             local weapon_damage = self.stats.damage_by_weapon[projectile.source_weapon_id] or 0
             self.stats.damage_by_weapon[projectile.source_weapon_id] =
               weapon_damage + projectile.damage
-            candidate.x, candidate.y = self.arena:clamp(
-              candidate.x + projectile.dx * projectile.knockback,
-              candidate.y + projectile.dy * projectile.knockback,
+            local next_x = candidate.x + projectile.dx * projectile.knockback
+            local next_y = candidate.y + projectile.dy * projectile.knockback
+            candidate.x, candidate.y = self.arena:resolve_movement(
+              candidate.x,
+              candidate.y,
+              next_x,
+              next_y,
               candidate.radius)
             if candidate:take_damage(projectile.damage) then
               self:_kill_enemy(candidate)
@@ -305,6 +325,7 @@ end
 function CombatSystem:_update_gems(dt)
   local pickup_radius = settings.xp.pickup_radius
     * self.tuning:get("pickups.radius_multiplier")
+    * (1 + self.progression:passive_bonus("magnet"))
   self.ctx.world:each("xp_gem", function(gem)
     if gem:update(dt, self.player, pickup_radius, settings.xp.pickup_speed) then
       self.stats.xp = self.stats.xp + gem.value
@@ -326,12 +347,14 @@ end
 function CombatSystem:update(dt)
   local frame_started = os.clock()
   self.wave_notice_time = math.max(0, self.wave_notice_time - dt)
+  self.stage_director:update(dt, self.ctx.time)
   self.spawner:update(dt, self.ctx.time, self.content.enemies)
   self:_update_enemies(dt)
   self:_update_weapons(dt)
   self:_update_projectiles(dt)
   self:_update_gems(dt)
   self.xp:update(dt)
+  self.progression:update(dt)
   self:_release_removed()
 
   self.stats.peak_enemies = math.max(
@@ -364,7 +387,6 @@ function CombatSystem:admin_prepare_evolution()
   end
   self.progression:_apply_passive_effects()
   self.weapon_runtime:sync(self.inventory)
-  self.progression:grant_resolve()
   self:admin_grant_level()
   return true
 end

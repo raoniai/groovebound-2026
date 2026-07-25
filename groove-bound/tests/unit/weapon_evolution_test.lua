@@ -22,12 +22,12 @@ end
 T["eligible recipe requires the exact trigger"] = function()
   local evolution, inventory, passives, runtime = ready_loadout()
   local eligible, reason = evolution:can_evolve(
-    "kazoo_studio", inventory, passives, "level_up", runtime)
+    "kazoo_studio", inventory, passives, "resolve_reward", runtime)
   H.is_false(eligible)
   H.eq(reason, "wrong_trigger")
   H.deep_eq(
-    evolution:eligible(inventory, passives, "resolve_reward", runtime),
-    { "kazoo_live", "kazoo_studio" })
+    evolution:eligible(inventory, passives, "level_up", runtime),
+    { "kazoo_studio" })
 end
 
 T["base weapon must be owned at the recipe level"] = function()
@@ -35,14 +35,14 @@ T["base weapon must be owned at the recipe level"] = function()
   inventory:restore({ capacity = 4, revision = 0, slots = {} })
   runtime:sync(inventory)
   local eligible, reason = evolution:can_evolve(
-    "kazoo_studio", inventory, passives, "resolve_reward", runtime)
+    "kazoo_studio", inventory, passives, "level_up", runtime)
   H.is_false(eligible)
   H.eq(reason, "base_weapon_not_owned")
 
   assert(inventory:add("kazoo_pistol", 9))
   runtime:sync(inventory)
   eligible, reason = evolution:can_evolve(
-    "kazoo_studio", inventory, passives, "resolve_reward", runtime)
+    "kazoo_studio", inventory, passives, "level_up", runtime)
   H.is_false(eligible)
   H.eq(reason, "base_weapon_level_too_low")
 end
@@ -51,7 +51,7 @@ T["all required passives are cross-checked by stable id and level"] = function()
   local evolution, inventory, passives, runtime = ready_loadout()
   passives.breath_control = nil
   local eligible, reason = evolution:can_evolve(
-    "kazoo_studio", inventory, passives, "resolve_reward", runtime)
+    "kazoo_studio", inventory, passives, "level_up", runtime)
   H.is_false(eligible)
   H.eq(reason, "missing_passive:breath_control")
 end
@@ -59,39 +59,49 @@ end
 T["evolution replaces the exact inventory slot atomically"] = function()
   local evolution, inventory, passives, runtime = ready_loadout()
   local result = assert(evolution:evolve(
-    "kazoo_studio", inventory, passives, "resolve_reward", runtime))
+    "kazoo_studio", inventory, passives, "level_up", runtime))
   H.eq(result.slot, 1)
   H.eq(result.old_weapon_id, "kazoo_pistol")
   H.eq(result.new_weapon_id, "brass_barrage")
-  H.eq(result.branch, "studio")
+  H.eq(result.branch, "fusion")
   H.eq(inventory:get_slot(1).id, "brass_barrage")
   H.eq(inventory:get_slot(1).evolved_from, "kazoo_pistol")
   H.eq(inventory:get_slot(1).evolution_id, "kazoo_studio")
-  H.eq(inventory:get_slot(1).evolution_branch, "studio")
+  H.eq(inventory:get_slot(1).evolution_branch, "fusion")
+  H.eq(inventory.capacity, 5)
+  H.is_nil(passives.breath_control)
+end
+
+T["fusion capacity expansion respects the six-weapon safety cap"] = function()
+  local evolution, inventory, passives, runtime = ready_loadout()
+  inventory.capacity = 6
+  assert(evolution:evolve(
+    "kazoo_studio", inventory, passives, "level_up", runtime))
+  H.eq(inventory.capacity, 6)
 end
 
 T["the active firing emitter is replaced with the evolved weapon"] = function()
   local evolution, inventory, passives, runtime = ready_loadout()
-  assert(evolution:evolve("kazoo_studio", inventory, passives, "resolve_reward", runtime))
+  assert(evolution:evolve("kazoo_studio", inventory, passives, "level_up", runtime))
   H.eq(runtime:get(1).weapon_id, "brass_barrage")
   H.eq(runtime:get(1).level, 1)
   H.is_true(runtime:assert_consistent(inventory))
 end
 
-T["Studio and Live branches create distinct firing identities"] = function()
+T["fusion consumes the paired support and keeps the result recognizable"] = function()
   local evolution, inventory, passives, runtime = ready_loadout()
-  assert(evolution:evolve("kazoo_live", inventory, passives, "resolve_reward", runtime))
-  H.eq(inventory:get_slot(1).id, "improvised_solo")
-  H.eq(inventory:get_slot(1).evolution_id, "kazoo_live")
-  H.eq(inventory:get_slot(1).evolution_branch, "live")
-  H.eq(runtime:get(1).weapon_id, "improvised_solo")
+  assert(evolution:evolve("kazoo_studio", inventory, passives, "level_up", runtime))
+  H.eq(inventory:get_slot(1).id, "brass_barrage")
+  H.eq(inventory:get_slot(1).evolved_from, "kazoo_pistol")
+  H.is_nil(passives.breath_control)
+  H.eq(runtime:get(1).weapon_id, "brass_barrage")
   H.is_true(runtime:assert_consistent(inventory))
 end
 
 T["projectiles already in flight keep their original stat snapshot"] = function()
   local evolution, inventory, passives, runtime = ready_loadout()
   local old_projectile = runtime:projectile_snapshot(1)
-  assert(evolution:evolve("kazoo_studio", inventory, passives, "resolve_reward", runtime))
+  assert(evolution:evolve("kazoo_studio", inventory, passives, "level_up", runtime))
   local new_projectile = runtime:projectile_snapshot(1)
   H.eq(old_projectile.source_weapon_id, "kazoo_pistol")
   H.eq(old_projectile.damage, 28)
@@ -120,7 +130,7 @@ T["evolution is refused when the active firing runtime is stale"] = function()
   assert(inventory:level_up("kazoo_pistol") == nil) -- already max; revision unchanged
   runtime.emitters[1].weapon_id = "wrong_weapon"
   local eligible, reason = evolution:can_evolve(
-    "kazoo_studio", inventory, passives, "resolve_reward", runtime)
+    "kazoo_studio", inventory, passives, "level_up", runtime)
   H.is_false(eligible)
   H.eq(reason, "runtime_out_of_sync")
 end
@@ -131,7 +141,7 @@ T["transaction failure rolls inventory and firing runtime back"] = function()
   runtime.replace_weapon = function() error("injected runtime failure") end
 
   local result, reason = evolution:evolve(
-    "kazoo_studio", inventory, passives, "resolve_reward", runtime)
+    "kazoo_studio", inventory, passives, "level_up", runtime)
   H.is_nil(result)
   H.is_true(reason:find("evolution_transaction_failed", 1, true) ~= nil)
   H.eq(inventory:get_slot(1).id, "kazoo_pistol")
@@ -145,7 +155,7 @@ T["an evolved result cannot be duplicated in another slot"] = function()
   assert(inventory:add("brass_barrage", 1))
   runtime:sync(inventory)
   local eligible, reason = evolution:can_evolve(
-    "kazoo_studio", inventory, passives, "resolve_reward", runtime)
+    "kazoo_studio", inventory, passives, "level_up", runtime)
   H.is_false(eligible)
   H.eq(reason, "result_already_owned")
 end

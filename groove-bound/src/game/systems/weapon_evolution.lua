@@ -9,12 +9,17 @@ local class = require("src.core.class")
 local WeaponEvolution = class()
 
 local function passive_level(passives, passive_id)
+  if passives.get then
+    local passive = passives:get(passive_id)
+    return passive and passive.level or 0
+  end
   local value = passives[passive_id]
   if type(value) == "table" then return value.level or 0 end
   return value or 0
 end
 
 local function snapshot_passives(passives)
+  if passives.snapshot then return passives:snapshot() end
   local result = {}
   for id, value in pairs(passives) do
     if type(value) == "table" then
@@ -29,6 +34,10 @@ local function snapshot_passives(passives)
 end
 
 local function restore_passives(passives, snapshot)
+  if passives.restore then
+    passives:restore(snapshot)
+    return
+  end
   for id in pairs(passives) do passives[id] = nil end
   for id, value in pairs(snapshot) do passives[id] = value end
 end
@@ -97,9 +106,17 @@ function WeaponEvolution:evolve(recipe_id, inventory, passives, trigger, runtime
       })
     assert(replacement, old_weapon)
 
+    inventory.capacity = math.min(
+      recipe.max_weapon_capacity or 6,
+      inventory.capacity + (recipe.weapon_slot_bonus or 0))
+
     if recipe.consume_passives then
       for _, requirement in ipairs(recipe.required_passives) do
-        passives[requirement.id] = nil
+        if passives.remove then
+          assert(passives:remove(requirement.id))
+        else
+          passives[requirement.id] = nil
+        end
       end
     end
 

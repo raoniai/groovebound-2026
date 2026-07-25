@@ -52,9 +52,15 @@ function Enemy:update(dt, player, speed_multiplier, arena)
       local cycle = self.brain_time % 3.2
       speed = speed * (cycle > 2.35 and 2.7 or 0.62)
     end
-    self.x = self.x + dx * speed * dt
-    self.y = self.y + dy * speed * dt
-    self.x, self.y = arena:clamp(self.x, self.y, self.radius)
+    local old_x, old_y = self.x, self.y
+    local next_x = self.x + dx * speed * dt
+    local next_y = self.y + dy * speed * dt
+    if arena.resolve_movement then
+      self.x, self.y = arena:resolve_movement(
+        old_x, old_y, next_x, next_y, self.radius)
+    else
+      self.x, self.y = arena:clamp(next_x, next_y, self.radius)
+    end
 
     if math.abs(dx) > math.abs(dy) then
       self.anim_row = dx > 0 and directions.right or directions.left
@@ -83,7 +89,17 @@ function Enemy:draw()
   local color = self.definition.color or { 1, 1, 1, 1 }
   if self.flash > 0 then color = { 1, 1, 1, 1 } end
 
-  if self.assets and self.assets.enemy then
+  if self.assets and self.definition.sprite then
+    self.assets:draw_enemy_variant(
+      self.definition.sprite,
+      self.x,
+      self.y,
+      self.definition.sprite_size or 82,
+      {
+        color = color,
+        flip_x = self.anim_row == directions.left,
+      })
+  elseif self.assets and self.assets.enemy then
     self.assets.enemy.walk:draw(
       self.anim_frame,
       self.anim_row,

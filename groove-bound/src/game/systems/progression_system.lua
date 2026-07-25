@@ -1,7 +1,7 @@
 -- Generates and applies legal Vampire-Survivors-style level-up decisions.
 -- Inventory/passive state is authoritative; impossible or capped cards never
--- enter the weighted pool. Resolve tokens make eligible evolution branches
--- available without weakening the recipe contract.
+-- enter the weighted pool. Legal weapon/support fusions are always offered
+-- before ordinary upgrades.
 
 local class = require("src.core.class")
 local PassiveInventory = require("src.game.systems.passive_inventory")
@@ -28,11 +28,45 @@ function ProgressionSystem:init(opts)
   self.passives = PassiveInventory(self.content, { capacity = 4 })
   self.evolution = WeaponEvolution(self.content)
   self.rerolls = 1
-  self.resolve_tokens = 0
   self.evolutions = {}
   self.coins = 0
   self.offer_serial = 0
   self.last_offer = nil
+  self.evolution_notice = 0
+  self.evolution_notice_text = nil
+  self.last_evolution_signature = ""
+end
+
+function ProgressionSystem:passive_bonus(stat)
+  local total = 0
+  for _, passive in ipairs(self.passives.slots) do
+    local definition = self.content.passives[passive.id]
+    if definition.stat == stat then
+      total = total + passive.level * definition.per_level
+    end
+  end
+  return total
+end
+
+function ProgressionSystem:eligible_evolutions()
+  return self.evolution:eligible(
+    self.inventory,
+    self.passives,
+    "level_up",
+    self.weapon_runtime)
+end
+
+function ProgressionSystem:update(dt)
+  self.evolution_notice = math.max(0, self.evolution_notice - dt)
+  local eligible = self:eligible_evolutions()
+  local signature = table.concat(eligible, "|")
+  if signature ~= "" and signature ~= self.last_evolution_signature then
+    local recipe = self.content.evolutions[eligible[1]]
+    local result = self.content.weapons[recipe.result_weapon]
+    self.evolution_notice = 5
+    self.evolution_notice_text = "YOU CAN EVOLVE NOW: " .. result.name
+  end
+  self.last_evolution_signature = signature
 end
 
 function ProgressionSystem:_weapon_cards(out)
@@ -84,22 +118,17 @@ function ProgressionSystem:_passive_cards(out)
 end
 
 function ProgressionSystem:_evolution_cards(out)
-  if self.resolve_tokens <= 0 then return end
-  local passive_levels = self.passives:levels()
-  for _, evolution_id in ipairs(
-    self.evolution:eligible(
-      self.inventory,
-      passive_levels,
-      "resolve_reward",
-      self.weapon_runtime))
-  do
+  for _, evolution_id in ipairs(self:eligible_evolutions()) do
     local recipe = self.content.evolutions[evolution_id]
     local result = self.content.weapons[recipe.result_weapon]
+    local base = self.content.weapons[recipe.base_weapon]
+    local support = self.content.passives[recipe.required_passives[1].id]
     out[#out + 1] = card(
       "evolution",
       evolution_id,
-      string.upper(recipe.branch) .. ": " .. result.name,
-      result.description,
+      "FUSION: " .. result.name,
+      base.name .. " + " .. support.name
+        .. ". Consumes both and frees the support slot.",
       0)
   end
 end
@@ -163,6 +192,12 @@ function ProgressionSystem:_apply_passive_effects()
   self.player.max_hp = next_max
   self.player.hp = math.min(self.player.max_hp, self.player.hp + gain)
 
+  local next_guard_capacity = self:passive_bonus("guard")
+  local guard_gain = math.max(
+    0, next_guard_capacity - (self.player.passive_guard_capacity or 0))
+  self.player.passive_guard_capacity = next_guard_capacity
+  self.player.guard = (self.player.guard or 0) + guard_gain
+
   self.weapon_runtime:set_passives(self.passives:levels())
   self.weapon_runtime:sync(self.inventory)
 end
@@ -186,10 +221,12 @@ function ProgressionSystem:apply(choice)
     result = assert(self.evolution:evolve(
       choice.id,
       self.inventory,
-      self.passives:levels(),
-      "resolve_reward",
+      self.passives,
+      "level_up",
       self.weapon_runtime))
-    self.resolve_tokens = self.resolve_tokens - 1
+    self:_apply_passive_effects()
+    self.last_evolution_signature = ""
+    self.evolution_notice = 0
     self.evolutions[#self.evolutions + 1] = {
       id = choice.id,
       result_weapon = result.new_weapon_id,
@@ -215,17 +252,11 @@ function ProgressionSystem:skip()
   return 5
 end
 
-function ProgressionSystem:grant_resolve()
-  self.resolve_tokens = self.resolve_tokens + 1
-  return self.resolve_tokens
-end
-
 function ProgressionSystem:snapshot()
   return {
     weapons = self.inventory:snapshot().slots,
     passives = self.passives:snapshot().slots,
     rerolls = self.rerolls,
-    resolve_tokens = self.resolve_tokens,
     coins = self.coins,
     evolutions = self.evolutions,
   }

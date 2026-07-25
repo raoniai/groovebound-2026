@@ -37,14 +37,25 @@ local function live_run(level)
   }
 end
 
-T["database exposes eight base weapons and two evolutions"] = function()
+T["database exposes sixteen base weapons and eight evolutions"] = function()
   local catalog = WeaponCatalog(Content)
   local counts = catalog:counts()
-  H.eq(counts.all, 10)
-  H.eq(counts.base, 8)
-  H.eq(counts.evolved, 2)
+  H.eq(counts.all, 24)
+  H.eq(counts.base, 16)
+  H.eq(counts.evolved, 8)
+  H.eq(counts.supports, 8)
   H.eq(counts.owned, 0)
-  H.eq(counts.level_up, 8)
+  H.eq(counts.level_up, 16)
+end
+
+T["support database exposes stats ownership and fusion pairings"] = function()
+  local catalog = WeaponCatalog(Content)
+  local supports = catalog:list(nil, "supports")
+  H.eq(#supports, 8)
+  local breath = catalog:support_entry("breath_control")
+  H.eq(breath.definition.stat, "cooldown_stability")
+  H.eq(breath.recipes[1].result.id, "brass_barrage")
+  H.eq(breath.status, "LEVEL-UP POOL")
 end
 
 T["every database entry has a valid atlas icon and complete rank data"] = function()
@@ -92,19 +103,15 @@ T["unowned weapons leave the level-up pool when all slots are occupied"] = funct
   H.eq(catalog:counts(run).owned, 4)
 end
 
-T["Resolve eligibility and the evolved emitter are visible in the database"] = function()
+T["fusion eligibility and the evolved emitter are visible in the database"] = function()
   local catalog = WeaponCatalog(Content)
   local run = live_run(10)
   local progression = run.combat.progression
   progression:apply({ kind = "passive_add", id = "breath_control" })
-  progression:grant_resolve()
 
   local studio = catalog:entry("brass_barrage", run)
-  local live = catalog:entry("improvised_solo", run)
   H.is_true(studio.evolution_eligible)
-  H.is_true(live.evolution_eligible)
   H.eq(studio.status, "EVOLVE NOW")
-  H.eq(live.status, "EVOLVE NOW")
 
   progression:apply({ kind = "evolution", id = "kazoo_studio" })
   studio = catalog:entry("brass_barrage", run)
@@ -116,7 +123,7 @@ end
 
 T["all base weapon firing snapshots preserve their unique pattern and color"] = function()
   local tuning = Tuning(definitions)
-  local inventory = WeaponInventory(Content, { capacity = 8 })
+  local inventory = WeaponInventory(Content, { capacity = 16 })
   local expected = {
     kazoo_pistol = "aimed",
     bass_drop = "aimed",
@@ -126,6 +133,14 @@ T["all base weapon firing snapshots preserve their unique pattern and color"] = 
     trumpet_burst = "aimed",
     vinyl_scratch = "cross",
     synth_wave = "wall",
+    triangle_tracer = "aimed",
+    cello_lance = "aimed",
+    maraca_orbit = "spiral",
+    tuning_fork = "front_back",
+    keytar_chord = "wall",
+    bell_tower = "radial",
+    tape_repeater = "sideways",
+    laser_harp = "aimed",
   }
   for id in pairs(expected) do assert(inventory:add(id, 1)) end
   local runtime = WeaponRuntime(Content, tuning)
