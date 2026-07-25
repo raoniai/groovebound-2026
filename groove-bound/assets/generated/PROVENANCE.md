@@ -45,3 +45,23 @@ used as an input.
 
 The two Kazoo evolutions intentionally inherit the base Kazoo silhouette with
 distinct evolution tinting until their production illustrations are authored.
+
+## Concurrent generated candidates captured with the repository snapshot
+
+The following generated atlas pairs appeared in the shared project workspace on
+26 July 2026 after the first repository snapshot was committed:
+
+- `enemy-variants-atlas-source.png` and `enemy-variants-atlas.png`
+- `environment-atlas-source.png` and `environment-atlas.png`
+- `evolved-weapon-icons-atlas-source.png` and
+  `evolved-weapon-icons-atlas.png`
+- `player-v2-sheet-source.png` and `player-v2-sheet.png`
+- `support-icons-atlas-source.png` and `support-icons-atlas.png`
+- `weapon-icons-atlas-2-source.png` and `weapon-icons-atlas-2.png`
+
+They are retained as **generated reference candidates**, not as
+production-approved or runtime-integrated assets. Detailed prompts, generator
+metadata, processing steps, stable cell mappings, and approval records were not
+present alongside the files when this repository snapshot was taken. Those
+details must be added before any of these candidates is promoted into the
+runtime or a public build.
