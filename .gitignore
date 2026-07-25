@@ -1,0 +1,8 @@
+.DS_Store
+*.love
+*.log
+crash_*.txt
+
+groove-bound/dist/
+groove-bound/save.json
+groove-bound/logs/

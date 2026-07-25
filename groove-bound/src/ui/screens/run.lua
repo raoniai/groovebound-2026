@@ -1,0 +1,162 @@
+-- Run screen: builds a RunContext on enter and destroys it on exit.
+-- All per-run objects live inside the context; nothing survives to the
+-- next run. Pause is a pushed modal, not a boolean.
+
+local class = require("src.core.class")
+local Arena = require("src.game.arena")
+local Camera = require("src.game.camera")
+local HUD = require("src.ui.hud")
+local Hitboxes = require("src.debug.hitboxes")
+local Input = require("src.game.input")
+local Player = require("src.game.entities.player")
+local RunContext = require("src.game.run_context")
+local CombatSystem = require("src.game.systems.combat_system")
+
+local RunScreen = class()
+
+function RunScreen:init(app, opts)
+  self.app = app
+  self.opts = opts or {}
+end
+
+function RunScreen:enter()
+  self.ctx = RunContext({
+    seed = self.opts.seed,
+    app_bus = self.app.bus,
+    tuning = self.app.tuning,
+  })
+  self.app.log.info("state", "Run started (seed " .. self.ctx.seed .. ")")
+
+  self.arena = Arena({ assets = self.app.assets })
+  self.input = Input({ deadzone = self.app.profile.options.deadzone })
+
+  self.camera = Camera({
+    random = function() return self.ctx.rng.vfx:random() end,
+  })
+  self.camera:set_bounds(self.arena.width, self.arena.height)
+
+  local cx, cy = self.arena:center()
+  self.player = self.ctx.world:add("player", Player({
+    x = cx,
+    y = cy,
+    tuning = self.app.tuning,
+    assets = self.app.assets,
+    options = self.app.profile.options,
+  }))
+  self.camera:snap(self.player.x, self.player.y)
+
+  self.combat = CombatSystem({
+    ctx = self.ctx,
+    content = self.app.content,
+    tuning = self.app.tuning,
+    assets = self.app.assets,
+    arena = self.arena,
+    player = self.player,
+    camera = self.camera,
+    options = self.app.profile.options,
+  })
+  self.hud = HUD(self.ctx, self.player, self.combat)
+  self.finished = false
+  self.choice_open = false
+  self.seed_notice = 0
+  self.app.active_run = self
+end
+
+function RunScreen:exit()
+  if self.app.active_run == self then self.app.active_run = nil end
+  self.ctx:destroy()
+  self.app.log.info("state", "Run ended")
+end
+
+function RunScreen:update(dt)
+  local time_scale = self.app.tuning:get("simulation.time_scale")
+  local sim_dt = dt * time_scale
+  self.seed_notice = math.max(0, self.seed_notice - dt)
+  self.ctx:update(sim_dt)
+
+  self.player:update(sim_dt, self.input, self.camera, self.arena)
+  self.ctx.world:moved(self.player)
+  local outcome = self.combat:update(sim_dt)
+
+  self.camera:follow(self.player.x, self.player.y, sim_dt)
+  self.camera:update(sim_dt)
+
+  if outcome and not self.finished then
+    self.finished = true
+    local ResultsScreen = require("src.ui.screens.results")
+    self.app.states:push(ResultsScreen(self.app, {
+      outcome = outcome,
+      stats = self.combat.stats,
+      level = self.combat.xp.level,
+      progression = self.combat.progression:snapshot(),
+      time = self.ctx.time,
+    }))
+  elseif self.combat.xp:has_pending_choice() and not self.choice_open then
+    self.choice_open = true
+    local LevelUpScreen = require("src.ui.screens.level_up")
+    self.app.states:push(LevelUpScreen(self.app, self.combat))
+  end
+end
+
+function RunScreen:copy_seed()
+  love.system.setClipboardText(tostring(self.ctx.seed))
+  self.seed_notice = 1.8
+  return self.ctx.seed
+end
+
+function RunScreen:resume()
+  self.choice_open = false
+end
+
+function RunScreen:draw()
+  self.camera:apply()
+  self.arena:draw()
+  self.ctx.world:each("xp_gem", function(gem) gem:draw() end)
+  self.ctx.world:each("enemy", function(enemy) enemy:draw() end)
+  self.ctx.world:each("projectile", function(projectile) projectile:draw() end)
+  self.player:draw()
+  Hitboxes.draw(self.ctx.world)
+  self.camera:detach()
+
+  self.hud:draw()
+  if self.seed_notice > 0 then
+    local Fonts = require("src.ui.fonts")
+    love.graphics.setFont(Fonts.get(14))
+    love.graphics.setColor(0.96, 0.78, 0.22, math.min(1, self.seed_notice))
+    love.graphics.printf("SEED COPIED", 0, love.graphics.getHeight() - 42,
+      love.graphics.getWidth(), "center")
+  end
+end
+
+function RunScreen:keypressed(key)
+  local settings = require("src.config.settings")
+  if settings.debug.admin.enabled and key == settings.debug.admin.toggle_key then
+    local AdminScreen = require("src.ui.screens.admin")
+    self.app.states:push(AdminScreen(self.app))
+    return true
+  end
+  if Input.is_action(key, "pause") then
+    local PauseScreen = require("src.ui.screens.pause")
+    self.app.states:push(PauseScreen(self.app))
+    return true
+  end
+  if key == "f3" then
+    Hitboxes.toggle()
+    return true
+  elseif key == "c" then
+    self:copy_seed()
+    return true
+  end
+  return false
+end
+
+function RunScreen:gamepadpressed(_, button)
+  if Input.is_gamepad_action(button, "pause") then
+    local PauseScreen = require("src.ui.screens.pause")
+    self.app.states:push(PauseScreen(self.app))
+    return true
+  end
+  return false
+end
+
+return RunScreen

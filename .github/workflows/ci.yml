@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install LuaJIT, luacheck, and LÖVE
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y luajit lua-check love xvfb
+
+      - name: Lint
+        working-directory: groove-bound
+        run: luacheck src main.lua conf.lua tests
+
+      - name: Unit tests
+        working-directory: groove-bound
+        run: luajit tests/run.lua
+
+      - name: LÖVE boot smoke
+        working-directory: groove-bound
+        run: xvfb-run -a env GROOVE_BOUND_SMOKE=1 love .

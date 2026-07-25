@@ -1,0 +1,87 @@
+local H = require("tests.helpers")
+local Enemy = require("src.game.entities.enemy")
+local Projectile = require("src.game.entities.projectile")
+local XPGem = require("src.game.entities.xp_gem")
+
+local T = {}
+
+local arena = {
+  contains = function(_, x, y, radius)
+    return x - radius >= 0 and y - radius >= 0 and x + radius <= 100 and y + radius <= 100
+  end,
+  clamp = function(_, x, y, radius)
+    return math.max(radius, math.min(100 - radius, x)),
+      math.max(radius, math.min(100 - radius, y))
+  end,
+}
+
+T["projectiles move by their normalized direction and speed"] = function()
+  local projectile = Projectile()
+  projectile:reset({
+    x = 20, y = 20, dx = 1, dy = 0, speed = 50, damage = 10, lifetime = 2,
+  })
+  projectile:update(0.5, arena)
+  H.eq(projectile.x, 45)
+  H.eq(projectile.y, 20)
+  H.near(projectile.lifetime, 1.5)
+  H.is_false(projectile.dead)
+end
+
+T["projectile pierce is consumed once per distinct enemy"] = function()
+  local projectile = Projectile()
+  projectile:reset({
+    x = 20, y = 20, dx = 1, dy = 0, speed = 50, damage = 10,
+    lifetime = 2, pierce = 1,
+  })
+  local first, second = {}, {}
+  H.is_true(projectile:register_hit(first))
+  H.eq(projectile.pierce, 0)
+  H.is_false(projectile.dead)
+  H.is_false(projectile:register_hit(first))
+  H.is_false(projectile.dead)
+  H.is_true(projectile:register_hit(second))
+  H.is_true(projectile.dead)
+end
+
+T["pooled projectiles clear previous hit identities on reset"] = function()
+  local projectile = Projectile()
+  local enemy = {}
+  projectile:reset({
+    x = 20, y = 20, dx = 1, dy = 0, speed = 50, damage = 10, lifetime = 2,
+  })
+  H.is_true(projectile:register_hit(enemy))
+  projectile:reset({
+    x = 20, y = 20, dx = 1, dy = 0, speed = 50, damage = 10, lifetime = 2,
+  })
+  H.is_true(projectile:register_hit(enemy))
+end
+
+T["XP gems attract inside pickup range and collect on contact"] = function()
+  local gem = XPGem()
+  gem:reset({ x = 50, y = 50, value = 10 })
+  local player = { x = 30, y = 50, radius = 8 }
+  H.is_false(gem:update(0.1, player, 100, 40))
+  H.is_true(gem.x < 50)
+  gem.x = 39
+  H.is_true(gem:update(0, player, 100, 40))
+  H.is_true(gem.dead)
+end
+
+T["enemies chase, respect arena bounds, and die at zero HP"] = function()
+  local enemy = Enemy()
+  enemy:reset({
+    definition = {
+      id = "test", size = 10, hp = 20, speed = 50, damage = 5,
+    },
+    x = 95,
+    y = 50,
+  })
+  enemy:update(1, { x = 200, y = 50 }, 2, arena)
+  H.eq(enemy.x, 90)
+  H.is_false(enemy:take_damage(19))
+  H.eq(enemy.hp, 1)
+  H.is_true(enemy:take_damage(1))
+  H.is_true(enemy.dead)
+end
+
+return T
