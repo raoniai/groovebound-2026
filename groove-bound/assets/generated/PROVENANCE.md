@@ -13,6 +13,25 @@ editable provenance and excluded from the packaged `.love`. Production files
 were made with the bundled `remove_chroma_key.py` helper and resized to their
 runtime dimensions with nearest-neighbour filtering.
 
+## Repository banner
+
+- `../../../docs/assets/groove-bound-banner.png` — 2007×784 RGB banner used at
+  the top of the repository README. It is documentation artwork and is not
+  included in the packaged `.love`.
+- **Generator:** OpenAI image generation available in Codex.
+- **Reference inputs:** the project-owned generated source sheets for the
+  player, enemy variants, evolved weapons, and environment props listed below.
+  No third-party image was used.
+- **Prompt specification:** extra-wide cinematic 16-bit pixel-art repository
+  banner set on a dark neon concert floor; the teal-jacketed hero faces the
+  music-machine horde and Static Baron among stage lights, speaker stacks,
+  evolved weapons, projectiles, XP gems, and rhythmic shockwaves. The image
+  carries exactly one centered gold pixel-display title: `GROOVE BOUND`.
+- **Production constraints:** preserve the hero palette and identity, retain
+  the supplied enemy and music-weapon language, keep crisp pixel clusters and
+  safe wide framing, and avoid added copy, watermarks, UI panels, unrelated
+  instruments, or third-party marks.
+
 ## First base-weapon atlas
 
 - `weapon-icons-atlas-source.png` — untouched 1774×887 generator output with a
