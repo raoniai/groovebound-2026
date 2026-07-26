@@ -23,6 +23,19 @@ indigo. It must remain readable at 16, 32, 64, 128, 256, and 512 pixels. No
 typography, letters, numbers, characters, faces, multiple focal points,
 franchise references, border frame, mockup, or watermark.
 
+## Repository campaign banner
+
+Extra-wide GitHub README hero banner, approximately 2.55:1. Preserve the exact
+large gold pixel-display title **GROOVE BOUND** as the dominant central focal
+point. Joe, in his teal jacket with gold kazoo weapon, defends neon Backbeat
+Streets on the left. Lyra Vex, with cyan-magenta hair, violet adventure jacket,
+and neon keytar, defends the cyan/violet Orbit Line on the right. Blend the city
+and cosmic-transit environments into one continuous panorama. Static Baron and
+Grand Orchestrator frame their respective stages as secondary silhouettes.
+Exactly two heroes; exact two-word title; no other text, UI, badges, duplicated
+limbs, unrelated instruments, extra protagonists, franchise references, or
+watermark.
+
 ## Character action sheets
 
 Strict 8-column by 4-row transparent-safe action atlas. Rows: down, up, left,

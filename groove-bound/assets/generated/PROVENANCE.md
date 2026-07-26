@@ -19,24 +19,29 @@ The second-stage campaign additions follow the same contract. Their normalized
 final prompt set is recorded in
 [`../../docs/STAGE2_VISUAL_PROMPTS.md`](../../docs/STAGE2_VISUAL_PROMPTS.md).
 
-## Repository banner
+## Repository banners
 
-- `../../../docs/assets/groove-bound-banner.png` — 2007×784 RGB banner used at
-  the top of the repository README. It is documentation artwork and is not
-  included in the packaged `.love`.
+- `../../../docs/assets/groove-bound-campaign-banner.png` — 2006×784 RGB
+  two-character, two-stage campaign banner currently used at the top of the
+  repository README.
+- `../../../docs/assets/groove-bound-banner.png` — retained 2007×784 RGB
+  Stage 1 banner superseded by the campaign version.
+- `source-candidates/readme-campaign-banner-source.png` — editable copy of the
+  current campaign banner source. Documentation banners and source candidates
+  are excluded from the packaged `.love`.
 - **Generator:** OpenAI image generation available in Codex.
-- **Reference inputs:** the project-owned generated source sheets for the
-  player, enemy variants, evolved weapons, and environment props listed below.
-  No third-party image was used.
-- **Prompt specification:** extra-wide cinematic 16-bit pixel-art repository
-  banner set on a dark neon concert floor; the teal-jacketed hero faces the
-  music-machine horde and Static Baron among stage lights, speaker stacks,
-  evolved weapons, projectiles, XP gems, and rhythmic shockwaves. The image
-  carries exactly one centered gold pixel-display title: `GROOVE BOUND`.
-- **Production constraints:** preserve the hero palette and identity, retain
-  the supplied enemy and music-weapon language, keep crisp pixel clusters and
-  safe wide framing, and avoid added copy, watermarks, UI panels, unrelated
-  instruments, or third-party marks.
+- **Reference inputs:** the project-owned earlier banner, Joe/Lyra portrait
+  atlas, and Orbit Line enemy atlas. No third-party image was used.
+- **Prompt specification:** transform the Stage 1 banner into an extra-wide
+  cinematic campaign panorama. Joe defends neon Backbeat Streets on the left;
+  Lyra Vex defends the cyan/violet Orbit Line on the right; the city and cosmic
+  rail settings transition seamlessly behind the exact centered gold title
+  `GROOVE BOUND`. Static Baron and Grand Orchestrator silhouettes frame their
+  respective stages as secondary threats.
+- **Production constraints:** exactly two heroes with identities, outfits, and
+  weapons preserved from the supplied art; exact two-word title; crisp
+  detailed 16-bit pixel clusters; safe responsive framing; no other copy, UI,
+  watermarks, extra protagonists, unrelated instruments, or third-party marks.
 
 ## First base-weapon atlas
 
