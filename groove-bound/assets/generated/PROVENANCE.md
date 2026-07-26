@@ -206,6 +206,7 @@ from release packages. Runtime assets are:
 | `campaign/stage2-environment-atlas.png` | 4×2 collision and decorative props |
 | `campaign/projectile-atlas.png` | 6×4 unique base/evolved weapon bullets |
 | `campaign/combat-fx-atlas.png` | 4×4 impacts, explosions, deaths, damage |
+| `campaign/app-icon.png` | 512×512 RGBA application/window icon |
 | `campaign/groove-bound-logo.png` | menu logo extracted from the repository banner |
 | `cutscenes/prologue-atlas.png` | 2×2 prologue storyboard |
 | `cutscenes/campaign-atlas.png` | 2×2 transition and ending storyboard |
@@ -213,3 +214,18 @@ from release packages. Runtime assets are:
 All character and keyed gameplay sheets use a transparent RGBA production
 output. Cinematic atlases and the extracted menu logo intentionally retain
 their illustrated backgrounds.
+
+## Application icon
+
+**Files:** `source-candidates/app-icon-source.png` (1254×1254 RGB generator
+output), `campaign/app-icon.png` (512×512 RGBA runtime icon)
+
+The icon uses a single gold vinyl-record and speaker artifact crossed by a cyan
+waveform and wrapped in magenta/cyan cosmic energy. The circular silhouette is
+deliberately text-free and remains recognizable at 64×64. The project-owned
+menu logo and Stage 2 enemy atlas were used only as palette and visual-language
+references. Deep-indigo outer pixels were removed with the bundled chroma-key
+helper before the runtime icon was downsampled.
+
+The complete normalized prompt is recorded in
+[`../../docs/STAGE2_VISUAL_PROMPTS.md`](../../docs/STAGE2_VISUAL_PROMPTS.md).

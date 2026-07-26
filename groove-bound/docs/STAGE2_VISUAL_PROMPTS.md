@@ -12,6 +12,17 @@ outlines; readable silhouettes at gameplay scale; consistent three-quarter or
 top-down perspective; no text, letters, numbers, watermarks, UI, gradients in
 chroma backgrounds, cross-cell overlap, or shadows crossing cells.
 
+## Application icon
+
+Square desktop game application icon with one centered, front-facing emblem:
+a gold vinyl record and compact speaker core crossed by a cyan musical
+waveform/lightning slash, wrapped by one magenta-and-cyan cosmic orbit. Detailed
+illustrated 16-bit pixel art with chunky dark outlines, balanced negative space,
+10% safe padding, a strong circular silhouette, and high contrast against deep
+indigo. It must remain readable at 16, 32, 64, 128, 256, and 512 pixels. No
+typography, letters, numbers, characters, faces, multiple focal points,
+franchise references, border frame, mockup, or watermark.
+
 ## Character action sheets
 
 Strict 8-column by 4-row transparent-safe action atlas. Rows: down, up, left,

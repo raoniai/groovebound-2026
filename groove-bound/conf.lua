@@ -5,6 +5,7 @@ function love.conf(t)
   t.console = false
 
   t.window.title = "Groove Bound"
+  t.window.icon = "assets/generated/campaign/app-icon.png"
   t.window.width = 1280
   t.window.height = 720
   t.window.resizable = true

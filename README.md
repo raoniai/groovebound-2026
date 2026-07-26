@@ -175,6 +175,10 @@ effects, illustrated cutscenes, and arena props. Source images, production
 mappings, generation notes, and rights
 boundaries are recorded in:
 
+<p align="center">
+  <img src="groove-bound/assets/generated/campaign/app-icon.png" alt="Groove Bound gold vinyl-speaker cosmic app icon" width="128">
+</p>
+
 - [Generated visual asset register](groove-bound/assets/generated/PROVENANCE.md)
 - [Stage 2 visual prompt set](groove-bound/docs/STAGE2_VISUAL_PROMPTS.md)
 - [Legacy asset register](groove-bound/assets/legacy/PROVENANCE.md)
