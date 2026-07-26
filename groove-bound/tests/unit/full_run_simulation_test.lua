@@ -6,7 +6,6 @@ local RunContext = require("src.game.run_context")
 local CombatSystem = require("src.game.systems.combat_system")
 local Tuning = require("src.debug.tuning")
 local definitions = require("src.config.admin_controls")
-local settings = require("src.config.settings")
 
 local T = {}
 
@@ -40,9 +39,11 @@ end
 T["seeded complete run reaches fusion evolution and final victory"] = function()
   local tuning = Tuning(definitions)
   tuning:set("player.invincible", true)
-  tuning:set("combat.damage_multiplier", 2)
-  tuning:set("combat.fire_rate_multiplier", 2)
+  tuning:set("combat.damage_multiplier", 10)
+  tuning:set("combat.fire_rate_multiplier", 8)
   tuning:set("pickups.radius_multiplier", 5)
+  tuning:set("run.stage1_duration", 60)
+  tuning:set("run.stage2_duration", 60)
   local ctx = RunContext({ seed = 424242, tuning = tuning })
   local arena = Arena()
   local cx, cy = arena:center()
@@ -58,17 +59,21 @@ T["seeded complete run reaches fusion evolution and final victory"] = function()
   })
 
   local outcome
-  for _ = 1, math.ceil(settings.run.hard_timeout / 0.05) do
+  for _ = 1, math.ceil(180 / 0.05) do
     ctx:update(0.05)
     outcome = combat:update(0.05)
     choose_progression(combat)
+    if outcome == "stage_clear" then
+      combat:begin_stage(2, arena)
+      outcome = nil
+    end
     if outcome then break end
   end
 
   H.eq(outcome, "victory")
-  H.eq(combat.stats.minibosses, 1)
-  H.eq(combat.stats.bosses, 1)
-  H.is_true(combat.stats.kills > 20)
+  H.eq(combat.stats.minibosses, 2)
+  H.eq(combat.stats.bosses, 2)
+  H.is_true(combat.stats.kills > 40)
   H.is_true(combat.xp.level >= 10)
   H.eq(combat.inventory:get_slot(1).id, "brass_barrage")
   H.eq(combat.weapon_runtime:get(1).weapon_id, "brass_barrage")

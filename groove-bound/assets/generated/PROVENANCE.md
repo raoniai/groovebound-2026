@@ -7,11 +7,17 @@ used as an input.
 
 ## Processing contract
 
-All six new source images were generated from text prompts with no reference
-images and a flat chroma-key background. The source files are retained for
-editable provenance and excluded from the packaged `.love`. Production files
-were made with the bundled `remove_chroma_key.py` helper and resized to their
-runtime dimensions with nearest-neighbour filtering.
+Initial source images were generated from text prompts without third-party
+reference images and, where transparency was required, a flat chroma-key
+background. The replacement 2×1 character-selection portrait atlas used only
+the project-owned earlier Joe/Lyra portrait candidate as a consistency
+reference. Source files are retained for editable provenance and excluded from
+the packaged `.love`. Keyed production files were made with the bundled
+`remove_chroma_key.py` helper and nearest-neighbour processing.
+
+The second-stage campaign additions follow the same contract. Their normalized
+final prompt set is recorded in
+[`../../docs/STAGE2_VISUAL_PROMPTS.md`](../../docs/STAGE2_VISUAL_PROMPTS.md).
 
 ## Repository banner
 
@@ -185,3 +191,25 @@ cross-cell overlap.
 
 The first row supplies solid collision obstacles. The second row supplies
 non-blocking background decoration.
+
+## Two-stage campaign additions
+
+Generated source candidates are retained in `source-candidates/` and excluded
+from release packages. Runtime assets are:
+
+| Runtime file | Grid / role |
+|---|---|
+| `campaign/joe-action-sheet.png` | 8×4 directional idle, walk, run, hurt/action |
+| `campaign/lyra-action-sheet.png` | 8×4 directional idle, walk, run, hurt/action |
+| `campaign/character-portraits-atlas.png` | 2×1 landscape character-selection portraits |
+| `campaign/stage2-enemies-atlas.png` | 4×2 Orbit Line roster |
+| `campaign/stage2-environment-atlas.png` | 4×2 collision and decorative props |
+| `campaign/projectile-atlas.png` | 6×4 unique base/evolved weapon bullets |
+| `campaign/combat-fx-atlas.png` | 4×4 impacts, explosions, deaths, damage |
+| `campaign/groove-bound-logo.png` | menu logo extracted from the repository banner |
+| `cutscenes/prologue-atlas.png` | 2×2 prologue storyboard |
+| `cutscenes/campaign-atlas.png` | 2×2 transition and ending storyboard |
+
+All character and keyed gameplay sheets use a transparent RGBA production
+output. Cinematic atlases and the extracted menu logo intentionally retain
+their illustrated backgrounds.

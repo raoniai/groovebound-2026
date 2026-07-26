@@ -20,6 +20,21 @@ local function source(path, volume)
   return value
 end
 
+local function grid_quads(value, columns, rows)
+  local width, height = value:getDimensions()
+  local cell_w, cell_h = width / columns, height / rows
+  local result = {}
+  for row = 1, rows do
+    result[row] = {}
+    for col = 1, columns do
+      result[row][col] = love.graphics.newQuad(
+        (col - 1) * cell_w, (row - 1) * cell_h,
+        cell_w, cell_h, width, height)
+    end
+  end
+  return result, cell_w, cell_h
+end
+
 function Assets.load()
   local self = setmetatable({}, Assets)
 
@@ -45,6 +60,32 @@ function Assets.load()
       frame_w = 64, frame_h = 64, cols = 8, rows = 4,
     }),
   }
+  self.player.characters = {
+    joe = SpriteSheet({
+      path = "assets/generated/campaign/joe-action-sheet.png",
+      frame_w = 221, frame_h = 221, cols = 8, rows = 4,
+    }),
+    lyra = SpriteSheet({
+      path = "assets/generated/campaign/lyra-action-sheet.png",
+      frame_w = 221, frame_h = 221, cols = 8, rows = 4,
+    }),
+  }
+
+  self.campaign = {
+    logo = image("assets/generated/campaign/groove-bound-logo.png"),
+    portraits = image("assets/generated/campaign/character-portraits-atlas.png"),
+    cutscenes = {
+      prologue = image("assets/generated/cutscenes/prologue-atlas.png"),
+      campaign = image("assets/generated/cutscenes/campaign-atlas.png"),
+    },
+  }
+  self.campaign.portrait_quads,
+    self.campaign.portrait_cell_w,
+    self.campaign.portrait_cell_h = grid_quads(self.campaign.portraits, 2, 1)
+  self.campaign.cutscene_quads = {}
+  for id, atlas in pairs(self.campaign.cutscenes) do
+    self.campaign.cutscene_quads[id] = grid_quads(atlas, 2, 2)
+  end
 
   self.enemy = {
     walk = SpriteSheet({
@@ -67,6 +108,10 @@ function Assets.load()
         self.enemy.variants:getDimensions())
     end
   end
+  self.enemy.stage2 = image("assets/generated/campaign/stage2-enemies-atlas.png")
+  self.enemy.stage2_quads,
+    self.enemy.stage2_cell_w,
+    self.enemy.stage2_cell_h = grid_quads(self.enemy.stage2, 4, 2)
 
   self.floor = image("assets/legacy/images/floor-tiles1.jpg")
   self.floor_quads = {}
@@ -78,6 +123,28 @@ function Assets.load()
   end
 
   self.projectile = image("assets/legacy/images/projectile.png")
+  self.projectile_atlas = image("assets/generated/campaign/projectile-atlas.png")
+  self.projectile_quads = grid_quads(self.projectile_atlas, 6, 4)
+  self.projectile_cells = {}
+  local projectile_ids = {
+    "kazoo_pistol", "bass_drop", "cymbal_slicer", "feedback_loop",
+    "drum_circle", "trumpet_burst", "vinyl_scratch", "synth_wave",
+    "triangle_tracer", "cello_lance", "maraca_orbit", "tuning_fork",
+    "keytar_chord", "bell_tower", "tape_repeater", "laser_harp",
+    "brass_barrage", "improvised_solo", "subwoofer_supernova",
+    "orbital_ovation", "thunderhead_ensemble", "golden_fortissimo",
+    "gravity_groove", "neon_crescendo",
+  }
+  for index, id in ipairs(projectile_ids) do
+    self.projectile_cells[id] = {
+      col = (index - 1) % 6 + 1,
+      row = math.floor((index - 1) / 6) + 1,
+    }
+  end
+  self.combat_fx = SpriteSheet({
+    path = "assets/generated/campaign/combat-fx-atlas.png",
+    frame_w = 313, frame_h = 313, cols = 4, rows = 4,
+  })
   self.xp_gem = image("assets/legacy/images/xp-gem.png")
   self.gameover = image("assets/legacy/images/ui/gameover.png")
   self.icon = image("assets/legacy/images/ui/icon.png")
@@ -113,6 +180,12 @@ function Assets.load()
         self.environment:getDimensions())
     end
   end
+  self.environment_stage2 = image(
+    "assets/generated/campaign/stage2-environment-atlas.png")
+  self.environment_stage2_quads,
+    self.environment_stage2_cell_w,
+    self.environment_stage2_cell_h = grid_quads(
+      self.environment_stage2, 4, 2)
 
   self.sfx = {
     projectile = source("assets/legacy/sfx/projectile.ogg", 0.08),
@@ -164,20 +237,85 @@ end
 
 function Assets:draw_enemy_variant(icon, x, y, size, opts)
   opts = opts or {}
+  local atlas = self.enemy.variants
   local quad = self.enemy.variant_quads[icon.row][icon.col]
-  local scale = size / 256
+  local cell_size = 256
+  if icon.atlas == "stage2" then
+    atlas = self.enemy.stage2
+    quad = self.enemy.stage2_quads[icon.row][icon.col]
+    cell_size = math.max(self.enemy.stage2_cell_w, self.enemy.stage2_cell_h)
+  end
+  local scale = size / cell_size
   love.graphics.setColor(opts.color or { 1, 1, 1, 1 })
   love.graphics.draw(
-    self.enemy.variants, quad, x, y, 0,
-    opts.flip_x and -scale or scale, scale, 128, 128)
+    atlas, quad, x, y, 0,
+    opts.flip_x and -scale or scale, scale,
+    icon.atlas == "stage2" and self.enemy.stage2_cell_w / 2 or 128,
+    icon.atlas == "stage2" and self.enemy.stage2_cell_h / 2 or 128)
 end
 
 function Assets:draw_environment(icon, x, y, size, opts)
   opts = opts or {}
+  local atlas = self.environment
   local quad = self.environment_quads[icon.row][icon.col]
-  local scale = size / 256
+  local origin_x, origin_y, cell_size = 128, 128, 256
+  if opts.atlas == "stage2" then
+    atlas = self.environment_stage2
+    quad = self.environment_stage2_quads[icon.row][icon.col]
+    origin_x = self.environment_stage2_cell_w / 2
+    origin_y = self.environment_stage2_cell_h / 2
+    cell_size = math.max(
+      self.environment_stage2_cell_w, self.environment_stage2_cell_h)
+  end
+  local scale = size / cell_size
   love.graphics.setColor(opts.color or { 1, 1, 1, 1 })
-  love.graphics.draw(self.environment, quad, x, y, 0, scale, scale, 128, 128)
+  love.graphics.draw(atlas, quad, x, y, 0, scale, scale, origin_x, origin_y)
+end
+
+function Assets:draw_projectile(weapon_id, x, y, size, rotation, color)
+  local cell = self.projectile_cells[weapon_id]
+  if not cell then return false end
+  local quad = self.projectile_quads[cell.row][cell.col]
+  local scale = math.max(12, size * 2.5) / 256
+  love.graphics.setColor(color or { 1, 1, 1, 1 })
+  love.graphics.draw(
+    self.projectile_atlas, quad, x, y, rotation or 0,
+    scale, scale, 128, 128)
+  return true
+end
+
+function Assets:draw_portrait(icon, x, y, w, h, opts)
+  opts = opts or {}
+  local quad = self.campaign.portrait_quads[icon.row][icon.col]
+  local scale = math.max(
+    w / self.campaign.portrait_cell_w,
+    h / self.campaign.portrait_cell_h)
+  local draw_w = self.campaign.portrait_cell_w * scale
+  local draw_h = self.campaign.portrait_cell_h * scale
+  local previous_scissor = { love.graphics.getScissor() }
+  love.graphics.setScissor(x, y, w, h)
+  love.graphics.setColor(opts.color or { 1, 1, 1, 1 })
+  love.graphics.draw(
+    self.campaign.portraits, quad,
+    x + (w - draw_w) / 2,
+    y - (draw_h - h) * (opts.focus_y or 0.30),
+    0, scale, scale)
+  if previous_scissor[1] then
+    love.graphics.setScissor(
+      previous_scissor[1], previous_scissor[2],
+      previous_scissor[3], previous_scissor[4])
+  else
+    love.graphics.setScissor()
+  end
+end
+
+function Assets:draw_cutscene(atlas_id, col, row, x, y, w, h, opts)
+  opts = opts or {}
+  local atlas = self.campaign.cutscenes[atlas_id]
+  local quad = self.campaign.cutscene_quads[atlas_id][row][col]
+  local _, _, cell_w, cell_h = quad:getViewport()
+  love.graphics.setColor(opts.color or { 1, 1, 1, 1 })
+  love.graphics.draw(atlas, quad, x, y, 0, w / cell_w, h / cell_h)
 end
 
 function Assets:set_sfx_volume(value)

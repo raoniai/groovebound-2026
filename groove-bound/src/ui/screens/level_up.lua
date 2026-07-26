@@ -56,8 +56,8 @@ function LevelUpScreen:_layout()
   local card_w = math.min(320, (w - margin * 2 - gap * 2) / 3)
   local total_w = card_w * 3 + gap * 2
   local x = (w - total_w) / 2
-  local y = h * 0.28
-  local card_h = 258
+  local y = h * 0.24
+  local card_h = 300
   local buttons = {}
 
   for index, choice in ipairs(self.offer) do
@@ -67,7 +67,7 @@ function LevelUpScreen:_layout()
       y = y,
       w = card_w,
       h = card_h,
-      font_size = 16,
+      font_size = 18,
       on_press = function() self:_choose(choice) end,
     })
   end
@@ -77,8 +77,8 @@ function LevelUpScreen:_layout()
     x = w / 2 - 230,
     y = y + card_h + 22,
     w = 210,
-    h = 46,
-    font_size = 15,
+    h = 50,
+    font_size = 18,
     on_press = function() self:_reroll() end,
   })
   buttons[#buttons + 1] = widgets.Button({
@@ -86,8 +86,8 @@ function LevelUpScreen:_layout()
     x = w / 2 + 20,
     y = y + card_h + 22,
     w = 210,
-    h = 46,
-    font_size = 15,
+    h = 50,
+    font_size = 18,
     on_press = function() self:_skip() end,
   })
   self.buttons = widgets.ButtonList(buttons)
@@ -107,7 +107,7 @@ function LevelUpScreen:draw()
   love.graphics.setFont(Fonts.get(36))
   love.graphics.printf("CHOOSE YOUR NEXT RIFF", 0, h * 0.13, w, "center")
   love.graphics.setColor(settings.ui.text_color)
-  love.graphics.setFont(Fonts.get(15))
+  love.graphics.setFont(Fonts.get(18))
   love.graphics.printf(
     string.format(
       "Level %d  •  %d weapon slots free  •  %d support slots free  •  %d fusions ready",
@@ -129,43 +129,43 @@ function LevelUpScreen:draw()
       love.graphics.setLineWidth(1)
     end
     love.graphics.setColor(color)
-    love.graphics.setFont(Fonts.get(11))
+    love.graphics.setFont(Fonts.get(14))
     love.graphics.printf(
       tostring(index) .. "  " .. (choice.kind == "evolution"
         and "FUSION READY"
         or string.upper(choice.kind:gsub("_", " "))),
       button.x + 12, button.y + 10, button.w - 24, "left")
-    self:_draw_choice_icon(choice, button.x + button.w / 2, button.y + 76, 92, color)
+    self:_draw_choice_icon(choice, button.x + button.w / 2, button.y + 84, 98, color)
 
     love.graphics.setColor(settings.ui.text_color)
-    love.graphics.setFont(Fonts.get(17))
+    love.graphics.setFont(Fonts.get(20))
     love.graphics.printf(choice.title,
-      button.x + 12, button.y + 127, button.w - 24, "center")
+      button.x + 12, button.y + 140, button.w - 24, "center")
     love.graphics.setColor(0.74, 0.72, 0.82, 1)
-    love.graphics.setFont(Fonts.get(12))
+    love.graphics.setFont(Fonts.get(15))
     love.graphics.printf(
       choice.description,
       button.x + 14,
-      button.y + 161,
+      button.y + 178,
       button.w - 28,
       "center")
     local fusion_hint = self:_fusion_hint(choice)
     if fusion_hint then
       love.graphics.setColor(1.0, 0.76, 0.24, 1)
-      love.graphics.setFont(Fonts.get(10))
+      love.graphics.setFont(Fonts.get(14))
       love.graphics.printf(
         fusion_hint,
         button.x + 12,
-        button.y + 199,
+        button.y + 232,
         button.w - 24,
         "center")
     end
     local stats = self:_choice_stats(choice)
     if stats then
       love.graphics.setColor(color)
-      love.graphics.setFont(Fonts.get(11))
+      love.graphics.setFont(Fonts.get(14))
       love.graphics.printf(stats,
-        button.x + 12, button.y + 232, button.w - 24, "center")
+        button.x + 12, button.y + 274, button.w - 24, "center")
     end
   end
 
@@ -230,7 +230,7 @@ function LevelUpScreen:_draw_evolution_guide(w, h)
   love.graphics.setColor(1.0, 0.72, 0.18, 1)
   love.graphics.rectangle(
     "line", panel_x, self.guide_y, panel_w, panel_h, 8, 8)
-  love.graphics.setFont(Fonts.get(11))
+  love.graphics.setFont(Fonts.get(14))
   love.graphics.print(
     "EVOLUTION GUIDE  •  BASE WEAPON R10 + PAIRED SUPPORT"
       .. "  •  NO CHEST OR TOKEN REQUIRED",
@@ -249,7 +249,7 @@ function LevelUpScreen:_draw_evolution_guide(w, h)
       record.result.icon, x + 91, icon_y, 34)
 
     love.graphics.setColor(settings.ui.text_color)
-    love.graphics.setFont(Fonts.get(11))
+    love.graphics.setFont(Fonts.get(14))
     love.graphics.print(record.result.name, x + 112, self.guide_y + 39)
 
     local missing = {}
@@ -263,7 +263,7 @@ function LevelUpScreen:_draw_evolution_guide(w, h)
     love.graphics.setColor(record.eligible
       and { 0.34, 1.0, 0.68, 1 }
       or { 1.0, 0.56, 0.34, 1 })
-    love.graphics.setFont(Fonts.get(10))
+    love.graphics.setFont(Fonts.get(14))
     love.graphics.printf(
       record.eligible
         and "READY: SELECT THE GOLD FUSION CARD"
@@ -276,7 +276,7 @@ function LevelUpScreen:_draw_evolution_guide(w, h)
 
   if #progress > shown then
     love.graphics.setColor(0.65, 0.63, 0.74, 1)
-    love.graphics.setFont(Fonts.get(9))
+    love.graphics.setFont(Fonts.get(14))
     love.graphics.printf(
       "+" .. (#progress - shown) .. " more paths in Arsenal Database",
       panel_x + panel_w - 230,

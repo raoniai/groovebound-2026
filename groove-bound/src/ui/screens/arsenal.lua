@@ -108,13 +108,13 @@ function ArsenalScreen:_ensure_page()
 end
 
 local function draw_chip(text, x, y, color)
-  local font = Fonts.get(11)
-  local width = font:getWidth(text) + 14
+  local font = Fonts.get(14)
+  local width = font:getWidth(text) + 18
   love.graphics.setColor(color[1], color[2], color[3], 0.16)
-  love.graphics.rectangle("fill", x, y, width, 22, 3, 3)
+  love.graphics.rectangle("fill", x, y, width, 26, 3, 3)
   love.graphics.setColor(color)
   love.graphics.setFont(font)
-  love.graphics.print(text, x + 7, y + 5)
+  love.graphics.print(text, x + 9, y + 5)
   return width
 end
 
@@ -123,7 +123,7 @@ function ArsenalScreen:_draw_header(w)
   love.graphics.setFont(Fonts.get(34))
   love.graphics.print("ARSENAL DATABASE", 24, 18)
   love.graphics.setColor(0.72, 0.70, 0.80, 1)
-  love.graphics.setFont(Fonts.get(13))
+  love.graphics.setFont(Fonts.get(16))
   love.graphics.print(
     string.format("%d weapons  •  %d base  •  %d evolutions  •  %d currently owned",
       self.counts.all, self.counts.base, self.counts.evolved, self.counts.owned),
@@ -134,7 +134,7 @@ function ArsenalScreen:_draw_header(w)
   for index, tab in ipairs(filters) do
     local count = self.counts[tab.id]
     local label = tab.label .. " " .. count
-    local width = Fonts.get(12):getWidth(label) + 28
+    local width = Fonts.get(15):getWidth(label) + 30
     local rect = { x = x, y = 84, w = width, h = 30 }
     self.tab_rects[index] = rect
     local selected = index == self.filter_index
@@ -142,8 +142,8 @@ function ArsenalScreen:_draw_header(w)
     love.graphics.rectangle("fill", rect.x, rect.y, rect.w, rect.h, 4, 4)
     love.graphics.setColor(selected and settings.ui.accent_color or settings.ui.button.border)
     love.graphics.rectangle("line", rect.x, rect.y, rect.w, rect.h, 4, 4)
-    love.graphics.setFont(Fonts.get(12))
-    love.graphics.printf(label, rect.x, rect.y + 8, rect.w, "center")
+    love.graphics.setFont(Fonts.get(15))
+    love.graphics.printf(label, rect.x, rect.y + 6, rect.w, "center")
     x = x + width + 8
   end
   love.graphics.setColor(0.32, 0.28, 0.42, 1)
@@ -166,13 +166,13 @@ function ArsenalScreen:_draw_card(entry, rect, index)
     love.graphics.setFont(Fonts.get(16))
     love.graphics.print(entry.definition.name, text_x, rect.y + 14)
     love.graphics.setColor(support_color)
-    love.graphics.setFont(Fonts.get(11))
+    love.graphics.setFont(Fonts.get(14))
     love.graphics.print(
       support_stat_names[entry.definition.stat] or string.upper(entry.definition.stat),
       text_x, rect.y + 39)
     draw_chip(entry.status, text_x, rect.y + 63, support_color)
     love.graphics.setColor(0.68, 0.66, 0.76, 1)
-    love.graphics.setFont(Fonts.get(11))
+    love.graphics.setFont(Fonts.get(14))
     love.graphics.print(support_value(entry.definition), text_x, rect.y + 98)
     return
   end
@@ -193,12 +193,12 @@ function ArsenalScreen:_draw_card(entry, rect, index)
   love.graphics.setFont(Fonts.get(16))
   love.graphics.print(entry.definition.name, text_x, rect.y + 14)
   love.graphics.setColor(rarity)
-  love.graphics.setFont(Fonts.get(11))
+  love.graphics.setFont(Fonts.get(14))
   love.graphics.print(string.upper(entry.definition.role), text_x, rect.y + 39)
   draw_chip(entry.status, text_x, rect.y + 63,
     entry.active and { 0.30, 1.0, 0.68, 1 } or rarity)
   love.graphics.setColor(0.68, 0.66, 0.76, 1)
-  love.graphics.setFont(Fonts.get(11))
+  love.graphics.setFont(Fonts.get(14))
   love.graphics.print(
     string.format("DMG %d  •  CD %.2fs  •  ×%d",
       entry.first.damage, entry.first.cooldown, entry.first.count or 1),
@@ -233,21 +233,21 @@ function ArsenalScreen:_draw_detail(entry)
     rect.w - 32,
     "center")
   love.graphics.setColor(rarity)
-  love.graphics.setFont(Fonts.get(12))
+  love.graphics.setFont(Fonts.get(15))
   love.graphics.printf(
     string.upper(entry.definition.role) .. "  •  " .. string.upper(entry.definition.rarity),
     rect.x + 16, rect.y + (compact and 132 or 215), rect.w - 32, "center")
   love.graphics.setColor(0.76, 0.74, 0.84, 1)
-  love.graphics.setFont(Fonts.get(compact and 11 or 13))
+  love.graphics.setFont(Fonts.get(compact and 14 or 16))
   love.graphics.printf(entry.definition.description,
     rect.x + 24, rect.y + (compact and 158 or 248), rect.w - 48, "left")
 
   local y = rect.y + (compact and 218 or 310)
   love.graphics.setColor(settings.ui.accent_color)
-  love.graphics.setFont(Fonts.get(13))
+  love.graphics.setFont(Fonts.get(16))
   love.graphics.print("RANK 1  →  RANK " .. entry.definition.max_level, rect.x + 24, y)
   love.graphics.setColor(settings.ui.text_color)
-  love.graphics.setFont(Fonts.get(12))
+  love.graphics.setFont(Fonts.get(15))
   love.graphics.print(
     string.format("Damage       %d  →  %d", entry.first.damage, entry.maximum.damage),
     rect.x + 24, y + 30)
@@ -262,10 +262,10 @@ function ArsenalScreen:_draw_detail(entry)
     rect.x + 24, y + 99)
 
   love.graphics.setColor(rarity)
-  love.graphics.setFont(Fonts.get(13))
+  love.graphics.setFont(Fonts.get(16))
   love.graphics.print("ACQUISITION", rect.x + 24, y + (compact and 118 or 138))
   love.graphics.setColor(0.76, 0.74, 0.84, 1)
-  love.graphics.setFont(Fonts.get(12))
+  love.graphics.setFont(Fonts.get(15))
   local acquisition
   if entry.recipe then
     local support = self.app.content.passives[
@@ -308,32 +308,32 @@ function ArsenalScreen:_draw_support_detail(entry)
     entry.definition.name, rect.x + 16, rect.y + (compact and 126 or 200),
     rect.w - 32, "center")
   love.graphics.setColor(support_color)
-  love.graphics.setFont(Fonts.get(12))
+  love.graphics.setFont(Fonts.get(15))
   love.graphics.printf(
     support_stat_names[entry.definition.stat] or string.upper(entry.definition.stat),
     rect.x + 16, rect.y + (compact and 154 or 234), rect.w - 32, "center")
   love.graphics.setColor(0.76, 0.74, 0.84, 1)
-  love.graphics.setFont(Fonts.get(13))
+  love.graphics.setFont(Fonts.get(16))
   love.graphics.printf(
     entry.definition.description,
     rect.x + 24, rect.y + (compact and 184 or 270), rect.w - 48, "left")
 
   local y = rect.y + (compact and 242 or 334)
   love.graphics.setColor(settings.ui.accent_color)
-  love.graphics.setFont(Fonts.get(13))
+  love.graphics.setFont(Fonts.get(16))
   love.graphics.print("ENHANCEMENT", rect.x + 24, y)
   love.graphics.setColor(settings.ui.text_color)
-  love.graphics.setFont(Fonts.get(12))
+  love.graphics.setFont(Fonts.get(15))
   love.graphics.print(support_value(entry.definition), rect.x + 24, y + 28)
   love.graphics.print(
     "Maximum rank  " .. entry.definition.max_level,
     rect.x + 24, y + 51)
 
   love.graphics.setColor(support_color)
-  love.graphics.setFont(Fonts.get(13))
+  love.graphics.setFont(Fonts.get(16))
   love.graphics.print("FUSION PAIRINGS", rect.x + 24, y + 90)
   love.graphics.setColor(0.76, 0.74, 0.84, 1)
-  love.graphics.setFont(Fonts.get(12))
+  love.graphics.setFont(Fonts.get(15))
   if #entry.recipes == 0 then
     love.graphics.print("No fusion recipe authored yet.", rect.x + 24, y + 116)
   else
@@ -371,16 +371,17 @@ function ArsenalScreen:draw()
 
   if self.entries[self.selected] then self:_draw_detail(self.entries[self.selected]) end
   love.graphics.setColor(0.62, 0.60, 0.70, 1)
-  love.graphics.setFont(Fonts.get(11))
+  love.graphics.setFont(Fonts.get(15))
   love.graphics.printf(
-    string.format("Arrows/WASD navigate  •  Tab changes filter  •  Esc/B closes  •  Page %d/%d",
+    string.format("Arrows/WASD navigate  •  [ / ] changes filter  •  Esc/B closes  •  Page %d/%d",
       self.page, self.max_page),
     24, h - 32, w - 48, "center")
 end
 
 function ArsenalScreen:keypressed(key)
   if key == "escape" then self.app.states:pop() return true end
-  if key == "tab" then self:_set_filter(self.filter_index + 1) return true end
+  if key == "]" then self:_set_filter(self.filter_index + 1) return true end
+  if key == "[" then self:_set_filter(self.filter_index - 1) return true end
   local delta
   if key == "left" or key == "a" then delta = -1
   elseif key == "right" or key == "d" then delta = 1

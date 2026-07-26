@@ -18,7 +18,7 @@ function HUD:draw()
   local w = love.graphics.getWidth()
 
   -- Health bar, top-left.
-  local bar_x, bar_y, bar_w, bar_h = 16, 16, 240, 20
+  local bar_x, bar_y, bar_w, bar_h = 16, 16, 280, 24
   local hp_frac = math.max(0, self.player.hp / self.player.max_hp)
 
   love.graphics.setColor(0.15, 0.12, 0.18, 0.85)
@@ -30,7 +30,7 @@ function HUD:draw()
   love.graphics.rectangle("line", bar_x, bar_y, bar_w, bar_h, 4, 4)
 
   love.graphics.setColor(settings.ui.text_color)
-  love.graphics.setFont(Fonts.get(13))
+  love.graphics.setFont(Fonts.get(15))
   love.graphics.print(
     string.format("HP %d / %d   GUARD %d",
       math.floor(self.player.hp), self.player.max_hp, self.player.guard),
@@ -43,7 +43,7 @@ function HUD:draw()
   love.graphics.rectangle("fill", bar_x, xp_y, bar_w, 10, 3, 3)
   love.graphics.setColor(0.18, 0.92, 0.72, 1)
   love.graphics.rectangle("fill", bar_x, xp_y, bar_w * xp_frac, 10, 3, 3)
-  love.graphics.setFont(Fonts.get(12))
+  love.graphics.setFont(Fonts.get(14))
   love.graphics.setColor(settings.ui.text_color)
   local weapon = self.combat.inventory:get_slot(1)
   love.graphics.print(
@@ -61,58 +61,59 @@ function HUD:draw()
   -- players can read every active emitter and rank without opening a menu.
   local rack_y = xp_y + 48
   for slot = 1, self.combat.inventory.capacity do
-    local rack_x = bar_x + (slot - 1) * 52
+    local rack_x = bar_x + (slot - 1) * 56
     love.graphics.setColor(0.08, 0.07, 0.13, 0.88)
-    love.graphics.rectangle("fill", rack_x, rack_y, 44, 44, 5, 5)
+    love.graphics.rectangle("fill", rack_x, rack_y, 48, 48, 5, 5)
     local instance = self.combat.inventory:get_slot(slot)
     if instance then
       local definition = self.combat.content.weapons[instance.id]
       self.combat.assets:draw_weapon_icon(
-        definition.icon, rack_x + 22, rack_y + 22, 38)
+        definition.icon, rack_x + 24, rack_y + 23, 42)
       love.graphics.setColor(settings.ui.accent_color)
-      love.graphics.setFont(Fonts.get(9))
-      love.graphics.printf("R" .. instance.level, rack_x, rack_y + 34, 44, "right")
+      love.graphics.setFont(Fonts.get(14))
+      love.graphics.printf("R" .. instance.level, rack_x, rack_y + 34, 48, "right")
     else
       love.graphics.setColor(0.27, 0.24, 0.35, 1)
-      love.graphics.rectangle("line", rack_x, rack_y, 44, 44, 5, 5)
-      love.graphics.setFont(Fonts.get(11))
-      love.graphics.printf(tostring(slot), rack_x, rack_y + 15, 44, "center")
+      love.graphics.rectangle("line", rack_x, rack_y, 48, 48, 5, 5)
+      love.graphics.setFont(Fonts.get(14))
+      love.graphics.printf(tostring(slot), rack_x, rack_y + 16, 48, "center")
     end
   end
 
-  local support_y = rack_y + 50
+  local support_y = rack_y + 56
   for slot = 1, self.combat.progression.passives.capacity do
-    local support_x = bar_x + (slot - 1) * 52
+    local support_x = bar_x + (slot - 1) * 56
     love.graphics.setColor(0.08, 0.07, 0.13, 0.88)
-    love.graphics.rectangle("fill", support_x, support_y, 44, 36, 5, 5)
+    love.graphics.rectangle("fill", support_x, support_y, 48, 40, 5, 5)
     local instance = self.combat.progression.passives.slots[slot]
     if instance then
       local definition = self.combat.content.passives[instance.id]
       self.combat.assets:draw_support_icon(
-        definition.icon, support_x + 20, support_y + 18, 32)
+        definition.icon, support_x + 21, support_y + 19, 34)
       love.graphics.setColor(0.78, 0.48, 1.0, 1)
-      love.graphics.setFont(Fonts.get(9))
-      love.graphics.printf("R" .. instance.level, support_x, support_y + 26, 44, "right")
+      love.graphics.setFont(Fonts.get(14))
+      love.graphics.printf("R" .. instance.level, support_x, support_y + 27, 48, "right")
     else
       love.graphics.setColor(0.27, 0.24, 0.35, 1)
-      love.graphics.rectangle("line", support_x, support_y, 44, 36, 5, 5)
+      love.graphics.rectangle("line", support_x, support_y, 48, 40, 5, 5)
     end
   end
 
   -- Run timer, top-center.
   local minutes = math.floor(self.ctx.time / 60)
   local seconds = math.floor(self.ctx.time % 60)
-  love.graphics.setFont(Fonts.get(24))
+  love.graphics.setFont(Fonts.get(28))
   love.graphics.setColor(settings.ui.text_color)
   love.graphics.printf(string.format("%02d:%02d", minutes, seconds), 0, 14, w, "center")
-  love.graphics.setFont(Fonts.get(11))
+  love.graphics.setFont(Fonts.get(15))
   love.graphics.setColor(0.78, 0.72, 0.88, 1)
-  local stage = self.combat.stage_director
-  local remaining = math.ceil(stage:remaining(self.ctx.time))
+  local stage = self.combat:stage_snapshot(self.ctx.time)
+  local remaining = math.ceil(stage.remaining)
   love.graphics.printf(
-    string.format("STAGE %d/%d  •  NEXT IN %02d:%02d",
+    string.format("STAGE %d/%d  •  %s  •  %02d:%02d",
       stage.stage,
       stage.count,
+      stage.name,
       math.floor(remaining / 60),
       remaining % 60),
     0, 42, w, "center")
@@ -163,20 +164,21 @@ function HUD:draw()
     love.graphics.setColor(0.95, 0.18, 0.48, 1)
     love.graphics.rectangle("fill", boss_x, boss_y, boss_w * boss.hp / boss.max_hp, boss_h, 4, 4)
     love.graphics.setColor(settings.ui.text_color)
-    love.graphics.setFont(Fonts.get(12))
+    love.graphics.setFont(Fonts.get(15))
     love.graphics.printf(boss.definition.name, boss_x, boss_y - 18, boss_w, "center")
   end
 
   -- Debug readout, top-right.
-  if settings.debug.enabled then
-    love.graphics.setFont(Fonts.get(12))
+  if settings.debug.enabled and settings.debug.overlay.visible then
+    love.graphics.setFont(Fonts.get(14))
     love.graphics.setColor(0.6, 0.9, 0.6, 0.9)
     local text = string.format(
-      "fps %d  %.2fms  enemies %d  bullets %d  gems %d  pools %d/%d/%d  kills %d  seed %d",
+      "fps %d  %.2fms  enemies %d  bullets %d/%d  gems %d  pools %d/%d/%d  kills %d  seed %d",
       love.timer.getFPS(),
       self.combat.frame_time_ms,
       self.ctx.world:count("enemy"),
       self.ctx.world:count("projectile"),
+      self.ctx.world:count("enemy_projectile"),
       self.ctx.world:count("xp_gem"),
       self.combat.enemy_pool.created,
       self.combat.projectile_pool.created,

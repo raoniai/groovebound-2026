@@ -20,6 +20,8 @@ function RunScreen:init(app, opts)
 end
 
 function RunScreen:enter()
+  self.character = self.app.content.characters[
+    self.opts.character_id or "joe"]
   self.ctx = RunContext({
     seed = self.opts.seed,
     app_bus = self.app.bus,
@@ -27,7 +29,10 @@ function RunScreen:enter()
   })
   self.app.log.info("state", "Run started (seed " .. self.ctx.seed .. ")")
 
-  self.arena = Arena({ assets = self.app.assets })
+  self.arena = Arena({
+    assets = self.app.assets,
+    stage = self.app.content.stages[1],
+  })
   self.input = Input({ deadzone = self.app.profile.options.deadzone })
 
   self.camera = Camera({
@@ -42,6 +47,7 @@ function RunScreen:enter()
     tuning = self.app.tuning,
     assets = self.app.assets,
     options = self.app.profile.options,
+    character = self.character,
   }))
   self.camera:snap(self.player.x, self.player.y)
 
@@ -54,12 +60,32 @@ function RunScreen:enter()
     player = self.player,
     camera = self.camera,
     options = self.app.profile.options,
+    character = self.character,
   })
   self.hud = HUD(self.ctx, self.player, self.combat)
   self.finished = false
+  self.transitioning = false
   self.choice_open = false
   self.seed_notice = 0
   self.app.active_run = self
+end
+
+function RunScreen:_results_payload(outcome)
+  return {
+    outcome = outcome,
+    stats = self.combat.stats,
+    level = self.combat.xp.level,
+    progression = self.combat.progression:snapshot(),
+    time = self.ctx.time,
+    character = self.character,
+    stages_cleared = outcome == "victory" and 2 or self.combat.stage_index - 1,
+  }
+end
+
+function RunScreen:_show_results(outcome)
+  local ResultsScreen = require("src.ui.screens.results")
+  self.app.states:push(ResultsScreen(
+    self.app, self:_results_payload(outcome)))
 end
 
 function RunScreen:exit()
@@ -81,16 +107,23 @@ function RunScreen:update(dt)
   self.camera:follow(self.player.x, self.player.y, sim_dt)
   self.camera:update(sim_dt)
 
-  if outcome and not self.finished then
+  if outcome == "stage_clear" and not self.transitioning then
+    self.transitioning = true
+    local CutsceneScreen = require("src.ui.screens.cutscene")
+    self.app.states:push(CutsceneScreen(
+      self.app,
+      self.app.content.narrative.stage2_transition,
+      { result = "stage2" }))
+  elseif outcome == "victory" and not self.finished then
     self.finished = true
-    local ResultsScreen = require("src.ui.screens.results")
-    self.app.states:push(ResultsScreen(self.app, {
-      outcome = outcome,
-      stats = self.combat.stats,
-      level = self.combat.xp.level,
-      progression = self.combat.progression:snapshot(),
-      time = self.ctx.time,
-    }))
+    local CutsceneScreen = require("src.ui.screens.cutscene")
+    self.app.states:push(CutsceneScreen(
+      self.app,
+      self.app.content.narrative.ending,
+      { result = "campaign_complete" }))
+  elseif outcome == "defeat" and not self.finished then
+    self.finished = true
+    self:_show_results("defeat")
   elseif self.combat.xp:has_pending_choice() and not self.choice_open then
     self.choice_open = true
     local LevelUpScreen = require("src.ui.screens.level_up")
@@ -104,8 +137,20 @@ function RunScreen:copy_seed()
   return self.ctx.seed
 end
 
-function RunScreen:resume()
+function RunScreen:resume(result)
   self.choice_open = false
+  if result == "stage2" then
+    self.arena = Arena({
+      assets = self.app.assets,
+      stage = self.app.content.stages[2],
+    })
+    self.camera:set_bounds(self.arena.width, self.arena.height)
+    self.combat:begin_stage(2, self.arena)
+    self.camera:snap(self.player.x, self.player.y)
+    self.transitioning = false
+  elseif result == "campaign_complete" then
+    self:_show_results("victory")
+  end
 end
 
 function RunScreen:draw()
@@ -114,7 +159,10 @@ function RunScreen:draw()
   self.ctx.world:each("xp_gem", function(gem) gem:draw() end)
   self.ctx.world:each("enemy", function(enemy) enemy:draw() end)
   self.ctx.world:each("projectile", function(projectile) projectile:draw() end)
+  self.ctx.world:each(
+    "enemy_projectile", function(projectile) projectile:draw() end)
   self.player:draw()
+  self.combat.vfx:draw()
   Hitboxes.draw(self.ctx.world)
   self.camera:detach()
 

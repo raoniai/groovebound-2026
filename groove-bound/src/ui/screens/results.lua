@@ -19,19 +19,21 @@ end
 
 function ResultsScreen:_layout()
   local w, h = love.graphics.getDimensions()
-  local bw, bh, gap = 230, 48, 14
+  local bw, bh, gap = 280, 54, 14
   local x = (w - bw) / 2
   local y = h * 0.72
   self.buttons = widgets.ButtonList({
     widgets.Button({
-      label = "Play Again", x = x, y = y, w = bw, h = bh,
+      label = "Choose Character", x = x, y = y, w = bw, h = bh,
+      font_size = 21,
       on_press = function()
-        local RunScreen = require("src.ui.screens.run")
-        self.app.states:switch(RunScreen(self.app))
+        local CharacterSelectScreen = require("src.ui.screens.character_select")
+        self.app.states:switch(CharacterSelectScreen(self.app))
       end,
     }),
     widgets.Button({
       label = "Return to Title", x = x, y = y + bh + gap, w = bw, h = bh,
+      font_size = 20,
       on_press = function()
         local TitleScreen = require("src.ui.screens.title")
         self.app.states:switch(TitleScreen(self.app))
@@ -69,11 +71,13 @@ function ResultsScreen:draw()
   love.graphics.printf(victory and "THE GROOVE SURVIVES" or "THE GROOVE WAS LOST",
     0, h * 0.36, w, "center")
 
-  love.graphics.setFont(Fonts.get(16))
+  love.graphics.setFont(Fonts.get(19))
   love.graphics.setColor(settings.ui.text_color)
   local stats = self.result.stats
   local summary = string.format(
-    "Time %02d:%02d   Kills %d   XP %d   Level %d   Coins %d",
+    "%s  •  %d/2 stages  •  Time %02d:%02d  •  Kills %d  •  XP %d  •  Level %d  •  Coins %d",
+    self.result.character and self.result.character.name or "Joe",
+    self.result.stages_cleared or 0,
     math.floor(self.result.time / 60),
     math.floor(self.result.time % 60),
     stats.kills,
@@ -100,8 +104,11 @@ function ResultsScreen:draw()
 
   local evolution_names = {}
   for _, evolution in ipairs(self.result.progression.evolutions) do
-    evolution_names[#evolution_names + 1] =
-      string.upper(evolution.branch) .. " " .. self.app.content.weapons[evolution.result_weapon].name
+    local result = self.app.content.weapons[evolution.result_weapon]
+    if result then
+      evolution_names[#evolution_names + 1] =
+        string.upper(evolution.branch) .. " " .. result.name
+    end
   end
   if #evolution_names > 0 then
     love.graphics.setColor(settings.ui.accent_color)

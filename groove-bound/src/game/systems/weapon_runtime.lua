@@ -14,10 +14,12 @@ local function copy_table(source)
   return result
 end
 
-function WeaponRuntime:init(content, tuning)
+function WeaponRuntime:init(content, tuning, opts)
+  opts = opts or {}
   assert(content and content.weapons, "weapon content is required")
   self.content = content
   self.tuning = tuning
+  self.character = opts.character or { stats = {} }
   self.passives = {}
   self.emitters = {}
   self.inventory_revision = -1
@@ -47,11 +49,12 @@ function WeaponRuntime:_build_emitter(slot, instance, previous)
   local definition = assert(self.content.weapons[instance.id], "unknown weapon: " .. instance.id)
   local stats = assert(definition.levels[instance.level], "missing weapon level stats")
   local fire_rate = self:_value("combat.fire_rate_multiplier", 1)
+  local tempo = (self.character.stats or {}).tempo or 1
   local stability = self:_passive_bonus("cooldown_stability")
   local overdrive = self:_passive_bonus("fire_rate")
   local cooldown = stats.cooldown
     * (1 - math.min(0.30, stability))
-    / (fire_rate * (1 + overdrive))
+    / (fire_rate * tempo * (1 + overdrive))
   local cooldown_remaining = 0
 
   if previous and previous.cooldown > 0 then
@@ -112,6 +115,7 @@ function WeaponRuntime:projectile_snapshot(slot)
     source_weapon_level = emitter.level,
     damage = stats.damage
       * self:_value("combat.damage_multiplier", 1)
+      * ((self.character.stats or {}).power or 1)
       * (1 + self:_passive_bonus("damage")),
     speed = (stats.speed or 0) * self:_value("projectiles.speed_multiplier", 1),
     count = math.max(1,

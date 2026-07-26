@@ -19,48 +19,64 @@ end
 
 function TitleScreen:_layout()
   local w, h = love.graphics.getDimensions()
-  local bw, bh, gap = 260, 52, 18
+  local bw, bh, gap = 310, 50, 11
   local x = (w - bw) / 2
-  local y = h * 0.5
+  local y = math.max(300, h * 0.43)
 
   local buttons = {
     widgets.Button({
-      label = "Play", x = x, y = y, w = bw, h = bh,
+      label = "START NEW GAME",
+      x = (w - 380) / 2, y = y, w = 380, h = 64,
+      font_size = 25,
       on_press = function()
-        local RunScreen = require("src.ui.screens.run")
-        self.app.states:push(RunScreen(self.app))
+        local CutsceneScreen = require("src.ui.screens.cutscene")
+        self.app.states:switch(CutsceneScreen(
+          self.app,
+          self.app.content.narrative.prologue,
+          {
+            on_complete = function(app)
+              local CharacterSelectScreen = require(
+                "src.ui.screens.character_select")
+              app.states:switch(CharacterSelectScreen(app))
+            end,
+          }))
       end,
     }),
   }
+  y = y + 64 + gap
 
   if settings.debug.admin.enabled then
     buttons[#buttons + 1] = widgets.Button({
-      label = "Admin Controls", x = x, y = y + (#buttons * (bh + gap)), w = bw, h = bh,
+      label = "Admin Controls", x = x, y = y, w = bw, h = bh,
       on_press = function()
         local AdminScreen = require("src.ui.screens.admin")
         self.app.states:push(AdminScreen(self.app))
       end,
     })
+    y = y + bh + gap
   end
 
   buttons[#buttons + 1] = widgets.Button({
-    label = "Arsenal Database", x = x, y = y + (#buttons * (bh + gap)), w = bw, h = bh,
+    label = "Arsenal Database", x = x, y = y, w = bw, h = bh,
     on_press = function()
       local ArsenalScreen = require("src.ui.screens.arsenal")
       self.app.states:push(ArsenalScreen(self.app))
     end,
   })
+  y = y + bh + gap
 
   buttons[#buttons + 1] = widgets.Button({
-    label = "Options", x = x, y = y + (#buttons * (bh + gap)), w = bw, h = bh,
+    label = "Options", x = x, y = y, w = bw, h = bh,
     on_press = function()
       local OptionsScreen = require("src.ui.screens.options")
       self.app.states:push(OptionsScreen(self.app))
     end,
   })
+  y = y + bh + gap
 
   buttons[#buttons + 1] = widgets.Button({
-    label = "Quit", x = x, y = y + (#buttons * (bh + gap)), w = bw, h = bh,
+    label = "Quit", x = (w - 220) / 2, y = y, w = 220, h = 42,
+    font_size = 18,
     on_press = function() love.event.quit() end,
   })
   self.button_list = widgets.ButtonList(buttons)
@@ -79,23 +95,40 @@ function TitleScreen:draw()
   love.graphics.setColor(settings.ui.background_color)
   love.graphics.rectangle("fill", 0, 0, w, h)
 
-  if self.app.assets and self.app.assets.icon then
-    love.graphics.setColor(1, 1, 1, 0.12)
-    local icon = self.app.assets.icon
-    local scale = 280 / icon:getWidth()
-    love.graphics.draw(icon, w / 2, h * 0.28, 0, scale, scale,
-      icon:getWidth() / 2, icon:getHeight() / 2)
+  for index = 1, 20 do
+    local x = (index * 193) % w
+    local y = (index * 89) % h
+    love.graphics.setColor(
+      index % 2 == 0 and { 0.18, 0.84, 1.0, 0.12 }
+        or { 0.94, 0.20, 0.82, 0.12 })
+    love.graphics.circle("fill", x, y, 2 + index % 6)
   end
 
-  love.graphics.setColor(settings.ui.accent_color)
-  love.graphics.setFont(Fonts.get(56))
-  love.graphics.printf("GROOVE BOUND", 0, h * 0.22, w, "center")
+  if self.app.assets and self.app.assets.campaign then
+    local logo = self.app.assets.campaign.logo
+    local target_w = math.min(600, w * 0.58)
+    local scale = target_w / logo:getWidth()
+    love.graphics.setColor(1, 1, 1, 1)
+    love.graphics.draw(
+      logo, w / 2, 8, 0, scale, scale, logo:getWidth() / 2, 0)
+  end
 
   love.graphics.setColor(settings.ui.text_color)
-  love.graphics.setFont(Fonts.get(18))
-  love.graphics.printf("Restore rhythm to the universe", 0, h * 0.22 + 72, w, "center")
+  love.graphics.setFont(Fonts.get(20))
+  love.graphics.printf(
+    "RESTORE RHYTHM TO THE UNIVERSE",
+    0, math.max(268, h * 0.37), w, "center")
+  love.graphics.setFont(Fonts.get(14))
+  love.graphics.setColor(0.62, 0.72, 0.86, 1)
+  love.graphics.printf(
+    "A TWO-STAGE SUPERNATURAL ARCADE ADVENTURE",
+    0, math.max(294, h * 0.37 + 28), w, "center")
 
   self.button_list:draw()
+
+  love.graphics.setFont(Fonts.get(14))
+  love.graphics.setColor(0.58, 0.56, 0.70, 1)
+  love.graphics.print("TAB  Debug overlay", 18, h - 28)
 end
 
 function TitleScreen:keypressed(key)

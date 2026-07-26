@@ -37,13 +37,13 @@ end
 function OptionsScreen:_layout()
   local w, h = love.graphics.getDimensions()
   local options = self.app.profile.options
-  local bw, bh, gap = math.min(480, w - 80), 36, 7
-  local x, y = (w - bw) / 2, h * 0.18
+  local bw, bh, gap = math.min(520, w - 80), 44, 8
+  local x, y = (w - bw) / 2, h * 0.16
   local buttons = {}
   local function add(label, callback)
     buttons[#buttons + 1] = widgets.Button({
       label = label, x = x, y = y + (#buttons * (bh + gap)), w = bw, h = bh,
-      font_size = 15, on_press = callback,
+      font_size = 18, on_press = callback,
     })
   end
   add(string.format("Master volume  %d%%", options.master_volume * 100),

@@ -4,10 +4,11 @@
 local class = require("src.core.class")
 local Pool = require("src.core.pool")
 local Enemy = require("src.game.entities.enemy")
+local EnemyProjectile = require("src.game.entities.enemy_projectile")
 local Projectile = require("src.game.entities.projectile")
 local XPGem = require("src.game.entities.xp_gem")
 local SpawnDirector = require("src.game.systems.spawn_director")
-local StageDirector = require("src.game.systems.stage_director")
+local VFXSystem = require("src.game.systems.vfx_system")
 local WeaponInventory = require("src.game.systems.weapon_inventory")
 local WeaponRuntime = require("src.game.systems.weapon_runtime")
 local XPSystem = require("src.game.systems.xp_system")
@@ -21,6 +22,22 @@ local function distance_sq(ax, ay, bx, by)
   return dx * dx + dy * dy
 end
 
+local function scaled_waves(stage, duration)
+  local scale = duration / stage.wave_base_duration
+  local result = {}
+  for index, wave in ipairs(stage.waves) do
+    result[index] = { at = wave.at * scale, enemies = {} }
+    for enemy_index, entry in ipairs(wave.enemies) do
+      result[index].enemies[enemy_index] = {
+        id = entry.id,
+        count = entry.count,
+        cadence = entry.cadence,
+      }
+    end
+  end
+  return result
+end
+
 function CombatSystem:init(opts)
   self.ctx = assert(opts.ctx)
   self.content = assert(opts.content)
@@ -28,16 +45,20 @@ function CombatSystem:init(opts)
   self.assets = opts.assets
   self.arena = assert(opts.arena)
   self.player = assert(opts.player)
+  self.character = opts.character or self.content.characters.joe
   self.camera = opts.camera
   self.options = opts.options or {}
 
   self.enemy_pool = Pool(function() return Enemy() end)
+  self.enemy_projectile_pool = Pool(function() return EnemyProjectile() end)
   self.projectile_pool = Pool(function() return Projectile() end)
   self.gem_pool = Pool(function() return XPGem() end)
+  self.vfx = VFXSystem(self.assets)
 
   self.inventory = WeaponInventory(self.content)
-  assert(self.inventory:add("kazoo_pistol", 1))
-  self.weapon_runtime = WeaponRuntime(self.content, self.tuning)
+  assert(self.inventory:add(self.character.starting_weapon, 1))
+  self.weapon_runtime = WeaponRuntime(
+    self.content, self.tuning, { character = self.character })
   self.weapon_runtime:sync(self.inventory)
   self.last_tuning_revision = self.tuning.revision
 
@@ -76,13 +97,32 @@ function CombatSystem:init(opts)
   self.final_boss_spawned = false
   self.wave_notice = nil
   self.wave_notice_time = 0
-  self.stage_director = StageDirector({
-    duration = settings.run.stage_duration,
-    count = settings.run.stage_count,
-  })
+  self.stages = self.content.stages
+  self.stage_index = 0
+  self.stage_started_at = 0
+  self.stage_notice = 0
+  self.stage_notice_text = nil
+  self.stage_clear_reported = false
+  self:begin_stage(1, self.arena, true)
+end
 
-  self.spawner = SpawnDirector({
-    waves = self.content.waves,
+function CombatSystem:_stage_duration(stage)
+  if stage.duration_tuning then return self.tuning:get(stage.duration_tuning) end
+  return stage.base_duration
+end
+
+function CombatSystem:_campaign_timeout()
+  local duration = 0
+  for _, stage in ipairs(self.stages) do
+    duration = duration + self:_stage_duration(stage)
+  end
+  return duration + 300
+end
+
+function CombatSystem:_make_spawner(stage)
+  local duration = self:_stage_duration(stage)
+  return SpawnDirector({
+    waves = scaled_waves(stage, duration),
     rng = self.ctx.rng.spawn,
     tuning = self.tuning,
     arena = self.arena,
@@ -101,6 +141,59 @@ function CombatSystem:init(opts)
   })
 end
 
+function CombatSystem:begin_stage(index, arena, initial)
+  local stage = assert(self.stages[index], "unknown campaign stage")
+  self.stage_index = index
+  self.stage_started_at = self.ctx.time
+  self.stage_clear_reported = false
+  self.final_boss_dead = false
+  self.final_boss_spawned = false
+  self.arena = assert(arena)
+  self.spawner = self:_make_spawner(stage)
+  self.vfx:clear()
+
+  if not initial then
+    self.ctx.world:each("enemy", function(entity) entity.dead = true end)
+    self.ctx.world:each("projectile", function(entity) entity.dead = true end)
+    self.ctx.world:each("enemy_projectile", function(entity) entity.dead = true end)
+    self.ctx.world:each("xp_gem", function(entity) entity.dead = true end)
+    self:_release_removed()
+    local cx, cy = self.arena:center()
+    self.player.x, self.player.y = cx, cy
+    self.player.hp = math.min(
+      self.player.max_hp,
+      self.player.hp + math.floor(self.player.max_hp * 0.25))
+    self.player.guard = self.player.guard + 12
+    self.stage_notice = 5
+    self.stage_notice_text = stage.name .. "  •  BUILD CARRIED FORWARD"
+  end
+  return stage
+end
+
+function CombatSystem:stage_snapshot(time)
+  local stage = self.stages[self.stage_index]
+  local duration = self:_stage_duration(stage)
+  local elapsed = math.max(0, time - self.stage_started_at)
+  return {
+    stage = self.stage_index,
+    count = #self.stages,
+    name = stage.name,
+    subtitle = stage.subtitle,
+    elapsed = elapsed,
+    duration = duration,
+    remaining = math.max(0, duration - elapsed),
+    notice = self.stage_notice,
+    notice_text = self.stage_notice_text,
+  }
+end
+
+function CombatSystem:_difficulty_multiplier()
+  local snapshot = self:stage_snapshot(self.ctx.time)
+  local progress = math.min(1, snapshot.elapsed / math.max(1, snapshot.duration))
+  local ramp = self.tuning:get("run.difficulty_ramp")
+  return 1 + ((self.stage_index - 1) * 0.28 + progress * 0.62) * ramp
+end
+
 function CombatSystem:spawn_enemy(definition, x, y)
   if definition.boss_type == "final" then
     local cx, cy = self.arena:center()
@@ -111,6 +204,7 @@ function CombatSystem:spawn_enemy(definition, x, y)
     assets = self.assets,
     x = x,
     y = y,
+    health_multiplier = self:_difficulty_multiplier(),
   })
   if definition.boss_type == "final" then self.final_boss_spawned = true end
   return self.ctx.world:add("enemy", enemy)
@@ -239,10 +333,17 @@ function CombatSystem:_kill_enemy(enemy)
     assets = self.assets,
     x = enemy.x,
     y = enemy.y,
-    value = enemy.definition.xp,
+    value = math.floor(
+      enemy.definition.xp * ((self.character.stats or {}).resonance or 1) + 0.5),
     phase = self.ctx.rng.vfx:uniform(0, math.pi * 2),
   })
   self.ctx.world:add("xp_gem", gem)
+  self.vfx:spawn(
+    "explosion", enemy.x, enemy.y,
+    {
+      scale = enemy.definition.boss_type and 0.62 or 0.30,
+      duration = enemy.definition.boss_type and 0.72 or 0.44,
+    })
   if self.assets then self.assets:play("enemy_death", 0.05) end
   return true
 end
@@ -266,16 +367,23 @@ function CombatSystem:_update_projectiles(dt)
             local weapon_damage = self.stats.damage_by_weapon[projectile.source_weapon_id] or 0
             self.stats.damage_by_weapon[projectile.source_weapon_id] =
               weapon_damage + projectile.damage
-            local next_x = candidate.x + projectile.dx * projectile.knockback
-            local next_y = candidate.y + projectile.dy * projectile.knockback
-            candidate.x, candidate.y = self.arena:resolve_movement(
-              candidate.x,
-              candidate.y,
-              next_x,
-              next_y,
-              candidate.radius)
+            local push = projectile.knockback
+              * self.tuning:get("combat.knockback_multiplier")
+              * (self.character.knockback_mult or 1)
+            candidate:push(projectile.dx, projectile.dy, push * 7)
+            self.vfx:spawn(
+              "hit", projectile.x, projectile.y,
+              {
+                scale = 0.18 + math.min(0.16, projectile.radius / 70),
+                rotation = math.atan2(projectile.dy, projectile.dx),
+              })
             if candidate:take_damage(projectile.damage) then
               self:_kill_enemy(candidate)
+            else
+              self.vfx:spawn("damage", candidate.x, candidate.y, {
+                scale = 0.18,
+                duration = 0.20,
+              })
             end
           end
         end)
@@ -296,17 +404,30 @@ function CombatSystem:_player_hit_feedback(trauma)
 end
 
 function CombatSystem:_update_enemies(dt)
+  local difficulty = self:_difficulty_multiplier()
   local speed = self.tuning:get("enemies.speed_multiplier")
+    * (0.82 + difficulty * 0.18)
+  local damage_multiplier = self.tuning:get("enemies.damage_multiplier")
+    * difficulty
+  local knockback = self.tuning:get("combat.knockback_multiplier")
   self.ctx.world:each("enemy", function(enemy)
-    enemy:update(dt, self.player, speed, self.arena)
+    local action = enemy:update(dt, self.player, speed, self.arena)
     self.ctx.world:moved(enemy)
     local contact = self.player.radius + enemy.radius
     if enemy.contact_cooldown <= 0
       and distance_sq(self.player.x, self.player.y, enemy.x, enemy.y) <= contact * contact
     then
       enemy.contact_cooldown = settings.combat.enemy_contact_cooldown
-      if self.player:take_damage(enemy.definition.damage) then
+      local dx, dy = self.player.x - enemy.x, self.player.y - enemy.y
+      local length = math.max(0.001, math.sqrt(dx * dx + dy * dy))
+      if self.player:take_damage(
+        enemy.definition.damage * damage_multiplier,
+        dx / length, dy / length, 155 * knockback)
+      then
         self:_player_hit_feedback(0.28)
+        self.vfx:spawn("player_hurt", self.player.x, self.player.y, {
+          scale = 0.24,
+        })
       end
     end
     if enemy.definition.brain == "static"
@@ -315,8 +436,73 @@ function CombatSystem:_update_enemies(dt)
         <= (enemy.definition.attack_range or 0) ^ 2
     then
       enemy.attack_cooldown = enemy.definition.attack_interval
-      if self.player:take_damage(enemy.definition.damage) then
+      if self.player:take_damage(enemy.definition.damage * damage_multiplier) then
         self:_player_hit_feedback(0.38)
+        self.vfx:spawn("player_hurt", self.player.x, self.player.y, {
+          scale = 0.30,
+        })
+      end
+    end
+    if action and action.kind == "note_bolt" then
+      self:_spawn_enemy_projectile(enemy, action, damage_multiplier)
+    elseif action and action.kind == "resonance_pulse" then
+      local range = enemy.definition.attack_range or 160
+      if distance_sq(self.player.x, self.player.y, enemy.x, enemy.y)
+        <= range * range
+      then
+        local dx, dy = self.player.x - enemy.x, self.player.y - enemy.y
+        local length = math.max(0.001, math.sqrt(dx * dx + dy * dy))
+        if self.player:take_damage(
+          enemy.definition.damage * damage_multiplier,
+          dx / length, dy / length, 210 * knockback)
+        then
+          self:_player_hit_feedback(0.42)
+          self.vfx:spawn("player_hurt", self.player.x, self.player.y, {
+            scale = 0.36,
+          })
+        end
+      end
+      self.vfx:spawn("explosion", enemy.x, enemy.y, {
+        scale = range / 420,
+        duration = 0.42,
+      })
+    end
+  end)
+end
+
+function CombatSystem:_spawn_enemy_projectile(enemy, action, damage_multiplier)
+  local projectile = self.enemy_projectile_pool:acquire({
+    x = enemy.x,
+    y = enemy.y,
+    dx = action.dx,
+    dy = action.dy,
+    speed = enemy.definition.projectile_speed or 270,
+    damage = enemy.definition.damage * damage_multiplier,
+    radius = enemy.definition.boss_type and 11 or 8,
+    color = enemy.definition.color,
+  })
+  self.ctx.world:add("enemy_projectile", projectile)
+end
+
+function CombatSystem:_update_enemy_projectiles(dt)
+  local knockback = self.tuning:get("combat.knockback_multiplier")
+  self.ctx.world:each("enemy_projectile", function(projectile)
+    projectile:update(dt, self.arena)
+    if not projectile.dead then
+      self.ctx.world:moved(projectile)
+      local contact = self.player.radius + projectile.radius
+      if distance_sq(self.player.x, self.player.y, projectile.x, projectile.y)
+        <= contact * contact
+      then
+        projectile.dead = true
+        if self.player:take_damage(
+          projectile.damage, projectile.dx, projectile.dy, 170 * knockback)
+        then
+          self:_player_hit_feedback(0.34)
+          self.vfx:spawn("player_hurt", self.player.x, self.player.y, {
+            scale = 0.28,
+          })
+        end
       end
     end
   end)
@@ -341,18 +527,26 @@ function CombatSystem:_release_removed()
   local removed = self.ctx.world:sweep()
   for _, enemy in ipairs(removed.enemy or {}) do self.enemy_pool:release(enemy) end
   for _, projectile in ipairs(removed.projectile or {}) do self.projectile_pool:release(projectile) end
+  for _, projectile in ipairs(removed.enemy_projectile or {}) do
+    self.enemy_projectile_pool:release(projectile)
+  end
   for _, gem in ipairs(removed.xp_gem or {}) do self.gem_pool:release(gem) end
 end
 
 function CombatSystem:update(dt)
   local frame_started = os.clock()
   self.wave_notice_time = math.max(0, self.wave_notice_time - dt)
-  self.stage_director:update(dt, self.ctx.time)
-  self.spawner:update(dt, self.ctx.time, self.content.enemies)
+  self.stage_notice = math.max(0, self.stage_notice - dt)
+  local stage_time = self.ctx.time - self.stage_started_at
+  local difficulty = self:_difficulty_multiplier()
+  self.spawner:update(
+    dt, stage_time, self.content.enemies, 0.85 + difficulty * 0.15)
   self:_update_enemies(dt)
   self:_update_weapons(dt)
   self:_update_projectiles(dt)
+  self:_update_enemy_projectiles(dt)
   self:_update_gems(dt)
+  self.vfx:update(dt)
   self.xp:update(dt)
   self.progression:update(dt)
   self:_release_removed()
@@ -366,8 +560,12 @@ function CombatSystem:update(dt)
   self.frame_time_ms = (os.clock() - frame_started) * 1000
 
   if self.player.dead then return "defeat" end
-  if self.final_boss_dead then return "victory" end
-  if self.ctx.time >= settings.run.hard_timeout then return "defeat" end
+  if self.final_boss_dead and not self.stage_clear_reported then
+    self.stage_clear_reported = true
+    if self.stage_index < #self.stages then return "stage_clear" end
+    return "victory"
+  end
+  if self.ctx.time >= self:_campaign_timeout() then return "defeat" end
   return nil
 end
 
@@ -377,12 +575,25 @@ function CombatSystem:admin_grant_level()
 end
 
 function CombatSystem:admin_prepare_evolution()
-  local weapon = self.inventory:get("kazoo_pistol")
-  if not weapon then return nil, "kazoo_not_owned" end
-  weapon.level = self.content.weapons.kazoo_pistol.max_level
+  local selected_recipe
+  local recipe_ids = {}
+  for id in pairs(self.content.evolutions) do recipe_ids[#recipe_ids + 1] = id end
+  table.sort(recipe_ids)
+  for _, id in ipairs(recipe_ids) do
+    local recipe = self.content.evolutions[id]
+    if self.inventory:get(recipe.base_weapon) then
+      selected_recipe = recipe
+      break
+    end
+  end
+  if not selected_recipe then return nil, "no_evolvable_weapon_owned" end
+  local weapon = self.inventory:get(selected_recipe.base_weapon)
+  weapon.level = selected_recipe.required_weapon_level
   self.inventory.revision = self.inventory.revision + 1
-  if not self.progression.passives:get("breath_control") then
-    local passive, reason = self.progression.passives:add("breath_control", 1)
+  local requirement = selected_recipe.required_passives[1]
+  if not self.progression.passives:get(requirement.id) then
+    local passive, reason = self.progression.passives:add(
+      requirement.id, requirement.min_level)
     if not passive then return nil, reason end
   end
   self.progression:_apply_passive_effects()
@@ -394,7 +605,58 @@ end
 function CombatSystem:admin_spawn_final_boss()
   if self.final_boss_spawned then return nil, "final_boss_already_spawned" end
   local cx, cy = self.arena:center()
-  return self:spawn_enemy(self.content.enemies.static_baron, cx + 360, cy)
+  local stage = self.stages[self.stage_index]
+  return self:spawn_enemy(self.content.enemies[stage.final_boss], cx + 360, cy)
+end
+
+function CombatSystem:admin_clear_stage()
+  local stage = self.stages[self.stage_index]
+  local final_definition = self.content.enemies[stage.final_boss]
+  local final_enemy
+  self.ctx.world:each("enemy", function(enemy)
+    if not final_enemy and enemy.definition.id == final_definition.id then
+      final_enemy = enemy
+    end
+  end)
+  if not final_enemy then
+    final_enemy = self:admin_spawn_final_boss()
+  end
+  if not final_enemy then return nil, "final_boss_unavailable" end
+  final_enemy.hp = 0
+  final_enemy.dead = true
+  self:_kill_enemy(final_enemy)
+  return true
+end
+
+function CombatSystem:admin_force_evolution()
+  if not self.tuning:get("rewards.admin_rank1_evolution") then
+    return nil, "rank1_evolution_disabled"
+  end
+  local selected
+  for recipe_id, recipe in pairs(self.content.evolutions) do
+    local _, slot = self.inventory:get(recipe.base_weapon)
+    if slot then
+      selected = { id = recipe_id, recipe = recipe, slot = slot }
+      break
+    end
+  end
+  if not selected then return nil, "no_evolvable_weapon_owned" end
+  local replacement, reason = self.inventory:replace_at(
+    selected.slot, selected.recipe.result_weapon, 1, {
+      evolved_from = selected.recipe.base_weapon,
+      evolution_id = selected.id,
+      branch = selected.recipe.branch,
+    })
+  if not replacement then return nil, reason end
+  self.weapon_runtime:replace_weapon(
+    selected.slot, replacement, self.inventory.revision)
+  self.progression.evolutions[#self.progression.evolutions + 1] = {
+    id = selected.id,
+    branch = selected.recipe.branch,
+    result_weapon = selected.recipe.result_weapon,
+    admin_bypass = true,
+  }
+  return true
 end
 
 return CombatSystem

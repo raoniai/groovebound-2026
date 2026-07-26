@@ -64,7 +64,10 @@ local schemas = {
     damage = { type = "number", min = 0 },
     xp     = { type = "number", min = 0 },
     coins  = { type = "number", min = 0, optional = true },
-    brain  = { type = "string", one_of = { "chase", "zigzag", "charger", "static" } },
+    brain  = {
+      type = "string",
+      one_of = { "chase", "zigzag", "charger", "static", "ranged", "orbit", "pulse" },
+    },
   },
   passives = {
     name        = { type = "string" },
@@ -95,8 +98,12 @@ local schemas = {
   characters = {
     name           = { type = "string" },
     starting_weapon = { type = "string", ref = "weapons" },
-    speed_mult     = { type = "number", min = 0.1, optional = true },
-    hp_mult        = { type = "number", min = 0.1, optional = true },
+    title          = { type = "string", optional = true },
+    description    = { type = "string", optional = true },
+    intro_scene    = { type = "string", optional = true },
+    trait_name     = { type = "string", optional = true },
+    trait_text     = { type = "string", optional = true },
+    stats          = { type = "table", optional = true },
   },
   waves = {}, -- validated structurally below (timeline entries, not id-keyed)
 }
@@ -225,6 +232,59 @@ local function check_waves(errors, waves, content)
   end
 end
 
+local function check_stages(errors, stages, content)
+  if type(stages) ~= "table" or #stages < 2 then
+    errors[#errors + 1] = "content.stages: expected at least two campaign stages"
+    return
+  end
+  local seen = {}
+  for index, stage in ipairs(stages) do
+    local where = string.format("stages[%d]", index)
+    check_field(errors, where .. ".id", stage.id, { type = "string" })
+    check_field(errors, where .. ".name", stage.name, { type = "string" })
+    check_field(errors, where .. ".base_duration", stage.base_duration, {
+      type = "number", min = 10,
+    })
+    check_field(errors, where .. ".wave_base_duration", stage.wave_base_duration, {
+      type = "number", min = 10,
+    })
+    check_field(errors, where .. ".duration_tuning", stage.duration_tuning, {
+      type = "string",
+    })
+    if stage.id then
+      if seen[stage.id] then errors[#errors + 1] = where .. ".id: duplicate stage id" end
+      seen[stage.id] = true
+    end
+    if not content.enemies[stage.final_boss] then
+      errors[#errors + 1] = where .. ".final_boss: unknown enemy id"
+    end
+    check_waves(errors, stage.waves or {}, content)
+  end
+end
+
+local function check_narrative(errors, narrative)
+  if type(narrative) ~= "table" then
+    errors[#errors + 1] = "content.narrative: table is missing"
+    return
+  end
+  for id, scene in pairs(narrative) do
+    local where = "narrative." .. id
+    if scene.id ~= id then errors[#errors + 1] = where .. ".id: must match key" end
+    if type(scene.slides) ~= "table" or #scene.slides == 0 then
+      errors[#errors + 1] = where .. ".slides: must be a non-empty array"
+    else
+      for index, slide in ipairs(scene.slides) do
+        local sw = string.format("%s.slides[%d]", where, index)
+        check_field(errors, sw .. ".atlas", slide.atlas, { type = "string" })
+        check_field(errors, sw .. ".col", slide.col, { type = "number", min = 1, max = 2 })
+        check_field(errors, sw .. ".row", slide.row, { type = "number", min = 1, max = 2 })
+        check_field(errors, sw .. ".speaker", slide.speaker, { type = "string" })
+        check_field(errors, sw .. ".text", slide.text, { type = "string" })
+      end
+    end
+  end
+end
+
 -- Check a full content bundle. Returns an array of error strings (empty = valid).
 function Validate.check(content)
   local errors = {}
@@ -238,6 +298,8 @@ function Validate.check(content)
       check_id_table(errors, kind, tbl, content)
     end
   end
+  if content.stages ~= nil then check_stages(errors, content.stages, content) end
+  if content.narrative ~= nil then check_narrative(errors, content.narrative) end
   return errors
 end
 

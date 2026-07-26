@@ -34,11 +34,11 @@ return {
   },
 
   run = {
-    duration = 180,
-    stage_duration = 60,
-    stage_count = 3,
-    final_boss_at = 145,
-    hard_timeout = 210,
+    duration = 1200,
+    stage_duration = 600,
+    stage_count = 2,
+    final_boss_at = 580,
+    hard_timeout = 1500,
   },
 
   combat = {
@@ -76,7 +76,9 @@ return {
     overlay = {
       max_rows  = 12,
       ttl_secs  = 10,
-      font_size = 12,
+      font_size = 15,
+      toggle_key = "tab",
+      visible = true,
     },
     channels = {
       -- Per-channel log toggles; unlisted channels default to enabled.

@@ -45,10 +45,16 @@ function Projectile:register_hit(enemy)
 end
 
 function Projectile:draw()
-  if self.assets and self.assets.projectile then
+  local rotation = math.atan2(self.dy, self.dx)
+  if self.assets and self.assets.draw_projectile
+    and self.assets:draw_projectile(
+      self.source_weapon_id, self.x, self.y,
+      self.radius * 2, rotation, self.color)
+  then
+    return
+  elseif self.assets and self.assets.projectile then
     love.graphics.setColor(self.color)
     local image = self.assets.projectile
-    local rotation = math.atan2(self.dy, self.dx)
     love.graphics.draw(
       image,
       self.x,

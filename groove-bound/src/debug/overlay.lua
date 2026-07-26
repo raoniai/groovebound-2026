@@ -8,9 +8,26 @@ local settings = require("src.config.settings")
 
 local Overlay = {}
 
+function Overlay.toggle()
+  settings.debug.overlay.visible = not settings.debug.overlay.visible
+  return settings.debug.overlay.visible
+end
+
+function Overlay.is_visible()
+  return settings.debug.overlay.visible
+end
+
+function Overlay.keypressed(key)
+  if key == settings.debug.overlay.toggle_key then
+    Overlay.toggle()
+    return true
+  end
+  return false
+end
+
 function Overlay.draw()
   local cfg = settings.debug.overlay
-  if not settings.debug.enabled then return end
+  if not settings.debug.enabled or not cfg.visible then return end
 
   local entries = Log.recent(cfg.max_rows)
   if #entries == 0 then return end

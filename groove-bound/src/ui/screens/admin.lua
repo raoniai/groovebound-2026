@@ -11,6 +11,7 @@ AdminScreen.opaque = false
 local categories = {
   { id = "All", label = "Overview", color = { 0.96, 0.76, 0.22, 1 }, glyph = "grid" },
   { id = "Simulation", label = "Simulation", color = { 0.40, 0.72, 1.0, 1 }, glyph = "clock" },
+  { id = "Run", label = "Run & Stages", color = { 0.22, 0.92, 1.0, 1 }, glyph = "wave" },
   { id = "Player", label = "Player", color = { 0.34, 1.0, 0.68, 1 }, glyph = "person" },
   { id = "Combat", label = "Combat", color = { 1.0, 0.38, 0.42, 1 }, glyph = "burst" },
   { id = "Projectiles", label = "Bullets", color = { 1.0, 0.62, 0.20, 1 }, glyph = "arrow" },
@@ -112,7 +113,10 @@ function AdminScreen:_layout()
   self.content_w = self.panel.w - self.sidebar_w - 36
   self.rows_top = self.panel.y + 108
   self.row_h = 64
-  local footer_space = self.app.active_run and 132 or 86
+  local compact_run_tools = self.app.active_run and self.content_w < 730
+  local footer_space = self.app.active_run
+    and (compact_run_tools and 168 or 132)
+    or 86
   self.max_visible = math.max(1, math.floor(
     (self.panel.h - 108 - footer_space) / self.row_h))
   self.reset_all_rect = {
@@ -134,12 +138,37 @@ function AdminScreen:_layout()
     h = 34,
   }
   if self.app.active_run then
-    local y = self.panel.y + self.panel.h - 92
-    self.run_tool_rects = {
-      level = { x = self.content_x, y = y, w = 150, h = 30 },
-      evolution = { x = self.content_x + 162, y = y, w = 190, h = 30 },
-      boss = { x = self.content_x + 364, y = y, w = 150, h = 30 },
-    }
+    if compact_run_tools then
+      local y = self.panel.y + self.panel.h - 126
+      local three_w = (self.content_w - 16) / 3
+      local two_w = (self.content_w - 8) / 2
+      self.run_tool_rects = {
+        level = { x = self.content_x, y = y, w = three_w, h = 30 },
+        evolution = {
+          x = self.content_x + three_w + 8, y = y, w = three_w, h = 30,
+        },
+        force_evolution = {
+          x = self.content_x + (three_w + 8) * 2,
+          y = y, w = three_w, h = 30,
+        },
+        boss = {
+          x = self.content_x, y = y + 36, w = two_w, h = 30,
+        },
+        clear_stage = {
+          x = self.content_x + two_w + 8,
+          y = y + 36, w = two_w, h = 30,
+        },
+      }
+    else
+      local y = self.panel.y + self.panel.h - 92
+      self.run_tool_rects = {
+        level = { x = self.content_x, y = y, w = 112, h = 30 },
+        evolution = { x = self.content_x + 120, y = y, w = 154, h = 30 },
+        force_evolution = { x = self.content_x + 282, y = y, w = 150, h = 30 },
+        boss = { x = self.content_x + 440, y = y, w = 128, h = 30 },
+        clear_stage = { x = self.content_x + 576, y = y, w = 136, h = 30 },
+      }
+    end
   else
     self.run_tool_rects = nil
   end
@@ -187,7 +216,7 @@ function AdminScreen:_draw_sidebar()
   love.graphics.setFont(Fonts.get(21))
   love.graphics.print("ADMIN", panel.x + 20, panel.y + 18)
   love.graphics.setColor(0.62, 0.60, 0.70, 1)
-  love.graphics.setFont(Fonts.get(11))
+  love.graphics.setFont(Fonts.get(14))
   love.graphics.print("LIVE CONTROL DECK", panel.x + 20, panel.y + 48)
 
   self.category_rects = {}
@@ -208,7 +237,7 @@ function AdminScreen:_draw_sidebar()
     end
     draw_glyph(category.glyph, rect.x + 24, rect.y + 22, 22, category.color)
     love.graphics.setColor(selected and settings.ui.text_color or { 0.72, 0.70, 0.80, 1 })
-    love.graphics.setFont(Fonts.get(13))
+    love.graphics.setFont(Fonts.get(15))
     love.graphics.print(category.label, rect.x + 46, rect.y + 15)
   end
 end
@@ -255,11 +284,11 @@ function AdminScreen:_draw_rows()
 
     draw_glyph(category.glyph, row.x + 26, row.y + 28, 24, category.color)
     love.graphics.setColor(settings.ui.text_color)
-    love.graphics.setFont(Fonts.get(15))
+    love.graphics.setFont(Fonts.get(17))
     love.graphics.print(definition.label, row.x + 50, row.y + 9)
     if self.content_w >= 650 then
       love.graphics.setColor(0.62, 0.60, 0.70, 1)
-      love.graphics.setFont(Fonts.get(10))
+      love.graphics.setFont(Fonts.get(14))
       love.graphics.print(definition.help, row.x + 50, row.y + 32)
     end
 
@@ -282,7 +311,7 @@ function AdminScreen:_draw_button(rect, label, color)
   love.graphics.setColor(color or settings.ui.button.border)
   love.graphics.rectangle("line", rect.x, rect.y, rect.w, rect.h, 4, 4)
   love.graphics.setColor(settings.ui.text_color)
-  love.graphics.setFont(Fonts.get(13))
+  love.graphics.setFont(Fonts.get(14))
   love.graphics.printf(label, rect.x, rect.y + 9, rect.w, "center")
 end
 
@@ -300,19 +329,21 @@ function AdminScreen:draw()
 
   local category = categories[self.category_index]
   love.graphics.setColor(category.color)
-  love.graphics.setFont(Fonts.get(27))
+  love.graphics.setFont(Fonts.get(30))
   love.graphics.print(category.label, self.content_x, self.panel.y + 18)
   love.graphics.setColor(0.68, 0.66, 0.76, 1)
-  love.graphics.setFont(Fonts.get(11))
+  love.graphics.setFont(Fonts.get(14))
   love.graphics.print(
-    "Bounded live tuning  •  Tab/LB/RB sections  •  F1/Esc closes",
+    "Bounded live tuning  •  [ / ] or LB/RB sections  •  F1/Esc closes",
     self.content_x, self.panel.y + 54)
   self:_draw_rows()
 
   if self.run_tool_rects then
     self:_draw_button(self.run_tool_rects.level, "Grant Level  G", category.color)
     self:_draw_button(self.run_tool_rects.evolution, "Prepare Evolution  E", category.color)
-    self:_draw_button(self.run_tool_rects.boss, "Spawn Baron  B", category.color)
+    self:_draw_button(self.run_tool_rects.force_evolution, "Rank-1 Evolve  R", category.color)
+    self:_draw_button(self.run_tool_rects.boss, "Spawn Boss  B", category.color)
+    self:_draw_button(self.run_tool_rects.clear_stage, "Clear Stage  N", category.color)
   end
   self:_draw_button(self.reset_all_rect, "Reset all", category.color)
   self:_draw_button(self.arsenal_rect, "Arsenal Database", { 0.38, 0.92, 1.0, 1 })
@@ -328,8 +359,11 @@ function AdminScreen:keypressed(key)
   if key == settings.debug.admin.toggle_key or key == "escape" then
     self.app.states:pop()
     return true
-  elseif key == "tab" then
+  elseif key == "]" then
     self:_set_category(self.category_index + 1)
+    return true
+  elseif key == "[" then
+    self:_set_category(self.category_index - 1)
     return true
   elseif key == "up" or key == "w" then
     self.selected = self.selected - 1
@@ -361,8 +395,14 @@ function AdminScreen:keypressed(key)
   elseif self.app.active_run and key == "e" then
     self.app.active_run.combat:admin_prepare_evolution()
     return true
+  elseif self.app.active_run and key == "r" then
+    self.app.active_run.combat:admin_force_evolution()
+    return true
   elseif self.app.active_run and key == "b" then
     self.app.active_run.combat:admin_spawn_final_boss()
+    return true
+  elseif self.app.active_run and key == "n" then
+    self.app.active_run.combat:admin_clear_stage()
     return true
   end
   return false
@@ -429,8 +469,16 @@ function AdminScreen:mousepressed(x, y, button)
   elseif self.run_tool_rects and contains(self.run_tool_rects.evolution, x, y) then
     self.app.active_run.combat:admin_prepare_evolution()
     return true
+  elseif self.run_tool_rects
+    and contains(self.run_tool_rects.force_evolution, x, y)
+  then
+    self.app.active_run.combat:admin_force_evolution()
+    return true
   elseif self.run_tool_rects and contains(self.run_tool_rects.boss, x, y) then
     self.app.active_run.combat:admin_spawn_final_boss()
+    return true
+  elseif self.run_tool_rects and contains(self.run_tool_rects.clear_stage, x, y) then
+    self.app.active_run.combat:admin_clear_stage()
     return true
   elseif contains(self.close_rect, x, y) then
     self.app.states:pop()

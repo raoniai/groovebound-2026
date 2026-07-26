@@ -10,6 +10,8 @@ local content = {
   evolutions = require("src.content.evolutions"),
   characters = require("src.content.characters"),
   waves      = require("src.content.waves"),
+  stages     = require("src.content.stages"),
+  narrative  = require("src.content.narrative"),
 }
 
 return Validate.assert_valid(content)

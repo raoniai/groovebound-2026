@@ -13,14 +13,15 @@ function Arena:init(opts)
   self.height = opts.height or cfg.height
   self.wall = opts.wall or cfg.wall
   self.assets = opts.assets
-  self.obstacles = opts.obstacles or {
+  self.stage = opts.stage or {}
+  self.obstacles = opts.obstacles or self.stage.obstacles or {
     { x = 420, y = 360, w = 120, h = 180, icon = { col = 1, row = 1 } },
     { x = 910, y = 280, w = 150, h = 120, icon = { col = 2, row = 1 } },
     { x = 1420, y = 420, w = 150, h = 120, icon = { col = 3, row = 1 } },
     { x = 650, y = 980, w = 180, h = 115, icon = { col = 4, row = 1 } },
     { x = 1300, y = 1080, w = 130, h = 180, icon = { col = 1, row = 1 } },
   }
-  self.decorations = opts.decorations or {
+  self.decorations = opts.decorations or self.stage.decorations or {
     { x = 280, y = 790, size = 120, icon = { col = 1, row = 2 } },
     { x = 1120, y = 700, size = 105, icon = { col = 2, row = 2 } },
     { x = 1700, y = 820, size = 135, icon = { col = 3, row = 2 } },
@@ -55,6 +56,36 @@ local function circle_hits_rect(x, y, radius, rect)
   return dx * dx + dy * dy < radius * radius
 end
 
+local function draw_orbit_floor(arena, stage)
+  local tile = 160
+  local color_a = stage.platform_color_a
+  local color_b = stage.platform_color_b
+  for row = 0, math.ceil(arena.height / tile) - 1 do
+    for column = 0, math.ceil(arena.width / tile) - 1 do
+      love.graphics.setColor((row + column) % 2 == 0 and color_a or color_b)
+      love.graphics.rectangle(
+        "fill", column * tile, row * tile, tile - 2, tile - 2)
+    end
+  end
+
+  love.graphics.setColor(stage.rail_color)
+  love.graphics.setLineWidth(6)
+  for _, y in ipairs({ arena.height * 0.28, arena.height * 0.72 }) do
+    love.graphics.line(0, y, arena.width, y)
+    love.graphics.setLineWidth(2)
+    love.graphics.line(0, y + 18, arena.width, y + 18)
+    love.graphics.setLineWidth(6)
+  end
+
+  love.graphics.setColor(stage.star_color)
+  for index = 1, 52 do
+    local x = (index * 347) % arena.width
+    local y = (index * 191) % arena.height
+    love.graphics.circle("fill", x, y, 1 + index % 3)
+  end
+  love.graphics.setLineWidth(1)
+end
+
 function Arena:blocked(x, y, radius)
   for _, obstacle in ipairs(self.obstacles) do
     if circle_hits_rect(x, y, radius, obstacle) then return true end
@@ -72,13 +103,19 @@ end
 
 function Arena:draw()
   local cfg = settings.arena
+  local floor_tint = self.stage.floor_tint or { 0.58, 0.54, 0.66, 0.78 }
+  local veil_color = self.stage.veil_color or { 0.08, 0.06, 0.13, 0.42 }
+  local grid_color = self.stage.grid_color or cfg.grid_color
+  local environment_atlas = self.stage.environment_atlas or "stage1"
 
   -- Floor.
   love.graphics.setColor(cfg.floor_color)
   love.graphics.rectangle("fill", 0, 0, self.width, self.height)
 
-  if self.assets and self.assets.floor then
-    love.graphics.setColor(0.58, 0.54, 0.66, 0.78)
+  if self.stage.floor_style == "orbit" then
+    draw_orbit_floor(self, self.stage)
+  elseif self.assets and self.assets.floor then
+    love.graphics.setColor(floor_tint)
     local tile_size = 128
     local columns = math.ceil(self.width / tile_size)
     local rows = math.ceil(self.height / tile_size)
@@ -93,7 +130,7 @@ function Arena:draw()
       end
     end
 
-    love.graphics.setColor(0.08, 0.06, 0.13, 0.42)
+    love.graphics.setColor(veil_color)
     love.graphics.rectangle("fill", 0, 0, self.width, self.height)
   end
 
@@ -101,12 +138,16 @@ function Arena:draw()
     for _, decoration in ipairs(self.decorations) do
       self.assets:draw_environment(
         decoration.icon, decoration.x, decoration.y, decoration.size,
-        { color = { 1, 1, 1, 0.62 } })
+        {
+          color = { 1, 1, 1, 0.72 },
+          atlas = environment_atlas,
+        })
     end
   end
 
   -- Background grid so motion is readable on a flat floor.
-  love.graphics.setColor(cfg.grid_color[1], cfg.grid_color[2], cfg.grid_color[3], 0.42)
+  love.graphics.setColor(
+    grid_color[1], grid_color[2], grid_color[3], grid_color[4] or 0.42)
   love.graphics.setLineWidth(1)
   for x = cfg.grid_step, self.width - 1, cfg.grid_step do
     love.graphics.line(x, 0, x, self.height)
@@ -121,7 +162,8 @@ function Arena:draw()
         obstacle.icon,
         obstacle.x + obstacle.w / 2,
         obstacle.y + obstacle.h / 2,
-        math.max(obstacle.w, obstacle.h))
+        math.max(obstacle.w, obstacle.h),
+        { atlas = environment_atlas })
     end
   end
 

@@ -4,8 +4,8 @@ The visual admin dashboard is a development-only modal available through the
 **Admin Controls** button on the title/pause menus or with **F1** from the title
 screen, an active run, or the pause screen.
 
-Controls are segmented into Overview, Simulation, Player, Combat, Bullets,
-Enemies, Rewards, and Groove. Each section has a consistent vector icon,
+Controls are segmented into Overview, Simulation, Run & Stages, Player,
+Combat, Bullets, Enemies, Rewards, and Groove. Each section has a consistent vector icon,
 accent, bounded value bar, formatted current value, and explicit −/+ controls.
 
 ## Input
@@ -13,7 +13,7 @@ accent, bounded value bar, formatted current value, and explicit −/+ controls.
 | Action | Keyboard | Gamepad | Mouse |
 |---|---|---|---|
 | Open/close | F1 / Escape | Start or B closes | Menu/Close button |
-| Change section | Tab | Left/Right shoulder | Select sidebar section |
+| Change section | `[` / `]` | Left/Right shoulder | Select sidebar section |
 | Select | Up/Down or W/S | D-pad Up/Down | Hover row |
 | Decrease/increase | Left/Right or A/D | D-pad Left/Right | − / + |
 | Toggle boolean | Enter/Space | A | − / + |
@@ -38,17 +38,21 @@ Menu input itself is never time-scaled.
 The following controls have live runtime consumers:
 
 - simulation speed;
+- independent Stage 1 and Stage 2 duration from 60 to 1,200 seconds;
+- campaign difficulty escalation;
 - player speed and invincibility;
 - weapon fire-rate and damage multipliers;
+- hit knockback;
 - projectile speed, extra bullets per shot, and maximum active bullets;
-- enemy speed, spawn-rate multiplier, and maximum active enemies;
-- XP multiplier and pickup radius.
+- enemy speed, damage, spawn-rate multiplier, and maximum active enemies;
+- XP multiplier and pickup radius;
 - Show evolution needs: displays or hides paired-support recipes and exact
   missing rank/support requirements on the level-up screen.
+- Allow rank-1 evolution: permits only the explicit Admin shortcut; it never
+  changes normal rank-10 fusion eligibility.
 
-The fire-rate control was visually exercised in LÖVE from `1.0×` to `1.1×`.
 The BPM override is registered and bounded but is not connected yet because
-the Stage 5 BeatClock does not exist.
+the BeatClock does not exist.
 
 ## Active-run tools
 
@@ -57,12 +61,15 @@ When opened over a run, the panel adds:
 | Tool | Key | Behavior |
 |---|---|---|
 | Grant Level | G | Grants exactly enough XP for the next queued card choice |
-| Prepare Evolution | E | Sets Kazoo to rank 10, adds Breath Control, then queues the real consumable fusion |
-| Spawn Baron | B | Spawns the final boss once; duplicate claims are refused |
+| Prepare Evolution | E | Completes an owned weapon's normal rank/support requirements and queues its real consumable fusion |
+| Rank-1 Evolve | R | Replaces an owned base weapon with its evolved form only when **Allow rank-1 evolution** is enabled |
+| Spawn Boss | B | Spawns the current stage's final boss once; duplicate claims are refused |
+| Clear Stage | N | Defeats the current final boss and follows the real transition/victory path |
 
-The evolution tool still passes through the normal stable-ID eligibility and
-inventory/support/runtime transaction. The fusion consumes Breath Control,
-replaces the exact Kazoo emitter, and opens new support and weapon capacity.
+The normal evolution tool still passes through stable-ID eligibility and the
+inventory/support/runtime transaction. The Admin bypass is visually and
+functionally separate, disabled by default, and cannot lower the requirements
+used by ordinary level-up offers.
 
 ## Evolution guidance toggle
 

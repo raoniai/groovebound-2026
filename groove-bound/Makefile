@@ -20,6 +20,7 @@ package: clean
 		-x "dist/*" -x "tests/*" -x "docs/*" -x "design-system/*" \
 		-x "Makefile" -x ".luacheckrc" -x "*.md" \
 		-x ".DS_Store" -x "*/.DS_Store" -x "assets/generated/*-source.png" \
+		-x "assets/generated/source-candidates/*" \
 		-x "docs/screenshots/*"
 
 clean:

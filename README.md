@@ -18,17 +18,16 @@
 </p>
 
 > [!IMPORTANT]
-> This is the **Stage 4 development preview**. The current download is a
+> This is the **two-stage narrative campaign development preview**. The current download is a
 > platform-neutral `.love` game package and requires
 > [LÖVE 11.5](https://love2d.org/) to run.
 
 ## Enter the arena
 
-Groove Bound is a fast, three-stage survival run where movement is manual and
-the music fights automatically. Thread through a concert floor full of
-sound-system monsters, collect XP gems, assemble a six-weapon set, and fuse
-rank-10 instruments with the right support gear before the Static Baron ends
-the show.
+Groove Bound is a bright urban-supernatural survival roguelike where movement
+is manual and music fights automatically. Choose steady street guardian Joe or
+cosmic rock adventurer Lyra Vex, defend Backbeat from instrument-machine
+invaders, then follow their alien signal into the abandoned Orbit Line.
 
 Every run is a compact build-crafting puzzle:
 
@@ -36,8 +35,8 @@ Every run is a compact build-crafting puzzle:
 2. **Collect** dropped XP gems and survive long enough to level up.
 3. **Choose** a new weapon, weapon rank, support, recovery, guard, or currency.
 4. **Fuse** a rank-10 base weapon with its matching support item.
-5. **Clear three stages**, defeat the Metronome Guardian, and bring down the
-   Static Baron.
+5. **Clear two ten-minute stages**, defeat each stage boss, and carry the same
+   build into the Orbit Line after a recovery beat.
 
 ## Download and play
 
@@ -78,6 +77,7 @@ choosing the right upgrades.
 | Back / cancel | `Esc` | `B` |
 | Navigate menus | Arrow keys | D-pad |
 | Open Admin Controls | `F1` | Available from title/pause menus |
+| Toggle debug overlay | `Tab` | — |
 
 The Options screen includes persistent volume, feedback, fullscreen, aim-assist,
 deadzone, and conflict-checked keyboard rebinding controls.
@@ -109,11 +109,22 @@ slot.
 See the complete [Weapon Database](groove-bound/docs/WEAPON_DATABASE.md) and
 [Evolution Guide](groove-bound/docs/WEAPON_EVOLUTION.md).
 
+## Choose a Resonant
+
+Joe is the durable, high-power Backbeat: he starts with the Kazoo Pistol,
+18 Guard, stronger knockback, and a defensive stat profile. Lyra Vex is the
+fast Live Wire: she starts with the Keytar Chord, fires and moves faster, and
+earns additional Resonance XP. Both characters have directional idle, walk,
+high-speed run, and hurt animation states plus character-specific dialogue.
+
 ## Face the noise
 
-Eight enemy silhouettes drive distinct chase, zigzag, charge, ranged, miniboss,
-and final-boss encounters. Obstacles and concert props turn the arena into a
-stage rather than an empty field.
+Sixteen enemy silhouettes now span two visual families. Backbeat Streets uses
+the original concert-floor horde; the Orbit Line introduces vinyl drones,
+trumpet rays, drum wheels, theremin jellies, amp hounds, keyboard centipedes,
+the Turntable Sentinel, and the megazord-like Grand Orchestrator. Chase,
+zigzag, charge, orbit, ranged-note, and pulse attacks create an escalating
+second-stage encounter.
 
 <p align="center">
   <img src="groove-bound/assets/generated/enemy-variants-atlas.png" alt="Eight Groove Bound enemies, including the Metronome Guardian and Static Baron" width="66%">
@@ -123,12 +134,14 @@ stage rather than an empty field.
 
 | System | Current build |
 |---|---|
-| Run structure | Three 60-second stages with countdowns and phase-clear transitions |
+| Campaign flow | Title → illustrated prologue → character selection → character intro → Stage 1 → transition → Stage 2 → ending |
+| Run structure | Two ten-minute stages with Admin-adjustable duration and difficulty escalation |
 | Arsenal | 16 base weapons, seven firing patterns, six weapon slots |
 | Build crafting | Eight supports, four support slots, eight rank-10 fusion recipes |
-| Enemies | Eight variants, a miniboss, and a final boss |
+| Characters | Joe and Lyra Vex with distinct stats, traits, starting weapons, and animation states |
+| Enemies | Two stage-specific families; four normal, two elite, one miniboss, and one final boss in Stage 2 |
 | Progression | XP gems, paused three-card choices, reroll, bounded skip reward |
-| Combat feedback | Health, guard, XP, score, combo, boss health, stage and build HUD |
+| Combat feedback | Weapon-specific bullets, hit sparks, explosions, death flicker, knockback, player hurt response, enemy attacks |
 | Reference tools | Searchable Arsenal Database and bounded Admin dashboard |
 | Input | Keyboard, mouse, and gamepad menu support with persistent options |
 | Validation | Headless unit suite, Luacheck, content validation, and LÖVE boot smoke in CI |
@@ -157,19 +170,22 @@ developer controls, and implementation ground rules.
 ## Visual direction and provenance
 
 Groove Bound combines retained legacy floor/SFX material with original generated
-pixel-art atlases for the player, enemies, weapons, supports, fusions, and arena
-props. Source images, production mappings, generation notes, and rights
+pixel-art atlases for both characters, enemies, weapons, projectiles, combat
+effects, illustrated cutscenes, and arena props. Source images, production
+mappings, generation notes, and rights
 boundaries are recorded in:
 
 - [Generated visual asset register](groove-bound/assets/generated/PROVENANCE.md)
+- [Stage 2 visual prompt set](groove-bound/docs/STAGE2_VISUAL_PROMPTS.md)
 - [Legacy asset register](groove-bound/assets/legacy/PROVENANCE.md)
 - [Visual research, acquisition plan, and complete sprite prompt library](VISUAL_ASSET_RESEARCH_AND_GENERATION_PLAN.md)
 
 ## Development status
 
-The Stage 1–4 vertical slice is playable. The next planned layer is the
-BeatClock and groove system, followed by expansion into the longer
-content-and-balance slice described in the
+The first-draft two-stage campaign is playable and deliberately structured so
+future still-image scenes can be replaced by supplied videos without changing
+campaign progression. The next planned layer is refinement of this canon,
+proper source audio/video, and the BeatClock groove system described in the
 [remake execution plan](REMAKE_EXECUTION_PLAN.md).
 
 Bug reports and build feedback can be filed through

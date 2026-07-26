@@ -1,0 +1,51 @@
+-- Campaign stages. Arena geometry and waves are data so a stage transition
+-- swaps one validated definition rather than branching across gameplay code.
+
+return {
+  {
+    id = "backbeat_streets",
+    name = "BACKBEAT STREETS",
+    subtitle = "The night the sky missed a beat",
+    duration_tuning = "run.stage1_duration",
+    base_duration = 600,
+    wave_base_duration = 150,
+    waves = require("src.content.waves"),
+    final_boss = "static_baron",
+    floor_tint = { 0.58, 0.54, 0.66, 0.78 },
+    veil_color = { 0.08, 0.06, 0.13, 0.42 },
+    grid_color = { 0.48, 0.18, 0.62, 0.35 },
+    environment_atlas = "stage1",
+  },
+  {
+    id = "orbit_line",
+    name = "THE ORBIT LINE",
+    subtitle = "Dead air. Live signal.",
+    duration_tuning = "run.stage2_duration",
+    base_duration = 600,
+    wave_base_duration = 600,
+    waves = require("src.content.stage2_waves"),
+    final_boss = "grand_orchestrator",
+    floor_tint = { 0.24, 0.30, 0.58, 0.86 },
+    veil_color = { 0.025, 0.02, 0.11, 0.50 },
+    grid_color = { 0.16, 0.82, 1.0, 0.34 },
+    floor_style = "orbit",
+    platform_color_a = { 0.055, 0.075, 0.18, 1 },
+    platform_color_b = { 0.085, 0.045, 0.20, 1 },
+    rail_color = { 0.18, 0.90, 1.0, 0.30 },
+    star_color = { 0.72, 0.42, 1.0, 0.45 },
+    environment_atlas = "stage2",
+    obstacles = {
+      { x = 350, y = 330, w = 120, h = 190, icon = { col = 1, row = 1 } },
+      { x = 830, y = 260, w = 105, h = 190, icon = { col = 2, row = 1 } },
+      { x = 1390, y = 410, w = 180, h = 120, icon = { col = 3, row = 1 } },
+      { x = 560, y = 1020, w = 150, h = 155, icon = { col = 4, row = 1 } },
+      { x = 1280, y = 1100, w = 170, h = 130, icon = { col = 2, row = 1 } },
+    },
+    decorations = {
+      { x = 260, y = 790, size = 150, icon = { col = 1, row = 2 } },
+      { x = 1030, y = 720, size = 130, icon = { col = 3, row = 2 } },
+      { x = 1690, y = 810, size = 145, icon = { col = 4, row = 2 } },
+      { x = 980, y = 1330, size = 145, icon = { col = 2, row = 2 } },
+    },
+  },
+}

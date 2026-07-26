@@ -70,6 +70,7 @@ function love.draw()
 end
 
 function love.keypressed(key)
+  if Overlay.keypressed(key) then return end
   app.states:keypressed(key)
 end
 

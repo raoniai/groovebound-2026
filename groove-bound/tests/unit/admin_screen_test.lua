@@ -71,20 +71,23 @@ end
 
 T["run-tool shortcuts call their exact active combat commands"] = function()
   local screen = fresh()
-  local calls = { level = 0, evolution = 0, boss = 0 }
+  local calls = { level = 0, evolution = 0, boss = 0, clear = 0 }
   screen.app.active_run = {
     combat = {
       admin_grant_level = function() calls.level = calls.level + 1 end,
       admin_prepare_evolution = function() calls.evolution = calls.evolution + 1 end,
       admin_spawn_final_boss = function() calls.boss = calls.boss + 1 end,
+      admin_clear_stage = function() calls.clear = calls.clear + 1 end,
     },
   }
   H.is_true(screen:keypressed("g"))
   H.is_true(screen:keypressed("e"))
   H.is_true(screen:keypressed("b"))
+  H.is_true(screen:keypressed("n"))
   H.eq(calls.level, 1)
   H.eq(calls.evolution, 1)
   H.eq(calls.boss, 1)
+  H.eq(calls.clear, 1)
 end
 
 return T

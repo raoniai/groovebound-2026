@@ -5,16 +5,20 @@ restored from clean-remake PR head `fe79d6f` and is governed by
 [`../REMAKE_EXECUTION_PLAN.md`](../REMAKE_EXECUTION_PLAN.md). The old
 prototypes remain GitHub references; they are not part of this runtime tree.
 
-This is a development build with the Stage 1–4 vertical slice complete
-locally. It is not yet the planned ten-minute content slice or a public
-release.
+This is a development build with a complete first-draft two-stage narrative
+campaign. Both stages default to ten minutes and can be shortened independently
+in the Admin dashboard for testing. It is not yet a public release.
 
 ## Playable slice
 
 The current build now includes:
 
-- a new four-direction player sheet, eight enemy variants, and illustrated
-  environment sprites;
+- an illustrated prologue, character intros, inter-stage scene, and ending with
+  manual advance, automatic timing, and confirmed skip;
+- a professional title flow and two-character selection screen;
+- Joe and Lyra Vex with distinct stats, passive traits, starting weapons, and
+  directional idle, walk, high-speed run, and hurt animations;
+- two stage-specific environments and sixteen enemy variants;
 - validated timed enemy waves, deterministic edge spawning, solid obstacles,
   and decorative arena elements;
 - 16 base weapons, seven distinct firing patterns, auto-targeting and
@@ -35,23 +39,28 @@ The current build now includes:
 - an atomic fusion transaction that consumes both ingredients, replaces the
   exact firing emitter, reopens the support slot, and expands weapon capacity
   up to six;
-- distinct chase, zigzag, charge and static-boss behaviors;
-- Metronome Guardian miniboss, bonus-reroll reward, and Static Baron final boss;
-- a three-stage countdown with phase-clear banners and automatic advancement;
+- distinct chase, zigzag, charge, orbit, ranged-note, pulse and boss behaviors;
+- a miniboss and final boss in each stage, including the Stage 2 Turntable
+  Sentinel and megazord-like Grand Orchestrator;
+- a two-stage countdown with persistent build, recovery beat, illustrated
+  transition, and automatic Orbit Line entry;
+- weapon-specific projectile art plus hit, explosion, death-flicker, knockback,
+  enemy attack, and player hurt feedback;
 - deterministic victory, defeat, score/combo, results and restart flows;
-- a live HUD for health, guard, XP, rank, inventory, boss health, combat
-  budgets, score, seed and frame time;
+- a more legible HUD for health, guard, XP, rank, inventory, boss health,
+  campaign progress, score, seed and frame time;
 - a navigable Arsenal Database with roster filters, icon cards, rank-one to
   rank-ten stats, live ownership/emitter status, level-up availability and
   visible evolution recipes;
 - a segmented visual Admin dashboard with category icons, value bars, live
   tools and direct Arsenal access;
 - persistent options, conflict-checked keyboard rebinding and seed copy;
-- legacy floor art and SFX combined with six new transparent sprite/icon
-  atlases.
+- a `Tab` toggle for the debug overlay;
+- legacy floor art and SFX combined with campaign sprite, projectile, combat
+  effect, environment, portrait, and cutscene atlases.
 
-Stage 5 adds the BeatClock and groove layer. Stage 6 expands this proven loop
-into the planned ten-minute content/balance slice.
+The next production step is canon and balance refinement, supplied cinematic
+video/audio, and the BeatClock groove layer.
 
 ## Requirements
 
@@ -94,14 +103,16 @@ The BPM override remains registered but intentionally waits for the Stage 5
 BeatClock.
 
 During an active run the admin panel also exposes **Grant Level**,
-**Prepare Evolution**, and **Spawn Baron** tools. Prepare Evolution creates a
-legal rank-10 Kazoo plus Breath Control state and opens the same real fusion
-choice used by normal progression; it does not bypass the evolution
-transaction.
+**Prepare Evolution**, **Rank-1 Evolve**, **Spawn Boss**, and **Clear Stage**
+tools. Prepare Evolution creates a legal rank-10 recipe and opens the normal
+fusion choice. Rank-1 Evolve is an explicit, toggle-gated Admin-only shortcut;
+normal progression still requires rank 10.
 
 See:
 
 - [`docs/ADMIN_CONTROLS.md`](docs/ADMIN_CONTROLS.md)
+- [`docs/FIRST_DRAFT_CANON.md`](docs/FIRST_DRAFT_CANON.md)
+- [`docs/STAGE2_VISUAL_PROMPTS.md`](docs/STAGE2_VISUAL_PROMPTS.md)
 - [`docs/WEAPON_DATABASE.md`](docs/WEAPON_DATABASE.md)
 - [`docs/WEAPON_EVOLUTION.md`](docs/WEAPON_EVOLUTION.md)
 
