@@ -21,6 +21,10 @@ A fusion is legal only when:
 The HUD checks this contract continuously and emits a five-second
 **YOU CAN EVOLVE NOW** notification when a new recipe becomes legal.
 
+The level-up guide states the complete requirement: base weapon rank 10 plus
+the exact paired support. There is no additional chest or token requirement.
+The corresponding gold fusion card is guaranteed in the next offer.
+
 ## Atomic transaction
 
 Inventory, support inventory, and weapon runtime are snapshotted before

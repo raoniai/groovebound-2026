@@ -60,6 +60,9 @@
 - Added XP gem drops, attraction and lossless multi-threshold levelling.
 - Added a paused three-card choice at every level, reroll, skip, four initial
   weapon slots, four support slots, legal filtering and seeded offers.
+- Added category-balanced seeded offer rotation, immediate anti-repeat
+  protection, guaranteed new weapons while slots are open, and guaranteed
+  owned-rank choices when both inventories are full.
 - Added illustrated level-up/fusion cards, expandable HUD weapon/support racks,
   and a navigable Arsenal Database covering 24 weapons plus eight supports.
 - Added live Arsenal status cross-checks for inventory ownership, active
@@ -69,6 +72,8 @@
   cooldown stability, fire rate, projectile count, and guard.
 - Made eight fusions reachable through rank 10 plus their paired support, with
   a five-second evolution-ready notification and real illustrated choice UI.
+- Added a default-on Admin toggle for on-card fusion pairings and a level-up
+  guide showing exact missing rank/support requirements.
 - Made fusion atomic across weapon inventory, support inventory, active
   emitters, modifier refresh, slot-capacity expansion, and rollback.
 - Added Static Baron, boss health, ranged boss damage, hard timeout, victory,
@@ -90,14 +95,14 @@
 
 | Check | Result |
 |---|---|
-| Headless LuaJIT tests | **172 tests, 0 failures** |
+| Headless LuaJIT tests | **177 tests, 0 failures** |
 | Luacheck | **0 warnings, 0 errors across 86 files** |
 | LÖVE version | **11.5 installed locally** |
 | Source boot smoke | **Passed; content validated and title state entered** |
 | Packaged `.love` boot smoke | **Passed** |
 | Package ZIP integrity | **No errors** |
-| Package size | **4,848,542 bytes** |
-| Package SHA-256 | `883c289f02ffdc441b1b4ab1167cd7795b72917aeb8e262ab82cf7b94984ad1d` |
+| Package size | **4,850,502 bytes** |
+| Package SHA-256 | `ba6e4f0bbc5554297dd1b9598a89e677ef93e21a40fda77c6bf632303b2259a4` |
 | Admin title-menu entry | **Visually verified** |
 | Admin modal rendering | **Visually verified at 1280×720** |
 | Live admin adjustment | **Fire rate changed from 1.0× to 1.1×** |

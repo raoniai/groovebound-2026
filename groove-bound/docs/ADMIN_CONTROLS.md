@@ -43,6 +43,8 @@ The following controls have live runtime consumers:
 - projectile speed, extra bullets per shot, and maximum active bullets;
 - enemy speed, spawn-rate multiplier, and maximum active enemies;
 - XP multiplier and pickup radius.
+- Show evolution needs: displays or hides paired-support recipes and exact
+  missing rank/support requirements on the level-up screen.
 
 The fire-rate control was visually exercised in LÖVE from `1.0×` to `1.1×`.
 The BPM override is registered and bounded but is not connected yet because
@@ -61,6 +63,16 @@ When opened over a run, the panel adds:
 The evolution tool still passes through the normal stable-ID eligibility and
 inventory/support/runtime transaction. The fusion consumes Breath Control,
 replaces the exact Kazoo emitter, and opens new support and weapon capacity.
+
+## Evolution guidance toggle
+
+Open **Rewards** and toggle **Show evolution needs**:
+
+- **ON** (default): weapon/support cards show their fusion pairing, and the
+  level-up screen lists the closest owned evolution paths with exact missing
+  rank or support requirements.
+- **OFF**: hides the guide and recipe hints without changing eligibility,
+  randomization, inventory, or fusion behavior.
 
 “Registered” must never be reported as “connected.” A control is connected
 only when a system consumes it and an integration test verifies the effect.

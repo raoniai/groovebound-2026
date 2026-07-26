@@ -111,7 +111,9 @@ Each normal level-up presents three valid cards:
 The vertical slice starts with one reroll and unlimited skip for a small
 XP/coin return. Banish waits until the content pool is large enough to justify
 it. Impossible, capped, duplicated, or slot-invalid cards are excluded before
-weighting.
+weighting. Immediate repeats are avoided within each choice category when an
+alternative exists. Open slots guarantee new base-item variety; when both
+inventories are full, owned rank-ups are guaranteed so evolution cannot stall.
 
 ### Research decisions still requiring playtest evidence
 
@@ -165,7 +167,7 @@ implementing dozens of weapons.
 
 Locally complete:
 
-- 172 tests pass with zero failures;
+- 177 tests pass with zero failures;
 - luacheck reports zero warnings/errors across 86 files;
 - LÖVE 11.5 source and packaged-build smoke checks pass;
 - the title entry and admin panel were visually verified at 1280×720;
@@ -276,10 +278,14 @@ packaged boot and ZIP integrity are required at every checkpoint.
 - Coins.
 - Four weapon slots and passive-slot limit.
 - Three-card offers generated from actual inventory/content state.
+- Seeded category-balanced offer rotation with immediate anti-repeat behavior.
+- Full-inventory mode that guarantees owned weapon/support rank cards.
 - New weapon, weapon level, passive, passive level, reroll, and skip.
 - Rarity and weighting.
 - Weapon/support fusion offers at level-up when a recipe becomes legal.
 - HUD inventory with weapon/passive levels and evolution readiness.
+- Toggleable level-up guidance showing the exact rank-10 weapon, paired
+  support, missing condition, and evolved result.
 - Admin commands for:
   - grant XP;
   - add/level a weapon;

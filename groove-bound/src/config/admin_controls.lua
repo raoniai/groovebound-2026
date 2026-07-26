@@ -155,6 +155,14 @@ return {
     decimals = 2,
   },
   {
+    id = "ui.show_evolution_requirements",
+    category = "Rewards",
+    label = "Show evolution needs",
+    help = "Shows paired support and missing rank requirements on level-up choices.",
+    value_type = "boolean",
+    default = true,
+  },
+  {
     id = "beat.bpm_override",
     category = "Groove",
     label = "BPM override",

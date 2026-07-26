@@ -57,6 +57,7 @@ function LevelUpScreen:_layout()
   local total_w = card_w * 3 + gap * 2
   local x = (w - total_w) / 2
   local y = h * 0.28
+  local card_h = 258
   local buttons = {}
 
   for index, choice in ipairs(self.offer) do
@@ -65,7 +66,7 @@ function LevelUpScreen:_layout()
       x = x + (index - 1) * (card_w + gap),
       y = y,
       w = card_w,
-      h = 238,
+      h = card_h,
       font_size = 16,
       on_press = function() self:_choose(choice) end,
     })
@@ -74,7 +75,7 @@ function LevelUpScreen:_layout()
   buttons[#buttons + 1] = widgets.Button({
     label = "Reroll (" .. self.combat.progression.rerolls .. ")",
     x = w / 2 - 230,
-    y = y + 260,
+    y = y + card_h + 22,
     w = 210,
     h = 46,
     font_size = 15,
@@ -83,13 +84,14 @@ function LevelUpScreen:_layout()
   buttons[#buttons + 1] = widgets.Button({
     label = "Skip (+5 coins)",
     x = w / 2 + 20,
-    y = y + 260,
+    y = y + card_h + 22,
     w = 210,
     h = 46,
     font_size = 15,
     on_press = function() self:_skip() end,
   })
   self.buttons = widgets.ButtonList(buttons)
+  self.guide_y = y + card_h + 84
 end
 
 function LevelUpScreen:resize()
@@ -119,10 +121,19 @@ function LevelUpScreen:draw()
   for index, choice in ipairs(self.offer) do
     local button = self.buttons.buttons[index]
     local color = kind_colors[choice.kind] or settings.ui.accent_color
+    if choice.kind == "evolution" then
+      love.graphics.setColor(color)
+      love.graphics.setLineWidth(3)
+      love.graphics.rectangle(
+        "line", button.x + 2, button.y + 2, button.w - 4, button.h - 4, 8, 8)
+      love.graphics.setLineWidth(1)
+    end
     love.graphics.setColor(color)
     love.graphics.setFont(Fonts.get(11))
     love.graphics.printf(
-      tostring(index) .. "  " .. string.upper(choice.kind:gsub("_", " ")),
+      tostring(index) .. "  " .. (choice.kind == "evolution"
+        and "FUSION READY"
+        or string.upper(choice.kind:gsub("_", " "))),
       button.x + 12, button.y + 10, button.w - 24, "left")
     self:_draw_choice_icon(choice, button.x + button.w / 2, button.y + 76, 92, color)
 
@@ -138,13 +149,140 @@ function LevelUpScreen:draw()
       button.y + 161,
       button.w - 28,
       "center")
+    local fusion_hint = self:_fusion_hint(choice)
+    if fusion_hint then
+      love.graphics.setColor(1.0, 0.76, 0.24, 1)
+      love.graphics.setFont(Fonts.get(10))
+      love.graphics.printf(
+        fusion_hint,
+        button.x + 12,
+        button.y + 199,
+        button.w - 24,
+        "center")
+    end
     local stats = self:_choice_stats(choice)
     if stats then
       love.graphics.setColor(color)
       love.graphics.setFont(Fonts.get(11))
       love.graphics.printf(stats,
-        button.x + 12, button.y + 211, button.w - 24, "center")
+        button.x + 12, button.y + 232, button.w - 24, "center")
     end
+  end
+
+  if self:_requirements_visible() then
+    self:_draw_evolution_guide(w, h)
+  end
+end
+
+function LevelUpScreen:_requirements_visible()
+  return self.app.tuning:get("ui.show_evolution_requirements")
+end
+
+function LevelUpScreen:_recipe_for_base(weapon_id)
+  for _, recipe in pairs(self.app.content.evolutions) do
+    if recipe.base_weapon == weapon_id then return recipe end
+  end
+  return nil
+end
+
+function LevelUpScreen:_recipe_for_support(support_id)
+  for _, recipe in pairs(self.app.content.evolutions) do
+    if recipe.required_passives[1].id == support_id then return recipe end
+  end
+  return nil
+end
+
+function LevelUpScreen:_fusion_hint(choice)
+  if not self:_requirements_visible() then return nil end
+  local recipe
+  local prefix
+  if choice.kind == "weapon_add" or choice.kind == "weapon_level" then
+    recipe = self:_recipe_for_base(choice.id)
+    prefix = "R10 + SUPPORT: "
+  elseif choice.kind == "passive_add" or choice.kind == "passive_level" then
+    recipe = self:_recipe_for_support(choice.id)
+    prefix = "PAIRS WITH: "
+  end
+  if not recipe then return nil end
+  local base = self.app.content.weapons[recipe.base_weapon]
+  local support = self.app.content.passives[recipe.required_passives[1].id]
+  local result = self.app.content.weapons[recipe.result_weapon]
+  if choice.kind == "weapon_add" or choice.kind == "weapon_level" then
+    return prefix .. support.name .. " -> " .. result.name
+  end
+  return prefix .. base.name .. " R10 -> " .. result.name
+end
+
+function LevelUpScreen:_draw_evolution_guide(w, h)
+  local progress = self.combat.progression:evolution_progress()
+  if #progress == 0 then return end
+
+  local shown = math.min(3, #progress)
+  local panel_w = math.min(1040, w - 48)
+  local panel_h = math.min(118, h - self.guide_y - 16)
+  if panel_h < 72 then return end
+  local panel_x = (w - panel_w) / 2
+  local column_w = (panel_w - 28) / shown
+
+  love.graphics.setColor(0.065, 0.055, 0.11, 0.98)
+  love.graphics.rectangle(
+    "fill", panel_x, self.guide_y, panel_w, panel_h, 8, 8)
+  love.graphics.setColor(1.0, 0.72, 0.18, 1)
+  love.graphics.rectangle(
+    "line", panel_x, self.guide_y, panel_w, panel_h, 8, 8)
+  love.graphics.setFont(Fonts.get(11))
+  love.graphics.print(
+    "EVOLUTION GUIDE  •  BASE WEAPON R10 + PAIRED SUPPORT"
+      .. "  •  NO CHEST OR TOKEN REQUIRED",
+    panel_x + 14,
+    self.guide_y + 9)
+
+  for index = 1, shown do
+    local record = progress[index]
+    local x = panel_x + 14 + (index - 1) * column_w
+    local icon_y = self.guide_y + 70
+    self.app.assets:draw_weapon_icon(
+      record.base.icon, x + 19, icon_y, 34)
+    self.app.assets:draw_support_icon(
+      record.support.icon, x + 55, icon_y, 34)
+    self.app.assets:draw_weapon_icon(
+      record.result.icon, x + 91, icon_y, 34)
+
+    love.graphics.setColor(settings.ui.text_color)
+    love.graphics.setFont(Fonts.get(11))
+    love.graphics.print(record.result.name, x + 112, self.guide_y + 39)
+
+    local missing = {}
+    if not record.weapon_ready then
+      missing[#missing + 1] = record.base.name .. " R"
+        .. record.weapon_level .. "/" .. record.required_weapon_level
+    end
+    if not record.support_ready then
+      missing[#missing + 1] = record.support.name
+    end
+    love.graphics.setColor(record.eligible
+      and { 0.34, 1.0, 0.68, 1 }
+      or { 1.0, 0.56, 0.34, 1 })
+    love.graphics.setFont(Fonts.get(10))
+    love.graphics.printf(
+      record.eligible
+        and "READY: SELECT THE GOLD FUSION CARD"
+        or ("MISSING: " .. table.concat(missing, " + ")),
+      x + 112,
+      self.guide_y + 61,
+      column_w - 122,
+      "left")
+  end
+
+  if #progress > shown then
+    love.graphics.setColor(0.65, 0.63, 0.74, 1)
+    love.graphics.setFont(Fonts.get(9))
+    love.graphics.printf(
+      "+" .. (#progress - shown) .. " more paths in Arsenal Database",
+      panel_x + panel_w - 230,
+      self.guide_y + 9,
+      216,
+      "right")
   end
 end
 

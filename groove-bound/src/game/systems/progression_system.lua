@@ -19,6 +19,10 @@ local function card(kind, id, title, description, priority)
   }
 end
 
+local function card_key(choice)
+  return choice.kind .. ":" .. choice.id
+end
+
 function ProgressionSystem:init(opts)
   self.content = assert(opts.content)
   self.inventory = assert(opts.inventory)
@@ -54,6 +58,46 @@ function ProgressionSystem:eligible_evolutions()
     self.passives,
     "level_up",
     self.weapon_runtime)
+end
+
+function ProgressionSystem:evolution_progress()
+  local result = {}
+  for recipe_id, recipe in pairs(self.content.evolutions) do
+    local weapon, slot = self.inventory:get(recipe.base_weapon)
+    local evolved = self.inventory:get(recipe.result_weapon)
+    if weapon and not evolved then
+      local requirement = recipe.required_passives[1]
+      local support = self.passives:get(requirement.id)
+      local weapon_ready = weapon.level >= recipe.required_weapon_level
+      local support_ready = support ~= nil
+        and support.level >= requirement.min_level
+      result[#result + 1] = {
+        id = recipe_id,
+        recipe = recipe,
+        base = self.content.weapons[recipe.base_weapon],
+        result = self.content.weapons[recipe.result_weapon],
+        support = self.content.passives[requirement.id],
+        slot = slot,
+        weapon_level = weapon.level,
+        required_weapon_level = recipe.required_weapon_level,
+        support_level = support and support.level or 0,
+        required_support_level = requirement.min_level,
+        weapon_ready = weapon_ready,
+        support_ready = support_ready,
+        eligible = weapon_ready and support_ready,
+      }
+    end
+  end
+  table.sort(result, function(a, b)
+    if a.eligible ~= b.eligible then return a.eligible end
+    if a.weapon_ready ~= b.weapon_ready then return a.weapon_ready end
+    if a.support_ready ~= b.support_ready then return a.support_ready end
+    if a.weapon_level ~= b.weapon_level then
+      return a.weapon_level > b.weapon_level
+    end
+    return a.result.name < b.result.name
+  end)
+  return result
 end
 
 function ProgressionSystem:update(dt)
@@ -126,9 +170,9 @@ function ProgressionSystem:_evolution_cards(out)
     out[#out + 1] = card(
       "evolution",
       evolution_id,
-      "FUSION: " .. result.name,
-      base.name .. " + " .. support.name
-        .. ". Consumes both and frees the support slot.",
+      "EVOLVE NOW: " .. result.name,
+      "READY: " .. base.name .. " R10 + " .. support.name
+        .. ". Consumes both; support slot reopens.",
       0)
   end
 end
@@ -139,12 +183,34 @@ function ProgressionSystem:_fallback_cards(out)
   out[#out + 1] = card("guard", "guard", "Sound Check", "Gain 25 temporary guard.", 22)
 end
 
-local function sort_cards(a, b)
-  if a.priority == b.priority then
-    if a.kind == b.kind then return a.id < b.id end
-    return a.kind < b.kind
+local function sorted_candidates(source, predicate, selected, previous)
+  local preferred, repeated = {}, {}
+  for _, candidate in ipairs(source) do
+    local key = card_key(candidate)
+    if predicate(candidate) and not selected[key] then
+      if previous[key] then
+        repeated[#repeated + 1] = candidate
+      else
+        preferred[#preferred + 1] = candidate
+      end
+    end
   end
-  return a.priority < b.priority
+  local candidates = #preferred > 0 and preferred or repeated
+  table.sort(candidates, function(a, b)
+    return card_key(a) < card_key(b)
+  end)
+  return candidates
+end
+
+function ProgressionSystem:_draw_offer_card(
+  pool, offer, selected, previous, predicate)
+  local candidates = sorted_candidates(
+    pool, predicate, selected, previous)
+  if #candidates == 0 then return false end
+  local candidate = candidates[self.rng:range(1, #candidates)]
+  selected[card_key(candidate)] = true
+  offer[#offer + 1] = candidate
+  return true
 end
 
 function ProgressionSystem:create_offer()
@@ -153,21 +219,50 @@ function ProgressionSystem:create_offer()
   self:_weapon_cards(pool)
   self:_passive_cards(pool)
   self:_fallback_cards(pool)
-  table.sort(pool, sort_cards)
+  local previous = {}
+  for _, choice in ipairs(self.last_offer or {}) do
+    previous[card_key(choice)] = true
+  end
 
-  -- Preserve the deliberate first two synergy slots, then seed-shuffle the
-  -- remainder so offers vary without becoming irreproducible.
   local offer = {}
-  while #pool > 0 and #offer < 3 do
-    local priority = pool[1].priority
-    local group = {}
-    while pool[1] and pool[1].priority == priority do
-      group[#group + 1] = table.remove(pool, 1)
-    end
-    self.rng:shuffle(group)
-    for _, candidate in ipairs(group) do
-      if #offer < 3 then offer[#offer + 1] = candidate end
-    end
+  local selected = {}
+  local function draw(predicate)
+    if #offer >= 3 then return false end
+    return self:_draw_offer_card(
+      pool, offer, selected, previous, predicate)
+  end
+  local weapon_room = self.inventory:count() < self.inventory.capacity
+  local support_room = self.passives:count() < self.passives.capacity
+
+  -- A legal fusion can never be randomized away.
+  draw(function(choice) return choice.kind == "evolution" end)
+
+  -- While a weapon slot is free, surface one genuinely new weapon and rotate
+  -- it away from the immediately previous offer whenever the pool permits.
+  draw(function(choice) return choice.kind == "weapon_add" end)
+
+  -- Keep progression represented, but vary across every owned weapon/support.
+  draw(function(choice)
+    return choice.kind == "weapon_level"
+      or choice.kind == "passive_level"
+  end)
+
+  -- New supports are a distinct build decision, not a fixed Breath slot.
+  draw(function(choice) return choice.kind == "passive_add" end)
+
+  -- Once both inventories are full, guarantee another owned rank card. This
+  -- prevents fallback rewards from stalling the route to rank-ten fusions.
+  if not weapon_room and not support_room then
+    draw(function(choice)
+      return choice.kind == "weapon_level"
+        or choice.kind == "passive_level"
+    end)
+  end
+
+  -- Full/capped inventories fall through to any remaining legal wildcard.
+  while #offer < 3 do
+    local added = draw(function() return true end)
+    if not added then break end
   end
 
   self.offer_serial = self.offer_serial + 1

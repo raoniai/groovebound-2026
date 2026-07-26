@@ -71,6 +71,18 @@ When a recipe becomes legal, the HUD displays **YOU CAN EVOLVE NOW**. The next
 level-up offer prioritizes the fusion card and illustrates the base weapon,
 support, and fused result together.
 
+With Admin → Rewards → **Show evolution needs** enabled, every relevant
+weapon/support card names its pairing and the bottom guide reports:
+
+- current weapon rank versus rank 10;
+- the exact paired support and whether it is owned;
+- the evolved result;
+- whether the fusion is ready.
+
+No chest, miniboss token, or additional ingredient is required. Once the base
+weapon is rank 10 and the paired support is owned, the gold fusion card is
+guaranteed at the next level-up.
+
 Selecting it performs one atomic transaction:
 
 1. verify rank, support, result uniqueness, and live emitter consistency;
@@ -82,6 +94,19 @@ Selecting it performs one atomic transaction:
 7. roll inventory, support state, capacity, and runtime back on failure.
 
 Existing projectiles retain their original source ID and stats.
+
+## Offer rotation and full slots
+
+Offers use the run's seeded loot stream, so they are randomized but
+reproducible. A choice shown on the immediately previous offer is avoided when
+another legal choice in the same category exists.
+
+While weapon/support slots are open, new base items rotate through the cards.
+When both inventories are full, at least two cards are drawn from owned weapon
+or support rank-ups so the player can reach fusion requirements. Fusion
+consumes its support, keeps the evolved weapon in the original firing slot,
+raises weapon capacity by one up to six, and therefore reopens both inventories
+for new base items.
 
 ## Visual assets
 

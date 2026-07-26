@@ -37,6 +37,8 @@ T["adjust changes numbers and toggles booleans"] = function()
   H.near(tuning:adjust("combat.fire_rate_multiplier", -1), 1.0)
   H.is_true(tuning:adjust("player.invincible", 1))
   H.is_false(tuning:adjust("player.invincible", -1))
+  H.is_false(tuning:adjust("ui.show_evolution_requirements", -1))
+  H.is_true(tuning:adjust("ui.show_evolution_requirements", 1))
 end
 
 T["reset selected and reset all restore safe defaults"] = function()

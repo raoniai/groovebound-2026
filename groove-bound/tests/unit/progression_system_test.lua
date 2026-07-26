@@ -71,6 +71,74 @@ T["every offer has three legal and distinct player decisions"] = function()
   H.is_true(find(offer, "weapon_level", "kazoo_pistol") ~= nil)
 end
 
+T["consecutive offers rotate new weapons and supports when alternatives exist"] = function()
+  local progression = fresh(1, 31415)
+  local first = progression:create_offer()
+  local second = progression:create_offer()
+  local first_weapon = assert(find(first, "weapon_add"))
+  local second_weapon = assert(find(second, "weapon_add"))
+  local first_support = assert(find(first, "passive_add"))
+  local second_support = assert(find(second, "passive_add"))
+  H.is_false(first_weapon.id == second_weapon.id)
+  H.is_false(first_support.id == second_support.id)
+end
+
+T["offer randomization remains deterministic for the same run seed"] = function()
+  local first = fresh(1, 8675309)
+  local second = fresh(1, 8675309)
+  for _ = 1, 5 do
+    local a = first:create_offer()
+    local b = second:create_offer()
+    for index = 1, 3 do
+      H.eq(a[index].kind, b[index].kind)
+      H.eq(a[index].id, b[index].id)
+    end
+  end
+end
+
+T["full weapon and support inventories switch offers to owned ranks"] = function()
+  local progression = fresh(1, 4242)
+  progression:apply({ kind = "weapon_add", id = "bass_drop" })
+  progression:apply({ kind = "weapon_add", id = "cymbal_slicer" })
+  progression:apply({ kind = "weapon_add", id = "feedback_loop" })
+  progression:apply({ kind = "passive_add", id = "breath_control" })
+  progression:apply({ kind = "passive_add", id = "quickstep" })
+  progression:apply({ kind = "passive_add", id = "encore" })
+  progression:apply({ kind = "passive_add", id = "power_amplifier" })
+
+  local offer = progression:create_offer()
+  local ranks = 0
+  for _, choice in ipairs(offer) do
+    H.is_false(choice.kind == "weapon_add")
+    H.is_false(choice.kind == "passive_add")
+    if choice.kind == "weapon_level" or choice.kind == "passive_level" then
+      ranks = ranks + 1
+    end
+  end
+  H.is_true(ranks >= 2)
+end
+
+T["fusion reopens both inventories so new items return to offers"] = function()
+  local progression, inventory = fresh(10, 5150)
+  progression:apply({ kind = "weapon_add", id = "bass_drop" })
+  progression:apply({ kind = "weapon_add", id = "cymbal_slicer" })
+  progression:apply({ kind = "weapon_add", id = "feedback_loop" })
+  progression:apply({ kind = "passive_add", id = "breath_control" })
+  progression:apply({ kind = "passive_add", id = "quickstep" })
+  progression:apply({ kind = "passive_add", id = "encore" })
+  progression:apply({ kind = "passive_add", id = "power_amplifier" })
+
+  progression:apply({ kind = "evolution", id = "kazoo_studio" })
+  H.eq(inventory:count(), 4)
+  H.eq(inventory.capacity, 5)
+  H.eq(progression.passives:count(), 3)
+  H.eq(progression.passives.capacity, 4)
+
+  local offer = progression:create_offer()
+  H.is_true(find(offer, "weapon_add") ~= nil)
+  H.is_true(find(offer, "passive_add") ~= nil)
+end
+
 T["weapon upgrade changes the owned weapon and active emitter together"] = function()
   local progression, inventory, runtime = fresh()
   local choice = assert(find(progression:create_offer(), "weapon_level", "kazoo_pistol"))
@@ -128,6 +196,25 @@ T["a rank-ten weapon and its paired support expose a fusion card"] = function()
   progression:apply({ kind = "passive_add", id = "breath_control" })
   local offer = progression:create_offer()
   H.is_true(find(offer, "evolution", "kazoo_studio") ~= nil)
+end
+
+T["evolution progress reports every missing ingredient explicitly"] = function()
+  local progression = fresh(4)
+  local progress = progression:evolution_progress()
+  H.eq(#progress, 1)
+  H.eq(progress[1].base.id, "kazoo_pistol")
+  H.eq(progress[1].result.id, "brass_barrage")
+  H.eq(progress[1].support.id, "breath_control")
+  H.eq(progress[1].weapon_level, 4)
+  H.eq(progress[1].required_weapon_level, 10)
+  H.is_false(progress[1].weapon_ready)
+  H.is_false(progress[1].support_ready)
+  H.is_false(progress[1].eligible)
+
+  progression:apply({ kind = "passive_add", id = "breath_control" })
+  progress = progression:evolution_progress()
+  H.is_true(progress[1].support_ready)
+  H.is_false(progress[1].weapon_ready)
 end
 
 T["fusion readiness raises an explicit player-facing notification"] = function()

@@ -22,11 +22,16 @@ The current build now includes:
 - pooled projectiles, enemies, and XP gems;
 - damage, contact damage, invulnerability frames, death, and drops;
 - gem attraction, multi-threshold XP and a paused three-card choice every level;
+- seeded randomized offers with immediate anti-repeat protection, guaranteed
+  new-weapon variety while slots are open, and owned-rank cards when both
+  inventories are full;
 - illustrated new-weapon, owned-rank, passive, heal, guard and coin decisions;
 - one reroll and a bounded skip reward;
 - four support slots and eight live stat-enhancing support items;
 - eight rank-10 weapon + support fusion recipes;
 - a visible evolution-ready notification and illustrated fusion card;
+- optional on-card evolution recipes and a missing-requirements guide,
+  controlled from Admin → Rewards;
 - an atomic fusion transaction that consumes both ingredients, replaces the
   exact firing emitter, reopens the support slot, and expands weapon capacity
   up to six;
