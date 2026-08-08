@@ -74,6 +74,10 @@ function Assets.load()
   self.campaign = {
     logo = image("assets/generated/campaign/groove-bound-logo.png"),
     portraits = image("assets/generated/campaign/character-portraits-atlas.png"),
+    talking = {
+      joe = image("assets/generated/campaign/joe-talking-strip.png"),
+      lyra = image("assets/generated/campaign/lyra-talking-strip.png"),
+    },
     cutscenes = {
       prologue = image("assets/generated/cutscenes/prologue-atlas.png"),
       campaign = image("assets/generated/cutscenes/campaign-atlas.png"),
@@ -85,6 +89,14 @@ function Assets.load()
   self.campaign.cutscene_quads = {}
   for id, atlas in pairs(self.campaign.cutscenes) do
     self.campaign.cutscene_quads[id] = grid_quads(atlas, 2, 2)
+  end
+  self.campaign.talking_quads = {}
+  self.campaign.talking_cell_w = {}
+  self.campaign.talking_cell_h = {}
+  for id, strip in pairs(self.campaign.talking) do
+    self.campaign.talking_quads[id],
+      self.campaign.talking_cell_w[id],
+      self.campaign.talking_cell_h[id] = grid_quads(strip, 2, 1)
   end
 
   self.enemy = {
@@ -316,6 +328,21 @@ function Assets:draw_cutscene(atlas_id, col, row, x, y, w, h, opts)
   local _, _, cell_w, cell_h = quad:getViewport()
   love.graphics.setColor(opts.color or { 1, 1, 1, 1 })
   love.graphics.draw(atlas, quad, x, y, 0, w / cell_w, h / cell_h)
+end
+
+function Assets:draw_talking_character(id, frame, x, bottom, height, opts)
+  opts = opts or {}
+  local strip = self.campaign.talking[id]
+  if not strip then return false end
+  local cell_w = self.campaign.talking_cell_w[id]
+  local cell_h = self.campaign.talking_cell_h[id]
+  local quad = self.campaign.talking_quads[id][1][frame]
+  local scale = height / cell_h
+  love.graphics.setColor(opts.color or { 1, 1, 1, 1 })
+  love.graphics.draw(
+    strip, quad, x, bottom, opts.rotation or 0,
+    scale, scale, cell_w / 2, cell_h)
+  return true
 end
 
 function Assets:set_sfx_volume(value)

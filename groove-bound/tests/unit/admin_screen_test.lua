@@ -39,9 +39,9 @@ T["gamepad navigation and adjustment use the same tuning model"] = function()
   screen:gamepadpressed(nil, "dpdown")
   H.eq(screen.selected, 2)
   screen:gamepadpressed(nil, "dpright")
-  H.eq(tuning:get("player.speed_multiplier"), 1.05)
+  H.is_true(tuning:get("test.enhanced_mode"))
   screen:gamepadpressed(nil, "y")
-  H.eq(tuning:get("player.speed_multiplier"), 1)
+  H.is_false(tuning:get("test.enhanced_mode"))
 end
 
 T["mouse plus button adjusts its exact row"] = function()

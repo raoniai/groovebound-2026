@@ -25,7 +25,7 @@ return {
       { id = "vinyl_drone", count = 28, cadence = 0.58 },
   } },
   { at = 405, enemies = {
-      { id = "turntable_sentinel", count = 1, cadence = 1.0 },
+      { id = "turntable_sentinel", count = 1, cadence = 1.0, continuous = false },
       { id = "amp_hound", count = 8, cadence = 2.6 },
       { id = "trumpet_ray", count = 12, cadence = 1.7 },
   } },
@@ -40,7 +40,7 @@ return {
       { id = "vinyl_drone", count = 34, cadence = 0.48 },
   } },
   { at = 580, enemies = {
-      { id = "grand_orchestrator", count = 1, cadence = 1.0 },
+      { id = "grand_orchestrator", count = 1, cadence = 1.0, continuous = false },
       { id = "trumpet_ray", count = 12, cadence = 1.4 },
       { id = "drum_wheel", count = 12, cadence = 1.3 },
   } },

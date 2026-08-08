@@ -20,11 +20,16 @@ function SpawnDirector:_activate_ready_waves(time)
   while self.waves[self.next_wave] and self.waves[self.next_wave].at <= time do
     local wave = self.waves[self.next_wave]
     if self.on_wave then self.on_wave(self.next_wave, wave) end
+    -- A wave owns the spawn mix until the next scheduled wave replaces it.
+    -- This keeps pressure on the player even after the arena is cleared.
+    self.streams = {}
     for _, entry in ipairs(wave.enemies) do
       self.streams[#self.streams + 1] = {
         id = entry.id,
+        batch_count = entry.count,
         remaining = entry.count,
         cadence = entry.cadence,
+        repeats = entry.continuous ~= false,
         timer = 0,
       }
     end
@@ -67,7 +72,13 @@ function SpawnDirector:update(dt, time, enemy_definitions, escalation_multiplier
       stream.timer = stream.timer + stream.cadence / rate
       safety = safety + 1
     end
-    if stream.remaining <= 0 then table.remove(self.streams, i) end
+    if stream.remaining <= 0 then
+      if stream.repeats then
+        stream.remaining = stream.batch_count
+      else
+        table.remove(self.streams, i)
+      end
+    end
   end
 end
 

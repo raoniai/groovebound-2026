@@ -38,7 +38,10 @@ Menu input itself is never time-scaled.
 The following controls have live runtime consumers:
 
 - simulation speed;
-- independent Stage 1 and Stage 2 duration from 60 to 1,200 seconds;
+- 5x test mode, which simultaneously multiplies player movement speed, weapon
+  damage, XP gain, gem attraction radius, and gem pull speed;
+- independent Stage 1 and Stage 2 duration from 60 to 1,200 seconds, with a
+  three-minute default for each stage;
 - campaign difficulty escalation;
 - player speed and invincibility;
 - weapon fire-rate and damage multipliers;

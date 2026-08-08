@@ -32,6 +32,7 @@ end
 
 local definitions = {
   monotone = { id = "monotone", size = 12 },
+  tempo_leech = { id = "tempo_leech", size = 18 },
 }
 
 T["waves stay dormant until their scheduled run time"] = function()
@@ -86,14 +87,26 @@ T["the same seed produces the same edge spawn sequence"] = function()
   end
 end
 
-T["completed streams report finished"] = function()
-  local director = make_director({
+T["the active wave keeps spawning after its batch is cleared until the next wave"] = function()
+  local director, spawned, set_active = make_director({
     waves = {
       { at = 0, enemies = { { id = "monotone", count = 1, cadence = 1 } } },
+      { at = 3, enemies = { { id = "tempo_leech", count = 1, cadence = 1 } } },
     },
   })
   director:update(0, 0, definitions)
-  H.is_true(director:finished())
+  H.eq(#spawned, 1)
+  H.eq(spawned[1].id, "monotone")
+
+  set_active(0) -- the player cleared the arena
+  director:update(1.01, 1.01, definitions)
+  H.eq(#spawned, 2)
+  H.eq(spawned[2].id, "monotone")
+
+  set_active(0)
+  director:update(2, 3, definitions)
+  H.eq(spawned[#spawned].id, "tempo_leech")
+  H.is_false(director:finished())
 end
 
 return T

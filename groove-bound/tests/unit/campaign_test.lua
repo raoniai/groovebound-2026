@@ -30,10 +30,10 @@ local function fresh(character_id)
   return combat, ctx, player, tuning
 end
 
-T["campaign exposes two distinct validated ten-minute stages"] = function()
+T["campaign exposes two distinct validated three-minute stages"] = function()
   H.eq(#Content.stages, 2)
-  H.eq(Content.stages[1].base_duration, 600)
-  H.eq(Content.stages[2].base_duration, 600)
+  H.eq(Content.stages[1].base_duration, 180)
+  H.eq(Content.stages[2].base_duration, 180)
   H.is_true(Content.stages[1].environment_atlas ~= Content.stages[2].environment_atlas)
   H.eq(Content.stages[2].floor_style, "orbit")
   H.eq(Content.stages[2].final_boss, "grand_orchestrator")
@@ -79,6 +79,14 @@ T["campaign timeout expands with both Admin stage durations"] = function()
   tuning:set("run.stage1_duration", 1200)
   tuning:set("run.stage2_duration", 1200)
   H.eq(combat:_campaign_timeout(), 2700)
+end
+
+T["five-times test mode expands XP-gem attraction range and pull speed"] = function()
+  local combat, _, _, tuning = fresh("joe")
+  tuning:set("test.enhanced_mode", true)
+  local pickup = combat:pickup_snapshot()
+  H.eq(pickup.radius, 900)
+  H.eq(pickup.speed, 1800)
 end
 
 T["characters start with different weapons and combat stat profiles"] = function()

@@ -206,6 +206,8 @@ from release packages. Runtime assets are:
 |---|---|
 | `campaign/joe-action-sheet.png` | 8×4 directional idle, walk, run, hurt/action |
 | `campaign/lyra-action-sheet.png` | 8×4 directional idle, walk, run, hurt/action |
+| `campaign/joe-talking-strip.png` | 2×1 closed/open-mouth cutscene portrait |
+| `campaign/lyra-talking-strip.png` | 2×1 closed/open-mouth cutscene portrait |
 | `campaign/character-portraits-atlas.png` | 2×1 landscape character-selection portraits |
 | `campaign/stage2-enemies-atlas.png` | 4×2 Orbit Line roster |
 | `campaign/stage2-environment-atlas.png` | 4×2 collision and decorative props |

@@ -13,6 +13,7 @@ local WeaponInventory = require("src.game.systems.weapon_inventory")
 local WeaponRuntime = require("src.game.systems.weapon_runtime")
 local XPSystem = require("src.game.systems.xp_system")
 local ProgressionSystem = require("src.game.systems.progression_system")
+local TestMode = require("src.game.test_mode")
 local settings = require("src.config.settings")
 
 local CombatSystem = class()
@@ -32,6 +33,7 @@ local function scaled_waves(stage, duration)
         id = entry.id,
         count = entry.count,
         cadence = entry.cadence,
+        continuous = entry.continuous,
       }
     end
   end
@@ -508,12 +510,21 @@ function CombatSystem:_update_enemy_projectiles(dt)
   end)
 end
 
-function CombatSystem:_update_gems(dt)
-  local pickup_radius = settings.xp.pickup_radius
+function CombatSystem:pickup_snapshot()
+  local test_factor = TestMode.factor(self.tuning)
+  return {
+    radius = settings.xp.pickup_radius
     * self.tuning:get("pickups.radius_multiplier")
     * (1 + self.progression:passive_bonus("magnet"))
+    * test_factor,
+    speed = settings.xp.pickup_speed * test_factor,
+  }
+end
+
+function CombatSystem:_update_gems(dt)
+  local pickup = self:pickup_snapshot()
   self.ctx.world:each("xp_gem", function(gem)
-    if gem:update(dt, self.player, pickup_radius, settings.xp.pickup_speed) then
+    if gem:update(dt, self.player, pickup.radius, pickup.speed) then
       self.stats.xp = self.stats.xp + gem.value
       self.xp:add(gem.value)
       if self.assets then self.assets:play("xp", 0.045) end

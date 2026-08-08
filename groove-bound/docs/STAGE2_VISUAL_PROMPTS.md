@@ -40,14 +40,23 @@ watermark.
 
 Strict 8-column by 4-row transparent-safe action atlas. Rows: down, up, left,
 right. Columns: two idle frames, two walk frames, two faster run frames, two
-hurt/action frames. Constant scale, feet alignment, lighting, identity, and
-silhouette in every cell.
+hurt/action frames. Walk and run pairs use opposing lead legs and arm swings;
+the runtime blends the four locomotion poses into a readable high-speed cycle.
+Constant scale, feet alignment, lighting, identity, and silhouette in every
+cell.
 
 - **Joe:** warm brown skin, dark hair, teal bomber jacket, dark trousers, red
   shoes; grounded street-guardian energy.
-- **Lyra Vex:** cosmic rock-and-roll adventurer, violet hair, cropped crimson
-  jacket, cyan-black adventure gear, boots, compact keytar; fast live-wire
-  energy.
+- **Lyra Vex:** cosmic rock-and-roll adventurer, cyan-and-magenta asymmetrical
+  hair, purple jacket, black soundwave shirt, dark trousers and purple shoes;
+  fast live-wire energy.
+
+## Talking character strips
+
+Two equal-cell waist-up frames per character: closed-mouth listening pose and
+open-mouth speaking pose. Joe and Lyra preserve the portrait-atlas identity,
+costume, palette, bottom alignment, and crisp pixel-art treatment. No weapon,
+text, background scenery, cross-cell overlap, or cast shadow.
 
 ## Character portraits
 

@@ -194,6 +194,12 @@ function HUD:draw()
     string.format("SCORE %06d   COMBO ×%d",
       self.combat.stats.score, self.combat.stats.combo),
     0, 48, w - 16, "right")
+
+  if self.combat.tuning:get("test.enhanced_mode") then
+    love.graphics.setColor(1.0, 0.32, 0.66, 0.94)
+    love.graphics.setFont(Fonts.get(16))
+    love.graphics.printf("5X TEST MODE", 0, 72, w - 16, "right")
+  end
 end
 
 return HUD

@@ -6,21 +6,24 @@ restored from clean-remake PR head `fe79d6f` and is governed by
 prototypes remain GitHub references; they are not part of this runtime tree.
 
 This is a development build with a complete first-draft two-stage narrative
-campaign. Both stages default to ten minutes and can be shortened independently
-in the Admin dashboard for testing. It is not yet a public release.
+campaign. Both stages now default to three minutes and remain independently
+adjustable from 60 to 1,200 seconds in the Admin dashboard. It is not yet a
+public release.
 
 ## Playable slice
 
 The current build now includes:
 
 - an illustrated prologue, character intros, inter-stage scene, and ending with
-  manual advance, automatic timing, and confirmed skip;
+  centred word-by-word dialogue, animated Joe/Lyra talking sprites, richer
+  motion, manual advance, automatic timing, and confirmed skip;
 - a professional title flow and two-character selection screen;
 - Joe and Lyra Vex with distinct stats, passive traits, starting weapons, and
   directional idle, walk, high-speed run, and hurt animations;
 - two stage-specific environments and sixteen enemy variants;
-- validated timed enemy waves, deterministic edge spawning, solid obstacles,
-  and decorative arena elements;
+- validated timed enemy waves that spawn continuously until replaced by the
+  next wave, deterministic edge spawning, solid obstacles, and decorative
+  arena elements;
 - 16 base weapons, seven distinct firing patterns, auto-targeting and
   auto-fire;
 - pooled projectiles, enemies, and XP gems;
@@ -53,7 +56,8 @@ The current build now includes:
   rank-ten stats, live ownership/emitter status, level-up availability and
   visible evolution recipes;
 - a segmented visual Admin dashboard with category icons, value bars, live
-  tools and direct Arsenal access;
+  tools, a toggleable 5x speed/power/XP/magnetism test mode, and direct Arsenal
+  access;
 - persistent options, conflict-checked keyboard rebinding and seed copy;
 - a `Tab` toggle for the debug overlay;
 - legacy floor art and SFX combined with campaign sprite, projectile, combat
@@ -112,6 +116,7 @@ See:
 
 - [`docs/ADMIN_CONTROLS.md`](docs/ADMIN_CONTROLS.md)
 - [`docs/FIRST_DRAFT_CANON.md`](docs/FIRST_DRAFT_CANON.md)
+- [`docs/PLAYSTATION_CONTROLLER_PLAN.md`](docs/PLAYSTATION_CONTROLLER_PLAN.md)
 - [`docs/STAGE2_VISUAL_PROMPTS.md`](docs/STAGE2_VISUAL_PROMPTS.md)
 - [`docs/WEAPON_DATABASE.md`](docs/WEAPON_DATABASE.md)
 - [`docs/WEAPON_EVOLUTION.md`](docs/WEAPON_EVOLUTION.md)

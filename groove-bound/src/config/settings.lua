@@ -34,11 +34,11 @@ return {
   },
 
   run = {
-    duration = 1200,
-    stage_duration = 600,
+    duration = 360,
+    stage_duration = 180,
     stage_count = 2,
-    final_boss_at = 580,
-    hard_timeout = 1500,
+    final_boss_at = 174,
+    hard_timeout = 660,
   },
 
   combat = {

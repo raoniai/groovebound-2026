@@ -21,6 +21,21 @@ T["admin player speed multiplier is consumed by movement"] = function()
   H.eq(player.x, player.base_speed)
 end
 
+T["five-times test mode multiplies player movement speed"] = function()
+  local tuning = Tuning(definitions)
+  tuning:set("test.enhanced_mode", true)
+  local player = Player({ x = 0, y = 0, tuning = tuning })
+  local input = {
+    move_vector = function() return 1, 0 end,
+    aim_vector = function() return 1, 0 end,
+  }
+  local arena = { clamp = function(_, x, y) return x, y end }
+
+  player:update(0.2, input, nil, arena)
+  H.eq(player.speed, player.base_speed * 5)
+  H.eq(player.x, player.base_speed)
+end
+
 T["character stats and movement speed select idle walk run and hurt states"] = function()
   local tuning = Tuning(definitions)
   local character = require("src.content.characters").lyra
@@ -51,6 +66,24 @@ T["character stats and movement speed select idle walk run and hurt states"] = f
   H.eq(player.animation_state, "hurt")
   H.is_true(player.knockback_x < 0)
   H.is_true(player.max_hp < 100)
+end
+
+T["run animation cycles through four distinct locomotion poses"] = function()
+  local tuning = Tuning(definitions)
+  tuning:set("player.speed_multiplier", 1.5)
+  local player = Player({ x = 0, y = 0, tuning = tuning })
+  local input = {
+    move_vector = function() return 1, 0 end,
+    aim_vector = function() return 1, 0 end,
+  }
+  local arena = { clamp = function(_, x, y) return x, y end }
+
+  player:update(0, input, nil, arena)
+  H.eq(player.anim_frame, 3)
+  player:update(0.1, input, nil, arena)
+  H.eq(player.anim_frame, 5)
+  player:update(0.1, input, nil, arena)
+  H.eq(player.anim_frame, 4)
 end
 
 return T

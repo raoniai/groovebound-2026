@@ -2,6 +2,7 @@
 
 local class = require("src.core.class")
 local settings = require("src.config.settings")
+local TestMode = require("src.game.test_mode")
 
 local XPSystem = class()
 
@@ -21,7 +22,10 @@ function XPSystem:required_for(level)
 end
 
 function XPSystem:add(raw_value)
-  local value = math.max(0, raw_value * self.tuning:get("rewards.xp_multiplier"))
+  local value = math.max(0,
+    raw_value
+      * self.tuning:get("rewards.xp_multiplier")
+      * TestMode.factor(self.tuning))
   self.xp = self.xp + value
   self.total_xp = self.total_xp + value
   local levels_gained = 0

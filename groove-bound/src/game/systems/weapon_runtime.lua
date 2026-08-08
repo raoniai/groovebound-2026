@@ -5,6 +5,7 @@
 -- projectiles already in flight are not retroactively mutated.
 
 local class = require("src.core.class")
+local TestMode = require("src.game.test_mode")
 
 local WeaponRuntime = class()
 
@@ -115,6 +116,7 @@ function WeaponRuntime:projectile_snapshot(slot)
     source_weapon_level = emitter.level,
     damage = stats.damage
       * self:_value("combat.damage_multiplier", 1)
+      * TestMode.factor(self.tuning)
       * ((self.character.stats or {}).power or 1)
       * (1 + self:_passive_bonus("damage")),
     speed = (stats.speed or 0) * self:_value("projectiles.speed_multiplier", 1),

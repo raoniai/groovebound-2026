@@ -125,6 +125,13 @@ T["admin projectile controls feed the exact firing snapshot"] = function()
   H.near(runtime:get(1).cooldown, 0.215)
 end
 
+T["five-times test mode multiplies projectile power"] = function()
+  local _, _, _, runtime, tuning = ready_loadout()
+  tuning:set("test.enhanced_mode", true)
+  local projectile = runtime:projectile_snapshot(1)
+  H.eq(projectile.damage, 140)
+end
+
 T["evolution is refused when the active firing runtime is stale"] = function()
   local evolution, inventory, passives, runtime = ready_loadout()
   assert(inventory:level_up("kazoo_pistol") == nil) -- already max; revision unchanged

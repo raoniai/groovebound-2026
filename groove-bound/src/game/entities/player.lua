@@ -2,6 +2,7 @@
 -- Combat and weapon progression stay system-owned (single-owner rule).
 
 local class = require("src.core.class")
+local TestMode = require("src.game.test_mode")
 local settings = require("src.config.settings")
 
 local Player = class()
@@ -11,6 +12,15 @@ local directions = {
   up = 2,
   left = 3,
   right = 4,
+}
+
+local animations = {
+  idle = { frames = { 1, 2 }, fps = 3 },
+  walk = { frames = { 3, 4 }, fps = 8 },
+  -- Blend the two walk contacts with the stronger run poses. This creates a
+  -- readable four-step footfall cycle instead of ping-ponging near-duplicates.
+  run = { frames = { 3, 5, 4, 6 }, fps = 12 },
+  hurt = { frames = { 7, 8 }, fps = 8 },
 }
 
 function Player:init(opts)
@@ -59,6 +69,7 @@ function Player:update(dt, input, camera, arena)
   self.hurt_timer = math.max(0, self.hurt_timer - dt)
   local mx, my = input:move_vector()
   local speed_multiplier = self.tuning and self.tuning:get("player.speed_multiplier") or 1
+  speed_multiplier = speed_multiplier * TestMode.factor(self.tuning)
   self.speed = self.base_speed * speed_multiplier * self.passive_speed_multiplier
   local old_x, old_y = self.x, self.y
   local next_x = self.x + (mx * self.speed + self.knockback_x) * dt
@@ -91,14 +102,10 @@ function Player:update(dt, input, camera, arena)
   else
     self.animation_state = "walk"
   end
-  local ranges = {
-    idle = { first = 1, fps = 3 },
-    walk = { first = 3, fps = 8 },
-    run = { first = 5, fps = 11 },
-    hurt = { first = 7, fps = 8 },
-  }
-  local animation = ranges[self.animation_state]
-  self.anim_frame = animation.first + math.floor(self.anim_time * animation.fps) % 2
+  local animation = animations[self.animation_state]
+  local frame_index = math.floor(self.anim_time * animation.fps)
+    % #animation.frames + 1
+  self.anim_frame = animation.frames[frame_index]
 end
 
 function Player:take_damage(amount, push_x, push_y, push_force)

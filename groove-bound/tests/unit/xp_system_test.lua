@@ -62,6 +62,14 @@ T["XP multiplier affects both current and lifetime XP"] = function()
   H.eq(xp.xp, 0)
 end
 
+T["five-times test mode multiplies experience gain"] = function()
+  local xp, _, tuning = fresh()
+  tuning:set("test.enhanced_mode", true)
+  xp:add(2)
+  H.eq(xp.xp, 10)
+  H.eq(xp.total_xp, 10)
+end
+
 T["queued choices are consumed exactly once"] = function()
   local xp = fresh()
   xp:add(2000)
