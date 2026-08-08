@@ -15,7 +15,7 @@
     <img src="https://img.shields.io/github/actions/workflow/status/raoniai/groovebound-2026/ci.yml?branch=main&style=for-the-badge&label=BUILD" alt="Build status">
   </a>
   <img src="https://img.shields.io/badge/L%C3%96VE-11.5-EA316E?style=for-the-badge&logo=love&logoColor=white" alt="LÖVE 11.5">
-  <img src="https://img.shields.io/badge/TESTS-185%20PASSING-19D3C5?style=for-the-badge" alt="185 tests passing">
+  <img src="https://img.shields.io/badge/TESTS-241%20PASSING-19D3C5?style=for-the-badge" alt="241 tests passing">
 </p>
 
 <p align="center">
@@ -59,9 +59,10 @@ The playable flow is now:
 **Title → Prologue → Character Selection → Character Intro → Backbeat Streets
 → Inter-stage Cutscene → The Orbit Line → Campaign Ending**
 
-Cutscenes support manual advance, automatic timing, previous-slide navigation,
-and a confirmed skip. Their still-image structure can later be replaced by
-supplied videos without changing campaign progression.
+The supplied prologue and Joe-intro videos now play directly in the campaign,
+mapped by filename. Clicking a playing video pauses or resumes it; when it ends,
+its final frame holds behind Next and Replay actions. Every video scene retains
+its illustrated storyboard as an automatic fallback.
 
 Read the complete [first-draft canon](groove-bound/docs/FIRST_DRAFT_CANON.md).
 
@@ -100,13 +101,15 @@ directly into the illustrated Orbit Line transition.
 
 ### Stage 1 — Backbeat Streets
 
-A supernatural concert district filled with speaker stacks, service equipment,
+A supernatural concert district grounded by a subtle urban-grime floor, filled
+with speaker stacks, service equipment,
 road cases, light trusses, and the original invasion horde. Survive the
 Metronome Guardian and bring down the Static Baron to recover the First Press.
 
 ### Stage 2 — The Orbit Line
 
-A distinct cosmic transit arena with alternating platform panels, energy rails,
+A distinct cosmic transit arena with cosmic dust and embedded crystal detail,
+energy rails,
 alien speaker pylons, sealed gates, turntable consoles, orbital structures,
 and an escalating instrument-machine orchestra.
 
@@ -134,7 +137,7 @@ Enemy behaviours now include chase, zigzag, charge, orbit, ranged note bolts,
 resonance pulses, attack windups, contact attacks, and boss pressure patterns.
 Difficulty increases naturally within each stage and rises again in Stage 2.
 
-Both stages default to ten minutes. Admin controls can independently set either
+Both stages default to three minutes. Admin controls can independently set either
 stage from 60 to 1,200 seconds and scale the campaign difficulty ramp.
 
 ---
@@ -148,7 +151,7 @@ compact build-crafting puzzle:
 2. Collect XP gems and trigger paused level-up choices.
 3. Add weapons, raise ranks, equip supports, or take recovery and currency.
 4. Build up to six active weapons and four supports.
-5. Fuse a rank-10 base weapon with its matching support item.
+5. Find a rare musical chest to fuse a ready rank-10 weapon and support recipe.
 6. Carry the completed build into the Orbit Line and finish the campaign.
 
 ### 16 base weapons
@@ -165,9 +168,11 @@ laser-harp beams span seven firing behaviours.
 
 ### 8 supports · 8 legendary fusions
 
-Supports strengthen the live build and complete evolution recipes. A fusion
-consumes both ingredients, replaces the exact firing emitter, and reopens
-support and weapon capacity.
+Supports strengthen the live build and complete evolution recipes. Level-up
+cards cannot evolve weapons: a rare musical chest rolls one, three, or five
+automatic legal rewards and prioritizes any ready fusions. A fusion consumes
+both ingredients, replaces the exact firing emitter, and reopens support and
+weapon capacity.
 
 <p align="center">
   <img src="groove-bound/assets/generated/support-icons-atlas.png" alt="Eight Groove Bound support item icons" width="49%">
@@ -250,17 +255,17 @@ assist, deadzone, and conflict-checked keyboard rebinding controls.
 
 | System | Current build |
 |---|---|
-| Campaign | Illustrated prologue, character intros, Stage 1 transition, Stage 2 transition, and ending |
-| Run structure | Two ten-minute stages with build carryover and partial recovery |
+| Campaign | Filename-mapped videos with illustrated fallbacks across the two-stage story |
+| Run structure | Two three-minute stages with build carryover and partial recovery |
 | Characters | Joe and Lyra Vex with different stats, traits, weapons, and animation states |
 | Arsenal | 16 base weapons, seven firing patterns, six weapon slots |
 | Build crafting | Eight supports, four support slots, eight rank-10 fusion recipes |
 | Stage 2 roster | Four normal enemies, two elites, one midboss, and one final boss |
 | Combat feedback | Unique projectiles, hit sparks, explosions, death flicker, knockback, hurt reactions |
-| Progression | XP gems, randomized three-card choices, reroll, skip reward, and fusions |
+| Progression | Four XP-gem tiers, magnetized consumables, randomized level-up cards, and chest-only fusions |
 | Interface | Larger type, clearer hierarchy, campaign HUD, Arsenal Database, Admin dashboard |
 | Input | Keyboard, mouse, and gamepad menus with persistent options |
-| Validation | 185 headless tests, Luacheck, content validation, package checks, and CI boot smoke |
+| Validation | 241 headless tests, Luacheck, content validation, package checks, video playback smoke, and CI boot smoke |
 
 ### Admin testing controls
 

@@ -20,13 +20,28 @@ function Pickup:reset(opts)
   self.radius = 14
   self.dead = false
   self.phase = opts.phase or 0
+  self.magnetized = false
 end
 
-function Pickup:update(dt, player)
+function Pickup:update(dt, player, pickup_radius, pickup_speed)
+  pickup_radius = pickup_radius or 0
+  pickup_speed = pickup_speed or 0
   self.phase = self.phase + dt * 2.5
   local dx, dy = player.x - self.x, player.y - self.y
+  local distance_sq = dx * dx + dy * dy
+  if self.magnetized or distance_sq <= (pickup_radius + self.radius) ^ 2 then
+    local distance = math.sqrt(distance_sq)
+    if distance > 0.001 then
+      local speed = pickup_speed * (self.magnetized and 2.4
+        or (1 + math.max(0, 1 - distance / pickup_radius)))
+      self.x = self.x + dx / distance * speed * dt
+      self.y = self.y + dy / distance * speed * dt
+      dx, dy = player.x - self.x, player.y - self.y
+      distance_sq = dx * dx + dy * dy
+    end
+  end
   local collect = player.radius + self.radius + 4
-  if dx * dx + dy * dy <= collect * collect then
+  if distance_sq <= collect * collect then
     self.dead = true
     return true
   end

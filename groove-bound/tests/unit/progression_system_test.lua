@@ -191,11 +191,28 @@ T["new supports change damage fire rate amount magnet health and guard"] = funct
   H.near(magnet_progression:passive_bonus("magnet"), 0.20)
 end
 
-T["a rank-ten weapon and its paired support expose a fusion card"] = function()
+T["a ready fusion is reserved for chests and never enters a level-up offer"] = function()
   local progression = fresh(10)
   progression:apply({ kind = "passive_add", id = "breath_control" })
   local offer = progression:create_offer()
-  H.is_true(find(offer, "evolution", "kazoo_studio") ~= nil)
+  H.is_nil(find(offer, "evolution", "kazoo_studio"))
+  H.eq(progression:eligible_evolutions()[1], "kazoo_studio")
+end
+
+T["chest rewards prioritize ready evolutions then rebuild legal item pools"] = function()
+  local progression, inventory = fresh(10, 8080)
+  progression:apply({ kind = "passive_add", id = "breath_control" })
+  local rewards = progression:claim_chest(3)
+  H.eq(#rewards, 3)
+  H.eq(rewards[1].kind, "evolution")
+  H.eq(rewards[1].id, "kazoo_studio")
+  H.eq(inventory:get_slot(1).id, "brass_barrage")
+  H.is_true(rewards[2].kind == "weapon_add"
+    or rewards[2].kind == "weapon_level"
+    or rewards[2].kind == "passive_add"
+    or rewards[2].kind == "passive_level")
+  H.eq(progression.chests_opened, 1)
+  H.eq(progression.chest_rewards_claimed, 3)
 end
 
 T["evolution progress reports every missing ingredient explicitly"] = function()
@@ -223,7 +240,7 @@ T["fusion readiness raises an explicit player-facing notification"] = function()
   progression:update(0.1)
   H.is_true(progression.evolution_notice > 0)
   H.is_true(
-    progression.evolution_notice_text:find("YOU CAN EVOLVE NOW", 1, true) ~= nil)
+    progression.evolution_notice_text:find("CHEST READY", 1, true) ~= nil)
 end
 
 T["evolution replaces the exact firing slot and preserves shots in flight"] = function()

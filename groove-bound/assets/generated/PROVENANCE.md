@@ -312,3 +312,27 @@ cell layout were inspected after key removal; the XP atlas received a small
 key-spill cleanup on its navy outlines. The original generator outputs remain
 in Codex's generated-image store rather than the release package. No third-party
 images, typography, watermarks or external copyrighted assets were introduced.
+
+## Musical chest and stage-floor atlases
+
+**Generated:** 2026-08-09 with OpenAI image generation in Codex built-in mode
+
+| Runtime file | Grid / role |
+|---|---|
+| `campaign/musical-chest-atlas.png` (1256×1256 RGBA) | 4×2 seamless eight-frame rare chest loop |
+| `campaign/backbeat-floor-atlas.png` (1254×1254 RGB) | 2×2 subtle urban grime floor variations |
+| `campaign/orbit-floor-atlas.png` (1254×1254 RGB) | 2×2 cosmic dust and micro-crystal floor variations |
+
+The chest prompt specified one consistent purple-and-gold musical road-case
+and amplifier silhouette across eight frames: closed idle, anticipation,
+equalizer glow, opening, music-note light, peak flash, settle, and a visual
+bridge back to the first frame. It was generated on a flat green chroma key,
+converted with the bundled soft-matte/despill helper, resized to exact 4×2 cell
+dimensions, and visually inspected with alpha intact.
+
+The Backbeat prompt specified low-contrast charcoal asphalt and worn concrete
+with restrained violet grime, fine cracks and scuffs. The Orbit prompt specified
+near-black navy mineral dust with sparse cyan and amethyst micro-crystals. Both
+requested four orthographic, text-free, grid-free, evenly lit variations with
+no large props or dramatic effects so combat remains readable. The opaque
+atlases and their cell dimensions were validated before runtime integration.

@@ -27,6 +27,7 @@ function MusicDirector:init(catalog, opts)
   self.last_sting_serial = nil
   self.transition = "steady"
   self.focused = true
+  self.suspended = false
 end
 
 function MusicDirector:_new_entry(cue, fade)
@@ -48,6 +49,7 @@ function MusicDirector:_apply_gain(entry)
   if not entry then return end
   local value = self.master_volume * self.music_volume
     * (entry.cue.gain or 1) * (entry.fade or 1) * (entry.duck or 1)
+  if self.suspended then value = 0 end
   entry.applied_gain = value
   entry.source:setVolume(value)
 end
@@ -219,6 +221,15 @@ function MusicDirector:set_volume(master, music)
   self:_apply_gain(self.sting)
 end
 
+function MusicDirector:set_suspended(value)
+  self.suspended = value == true
+  self:_apply_gain(self.current)
+  self:_apply_gain(self.outgoing)
+  for _, entry in ipairs(self.preserved_stack) do self:_apply_gain(entry) end
+  self:_apply_gain(self.overlay)
+  self:_apply_gain(self.sting)
+end
+
 function MusicDirector:_owned_entries()
   local entries = {}
   for _, entry in pairs({
@@ -266,6 +277,7 @@ function MusicDirector:snapshot()
     preserved_cue = self.preserved and self.preserved.cue.id or nil,
     pending_cue = self.pending and self.pending.cue or nil,
     sting = self.sting and self.sting.cue.id or nil,
+    suspended = self.suspended,
   }
 end
 

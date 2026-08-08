@@ -3,6 +3,7 @@ local Enemy = require("src.game.entities.enemy")
 local Projectile = require("src.game.entities.projectile")
 local XPGem = require("src.game.entities.xp_gem")
 local Pickup = require("src.game.entities.pickup")
+local RewardChest = require("src.game.entities.reward_chest")
 
 local T = {}
 
@@ -99,6 +100,22 @@ T["rare pickups collect on player contact"] = function()
   pickup:reset({ kind = "heal", x = 20, y = 20 })
   H.is_true(pickup:update(0, { x = 20, y = 20, radius = 8 }))
   H.is_true(pickup.dead)
+end
+
+T["consumables use gem attraction while reward chests never magnetize"] = function()
+  local player = { x = 10, y = 10, radius = 8 }
+  local pickup = Pickup()
+  pickup:reset({ kind = "speed", x = 90, y = 90 })
+  pickup.magnetized = true
+  H.is_false(pickup:update(0.1, player, 1, 40))
+  H.is_true(pickup.x < 90 and pickup.y < 90)
+
+  local chest = RewardChest()
+  chest:reset({ x = 90, y = 90 })
+  chest:update(0.1, player)
+  H.eq(chest.x, 90)
+  H.eq(chest.y, 90)
+  H.is_nil(chest.magnetized)
 end
 
 T["enemies chase, respect arena bounds, and die at zero HP"] = function()

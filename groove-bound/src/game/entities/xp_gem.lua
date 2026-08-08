@@ -42,15 +42,6 @@ end
 
 function XPGem:draw()
   local pulse = 0.85 + math.sin(self.phase) * 0.12
-  local aura = {
-    { 0.25, 1.0, 0.62 },
-    { 0.25, 0.78, 1.0 },
-    { 1.0, 0.68, 0.18 },
-    { 0.96, 0.26, 1.0 },
-  }
-  local color = aura[self.tier]
-  love.graphics.setColor(color[1], color[2], color[3], 0.20)
-  love.graphics.circle("fill", self.x, self.y, (12 + self.tier * 3) * pulse)
   if self.assets and self.assets.draw_xp_gem then
     self.assets:draw_xp_gem(
       self.tier, self.x, self.y, (31 + self.tier * 7) * pulse,

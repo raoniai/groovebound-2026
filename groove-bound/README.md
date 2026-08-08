@@ -14,6 +14,9 @@ public release.
 
 The current build now includes:
 
+- supplied filename-mapped prologue and Joe-intro videos with click-to-pause,
+  Skip, final-frame hold, Next and Replay; every scene retains its illustrated
+  fallback;
 - an illustrated prologue, character intros, inter-stage scene, and ending with
   word-by-word dialogue that waits for confirmation, plus large left-side
   Joe/Lyra portraits whose heads break above the dialogue panel while their
@@ -29,7 +32,8 @@ The current build now includes:
   arena elements;
 - 16 base weapons, seven distinct firing patterns, auto-targeting and
   auto-fire;
-- pooled projectiles, enemies, four visual XP-gem tiers, and rare consumables;
+- pooled projectiles, enemies, four sprite-only XP-gem tiers, magnetized rare
+  consumables, and non-magnetizable musical reward chests;
 - damage, contact damage, invulnerability frames, death, and drops;
 - difficulty-scaled gem showers that preserve each enemy's exact XP value,
   gem attraction, multi-threshold XP and a paused three-card choice every level;
@@ -39,8 +43,10 @@ The current build now includes:
 - illustrated new-weapon, owned-rank, passive, heal, guard and coin decisions;
 - one reroll and a bounded skip reward;
 - four support slots and eight live stat-enhancing support items;
-- eight rank-10 weapon + support fusion recipes;
-- a visible evolution-ready notification and illustrated fusion card;
+- eight rank-10 weapon + support fusion recipes that can only resolve through chests;
+- automatic one-, three-, or five-reward chest rolls that prioritize every
+  currently eligible evolution before rechecking legal weapon/passive rewards;
+- a visible chest-ready evolution notification and high-contrast pause guide;
 - optional on-card evolution recipes and a missing-requirements guide,
   controlled from Admin → Rewards;
 - an atomic fusion transaction that consumes both ingredients, replaces the
@@ -66,14 +72,15 @@ The current build now includes:
   persistent corner mute, PlayStation guidance, keyboard rebinding and seed copy;
 - deduplicated controller/keyboard navigation and PlayStation Options pause
   fallback across standardized Start/Back and common raw controller mappings;
-- illustrated rare healing, XP magnet, damage, defense and speed drops; delayed passive
+- illustrated, magnetizable healing, XP magnet, damage, defense and speed drops; delayed passive
   health regeneration; timed-buff HUD readouts; and survivable boss overtime;
 - a `Tab` toggle for the debug overlay;
-- legacy floor art and SFX combined with campaign sprite, projectile, combat
+- generated urban-grime and cosmic-dust/crystal floor variations that replace
+  the old gameplay grid, plus legacy SFX and campaign sprite, projectile, combat
   effect, environment, portrait, and cutscene atlases.
 
-The next production step is canon and balance refinement, supplied cinematic
-video/audio, and the BeatClock groove layer.
+The next production step is canon and balance refinement, remaining cinematic
+video/audio scenes, and the BeatClock groove layer.
 
 ## Latest generated visuals
 
@@ -94,6 +101,15 @@ Rare consumables now use a dedicated transparent runtime atlas:
 Enemy difficulty now maps to four readable XP reward tiers:
 
 ![Four XP gem tiers](assets/generated/campaign/xp-gems-atlas.png)
+
+Rare musical chests animate through an eight-frame transparent loop, while the
+two arenas use separate low-contrast four-variation floor atlases:
+
+![Musical reward chest animation atlas](assets/generated/campaign/musical-chest-atlas.png)
+
+![Backbeat urban grime floor variations](assets/generated/campaign/backbeat-floor-atlas.png)
+
+![Orbit Line cosmic dust and crystal floor variations](assets/generated/campaign/orbit-floor-atlas.png)
 
 ## Requirements
 
@@ -137,9 +153,10 @@ BeatClock.
 
 During an active run the admin panel also exposes **Grant Level**,
 **Prepare Evolution**, **Rank-1 Evolve**, **Spawn Boss**, and **Clear Stage**
-tools. Prepare Evolution creates a legal rank-10 recipe and opens the normal
-fusion choice. Rank-1 Evolve is an explicit, toggle-gated Admin-only shortcut;
-normal progression still requires rank 10.
+tools. Prepare Evolution creates a legal rank-10 recipe that is ready for the
+next chest; normal level-up offers never contain evolution cards. Rank-1 Evolve
+is an explicit, toggle-gated Admin-only shortcut; normal progression still
+requires rank 10 and a chest.
 
 See:
 

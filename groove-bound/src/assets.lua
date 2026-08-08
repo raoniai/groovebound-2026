@@ -167,6 +167,23 @@ function Assets.load()
   self.pickup_quads,
     self.pickup_cell_w,
     self.pickup_cell_h = grid_quads(self.pickups, 4, 2)
+  self.reward_chest = image(
+    "assets/generated/campaign/musical-chest-atlas.png")
+  self.reward_chest_quads,
+    self.reward_chest_cell_w,
+    self.reward_chest_cell_h = grid_quads(self.reward_chest, 4, 2)
+  self.floor_surfaces = {
+    backbeat = image("assets/generated/campaign/backbeat-floor-atlas.png"),
+    orbit = image("assets/generated/campaign/orbit-floor-atlas.png"),
+  }
+  self.floor_surface_quads = {}
+  self.floor_surface_cell_w = {}
+  self.floor_surface_cell_h = {}
+  for id, atlas in pairs(self.floor_surfaces) do
+    self.floor_surface_quads[id],
+      self.floor_surface_cell_w[id],
+      self.floor_surface_cell_h[id] = grid_quads(atlas, 2, 2)
+  end
   self.gameover = image("assets/legacy/images/ui/gameover.png")
   self.icon = image("assets/generated/campaign/app-icon.png")
   self.weapon_icons = image("assets/generated/weapon-icons-atlas.png")
@@ -417,6 +434,21 @@ function Assets:draw_xp_gem(tier, x, y, size, opts)
     self.xp_gems, self.xp_gem_quads[row][col], x, y,
     opts.rotation or 0, scale, scale,
     self.xp_gem_cell_w / 2, self.xp_gem_cell_h / 2)
+  return true
+end
+
+function Assets:draw_reward_chest(frame, x, y, size, opts)
+  frame = math.max(1, math.min(8, frame or 1))
+  opts = opts or {}
+  local col = (frame - 1) % 4 + 1
+  local row = math.floor((frame - 1) / 4) + 1
+  local scale = size / math.max(
+    self.reward_chest_cell_w, self.reward_chest_cell_h)
+  love.graphics.setColor(opts.color or { 1, 1, 1, 1 })
+  love.graphics.draw(
+    self.reward_chest, self.reward_chest_quads[row][col], x, y,
+    opts.rotation or 0, scale, scale,
+    self.reward_chest_cell_w / 2, self.reward_chest_cell_h / 2)
   return true
 end
 

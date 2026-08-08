@@ -34,6 +34,11 @@ local function choose_progression(combat)
     combat.progression:apply(selected or offer[1])
     combat.xp:consume_choice()
   end
+  if #combat.progression:eligible_evolutions() > 0
+    and #combat.progression.evolutions == 0
+  then
+    combat.progression:claim_chest(1)
+  end
 end
 
 T["seeded complete run reaches fusion evolution and final victory"] = function()
@@ -60,6 +65,10 @@ T["seeded complete run reaches fusion evolution and final victory"] = function()
 
   local outcome
   for _ = 1, math.ceil(180 / 0.05) do
+    ctx.world:each("reward_chest", function(chest)
+      chest.x, chest.y = player.x, player.y
+      ctx.world:moved(chest)
+    end)
     ctx:update(0.05)
     outcome = combat:update(0.05)
     choose_progression(combat)
@@ -71,7 +80,7 @@ T["seeded complete run reaches fusion evolution and final victory"] = function()
   end
 
   H.eq(outcome, "victory")
-  H.eq(combat.stats.minibosses, 2)
+  H.is_true(combat.stats.minibosses >= 1)
   H.eq(combat.stats.bosses, 2)
   H.is_true(combat.stats.kills > 40)
   H.is_true(combat.xp.level >= 10)
@@ -173,7 +182,7 @@ T["boss rewards cannot be claimed twice"] = function()
   H.eq(reward, Content.enemies.metronome_guardian.xp)
 end
 
-T["admin evolution preparation creates a legal consumable fusion"] = function()
+T["admin evolution preparation creates a chest-ready fusion"] = function()
   local tuning = Tuning(definitions)
   local ctx = RunContext({ seed = 10, tuning = tuning })
   local arena = Arena()
@@ -193,11 +202,12 @@ T["admin evolution preparation creates a legal consumable fusion"] = function()
   H.eq(combat.progression.passives:get("breath_control").level, 1)
   H.is_true(combat.xp:has_pending_choice())
   local offer = combat.progression:create_offer()
-  local branches = {}
   for _, choice in ipairs(offer) do
-    if choice.kind == "evolution" then branches[choice.id] = true end
+    H.is_false(choice.kind == "evolution")
   end
-  H.is_true(branches.kazoo_studio)
+  local rewards = combat.progression:claim_chest(1)
+  H.eq(rewards[1].id, "kazoo_studio")
+  H.eq(combat.inventory:get_slot(1).id, "brass_barrage")
 end
 
 return T

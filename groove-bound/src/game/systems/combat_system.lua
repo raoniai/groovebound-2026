@@ -7,6 +7,7 @@ local Enemy = require("src.game.entities.enemy")
 local EnemyProjectile = require("src.game.entities.enemy_projectile")
 local Projectile = require("src.game.entities.projectile")
 local Pickup = require("src.game.entities.pickup")
+local RewardChest = require("src.game.entities.reward_chest")
 local XPGem = require("src.game.entities.xp_gem")
 local SpawnDirector = require("src.game.systems.spawn_director")
 local VFXSystem = require("src.game.systems.vfx_system")
@@ -58,6 +59,7 @@ function CombatSystem:init(opts)
   self.projectile_pool = Pool(function() return Projectile() end)
   self.gem_pool = Pool(function() return XPGem() end)
   self.pickup_pool = Pool(function() return Pickup() end)
+  self.reward_chest_pool = Pool(function() return RewardChest() end)
   self.vfx = VFXSystem(self.assets)
 
   self.inventory = WeaponInventory(self.content)
@@ -93,6 +95,8 @@ function CombatSystem:init(opts)
     peak_enemies = 0,
     peak_projectiles = 0,
     peak_gems = 0,
+    chests_opened = 0,
+    chest_rewards = 0,
     score = 0,
     combo = 0,
     max_combo = 0,
@@ -172,6 +176,7 @@ function CombatSystem:begin_stage(index, arena, initial)
     self.ctx.world:each("enemy_projectile", function(entity) entity.dead = true end)
     self.ctx.world:each("xp_gem", function(entity) entity.dead = true end)
     self.ctx.world:each("pickup", function(entity) entity.dead = true end)
+    self.ctx.world:each("reward_chest", function(entity) entity.dead = true end)
     self:_release_removed()
     local cx, cy = self.arena:center()
     self.player.x, self.player.y = cx, cy
@@ -396,6 +401,7 @@ function CombatSystem:_kill_enemy(enemy)
     self.ctx.world:add("xp_gem", gem)
   end
   self:_try_spawn_rare_pickup(enemy)
+  if not enemy.suppress_reward_chest then self:_try_spawn_reward_chest(enemy) end
   self.vfx:spawn(
     "explosion", enemy.x, enemy.y,
     {
@@ -407,10 +413,17 @@ function CombatSystem:_kill_enemy(enemy)
 end
 
 function CombatSystem:_try_spawn_rare_pickup(enemy)
-  if enemy.definition.boss_type == "final" then return nil end
-  local chance = enemy.definition.boss_type == "miniboss" and 0.10 or 0.0125
+  local chance = enemy.definition.boss_type == "final" and 0.35
+    or enemy.definition.boss_type == "miniboss" and 0.16
+    or enemy.definition.elite and 0.055
+    or 0.018
   if not self.ctx.rng.loot:chance(chance) then return nil end
-  local kind = self.ctx.rng.loot:pick({ "heal", "magnet", "damage", "defense", "speed" })
+  local roll = self.ctx.rng.loot:random()
+  local kind = roll < 0.46 and "heal"
+    or roll < 0.60 and "magnet"
+    or roll < 0.74 and "damage"
+    or roll < 0.87 and "defense"
+    or "speed"
   local pickup = self.pickup_pool:acquire({
     kind = kind,
     assets = self.assets,
@@ -421,6 +434,41 @@ function CombatSystem:_try_spawn_rare_pickup(enemy)
   return self.ctx.world:add("pickup", pickup)
 end
 
+function CombatSystem:_try_spawn_reward_chest(enemy)
+  local chance = enemy.definition.boss_type == "final" and 0.45
+    or enemy.definition.boss_type == "miniboss" and 0.18
+    or enemy.definition.elite and 0.055
+    or 0.0005
+  if not self.ctx.rng.loot:chance(chance) then return nil end
+  local chest = self.reward_chest_pool:acquire({
+    assets = self.assets,
+    x = enemy.x,
+    y = enemy.y,
+    phase = self.ctx.rng.vfx:uniform(0, math.pi * 2),
+  })
+  self.wave_notice = "RARE DROP  •  MUSICAL CHEST"
+  self.wave_notice_time = 3.5
+  return self.ctx.world:add("reward_chest", chest)
+end
+
+function CombatSystem:_roll_chest_reward_count()
+  local roll = self.ctx.rng.loot:random()
+  if roll < 0.03 then return 5 end
+  if roll < 0.20 then return 3 end
+  return 1
+end
+
+function CombatSystem:_open_reward_chest()
+  local rolled = self:_roll_chest_reward_count()
+  local rewards = self.progression:claim_chest(rolled)
+  self.stats.chests_opened = self.stats.chests_opened + 1
+  self.stats.chest_rewards = self.stats.chest_rewards + #rewards
+  self.pickup_notice = 6
+  self.pickup_notice_text = "CHEST ROLL ×" .. rolled
+    .. "  •  " .. #rewards .. " REWARD" .. (#rewards == 1 and "" or "S")
+  if self.assets then self.assets:play("level_up", 0.12) end
+end
+
 function CombatSystem:_apply_pickup(kind)
   if kind == "heal" then
     local amount = self.player.max_hp * 0.25
@@ -428,7 +476,8 @@ function CombatSystem:_apply_pickup(kind)
     self.pickup_notice_text = "RARE DROP  •  +25% HEALTH"
   elseif kind == "magnet" then
     self.ctx.world:each("xp_gem", function(gem) gem.magnetized = true end)
-    self.pickup_notice_text = "RARE DROP  •  ALL XP MAGNETIZED"
+    self.ctx.world:each("pickup", function(pickup) pickup.magnetized = true end)
+    self.pickup_notice_text = "RARE DROP  •  XP + ITEMS MAGNETIZED"
   else
     self.buffs[kind] = 15
     local labels = {
@@ -443,10 +492,19 @@ function CombatSystem:_apply_pickup(kind)
 end
 
 function CombatSystem:_update_pickups(dt)
+  local attraction = self:pickup_snapshot()
   self.ctx.world:each("pickup", function(pickup)
-    if pickup:update(dt, self.player) then
+    if pickup:update(dt, self.player, attraction.radius, attraction.speed) then
       self:_apply_pickup(pickup.pickup_kind)
+    else
+      self.ctx.world:moved(pickup)
     end
+  end)
+end
+
+function CombatSystem:_update_reward_chests(dt)
+  self.ctx.world:each("reward_chest", function(chest)
+    if chest:update(dt, self.player) then self:_open_reward_chest() end
   end)
 end
 
@@ -679,6 +737,9 @@ function CombatSystem:_release_removed()
   end
   for _, gem in ipairs(removed.xp_gem or {}) do self.gem_pool:release(gem) end
   for _, pickup in ipairs(removed.pickup or {}) do self.pickup_pool:release(pickup) end
+  for _, chest in ipairs(removed.reward_chest or {}) do
+    self.reward_chest_pool:release(chest)
+  end
 end
 
 function CombatSystem:update(dt)
@@ -698,6 +759,7 @@ function CombatSystem:update(dt)
   self:_update_enemy_projectiles(dt)
   self:_update_gems(dt)
   self:_update_pickups(dt)
+  self:_update_reward_chests(dt)
   self.vfx:update(dt)
   self.xp:update(dt)
   self.progression:update(dt)
@@ -712,7 +774,10 @@ function CombatSystem:update(dt)
   self.frame_time_ms = (os.clock() - frame_started) * 1000
 
   if self.player.dead then return "defeat" end
-  if self.final_boss_dead and not self.stage_clear_reported then
+  if self.final_boss_dead
+    and self.ctx.world:count("reward_chest") == 0
+    and not self.stage_clear_reported
+  then
     self.stage_clear_reported = true
     if self.stage_index < #self.stages then return "stage_clear" end
     return "victory"
@@ -775,6 +840,7 @@ function CombatSystem:admin_clear_stage()
   if not final_enemy then return nil, "final_boss_unavailable" end
   final_enemy.hp = 0
   final_enemy.dead = true
+  final_enemy.suppress_reward_chest = true
   self:_kill_enemy(final_enemy)
   return true
 end

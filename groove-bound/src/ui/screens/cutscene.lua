@@ -6,6 +6,8 @@ local Hints = require("src.ui.controller_hints")
 local CutsceneScreen = class()
 CutsceneScreen.kind = "cutscene"
 
+local VIDEO_DIRECTORY = "assets/video/runtime"
+
 local speaker_characters = {
   JOE = "joe",
   LYRA = "lyra",
@@ -17,6 +19,11 @@ local function words(text)
   return result
 end
 
+local function contains(rect, x, y)
+  return rect and x >= rect.x and y >= rect.y
+    and x <= rect.x + rect.w and y <= rect.y + rect.h
+end
+
 function CutsceneScreen:init(app, scene, opts)
   self.app = app
   self.scene = assert(scene)
@@ -25,16 +32,107 @@ function CutsceneScreen:init(app, scene, opts)
   self.elapsed = 0
   self.fade = 1
   self.skip_armed = 0
+  self.video = nil
+  self.video_source = nil
+  self.video_paused = false
+  self.video_ended = false
+  self.video_duration = 0
+  self.video_rect = nil
+  self.video_skip_rect = nil
+  self.video_next_rect = nil
+  self.video_replay_rect = nil
 end
 
 function CutsceneScreen:enter()
   self.app.log.info("state", "Cutscene entered: " .. self.scene.id)
+  self:_load_video()
+end
+
+function CutsceneScreen:exit()
+  if self.video then self.video:pause() end
+  if self.video_source and self.video_source.stop then self.video_source:stop() end
+  if self.app.music and self.app.music.set_suspended then
+    self.app.music:set_suspended(false)
+  end
 end
 
 function CutsceneScreen:update(dt)
+  if self.video then
+    if self.video_source then
+      local options = self.app.profile and self.app.profile.options or {}
+      self.video_source:setVolume(options.master_volume or 1)
+    end
+    if not self.video_paused and not self.video_ended then
+      local at_end = self.video_duration > 0
+        and self.video:tell() >= self.video_duration - 0.08
+      if at_end or (self.elapsed > 0.35 and not self.video:isPlaying()) then
+        self.video_ended = true
+        self.video_paused = false
+      end
+    end
+  end
   self.elapsed = self.elapsed + dt
   self.fade = math.max(0, self.fade - dt * 2.8)
   self.skip_armed = math.max(0, self.skip_armed - dt)
+end
+
+function CutsceneScreen:_video_path()
+  if not love or not love.filesystem or not love.filesystem.getDirectoryItems then
+    return nil
+  end
+  local info = love.filesystem.getInfo(VIDEO_DIRECTORY, "directory")
+  if not info then return nil end
+  for _, filename in ipairs(love.filesystem.getDirectoryItems(VIDEO_DIRECTORY)) do
+    local mapped = filename:match("^cutscene%-%d+%-(.+)%.ogv$")
+    if mapped and (mapped == self.scene.id
+      or mapped:gsub("%-", "_") == self.scene.id)
+    then
+      return VIDEO_DIRECTORY .. "/" .. filename
+    end
+  end
+  return nil
+end
+
+function CutsceneScreen:_load_video()
+  local path = self:_video_path()
+  if not path or not love.graphics.newVideo then return false end
+  local ok, video = pcall(love.graphics.newVideo, path, { audio = true })
+  if not ok or not video then
+    self.app.log.info("state", "Video fallback for " .. self.scene.id)
+    return false
+  end
+  self.video = video
+  self.video_source = video:getSource()
+  self.video_duration = self.video_source and self.video_source:getDuration() or 0
+  if self.video_source then
+    local options = self.app.profile and self.app.profile.options or {}
+    self.video_source:setVolume(options.master_volume or 1)
+  end
+  self.video:play()
+  if self.app.music and self.app.music.set_suspended then
+    self.app.music:set_suspended(true)
+  end
+  return true
+end
+
+function CutsceneScreen:_toggle_video()
+  if not self.video or self.video_ended then return end
+  if self.video_paused then
+    self.video:play()
+    self.video_paused = false
+  else
+    self.video:pause()
+    self.video_paused = true
+  end
+end
+
+function CutsceneScreen:_replay_video()
+  if not self.video then return end
+  self.video:rewind()
+  self.video:play()
+  self.elapsed = 0
+  self.video_ended = false
+  self.video_paused = false
 end
 
 function CutsceneScreen:_finish()
@@ -101,8 +199,8 @@ end
 function CutsceneScreen:dialogue_layout(w, h)
   local panel_w = math.min(900, w - 120)
   local panel_x = (w - panel_w) / 2
-  local panel_y = h * 0.24
   local panel_h = math.min(250, h * 0.31)
+  local panel_y = h - panel_h - 74
   local portrait_w = math.min(340, panel_w * 0.38)
   return {
     panel_x = panel_x,
@@ -130,8 +228,80 @@ function CutsceneScreen:talking_pose(w, h)
   }
 end
 
+function CutsceneScreen:_draw_video(w, h)
+  love.graphics.setColor(0, 0, 0, 1)
+  love.graphics.rectangle("fill", 0, 0, w, h)
+  local video_w, video_h = self.video:getDimensions()
+  local scale = math.min(w / video_w, h / video_h)
+  local draw_w, draw_h = video_w * scale, video_h * scale
+  local draw_x, draw_y = (w - draw_w) / 2, (h - draw_h) / 2
+  self.video_rect = { x = draw_x, y = draw_y, w = draw_w, h = draw_h }
+  love.graphics.setColor(1, 1, 1, 1)
+  love.graphics.draw(self.video, draw_x, draw_y, 0, scale, scale)
+
+  love.graphics.setFont(Fonts.get(17))
+  if self.video_ended then
+    love.graphics.setColor(0.01, 0.005, 0.04, 0.78)
+    love.graphics.rectangle("fill", 0, h - 112, w, 112)
+    local button_w, button_h, gap = 190, 48, 16
+    local start_x = (w - button_w * 2 - gap) / 2
+    self.video_replay_rect = {
+      x = start_x, y = h - 82, w = button_w, h = button_h,
+    }
+    self.video_next_rect = {
+      x = start_x + button_w + gap, y = h - 82, w = button_w, h = button_h,
+    }
+    for _, entry in ipairs({
+      { rect = self.video_replay_rect, label = "REPLAY", color = { 0.30, 0.78, 1.0, 1 } },
+      { rect = self.video_next_rect, label = "NEXT", color = { 1.0, 0.72, 0.20, 1 } },
+    }) do
+      love.graphics.setColor(0.08, 0.04, 0.14, 0.96)
+      love.graphics.rectangle("fill", entry.rect.x, entry.rect.y,
+        entry.rect.w, entry.rect.h, 8, 8)
+      love.graphics.setColor(entry.color)
+      love.graphics.setLineWidth(2)
+      love.graphics.rectangle("line", entry.rect.x, entry.rect.y,
+        entry.rect.w, entry.rect.h, 8, 8)
+      love.graphics.printf(entry.label, entry.rect.x,
+        entry.rect.y + 14, entry.rect.w, "center")
+    end
+    love.graphics.setLineWidth(1)
+    love.graphics.setFont(Fonts.get(12))
+    love.graphics.setColor(0.72, 0.70, 0.82, 0.82)
+    love.graphics.printf(
+      "Click outside the buttons to continue",
+      0, h - 106, w, "center")
+  else
+    self.video_replay_rect = nil
+    self.video_next_rect = nil
+    self.video_skip_rect = { x = w - 156, y = h - 66, w = 124, h = 42 }
+    love.graphics.setColor(0.03, 0.015, 0.08, 0.88)
+    love.graphics.rectangle("fill", self.video_skip_rect.x,
+      self.video_skip_rect.y, self.video_skip_rect.w,
+      self.video_skip_rect.h, 8, 8)
+    love.graphics.setColor(1.0, 0.72, 0.20, 1)
+    love.graphics.setLineWidth(2)
+    love.graphics.rectangle("line", self.video_skip_rect.x,
+      self.video_skip_rect.y, self.video_skip_rect.w,
+      self.video_skip_rect.h, 8, 8)
+    love.graphics.printf("SKIP", self.video_skip_rect.x,
+      self.video_skip_rect.y + 11, self.video_skip_rect.w, "center")
+    love.graphics.setLineWidth(1)
+    love.graphics.setFont(Fonts.get(13))
+    love.graphics.setColor(0.78, 0.76, 0.86, 0.90)
+    love.graphics.printf(self.video_paused
+      and "PAUSED  •  Click video to continue"
+      or "Click video to pause",
+      24, h - 47, w - 210, "left")
+  end
+end
+
 function CutsceneScreen:draw()
   local w, h = love.graphics.getDimensions()
+  if self.video then
+    self:_draw_video(w, h)
+    return
+  end
   local slide = self.scene.slides[self.index]
   local presentation = self:presentation()
   local draw_w, draw_h = w, h
@@ -162,6 +332,10 @@ function CutsceneScreen:draw()
   love.graphics.setColor(0.02, 0.012, 0.07, 0.78)
   love.graphics.rectangle("fill", panel_x, panel_y, panel_w, panel_h, 14, 14)
 
+  love.graphics.setColor(0.22, 0.90, 1.0, 0.45)
+  love.graphics.setLineWidth(2)
+  love.graphics.rectangle("line", panel_x, panel_y, panel_w, panel_h, 14, 14)
+
   if presentation.character then
     love.graphics.setColor(0.12, 0.08, 0.22, 0.64)
     love.graphics.rectangle(
@@ -186,10 +360,6 @@ function CutsceneScreen:draw()
       love.graphics.setScissor()
     end
   end
-
-  love.graphics.setColor(0.22, 0.90, 1.0, 0.45)
-  love.graphics.setLineWidth(2)
-  love.graphics.rectangle("line", panel_x, panel_y, panel_w, panel_h, 14, 14)
 
   love.graphics.setFont(Fonts.get(17))
   love.graphics.setColor(0.72, 0.70, 0.84, 1)
@@ -255,6 +425,19 @@ function CutsceneScreen:draw()
 end
 
 function CutsceneScreen:keypressed(key)
+  if self.video then
+    if self.video_ended then
+      if key == "x" then self:_replay_video() return true end
+      if key == "return" or key == "space" or key == "right" then
+        self:_finish()
+        return true
+      end
+    elseif key == "return" or key == "space" then
+      self:_toggle_video()
+      return true
+    end
+    return false
+  end
   if key == "return" or key == "space" or key == "right" or key == "x" then
     self:_confirm()
     return true
@@ -272,12 +455,39 @@ function CutsceneScreen:keypressed(key)
   return false
 end
 
-function CutsceneScreen:mousepressed(_, _, button)
+function CutsceneScreen:mousepressed(x, y, button)
+  if button ~= 1 then return false end
+  if self.video then
+    if self.video_ended then
+      if contains(self.video_replay_rect, x, y) then
+        self:_replay_video()
+      else
+        self:_finish()
+      end
+      return true
+    end
+    if contains(self.video_skip_rect, x, y) then
+      self:_finish()
+    elseif contains(self.video_rect, x, y) then
+      self:_toggle_video()
+    end
+    return true
+  end
   if button == 1 then self:_confirm() return true end
   return false
 end
 
 function CutsceneScreen:gamepadpressed(_, button)
+  if self.video then
+    if self.video_ended then
+      if button == "x" then self:_replay_video() return true end
+      if button == "a" then self:_finish() return true end
+    elseif button == "a" then
+      self:_toggle_video()
+      return true
+    end
+    return false
+  end
   if button == "a" then return self:keypressed("return") end
   if button == "x" then return self:keypressed("left") end
   if button == "b" then return self:keypressed("escape") end

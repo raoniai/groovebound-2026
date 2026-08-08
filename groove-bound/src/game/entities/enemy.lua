@@ -24,6 +24,7 @@ function Enemy:reset(opts)
   self.max_hp = self.hp
   self.dead = false
   self.rewards_claimed = false
+  self.suppress_reward_chest = false
   self.anim_time = 0
   self.anim_frame = 1
   self.anim_row = directions.down

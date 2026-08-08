@@ -56,34 +56,29 @@ local function circle_hits_rect(x, y, radius, rect)
   return dx * dx + dy * dy < radius * radius
 end
 
-local function draw_orbit_floor(arena, stage)
-  local tile = 160
-  local color_a = stage.platform_color_a
-  local color_b = stage.platform_color_b
-  for row = 0, math.ceil(arena.height / tile) - 1 do
-    for column = 0, math.ceil(arena.width / tile) - 1 do
-      love.graphics.setColor((row + column) % 2 == 0 and color_a or color_b)
-      love.graphics.rectangle(
-        "fill", column * tile, row * tile, tile - 2, tile - 2)
+local function draw_floor_surface(arena, style, tint, veil)
+  local atlas = arena.assets and arena.assets.floor_surfaces
+    and arena.assets.floor_surfaces[style]
+  if not atlas then return false end
+  local quads = arena.assets.floor_surface_quads[style]
+  local cell_w = arena.assets.floor_surface_cell_w[style]
+  local cell_h = arena.assets.floor_surface_cell_h[style]
+  local tile_size = 256
+  love.graphics.setColor(tint)
+  for row = 0, math.ceil(arena.height / tile_size) - 1 do
+    for column = 0, math.ceil(arena.width / tile_size) - 1 do
+      local variant = (column * 17 + row * 31 + column * row * 3) % 4
+      local col = variant % 2 + 1
+      local quad_row = math.floor(variant / 2) + 1
+      love.graphics.draw(
+        atlas, quads[quad_row][col],
+        column * tile_size, row * tile_size, 0,
+        (tile_size + 1) / cell_w, (tile_size + 1) / cell_h)
     end
   end
-
-  love.graphics.setColor(stage.rail_color)
-  love.graphics.setLineWidth(6)
-  for _, y in ipairs({ arena.height * 0.28, arena.height * 0.72 }) do
-    love.graphics.line(0, y, arena.width, y)
-    love.graphics.setLineWidth(2)
-    love.graphics.line(0, y + 18, arena.width, y + 18)
-    love.graphics.setLineWidth(6)
-  end
-
-  love.graphics.setColor(stage.star_color)
-  for index = 1, 52 do
-    local x = (index * 347) % arena.width
-    local y = (index * 191) % arena.height
-    love.graphics.circle("fill", x, y, 1 + index % 3)
-  end
-  love.graphics.setLineWidth(1)
+  love.graphics.setColor(veil)
+  love.graphics.rectangle("fill", 0, 0, arena.width, arena.height)
+  return true
 end
 
 function Arena:blocked(x, y, radius)
@@ -105,16 +100,16 @@ function Arena:draw()
   local cfg = settings.arena
   local floor_tint = self.stage.floor_tint or { 0.58, 0.54, 0.66, 0.78 }
   local veil_color = self.stage.veil_color or { 0.08, 0.06, 0.13, 0.42 }
-  local grid_color = self.stage.grid_color or cfg.grid_color
   local environment_atlas = self.stage.environment_atlas or "stage1"
 
   -- Floor.
   love.graphics.setColor(cfg.floor_color)
   love.graphics.rectangle("fill", 0, 0, self.width, self.height)
 
-  if self.stage.floor_style == "orbit" then
-    draw_orbit_floor(self, self.stage)
-  elseif self.assets and self.assets.floor then
+  if not draw_floor_surface(
+    self, self.stage.floor_style or "backbeat", floor_tint, veil_color)
+    and self.assets and self.assets.floor
+  then
     love.graphics.setColor(floor_tint)
     local tile_size = 128
     local columns = math.ceil(self.width / tile_size)
@@ -143,17 +138,6 @@ function Arena:draw()
           atlas = decoration.atlas or environment_atlas,
         })
     end
-  end
-
-  -- Background grid so motion is readable on a flat floor.
-  love.graphics.setColor(
-    grid_color[1], grid_color[2], grid_color[3], grid_color[4] or 0.42)
-  love.graphics.setLineWidth(1)
-  for x = cfg.grid_step, self.width - 1, cfg.grid_step do
-    love.graphics.line(x, 0, x, self.height)
-  end
-  for y = cfg.grid_step, self.height - 1, cfg.grid_step do
-    love.graphics.line(0, y, self.width, y)
   end
 
   if self.assets and self.assets.environment then

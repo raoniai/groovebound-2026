@@ -266,7 +266,7 @@ function LevelUpScreen:_draw_evolution_guide(w, h)
   love.graphics.setFont(Fonts.get(14))
   love.graphics.print(
     "EVOLUTION GUIDE  •  BASE WEAPON R10 + PAIRED SUPPORT"
-      .. "  •  NO CHEST OR TOKEN REQUIRED",
+      .. "  •  MUSICAL CHEST REQUIRED",
     panel_x + 14,
     self.guide_y + 9)
 
@@ -275,16 +275,19 @@ function LevelUpScreen:_draw_evolution_guide(w, h)
     local x = panel_x + 14 + (index - 1) * column_w
     local icon_y = self.guide_y + 70
     self.app.assets:draw_weapon_icon(
-      record.base.icon, x + 18, icon_y, 34)
+      record.base.icon, x + 18, icon_y, 34, { color = record.weapon_ready
+        and { 0.40, 1.0, 0.72, 1 } or { 1.0, 0.72, 0.24, 0.38 } })
     love.graphics.setColor(1.0, 0.76, 0.24, 1)
     love.graphics.setFont(Fonts.get(20))
     love.graphics.print("+", x + 35, icon_y - 12)
     self.app.assets:draw_support_icon(
-      record.support.icon, x + 58, icon_y, 34)
+      record.support.icon, x + 58, icon_y, 34, { color = record.support_ready
+        and { 0.40, 1.0, 0.72, 1 } or { 0.62, 0.60, 0.72, 0.25 } })
     love.graphics.setColor(1.0, 0.76, 0.24, 1)
     love.graphics.print("=", x + 76, icon_y - 12)
     self.app.assets:draw_weapon_icon(
-      record.result.icon, x + 104, icon_y, 38)
+      record.result.icon, x + 104, icon_y, 38, { color = record.eligible
+        and { 1.0, 0.76, 0.24, 1 } or { 0.62, 0.58, 0.72, 0.25 } })
 
     love.graphics.setColor(settings.ui.text_color)
     love.graphics.setFont(Fonts.get(14))
@@ -304,7 +307,7 @@ function LevelUpScreen:_draw_evolution_guide(w, h)
     love.graphics.setFont(Fonts.get(14))
     love.graphics.printf(
       record.eligible
-        and "READY: SELECT THE GOLD FUSION CARD"
+        and "READY: FIND A MUSICAL CHEST"
         or ("MISSING: " .. table.concat(missing, " + ")),
       x + 130,
       self.guide_y + 61,

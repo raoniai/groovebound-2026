@@ -68,9 +68,11 @@ reopens.
 | Vinyl Scratch R10 + Pickup Magnet | Gravity Groove | `gravity_groove` |
 | Synth Wave R10 + Echo Chamber | Neon Crescendo | `neon_crescendo` |
 
-When a recipe becomes legal, the HUD displays **YOU CAN EVOLVE NOW**. The next
-level-up offer prioritizes the fusion card and illustrates the base weapon,
-support, and fused result together.
+When a recipe becomes legal, the HUD displays **CHEST READY**. The pause menu
+illustrates base weapon + support = evolved result, rendering satisfied
+requirements in full colour and missing requirements at reduced opacity. The
+fusion is reserved for the next collected musical chest; ordinary level-up
+offers cannot evolve weapons.
 
 With Admin → Rewards → **Show evolution needs** enabled, every relevant
 weapon/support card names its pairing and the bottom guide reports:
@@ -80,11 +82,11 @@ weapon/support card names its pairing and the bottom guide reports:
 - the evolved result;
 - whether the fusion is ready.
 
-No chest, miniboss token, or additional ingredient is required. Once the base
-weapon is rank 10 and the paired support is owned, the gold fusion card is
-guaranteed at the next level-up.
+A musical chest is required. Once the base weapon is rank 10 and the paired
+support is owned, that fusion takes priority inside the chest's automatic
+one-, three-, or five-reward roll.
 
-Selecting it performs one atomic transaction:
+Resolving it from the chest performs one atomic transaction:
 
 1. verify rank, support, result uniqueness, and live emitter consistency;
 2. replace the base weapon in its exact firing slot;

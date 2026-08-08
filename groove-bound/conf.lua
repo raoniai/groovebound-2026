@@ -15,6 +15,6 @@ function love.conf(t)
 
   -- Modules we do not use yet; disabled to keep startup lean.
   t.modules.physics = false
-  t.modules.video = false
+  t.modules.video = true
   t.modules.touch = false
 end

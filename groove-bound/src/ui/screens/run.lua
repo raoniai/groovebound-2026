@@ -167,6 +167,7 @@ function RunScreen:draw()
   self.arena:draw()
   self.ctx.world:each("xp_gem", function(gem) gem:draw() end)
   self.ctx.world:each("pickup", function(pickup) pickup:draw() end)
+  self.ctx.world:each("reward_chest", function(chest) chest:draw() end)
   self.ctx.world:each("enemy", function(enemy) enemy:draw() end)
   self.ctx.world:each("projectile", function(projectile) projectile:draw() end)
   self.ctx.world:each(
@@ -177,6 +178,7 @@ function RunScreen:draw()
   self.camera:detach()
 
   self.hud:draw()
+  self:_draw_reward_chest_pointer()
   if self.seed_notice > 0 then
     local Fonts = require("src.ui.fonts")
     love.graphics.setFont(Fonts.get(14))
@@ -184,6 +186,43 @@ function RunScreen:draw()
     love.graphics.printf("SEED COPIED", 0, love.graphics.getHeight() - 42,
       love.graphics.getWidth(), "center")
   end
+end
+
+function RunScreen:_draw_reward_chest_pointer()
+  local target, best_distance
+  self.ctx.world:each("reward_chest", function(chest)
+    local dx, dy = chest.x - self.player.x, chest.y - self.player.y
+    local distance = dx * dx + dy * dy
+    if not target or distance < best_distance then
+      target, best_distance = chest, distance
+    end
+  end)
+  if not target then return end
+
+  local w, h = love.graphics.getDimensions()
+  local target_x, target_y = self.camera:world_to_screen(target.x, target.y)
+  local vx, vy = target_x - w / 2, target_y - h / 2
+  if math.abs(vx) + math.abs(vy) < 0.01 then vx, vy = 0, -1 end
+  local margin = 56
+  local x_scale = (w / 2 - margin) / math.max(0.001, math.abs(vx))
+  local y_scale = (h / 2 - margin) / math.max(0.001, math.abs(vy))
+  local scale = math.min(x_scale, y_scale)
+  local x = w / 2 + vx * scale
+  local y = h / 2 + vy * scale
+  local angle = math.atan2(vy, vx)
+  local pulse = 1 + math.sin(self.ctx.time * 5) * 0.08
+
+  love.graphics.setColor(0.025, 0.012, 0.07, 0.90)
+  love.graphics.circle("fill", x, y, 24 * pulse)
+  love.graphics.setColor(1.0, 0.74, 0.20, 0.98)
+  love.graphics.setLineWidth(2)
+  love.graphics.circle("line", x, y, 24 * pulse)
+  love.graphics.push()
+  love.graphics.translate(x, y)
+  love.graphics.rotate(angle)
+  love.graphics.polygon("fill", 18, 0, -5, -10, -1, 0, -5, 10)
+  love.graphics.pop()
+  love.graphics.setLineWidth(1)
 end
 
 function RunScreen:keypressed(key)

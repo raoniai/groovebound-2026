@@ -41,6 +41,8 @@ function ProgressionSystem:init(opts)
   self.upgrade_notice = 0
   self.upgrade_notice_text = nil
   self.last_evolution_signature = ""
+  self.chests_opened = 0
+  self.chest_rewards_claimed = 0
 end
 
 function ProgressionSystem:passive_bonus(stat)
@@ -111,7 +113,7 @@ function ProgressionSystem:update(dt)
     local recipe = self.content.evolutions[eligible[1]]
     local result = self.content.weapons[recipe.result_weapon]
     self.evolution_notice = 5
-    self.evolution_notice_text = "YOU CAN EVOLVE NOW: " .. result.name
+    self.evolution_notice_text = "CHEST READY: EVOLVE INTO " .. result.name
   end
   self.last_evolution_signature = signature
 end
@@ -218,7 +220,6 @@ end
 
 function ProgressionSystem:create_offer()
   local pool = {}
-  self:_evolution_cards(pool)
   self:_weapon_cards(pool)
   self:_passive_cards(pool)
   self:_fallback_cards(pool)
@@ -236,9 +237,6 @@ function ProgressionSystem:create_offer()
   end
   local weapon_room = self.inventory:count() < self.inventory.capacity
   local support_room = self.passives:count() < self.passives.capacity
-
-  -- A legal fusion can never be randomized away.
-  draw(function(choice) return choice.kind == "evolution" end)
 
   -- While a weapon slot is free, surface one genuinely new weapon and rotate
   -- it away from the immediately previous offer whenever the pool permits.
@@ -271,6 +269,53 @@ function ProgressionSystem:create_offer()
   self.offer_serial = self.offer_serial + 1
   self.last_offer = offer
   return offer
+end
+
+function ProgressionSystem:_random_chest_card()
+  local pool = {}
+  self:_weapon_cards(pool)
+  self:_passive_cards(pool)
+  if #pool == 0 then return nil end
+  table.sort(pool, function(a, b) return card_key(a) < card_key(b) end)
+  return pool[self.rng:range(1, #pool)]
+end
+
+-- Chests resolve immediately. Ready evolutions always occupy reward slots
+-- before ordinary legal weapon/passive rewards, and the pool is rebuilt after
+-- every grant so a full or newly reopened inventory can never produce an
+-- impossible duplicate.
+function ProgressionSystem:claim_chest(reward_count)
+  assert(reward_count == 1 or reward_count == 3 or reward_count == 5,
+    "chest reward count must be 1, 3, or 5")
+  local rewards = {}
+  for _ = 1, reward_count do
+    local choice
+    local evolutions = {}
+    self:_evolution_cards(evolutions)
+    if #evolutions > 0 then
+      table.sort(evolutions, function(a, b) return card_key(a) < card_key(b) end)
+      choice = evolutions[1]
+    else
+      choice = self:_random_chest_card()
+    end
+    if not choice then break end
+    self:apply(choice)
+    rewards[#rewards + 1] = {
+      kind = choice.kind,
+      id = choice.id,
+      title = choice.title,
+    }
+  end
+  self.chests_opened = self.chests_opened + 1
+  self.chest_rewards_claimed = self.chest_rewards_claimed + #rewards
+  if #rewards > 0 then
+    local names = {}
+    for _, reward in ipairs(rewards) do names[#names + 1] = reward.title end
+    self.upgrade_notice = 6
+    self.upgrade_notice_text = "CHEST ×" .. #rewards .. "  •  "
+      .. table.concat(names, "  •  ")
+  end
+  return rewards
 end
 
 function ProgressionSystem:reroll()
@@ -383,6 +428,8 @@ function ProgressionSystem:snapshot()
     rerolls = self.rerolls,
     coins = self.coins,
     evolutions = self.evolutions,
+    chests_opened = self.chests_opened,
+    chest_rewards_claimed = self.chest_rewards_claimed,
   }
 end
 

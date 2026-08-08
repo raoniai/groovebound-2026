@@ -53,7 +53,7 @@ The following controls have live runtime consumers:
 - enemy speed, damage, spawn-rate multiplier, and maximum active enemies;
 - XP multiplier and pickup radius;
 - Show evolution needs: displays or hides paired-support recipes and exact
-  missing rank/support requirements on the level-up screen.
+  missing rank/support requirements in the pause-menu evolution guide.
 - Allow rank-1 evolution: permits only the explicit Admin shortcut; it never
   changes normal rank-10 fusion eligibility.
 
@@ -67,7 +67,7 @@ When opened over a run, the panel adds:
 | Tool | Key | Behavior |
 |---|---|---|
 | Grant Level | G | Grants exactly enough XP for the next queued card choice |
-| Prepare Evolution | E | Completes an owned weapon's normal rank/support requirements and queues its real consumable fusion |
+| Prepare Evolution | E | Completes an owned weapon's rank/support requirements so its fusion is ready for a chest |
 | Rank-1 Evolve | R | Replaces an owned base weapon with its evolved form only when **Allow rank-1 evolution** is enabled |
 | Spawn Boss | B | Spawns the current stage's final boss once; duplicate claims are refused |
 | Clear Stage | N | Defeats the current final boss and follows the real transition/victory path |
@@ -75,14 +75,14 @@ When opened over a run, the panel adds:
 The normal evolution tool still passes through stable-ID eligibility and the
 inventory/support/runtime transaction. The Admin bypass is visually and
 functionally separate, disabled by default, and cannot lower the requirements
-used by ordinary level-up offers.
+used by the chest reward resolver; ordinary level-up offers exclude evolutions.
 
 ## Evolution guidance toggle
 
 Open **Rewards** and toggle **Show evolution needs**:
 
 - **ON** (default): weapon/support cards show their fusion pairing, and the
-  level-up screen lists the closest owned evolution paths with exact missing
+  pause screen lists the closest owned evolution paths with exact missing
   rank or support requirements.
 - **OFF**: hides the guide and recipe hints without changing eligibility,
   randomization, inventory, or fusion behavior.

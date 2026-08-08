@@ -17,6 +17,7 @@ foley around the dialogue rather than over it.
 
 | Cutscene | Story beat | Cue ID | BPM | Catalog gain | Runtime file |
 |---|---|---|---:|---:|---|
+| Main starting menu | Persistent title loop | `title` | 112 | 1.00 | `assets/music/01_title.ogg` |
 | Prologue, beat 1 | Backbeat alive | `prologue_city` | 92 | 0.62 | `assets/music/02_prologue_city.ogg` |
 | Prologue, beat 2 | The Break | `prologue_break` | 100 | 0.60 | `assets/music/03_prologue_break.ogg` |
 | Prologue, beats 3–4 | Emergency and resolve | `prologue_resolve` | 116 | 0.62 | `assets/music/04_prologue_resolve.ogg` |
@@ -33,6 +34,7 @@ All paths above are relative to the canonical runtime folder:
 
 | Cutscene | 15-second edit | 30-second edit |
 |---|---|---|
+| Main starting menu | Use 01 as the rhythm reference; keep the exact 17.201s OGG playing independently in the game | Not applicable; the visual is a dedicated seamless 15s loop |
 | Prologue | 02: 0–4s → 03: 4–8s → 04: 8–15s | 02: 0–8s → 03: 8–15s → 04: 15–30s |
 | Joe intro | 06 continuous for 15s | 06 continuous; loop only at its authored 32-beat boundary |
 | Lyra intro | 07 continuous; its 32-beat loop repeats once | 07 continuous; repeat only at authored loop boundaries |
@@ -44,6 +46,10 @@ of each crossfade to a visual cut and a musical beat. Never time-stretch a cue
 to force a transition; trim on a beat or use its clean loop boundary.
 
 ## Upload mapping by generation
+
+### Main starting menu
+
+- `@Audio 1` → `assets/music/01_title.ogg`
 
 ### Prologue
 

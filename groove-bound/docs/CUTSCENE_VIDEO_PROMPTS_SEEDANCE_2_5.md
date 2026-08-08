@@ -3,9 +3,10 @@
 ## Purpose
 
 This is the complete reference-to-video prompt set for replacing Groove Bound's
-five current illustrated cutscenes with full-screen 16:9 video backgrounds. Each
-cutscene has a 15-second and a 30-second version. Every version preserves the
-current canon dialogue verbatim, uses the current soundtrack cue, generates
+main-menu background and five current illustrated cutscenes with full-screen
+16:9 video. Each cutscene has a 15-second and a 30-second version; the main menu
+has one dedicated seamless single-take loop. Every narrative version preserves
+the current canon dialogue verbatim, uses the current soundtrack cue, generates
 synchronised voiceover and sound effects, and forbids all visible text.
 
 The target look is the game's existing cinematic artwork: detailed 16-bit-style
@@ -81,35 +82,52 @@ Official references:
 
 ---
 
+## 0. Main Starting Menu — Epic One-Shot Loop
+
+This is a persistent menu background, not a narrative cutscene. The separate
+game logo, tagline, buttons and controller hints remain live overlays in the
+game and must not be rendered into the video.
+
+### Reference upload map
+
+```text
+@Image 1 assets/generated/campaign/title-background-v3.png ++ @Image 2 assets/generated/campaign/character-portraits-atlas.png ++ @Image 3 assets/generated/campaign/joe-action-sheet.png ++ @Image 4 assets/generated/campaign/lyra-action-sheet.png ++ @Image 5 assets/generated/cutscenes/prologue-atlas.png ++ @Image 6 assets/generated/cutscenes/campaign-atlas.png ++ @Image 7 assets/generated/enemy-variants-atlas.png ++ @Image 8 assets/generated/campaign/stage2-enemies-atlas.png ++ @Audio 1 assets/music/01_title.ogg
+```
+
+### 15-second seamless loop prompt
+
+```text
+Create an exact 15-second, 16:9, seamless looping audiovisual background for the Groove Bound main starting menu. Make it one epic uninterrupted camera shot with absolutely no cuts, transitions, montage, fade-in or fade-out. Use @Image 1 as the authoritative composition: Joe and neon Backbeat remain on the far left, Lyra Vex and the cosmic Orbit Line remain on the far right, and the broad centre remains dark, calm and visually empty for the live menu overlays. Use @Image 2, @Image 3 and @Image 4 to keep Joe and Lyra perfectly on-model. Use @Image 5 and @Image 6 for the two-world cinematic palette and @Image 7 and @Image 8 for distant peripheral enemy silhouettes only.
+
+Music source and path: use @Audio 1 from `assets/music/01_title.ogg` as the exact title-theme rhythm reference. It is the game's 112 BPM, 32-beat title loop. Synchronise character idles, resonance pulses, distant lightning and environmental movement to its beat. Do not invent replacement music, singing, chanting, dialogue or voiceover. The game will continue playing the exact runtime OGG independently, so prioritise a perfect visual loop and keep any generated ambience or foley subtle and separable.
+
+Composition and overlay-safe zone are hard constraints. Reserve the entire central 42% of the frame, from 29% to 71% of image width, as a low-detail deep-indigo negative-space lane. Keep the upper centre clean for the separate Groove Bound logo, keep the middle centre clean for the tagline, and keep the lower-middle centre clean for the Start, Settings and Quit buttons. No character, enemy, weapon, speaker, note, crystal, lightning bolt, particle burst or bright flare may enter or cross this central lane. No high-contrast pulse may appear behind the overlays. A faint symmetrical floor grid and extremely subtle low-frequency ambient glow are allowed in the centre, but they must remain darker and quieter than both outer thirds at every frame.
+
+Single-shot action: hold a stable central vanishing point while the camera performs only a tiny, smooth breathing dolly of less than 2%, returning to its exact initial position by 00:15. On the left edge, Joe maintains a grounded ready stance while his teal jacket moves slightly, his gold-and-cyan Kazoo Pistol emits one restrained circular resonance orbit, the Backbeat skyline twinkles, crowd silhouettes bounce gently and a distant Stage 1 robot shifts behind the speakers. On the right edge, Lyra maintains a confident keytar stance while her cyan-magenta hair and jacket move lightly, one controlled keytar-energy ribbon completes a full orbit, cosmic crystals pulse and distant Orbit Line machines rotate slowly. Keep all action in the outer 29% of each side. The heroes never attack across the centre, never change position, and never speak.
+
+Loop engineering: frame 00:15 must match frame 00:00 in camera position, crop, exposure, character pose, facial expression, hair position, weapon position, enemy position, particle placement and lighting state. Every resonance ring, energy ribbon, machine rotation, crowd bounce, lightning cycle and floor pulse must complete a whole-number cycle. Hide no reset behind a flash, fade, camera whip or blackout. The loop seam must be invisible when repeated indefinitely behind an idle menu.
+
+Render detailed cinematic 16-bit pixel art with crisp 8-bit-era pixel discipline, stable chunky pixel clusters, hard dark outlines, stepped neon lighting, controlled dithering and no sub-pixel shimmer. Preserve the deep indigo, cyan, teal, magenta, violet, gold and warm-red palette. Keep the outer edges epic, alive and action-charged while the centre remains calm and readable. Never become 3D CGI, photoreal, vector, anime, painterly, blurry or smooth high-frame-rate illustration.
+
+Absolute text ban: do not render the Groove Bound logo, title, tagline, menu buttons, controller hints, labels, captions, subtitles, numbers, readable signs, UI, credits or watermark. Do not add a border or letterbox. No camera cuts, no central action, no centre-crossing particles, no dialogue and no vocals.
+```
+
+---
+
 ## 1. Prologue — The Night the Sky Missed a Beat
 
 ### Reference upload map
 
-- `@Image 1` — `assets/generated/cutscenes/prologue-atlas.png` — authoritative
-  four-panel storyboard, palette and composition reference.
-- `@Image 2` — `assets/generated/campaign/character-portraits-atlas.png` — Joe
-  and Lyra face, costume and weapon identity.
-- `@Image 3` — `assets/generated/campaign/joe-action-sheet.png` — Joe movement
-  and body proportions.
-- `@Image 4` — `assets/generated/campaign/joe-talking-strip.png` — Joe's stable
-  speaking face and mouth states.
-- `@Image 5` — `assets/generated/campaign/backbeat-environment-expansion-atlas.png`
-  — Backbeat street props and palette.
-- `@Image 6` — `assets/generated/environment-atlas.png` — stage, speaker and
-  concert-equipment vocabulary.
-- `@Image 7` — `assets/generated/enemy-variants-atlas.png` — Stage 1 invader
-  silhouettes, including the Metronome Guardian and Static Baron.
-- `@Audio 1` — `assets/music/02_prologue_city.ogg` — opening city cue.
-- `@Audio 2` — `assets/music/03_prologue_break.ogg` — cosmic rupture cue.
-- `@Audio 3` — `assets/music/04_prologue_resolve.ogg` — emergency and hero
-  resolve cue.
+```text
+@Image 1 assets/generated/cutscenes/prologue-atlas.png ++ @Image 2 assets/generated/campaign/character-portraits-atlas.png ++ @Image 3 assets/generated/campaign/joe-action-sheet.png ++ @Image 4 assets/generated/campaign/joe-talking-strip.png ++ @Image 5 assets/generated/campaign/backbeat-environment-expansion-atlas.png ++ @Image 6 assets/generated/environment-atlas.png ++ @Image 7 assets/generated/enemy-variants-atlas.png ++ @Audio 1 assets/music/02_prologue_city.ogg ++ @Audio 2 assets/music/03_prologue_break.ogg ++ @Audio 3 assets/music/04_prologue_resolve.ogg
+```
 
 ### 15-second variation
 
 ```text
-Create an exact 15-second, 16:9, multi-shot audiovisual cutscene for Groove Bound. Reference chain: @Image 1 ++ @Image 2 ++ @Image 3 ++ @Image 4 ++ @Image 5 ++ @Image 6 ++ @Image 7 ++ @Audio 1 ++ @Audio 2 ++ @Audio 3. Use Image 1 as the authoritative four-beat storyboard and visual style. Use Images 2, 3 and 4 to keep Joe perfectly on-model. Use Images 5 and 6 for Backbeat's neon rooftops, alleys, concert infrastructure and Pulse Tower. Use Image 7 for the invading instrument-machine silhouettes. Preserve detailed cinematic 16-bit pixel art with crisp 8-bit pixel discipline, stable chunky clusters, dark outlines, stepped neon lighting and limited dithering. This is animated pixel art, never 3D, photoreal, vector, anime, painterly or smooth high-frame-rate illustration.
+Create an exact 15-second, 16:9, multi-shot audiovisual cutscene for Groove Bound. Use @Image 1 as the authoritative four-beat storyboard and visual style. Use @Image 2, @Image 3 and @Image 4 to keep Joe perfectly on-model. Use @Image 5 and @Image 6 for Backbeat's neon rooftops, alleys, concert infrastructure and Pulse Tower. Use @Image 7 for the invading instrument-machine silhouettes. Preserve detailed cinematic 16-bit pixel art with crisp 8-bit pixel discipline, stable chunky clusters, dark outlines, stepped neon lighting and limited dithering. This is animated pixel art, never 3D, photoreal, vector, anime, painterly or smooth high-frame-rate illustration.
 
-Music source and path: use Audio 1 from `assets/music/02_prologue_city.ogg` from 00:00-00:04, beat-cut into Audio 2 from `assets/music/03_prologue_break.ogg` from 00:04-00:08, then resolve into Audio 3 from `assets/music/04_prologue_resolve.ogg` from 00:08-00:15. Preserve the supplied instrumental cues, make the transitions musical, and duck them beneath speech.
+Music source and path: use @Audio 1 from `assets/music/02_prologue_city.ogg` from 00:00-00:04, beat-cut into @Audio 2 from `assets/music/03_prologue_break.ogg` from 00:04-00:08, then resolve into @Audio 3 from `assets/music/04_prologue_resolve.ogg` from 00:08-00:15. Preserve the supplied instrumental cues, make the transitions musical, and duck them beneath speech.
 
 00:00-00:04 — Begin with a fast descending crane shot over a joyful Backbeat night: rooftop players, train lights, dancing crowds, pulsing speaker stacks and the distant Pulse Tower all moving on one shared beat. Warm cyan, teal, magenta and gold light ripple through the city. Narrator, warm and brisk but fully intelligible, says exactly: "Backbeat never slept. Every rooftop, train line, and alley carried a piece of the city's song."
 
@@ -127,9 +145,9 @@ No visible words anywhere: no title, captions, subtitles, speech bubbles, emerge
 ### 30-second variation
 
 ```text
-Create an exact 30-second, 16:9, multi-shot audiovisual cutscene for Groove Bound. Reference chain: @Image 1 ++ @Image 2 ++ @Image 3 ++ @Image 4 ++ @Image 5 ++ @Image 6 ++ @Image 7 ++ @Audio 1 ++ @Audio 2 ++ @Audio 3. Use Image 1 as the authoritative four-beat storyboard and visual style; use Images 2, 3 and 4 for exact Joe identity, motion and lip-sync; use Images 5 and 6 for Backbeat; and use Image 7 for the Stage 1 instrument-machine invasion. Render detailed cinematic 16-bit pixel art with strict 8-bit-era pixel discipline, stable pixel-grid scale, crisp outlines, deliberate stepped lighting and energetic sprite-like smear frames. Never become 3D, photoreal, vector, anime or painterly.
+Create an exact 30-second, 16:9, multi-shot audiovisual cutscene for Groove Bound. Use @Image 1 as the authoritative four-beat storyboard and visual style; use @Image 2, @Image 3 and @Image 4 for exact Joe identity, motion and lip-sync; use @Image 5 and @Image 6 for Backbeat; and use @Image 7 for the Stage 1 instrument-machine invasion. Render detailed cinematic 16-bit pixel art with strict 8-bit-era pixel discipline, stable pixel-grid scale, crisp outlines, deliberate stepped lighting and energetic sprite-like smear frames. Never become 3D, photoreal, vector, anime or painterly.
 
-Music source and path: Audio 1 is `assets/music/02_prologue_city.ogg` for 00:00-00:08; Audio 2 is `assets/music/03_prologue_break.ogg` for 00:08-00:15; Audio 3 is `assets/music/04_prologue_resolve.ogg` for 00:15-00:30. Cut and crossfade only on musical beats, preserve the supplied melodies, and duck the score under every spoken line.
+Music source and path: @Audio 1 is `assets/music/02_prologue_city.ogg` for 00:00-00:08; @Audio 2 is `assets/music/03_prologue_break.ogg` for 00:08-00:15; @Audio 3 is `assets/music/04_prologue_resolve.ogg` for 00:15-00:30. Cut and crossfade only on musical beats, preserve the supplied melodies, and duck the score under every spoken line.
 
 00:00-00:08 — Open on a speaker cone breathing to the beat, pull back through a rooftop show, follow a lit train through alleys, then rise into a wide view of Backbeat and Pulse Tower. The city feels playful, communal and alive; music is infrastructure, so traffic lights, rail pulses and stage lighting visibly share one rhythm. Narrator says exactly: "Backbeat never slept. Every rooftop, train line, and alley carried a piece of the city's song."
 
@@ -143,7 +161,7 @@ Synchronised sound effects: crowd groove, train rail clack, rooftop cable hum, r
 
 No visible text of any kind: no title, subtitle, caption, speech bubble, emergency copy, readable sign, logo, UI, credits or watermark. Do not paraphrase or add dialogue. Narrator and broadcast are off-screen. Only Joe lip-syncs. Keep the local threats to Stage 1 silhouettes; do not reveal the Grand Orchestrator or Grand Conductor.
 
-If native 30-second generation is unavailable: generate 00:00-00:15 first, then extend exactly 15 seconds from the cosmic-tear frame. Preserve the same pixel grid, palette, characters, camera direction and Audio 3 transition; continue with Pulse Tower shutdown and Joe's complete resolve beat without recapping earlier shots.
+If native 30-second generation is unavailable: generate 00:00-00:15 first, then extend exactly 15 seconds from the cosmic-tear frame. Preserve the same pixel grid, palette, characters, camera direction and @Audio 3 transition; continue with Pulse Tower shutdown and Joe's complete resolve beat without recapping earlier shots.
 ```
 
 ---
@@ -152,29 +170,16 @@ If native 30-second generation is unavailable: generate 00:00-00:15 first, then 
 
 ### Reference upload map
 
-- `@Image 1` — `assets/generated/campaign/character-portraits-atlas.png` — Joe
-  and Lyra identity and costume.
-- `@Image 2` — `assets/generated/campaign/joe-action-sheet.png` — Joe's grounded
-  movement language.
-- `@Image 3` — `assets/generated/campaign/joe-talking-strip.png` — Joe lip-sync
-  and facial stability.
-- `@Image 4` — `assets/generated/campaign/lyra-action-sheet.png` — Lyra's
-  movement and silhouette.
-- `@Image 5` — `assets/generated/campaign/lyra-talking-strip.png` — Lyra lip-sync
-  and facial stability.
-- `@Image 6` — `assets/generated/cutscenes/prologue-atlas.png` — Backbeat
-  cinematic palette and invasion context.
-- `@Image 7` — `assets/generated/campaign/backbeat-environment-expansion-atlas.png`
-  — Backbeat street props.
-- `@Image 8` — `assets/generated/enemy-variants-atlas.png` — Stage 1 enemies.
-- `@Audio 1` — `assets/music/06_joe_intro.ogg` — Joe's heavy street-funk cue.
+```text
+@Image 1 assets/generated/campaign/character-portraits-atlas.png ++ @Image 2 assets/generated/campaign/joe-action-sheet.png ++ @Image 3 assets/generated/campaign/joe-talking-strip.png ++ @Image 4 assets/generated/campaign/lyra-action-sheet.png ++ @Image 5 assets/generated/campaign/lyra-talking-strip.png ++ @Image 6 assets/generated/cutscenes/prologue-atlas.png ++ @Image 7 assets/generated/campaign/backbeat-environment-expansion-atlas.png ++ @Image 8 assets/generated/enemy-variants-atlas.png ++ @Audio 1 assets/music/06_joe_intro.ogg
+```
 
 ### 15-second variation
 
 ```text
-Create an exact 15-second, 16:9 Joe character-intro cutscene for Groove Bound. Reference chain: @Image 1 ++ @Image 2 ++ @Image 3 ++ @Image 4 ++ @Image 5 ++ @Image 6 ++ @Image 7 ++ @Image 8 ++ @Audio 1. Use Images 1, 2 and 3 to keep Joe perfectly on-model: warm brown skin, black textured hair, teal bomber jacket with gold waveform details, black shirt and trousers, red-and-white shoes, blue Resonance device and gold-and-cyan Kazoo Pistol. Use Images 4 and 5 for exact Lyra identity. Use Images 6 and 7 for Backbeat's neon streets and Image 8 for Stage 1 enemy silhouettes. Detailed cinematic 16-bit pixel art with crisp 8-bit pixel discipline, stable scale and punchy sprite-animation timing; never 3D, photoreal, vector, anime or painterly.
+Create an exact 15-second, 16:9 Joe character-intro cutscene for Groove Bound. Use @Image 1, @Image 2 and @Image 3 to keep Joe perfectly on-model: warm brown skin, black textured hair, teal bomber jacket with gold waveform details, black shirt and trousers, red-and-white shoes, blue Resonance device and gold-and-cyan Kazoo Pistol. Use @Image 4 and @Image 5 for exact Lyra identity. Use @Image 6 and @Image 7 for Backbeat's neon streets and @Image 8 for Stage 1 enemy silhouettes. Detailed cinematic 16-bit pixel art with crisp 8-bit pixel discipline, stable scale and punchy sprite-animation timing; never 3D, photoreal, vector, anime or painterly.
 
-Music source and path: use Audio 1 from `assets/music/06_joe_intro.ogg` for the full 00:00-00:15, preserving its heavy street-funk identity. Cut movement and impacts to the beat and duck the music beneath dialogue.
+Music source and path: use @Audio 1 from `assets/music/06_joe_intro.ogg` for the full 00:00-00:15, preserving its heavy street-funk identity. Cut movement and impacts to the beat and duck the music beneath dialogue.
 
 00:00-00:06.8 — Low tracking shot beside Joe's red shoes as he runs down a speaker-lined alley toward Pulse Tower. He shoulder-checks a drum robot away from fleeing civilians, plants himself at the centre intersection, raises the Kazoo Pistol and holds the line against an incoming soundwave. Push to an on-model speaking close-up. Joe says exactly: "I know these streets. If the noise wants Backbeat, it comes through me first."
 
@@ -190,9 +195,9 @@ No text: no character name, title card, subtitles, captions, speech bubbles, log
 ### 30-second variation
 
 ```text
-Create an exact 30-second, 16:9 Joe character-intro cutscene for Groove Bound. Reference chain: @Image 1 ++ @Image 2 ++ @Image 3 ++ @Image 4 ++ @Image 5 ++ @Image 6 ++ @Image 7 ++ @Image 8 ++ @Audio 1. Use Images 1, 2 and 3 as strict Joe identity, costume, movement and mouth-shape references; Images 4 and 5 as strict Lyra references; Images 6 and 7 for Backbeat; and Image 8 for Stage 1 robots. Preserve detailed cinematic 16-bit pixel art with crisp 8-bit pixel discipline, stable chunky clusters, dark outlines and limited neon ramps. Keep action readable and physical, never smooth 3D, live action, vector, anime or painterly animation.
+Create an exact 30-second, 16:9 Joe character-intro cutscene for Groove Bound. Use @Image 1, @Image 2 and @Image 3 as strict Joe identity, costume, movement and mouth-shape references; @Image 4 and @Image 5 as strict Lyra references; @Image 6 and @Image 7 for Backbeat; and @Image 8 for Stage 1 robots. Preserve detailed cinematic 16-bit pixel art with crisp 8-bit pixel discipline, stable chunky clusters, dark outlines and limited neon ramps. Keep action readable and physical, never smooth 3D, live action, vector, anime or painterly animation.
 
-Music source and path: use Audio 1 from `assets/music/06_joe_intro.ogg` continuously from 00:00-00:30. Preserve the supplied instrumental track, restart or loop it only on its authored beat boundary, duck beneath dialogue and align hits to its heavy street-funk rhythm.
+Music source and path: use @Audio 1 from `assets/music/06_joe_intro.ogg` continuously from 00:00-00:30. Preserve the supplied instrumental track, restart or loop it only on its authored beat boundary, duck beneath dialogue and align hits to its heavy street-funk rhythm.
 
 00:00-00:07 — Establish Joe's relationship with the city in three beat-matched shots: he runs past familiar rooftop cables, slides beneath a closing transit barrier and catches a falling speaker case before it hits civilians. His motion is powerful, efficient and grounded rather than acrobatic.
 
@@ -215,28 +220,16 @@ If native 30-second generation is unavailable: generate 00:00-00:15 through Joe'
 
 ### Reference upload map
 
-- `@Image 1` — `assets/generated/campaign/character-portraits-atlas.png` — Lyra
-  and Joe identity and costume.
-- `@Image 2` — `assets/generated/campaign/lyra-action-sheet.png` — Lyra's fast
-  movement language.
-- `@Image 3` — `assets/generated/campaign/lyra-talking-strip.png` — Lyra lip-sync
-  and facial stability.
-- `@Image 4` — `assets/generated/campaign/joe-action-sheet.png` — Joe movement.
-- `@Image 5` — `assets/generated/campaign/joe-talking-strip.png` — Joe lip-sync.
-- `@Image 6` — `assets/generated/cutscenes/prologue-atlas.png` — rooftop-show and
-  invasion visual language.
-- `@Image 7` — `assets/generated/campaign/backbeat-environment-expansion-atlas.png`
-  — Backbeat environment props.
-- `@Image 8` — `assets/generated/enemy-variants-atlas.png` — Stage 1 robots.
-- `@Audio 1` — `assets/music/07_lyra_intro.ogg` — Lyra's electro-rock keytar
-  cue.
+```text
+@Image 1 assets/generated/campaign/character-portraits-atlas.png ++ @Image 2 assets/generated/campaign/lyra-action-sheet.png ++ @Image 3 assets/generated/campaign/lyra-talking-strip.png ++ @Image 4 assets/generated/campaign/joe-action-sheet.png ++ @Image 5 assets/generated/campaign/joe-talking-strip.png ++ @Image 6 assets/generated/cutscenes/prologue-atlas.png ++ @Image 7 assets/generated/campaign/backbeat-environment-expansion-atlas.png ++ @Image 8 assets/generated/enemy-variants-atlas.png ++ @Audio 1 assets/music/07_lyra_intro.ogg
+```
 
 ### 15-second variation
 
 ```text
-Create an exact 15-second, 16:9 Lyra Vex character-intro cutscene for Groove Bound. Reference chain: @Image 1 ++ @Image 2 ++ @Image 3 ++ @Image 4 ++ @Image 5 ++ @Image 6 ++ @Image 7 ++ @Image 8 ++ @Audio 1. Use Images 1, 2 and 3 to keep Lyra perfectly on-model: warm brown skin, cyan-and-magenta asymmetrical swept hair with shaved side detail, purple jacket with cyan waveform marks, black waveform shirt, dark trousers, purple shoes, blue Resonance device and neon purple-cyan keytar. Use Images 4 and 5 for exact Joe identity. Use Images 6 and 7 for the rooftop-show Backbeat setting and Image 8 for invading robots. Detailed cinematic 16-bit pixel art with crisp 8-bit pixel discipline and stable pixel clusters; never 3D, photoreal, vector, anime or painterly.
+Create an exact 15-second, 16:9 Lyra Vex character-intro cutscene for Groove Bound. Use @Image 1, @Image 2 and @Image 3 to keep Lyra perfectly on-model: warm brown skin, cyan-and-magenta asymmetrical swept hair with shaved side detail, purple jacket with cyan waveform marks, black waveform shirt, dark trousers, purple shoes, blue Resonance device and neon purple-cyan keytar. Use @Image 4 and @Image 5 for exact Joe identity. Use @Image 6 and @Image 7 for the rooftop-show Backbeat setting and @Image 8 for invading robots. Detailed cinematic 16-bit pixel art with crisp 8-bit pixel discipline and stable pixel clusters; never 3D, photoreal, vector, anime or painterly.
 
-Music source and path: use Audio 1 from `assets/music/07_lyra_intro.ogg` for the full 00:00-00:15. Preserve the supplied fast electro-rock keytar track, cut on its beat and duck it under speech.
+Music source and path: use @Audio 1 from `assets/music/07_lyra_intro.ogg` for the full 00:00-00:15. Preserve the supplied fast electro-rock keytar track, cut on its beat and duck it under speech.
 
 00:00-00:06.7 — A rooftop show's lights explode into violet static as robots crash through speaker stacks. Lyra swings under a lighting truss, lands in a knee slide, catches her keytar and fires a cyan-magenta chord that knocks two robots apart. Push into her playful, furious on-model close-up as Lyra says exactly: "Alien robots crashed my favourite rooftop show. I am taking that personally."
 
@@ -252,9 +245,9 @@ No text: no character name, title, subtitle, caption, speech bubble, logo, HUD, 
 ### 30-second variation
 
 ```text
-Create an exact 30-second, 16:9 Lyra Vex character-intro cutscene for Groove Bound. Reference chain: @Image 1 ++ @Image 2 ++ @Image 3 ++ @Image 4 ++ @Image 5 ++ @Image 6 ++ @Image 7 ++ @Image 8 ++ @Audio 1. Use Images 1, 2 and 3 as strict references for Lyra's identity, costume, keytar, motion and lip-sync; Images 4 and 5 for Joe; Images 6 and 7 for Backbeat's rooftop music culture; and Image 8 for Stage 1 enemies. Render detailed cinematic 16-bit pixel art with crisp 8-bit pixel discipline, stable pixel-grid scale, strong dark outlines, stepped neon light and purposeful smear frames. Never turn into 3D CGI, live action, vector art, anime or painterly animation.
+Create an exact 30-second, 16:9 Lyra Vex character-intro cutscene for Groove Bound. Use @Image 1, @Image 2 and @Image 3 as strict references for Lyra's identity, costume, keytar, motion and lip-sync; @Image 4 and @Image 5 for Joe; @Image 6 and @Image 7 for Backbeat's rooftop music culture; and @Image 8 for Stage 1 enemies. Render detailed cinematic 16-bit pixel art with crisp 8-bit pixel discipline, stable pixel-grid scale, strong dark outlines, stepped neon light and purposeful smear frames. Never turn into 3D CGI, live action, vector art, anime or painterly animation.
 
-Music source and path: use Audio 1 from `assets/music/07_lyra_intro.ogg` continuously from 00:00-00:30. Preserve the supplied 142 BPM electro-rock keytar cue; because its runtime loop is shorter than 15 seconds, repeat only at its exact authored loop boundary, with no audible seam. Duck under dialogue and align Lyra's movement to its fast accents.
+Music source and path: use @Audio 1 from `assets/music/07_lyra_intro.ogg` continuously from 00:00-00:30. Preserve the supplied 142 BPM electro-rock keytar cue; because its runtime loop is shorter than 15 seconds, repeat only at its exact authored loop boundary, with no audible seam. Duck under dialogue and align Lyra's movement to its fast accents.
 
 00:00-00:07 — Begin inside a vibrant rooftop show from Lyra's point of view: fingers on keytar, crowd bouncing, lights in rhythm. The sky tears open. Instrument robots crash through the truss and the crowd scatters. Lyra protects the nearest fans by kicking an amp case into a robot's path and swinging from a cable over the impact.
 
@@ -268,7 +261,7 @@ Synchronised sound effects: crowd and stage hum, cosmic impact, truss snap, amp-
 
 No visible text of any kind: no title, name, subtitle, caption, speech bubble, lyric, logo, HUD, readable sign, credits or watermark. Exact dialogue only and correctly lip-synced. No improvised reply from Lyra, no singing, no extra heroes, no changing clothes or weapons, no gore.
 
-If native 30-second generation is unavailable: generate 00:00-00:15 through Lyra's complete line, then extend 15 seconds from her first rooftop sprint. Preserve her speed direction, exact character model and Audio 1 loop; reveal Joe, deliver his complete exact line and finish on Lyra's forward gameplay match cut.
+If native 30-second generation is unavailable: generate 00:00-00:15 through Lyra's complete line, then extend 15 seconds from her first rooftop sprint. Preserve her speed direction, exact character model and @Audio 1 loop; reveal Joe, deliver his complete exact line and finish on Lyra's forward gameplay match cut.
 ```
 
 ---
@@ -277,29 +270,16 @@ If native 30-second generation is unavailable: generate 00:00-00:15 through Lyra
 
 ### Reference upload map
 
-- `@Image 1` — `assets/generated/cutscenes/campaign-atlas.png` — authoritative
-  First Press, map, Orbit Line and final-threat storyboard.
-- `@Image 2` — `assets/generated/campaign/character-portraits-atlas.png` — Joe
-  and Lyra identity.
-- `@Image 3` — `assets/generated/campaign/joe-action-sheet.png` — Joe movement.
-- `@Image 4` — `assets/generated/campaign/lyra-action-sheet.png` — Lyra movement.
-- `@Image 5` — `assets/generated/campaign/backbeat-environment-expansion-atlas.png`
-  — ruined Stage 1 setting.
-- `@Image 6` — `assets/generated/campaign/stage2-environment-atlas.png` — Orbit
-  Line machines, transit carriage and First Press forms.
-- `@Image 7` — `assets/generated/campaign/orbit-environment-expansion-atlas.png`
-  — Orbit Line architecture and props.
-- `@Image 8` — `assets/generated/campaign/stage2-enemies-atlas.png` — distant
-  Stage 2 enemy silhouettes only.
-- `@Audio 1` — `assets/music/13_first_press.ogg` — discovery/map cue.
-- `@Audio 2` — `assets/music/14_dead_line_recovery.ogg` — descent/recovery cue.
+```text
+@Image 1 assets/generated/cutscenes/campaign-atlas.png ++ @Image 2 assets/generated/campaign/character-portraits-atlas.png ++ @Image 3 assets/generated/campaign/joe-action-sheet.png ++ @Image 4 assets/generated/campaign/lyra-action-sheet.png ++ @Image 5 assets/generated/campaign/backbeat-environment-expansion-atlas.png ++ @Image 6 assets/generated/campaign/stage2-environment-atlas.png ++ @Image 7 assets/generated/campaign/orbit-environment-expansion-atlas.png ++ @Image 8 assets/generated/campaign/stage2-enemies-atlas.png ++ @Audio 1 assets/music/13_first_press.ogg ++ @Audio 2 assets/music/14_dead_line_recovery.ogg
+```
 
 ### 15-second variation
 
 ```text
-Create an exact 15-second, 16:9 Stage 1-to-Stage 2 transition cutscene for Groove Bound. Reference chain: @Image 1 ++ @Image 2 ++ @Image 3 ++ @Image 4 ++ @Image 5 ++ @Image 6 ++ @Image 7 ++ @Image 8 ++ @Audio 1 ++ @Audio 2. Use Image 1 as the authoritative story sequence: First Press recovered, musical map activated, abandoned Orbit Line entered. Use Images 2, 3 and 4 to keep Joe and Lyra perfectly on-model. Use Image 5 for the shattered Backbeat battlefield and Images 6 and 7 for the Orbit Line. Use Image 8 only for brief distant enemy silhouettes. Detailed cinematic 16-bit pixel art with crisp 8-bit pixel discipline, stable chunky clusters and readable action; never 3D, photoreal, vector, anime or painterly.
+Create an exact 15-second, 16:9 Stage 1-to-Stage 2 transition cutscene for Groove Bound. Use @Image 1 as the authoritative story sequence: First Press recovered, musical map activated, abandoned Orbit Line entered. Use @Image 2, @Image 3 and @Image 4 to keep Joe and Lyra perfectly on-model. Use @Image 5 for the shattered Backbeat battlefield and @Image 6 and @Image 7 for the Orbit Line. Use @Image 8 only for brief distant enemy silhouettes. Detailed cinematic 16-bit pixel art with crisp 8-bit pixel discipline, stable chunky clusters and readable action; never 3D, photoreal, vector, anime or painterly.
 
-Music source and path: use Audio 1 from `assets/music/13_first_press.ogg` from 00:00-00:10, then beat-crossfade to Audio 2 from `assets/music/14_dead_line_recovery.ogg` from 00:10-00:15. Preserve both supplied instrumental cues and duck them beneath dialogue.
+Music source and path: use @Audio 1 from `assets/music/13_first_press.ogg` from 00:00-00:10, then beat-crossfade to @Audio 2 from `assets/music/14_dead_line_recovery.ogg` from 00:10-00:15. Preserve both supplied instrumental cues and duck them beneath dialogue.
 
 00:00-00:05 — In the smoking shell of the defeated Static Baron, Lyra catches the glowing First Press record before it hits the ground. It unfolds into rotating grooves and a cyan-violet constellation route around her and Joe, never forming letters or labels. Lyra says exactly: "That record was inside the Baron's core. It isn't music—it is a map pretending to be music."
 
@@ -315,9 +295,9 @@ No visible words: no scene title, map labels, station name, signs, subtitles, ca
 ### 30-second variation
 
 ```text
-Create an exact 30-second, 16:9 Stage 1-to-Stage 2 transition cutscene for Groove Bound. Reference chain: @Image 1 ++ @Image 2 ++ @Image 3 ++ @Image 4 ++ @Image 5 ++ @Image 6 ++ @Image 7 ++ @Image 8 ++ @Audio 1 ++ @Audio 2. Use Image 1 as the authoritative four-panel visual story; Images 2, 3 and 4 as strict Joe and Lyra identity and movement references; Image 5 for the defeated Static Baron arena; Images 6 and 7 for the Orbit Line; and Image 8 only for distant Stage 2 threat silhouettes. Render detailed cinematic 16-bit pixel art with crisp 8-bit pixel discipline, stable pixel scale, dark outlines, controlled dithering and energetic but readable camera movement. Never become 3D CGI, live action, vector, anime or painterly animation.
+Create an exact 30-second, 16:9 Stage 1-to-Stage 2 transition cutscene for Groove Bound. Use @Image 1 as the authoritative four-panel visual story; @Image 2, @Image 3 and @Image 4 as strict Joe and Lyra identity and movement references; @Image 5 for the defeated Static Baron arena; @Image 6 and @Image 7 for the Orbit Line; and @Image 8 only for distant Stage 2 threat silhouettes. Render detailed cinematic 16-bit pixel art with crisp 8-bit pixel discipline, stable pixel scale, dark outlines, controlled dithering and energetic but readable camera movement. Never become 3D CGI, live action, vector, anime or painterly animation.
 
-Music source and path: Audio 1 is `assets/music/13_first_press.ogg` for 00:00-00:19; Audio 2 is `assets/music/14_dead_line_recovery.ogg` for 00:19-00:30. Preserve the supplied instrumental tracks, change cue on a beat as the rail gate opens, and duck under all dialogue.
+Music source and path: @Audio 1 is `assets/music/13_first_press.ogg` for 00:00-00:19; @Audio 2 is `assets/music/14_dead_line_recovery.ogg` for 00:19-00:30. Preserve the supplied instrumental tracks, change cue on a beat as the rail gate opens, and duck under all dialogue.
 
 00:00-00:09 — Begin on the Static Baron's giant speaker body collapsing. Joe braces against the shockwave while Lyra runs up fallen armour, reaches into the cooling turntable core and pulls out the glowing First Press record. In close-up, concentric grooves rotate above her hand and project a constellation route around both heroes. Lyra says exactly: "That record was inside the Baron's core. It isn't music—it is a map pretending to be music."
 
@@ -331,7 +311,7 @@ Synchronised sound effects: boss collapse, speaker pressure wave, cooling metal,
 
 No visible text of any kind: no title, station label, map label, subtitle, caption, speech bubble, logo, HUD, credits or watermark. Make the musical map abstract and non-linguistic. Exact dialogue only. Static Baron remains defeated. Preserve both heroes' accumulated equipment. Do not reveal the Grand Conductor.
 
-If native 30-second generation is unavailable: generate 00:00-00:15 with the discovery, Lyra's complete first line and Joe's complete line timed slightly earlier than the native-30 plan. Then extend 15 seconds from the dark Orbit Line reveal without repeating dialogue. Preserve the direction of the projected map, transition on-beat from Audio 1 into Audio 2, deliver Lyra's complete final line and end with both heroes aboard the descending train.
+If native 30-second generation is unavailable: generate 00:00-00:15 with the discovery, Lyra's complete first line and Joe's complete line timed slightly earlier than the native-30 plan. Then extend 15 seconds from the dark Orbit Line reveal without repeating dialogue. Preserve the direction of the projected map, transition on-beat from @Audio 1 into @Audio 2, deliver Lyra's complete final line and end with both heroes aboard the descending train.
 ```
 
 ---
@@ -340,27 +320,16 @@ If native 30-second generation is unavailable: generate 00:00-00:15 with the dis
 
 ### Reference upload map
 
-- `@Image 1` — `assets/generated/cutscenes/campaign-atlas.png` — authoritative
-  Orbit Line and distant-threat composition.
-- `@Image 2` — `assets/generated/campaign/character-portraits-atlas.png` — Joe
-  and Lyra identity.
-- `@Image 3` — `assets/generated/campaign/joe-action-sheet.png` — Joe movement.
-- `@Image 4` — `assets/generated/campaign/lyra-action-sheet.png` — Lyra movement.
-- `@Image 5` — `assets/generated/campaign/stage2-enemies-atlas.png` — Grand
-  Orchestrator design in the bottom-right cell and Stage 2 enemy roster.
-- `@Image 6` — `assets/generated/campaign/stage2-environment-atlas.png` — Orbit
-  Line machinery and transit forms.
-- `@Image 7` — `assets/generated/campaign/orbit-environment-expansion-atlas.png`
-  — Orbit Line location language.
-- `@Audio 1` — `assets/music/30_ending_teaser.ogg` — distant-orchestra ending
-  cue.
+```text
+@Image 1 assets/generated/cutscenes/campaign-atlas.png ++ @Image 2 assets/generated/campaign/character-portraits-atlas.png ++ @Image 3 assets/generated/campaign/joe-action-sheet.png ++ @Image 4 assets/generated/campaign/lyra-action-sheet.png ++ @Image 5 assets/generated/campaign/stage2-enemies-atlas.png ++ @Image 6 assets/generated/campaign/stage2-environment-atlas.png ++ @Image 7 assets/generated/campaign/orbit-environment-expansion-atlas.png ++ @Audio 1 assets/music/30_ending_teaser.ogg
+```
 
 ### 15-second variation
 
 ```text
-Create an exact 15-second, 16:9 ending-teaser cutscene for Groove Bound. Reference chain: @Image 1 ++ @Image 2 ++ @Image 3 ++ @Image 4 ++ @Image 5 ++ @Image 6 ++ @Image 7 ++ @Audio 1. Use Image 1 for the Orbit Line composition and cosmic signal; use Images 2, 3 and 4 to keep Joe and Lyra perfectly on-model; use Image 5 for the defeated Grand Orchestrator's exact local body design; and use Images 6 and 7 for the Orbit Line. Critical story distinction: the Grand Orchestrator lies defeated on the platform, while the speaking Grand Conductor is a separate, distant, unrevealed intelligence represented only by an enormous waveform silhouette beyond the stars. Do not merge them. Detailed cinematic 16-bit pixel art with crisp 8-bit pixel discipline, stable pixel clusters and spectacular but readable scale; never 3D, photoreal, vector, anime or painterly.
+Create an exact 15-second, 16:9 ending-teaser cutscene for Groove Bound. Use @Image 1 for the Orbit Line composition and cosmic signal; use @Image 2, @Image 3 and @Image 4 to keep Joe and Lyra perfectly on-model; use @Image 5 for the defeated Grand Orchestrator's exact local body design; and use @Image 6 and @Image 7 for the Orbit Line. Critical story distinction: the Grand Orchestrator lies defeated on the platform, while the speaking Grand Conductor is a separate, distant, unrevealed intelligence represented only by an enormous waveform silhouette beyond the stars. Do not merge them. Detailed cinematic 16-bit pixel art with crisp 8-bit pixel discipline, stable pixel clusters and spectacular but readable scale; never 3D, photoreal, vector, anime or painterly.
 
-Music source and path: use Audio 1 from `assets/music/30_ending_teaser.ogg` for the full 00:00-00:15. Preserve the supplied 96 BPM instrumental teaser, duck under dialogue and sync the cosmic pulses to its beat.
+Music source and path: use @Audio 1 from `assets/music/30_ending_teaser.ogg` for the full 00:00-00:15. Preserve the supplied 96 BPM instrumental teaser, duck under dialogue and sync the cosmic pulses to its beat.
 
 00:00-00:04.2 — The Grand Orchestrator collapses in sparks, its giant speaker core dimming as Joe and Lyra stand exhausted but upright. The stars suddenly pulse like a colossal equaliser. A vast off-screen synthetic bass voice—the Grand Conductor—says exactly: "FIRST MOVEMENT: INCOMPLETE. ASSEMBLING THE ORCHESTRA."
 
@@ -376,9 +345,9 @@ No visible text: do not display the Conductor's words, titles, subtitles, captio
 ### 30-second variation
 
 ```text
-Create an exact 30-second, 16:9 ending-teaser cutscene for Groove Bound. Reference chain: @Image 1 ++ @Image 2 ++ @Image 3 ++ @Image 4 ++ @Image 5 ++ @Image 6 ++ @Image 7 ++ @Audio 1. Use Image 1 as the authoritative visual language; Images 2, 3 and 4 as strict Joe and Lyra identity and movement references; Image 5 for the Grand Orchestrator; and Images 6 and 7 for the Orbit Line. Critical canon distinction: the defeated local boss is the Grand Orchestrator. The speaker is the separate and distant Grand Conductor, an unknown intelligence represented only through star-scale waveform geometry, shadowed instrument silhouettes and voice. Never reveal its complete form or combine it with the fallen boss. Render detailed cinematic 16-bit pixel art with strict 8-bit pixel discipline, stable pixel-grid scale, dark outlines, stepped cosmic light and measured high-impact animation. Never become 3D CGI, live action, vector, anime or painterly.
+Create an exact 30-second, 16:9 ending-teaser cutscene for Groove Bound. Use @Image 1 as the authoritative visual language; @Image 2, @Image 3 and @Image 4 as strict Joe and Lyra identity and movement references; @Image 5 for the Grand Orchestrator; and @Image 6 and @Image 7 for the Orbit Line. Critical canon distinction: the defeated local boss is the Grand Orchestrator. The speaker is the separate and distant Grand Conductor, an unknown intelligence represented only through star-scale waveform geometry, shadowed instrument silhouettes and voice. Never reveal its complete form or combine it with the fallen boss. Render detailed cinematic 16-bit pixel art with strict 8-bit pixel discipline, stable pixel-grid scale, dark outlines, stepped cosmic light and measured high-impact animation. Never become 3D CGI, live action, vector, anime or painterly.
 
-Music source and path: use Audio 1 from `assets/music/30_ending_teaser.ogg` continuously from 00:00-00:30. Preserve the exact supplied 96 BPM instrumental cue, loop only at its authored 32-beat boundary around 00:20, duck beneath dialogue and align large cosmic pulses to the beat.
+Music source and path: use @Audio 1 from `assets/music/30_ending_teaser.ogg` continuously from 00:00-00:30. Preserve the exact supplied 96 BPM instrumental cue, loop only at its authored 32-beat boundary around 00:20, duck beneath dialogue and align large cosmic pulses to the beat.
 
 00:00-00:07 — Finish the battle in motion: Joe's final brass resonance ring and Lyra's keytar chord strike the Grand Orchestrator's speaker core together. The giant machine freezes for one silent anticipation frame, then collapses across the Orbit Line platform in controlled pieces. Joe and Lyra land, breathing hard, surrounded by fading cyan and magenta sparks.
 
@@ -394,7 +363,7 @@ Synchronised sound effects: final resonance impact, giant mechanical collapse, d
 
 No visible words of any kind: no title, subtitle, captions, speech bubbles, projected message, logo, HUD, labels, credits or watermark. Exact dialogue only. Grand Conductor remains off-screen and unrevealed. Grand Orchestrator remains destroyed. No resurrection, extra dialogue, singing, chanting or gore.
 
-If native 30-second generation is unavailable: generate 00:00-00:15 through the Grand Conductor's complete exact line, then extend 15 seconds from the first floating machine fragment. Preserve the fallen Orchestrator, character models, spatial direction and Audio 1 continuity; deliver Joe's and Lyra's complete exact lines and finish on Backbeat answering the beacon.
+If native 30-second generation is unavailable: generate 00:00-00:15 through the Grand Conductor's complete exact line, then extend 15 seconds from the first floating machine fragment. Preserve the fallen Orchestrator, character models, spatial direction and @Audio 1 continuity; deliver Joe's and Lyra's complete exact lines and finish on Backbeat answering the beacon.
 ```
 
 ## Acceptance checklist for every returned video

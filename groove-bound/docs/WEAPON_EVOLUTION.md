@@ -19,11 +19,22 @@ A fusion is legal only when:
 5. every active emitter matches weapon inventory slot, ID, rank, and revision.
 
 The HUD checks this contract continuously and emits a five-second
-**YOU CAN EVOLVE NOW** notification when a new recipe becomes legal.
+**CHEST READY** notification when a new recipe becomes legal.
 
-The level-up guide states the complete requirement: base weapon rank 10 plus
-the exact paired support. There is no additional chest or token requirement.
-The corresponding gold fusion card is guaranteed in the next offer.
+The pause guide states the complete requirement: base weapon rank 10 plus the
+exact paired support, with satisfied ingredients in full colour and missing or
+under-ranked ingredients at reduced opacity. Level-up offers never contain
+fusion cards. A legal recipe can only resolve when the player reaches a musical
+reward chest.
+
+## Chest resolution
+
+A chest rolls one reward 80% of the time, three rewards 17% of the time, and
+five rewards 3% of the time. Rewards apply automatically. Each reward slot
+rechecks the authoritative inventories: ready evolutions take priority, then a
+legal random weapon or support is granted or ranked up. Rebuilding the pool
+after every reward prevents duplicates, capped items, and stale full-inventory
+choices.
 
 ## Atomic transaction
 
