@@ -160,6 +160,46 @@ T["campaign timeout expands with both Admin stage durations"] = function()
   H.eq(combat:_campaign_timeout(), 2700)
 end
 
+T["final bosses arrive with thirty seconds remaining at default duration"] = function()
+  local stage1 = Content.stages[1]
+  local stage2 = Content.stages[2]
+  local stage1_boss_at = stage1.waves[#stage1.waves].at
+    * stage1.base_duration / stage1.wave_base_duration
+  local stage2_boss_at = stage2.waves[#stage2.waves].at
+    * stage2.base_duration / stage2.wave_base_duration
+  H.eq(stage1.base_duration - stage1_boss_at, 30)
+  H.eq(stage2.base_duration - stage2_boss_at, 30)
+end
+
+T["stage overtime spawns and triples the final boss without returning defeat"] = function()
+  local combat, ctx, player, tuning = fresh("joe")
+  tuning:set("player.invincible", true)
+  local duration = combat:stage_snapshot(ctx.time).duration
+  ctx.time = duration + 1
+  combat:_update_overtime()
+  H.is_true(combat.overtime_latched)
+  H.is_true(combat.final_boss_spawned)
+  local boss
+  ctx.world:each("enemy", function(enemy)
+    if enemy.definition.boss_type == "final" then boss = enemy end
+  end)
+  H.is_true(boss.overtime_enraged)
+  H.eq(boss.overtime_multiplier, 3)
+  H.eq(combat:stage_snapshot(ctx.time).overtime, 1)
+  player.dead = false
+  H.is_nil(combat:update(0))
+end
+
+T["temporary damage pickup multiplies weapon output and expires"] = function()
+  local combat = fresh("joe")
+  local base = combat.weapon_runtime:projectile_snapshot(1).damage
+  combat:_apply_pickup("damage")
+  combat:_update_buffs(0)
+  H.near(combat.weapon_runtime:projectile_snapshot(1).damage, base * 1.5)
+  combat:_update_buffs(15)
+  H.near(combat.weapon_runtime:projectile_snapshot(1).damage, base)
+end
+
 T["five-times test mode expands XP-gem attraction range and pull speed"] = function()
   local combat, _, _, tuning = fresh("joe")
   tuning:set("test.enhanced_mode", true)

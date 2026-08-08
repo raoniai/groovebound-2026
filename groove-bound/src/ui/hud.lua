@@ -108,15 +108,22 @@ function HUD:draw()
   love.graphics.setFont(Fonts.get(15))
   love.graphics.setColor(0.78, 0.72, 0.88, 1)
   local stage = self.combat:stage_snapshot(self.ctx.time)
-  local remaining = math.ceil(stage.remaining)
-  love.graphics.printf(
-    string.format("STAGE %d/%d  •  %s  •  %02d:%02d",
-      stage.stage,
-      stage.count,
-      stage.name,
-      math.floor(remaining / 60),
-      remaining % 60),
-    0, 42, w, "center")
+  if stage.is_overtime then
+    local overtime = math.floor(stage.overtime)
+    love.graphics.setColor(1.0, 0.34, 0.46, 1)
+    love.graphics.printf(
+      string.format("STAGE %d/%d  •  %s  •  OVERTIME +%02d:%02d",
+        stage.stage, stage.count, stage.name,
+        math.floor(overtime / 60), overtime % 60),
+      0, 42, w, "center")
+  else
+    local remaining = math.ceil(stage.remaining)
+    love.graphics.printf(
+      string.format("STAGE %d/%d  •  %s  •  %02d:%02d",
+        stage.stage, stage.count, stage.name,
+        math.floor(remaining / 60), remaining % 60),
+      0, 42, w, "center")
+  end
 
   if self.combat.xp.notification > 0 then
     love.graphics.setFont(Fonts.get(30))
@@ -137,10 +144,34 @@ function HUD:draw()
       w / 2 - 238, 119, 476, "center")
   end
 
+  if self.combat.progression.upgrade_notice > 0 then
+    local alpha = math.min(1, self.combat.progression.upgrade_notice)
+    love.graphics.setColor(0.025, 0.06, 0.09, 0.94 * alpha)
+    love.graphics.rectangle("fill", w / 2 - 300, 158, 600, 44, 7, 7)
+    love.graphics.setColor(0.34, 1.0, 0.68, alpha)
+    love.graphics.setLineWidth(2)
+    love.graphics.rectangle("line", w / 2 - 300, 158, 600, 44, 7, 7)
+    love.graphics.setFont(Fonts.get(16))
+    love.graphics.printf(self.combat.progression.upgrade_notice_text or "UPGRADED",
+      w / 2 - 286, 171, 572, "center")
+  end
+
   if self.combat.wave_notice_time > 0 then
     love.graphics.setFont(Fonts.get(28))
     love.graphics.setColor(0.96, 0.42, 0.65, math.min(1, self.combat.wave_notice_time))
     love.graphics.printf(self.combat.wave_notice, 0, 132, w, "center")
+  end
+
+  if self.combat.pickup_notice > 0 then
+    local alpha = math.min(1, self.combat.pickup_notice)
+    love.graphics.setColor(0.03, 0.08, 0.09, 0.94 * alpha)
+    love.graphics.rectangle("fill", w / 2 - 270, 212, 540, 44, 7, 7)
+    love.graphics.setColor(0.38, 1.0, 0.76, alpha)
+    love.graphics.setLineWidth(2)
+    love.graphics.rectangle("line", w / 2 - 270, 212, 540, 44, 7, 7)
+    love.graphics.setFont(Fonts.get(16))
+    love.graphics.printf(self.combat.pickup_notice_text,
+      w / 2 - 254, 225, 508, "center")
   end
 
   if stage.notice > 0 then
@@ -165,7 +196,9 @@ function HUD:draw()
     love.graphics.rectangle("fill", boss_x, boss_y, boss_w * boss.hp / boss.max_hp, boss_h, 4, 4)
     love.graphics.setColor(settings.ui.text_color)
     love.graphics.setFont(Fonts.get(15))
-    love.graphics.printf(boss.definition.name, boss_x, boss_y - 18, boss_w, "center")
+    local boss_label = boss.definition.name
+      .. (boss.overtime_enraged and "  •  OVERTIME ×3" or "")
+    love.graphics.printf(boss_label, boss_x, boss_y - 18, boss_w, "center")
   end
 
   -- Debug readout, top-right.
@@ -194,6 +227,28 @@ function HUD:draw()
     string.format("SCORE %06d   COMBO ×%d",
       self.combat.stats.score, self.combat.stats.combo),
     0, 48, w - 16, "right")
+
+  local buff_colors = {
+    damage = { 1.0, 0.68, 0.20, 1 },
+    defense = { 0.38, 0.72, 1.0, 1 },
+    speed = { 0.46, 1.0, 0.66, 1 },
+  }
+  local buff_labels = { damage = "DAMAGE +50%", defense = "DEFENSE +50%", speed = "SPEED +35%" }
+  local buff_y = 92
+  for _, kind in ipairs({ "damage", "defense", "speed" }) do
+    local remaining = self.combat.buffs[kind]
+    if remaining > 0 then
+      local color = buff_colors[kind]
+      love.graphics.setColor(0.045, 0.035, 0.09, 0.92)
+      love.graphics.rectangle("fill", w - 190, buff_y, 174, 32, 5, 5)
+      love.graphics.setColor(color)
+      love.graphics.rectangle("line", w - 190, buff_y, 174, 32, 5, 5)
+      love.graphics.setFont(Fonts.get(14))
+      love.graphics.printf(buff_labels[kind] .. "  " .. string.format("%.1fs", remaining),
+        w - 182, buff_y + 9, 158, "center")
+      buff_y = buff_y + 38
+    end
+  end
 
   if self.combat.tuning:get("test.enhanced_mode") then
     love.graphics.setColor(1.0, 0.32, 0.66, 0.94)

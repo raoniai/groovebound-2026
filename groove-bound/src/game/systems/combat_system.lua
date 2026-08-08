@@ -6,12 +6,14 @@ local Pool = require("src.core.pool")
 local Enemy = require("src.game.entities.enemy")
 local EnemyProjectile = require("src.game.entities.enemy_projectile")
 local Projectile = require("src.game.entities.projectile")
+local Pickup = require("src.game.entities.pickup")
 local XPGem = require("src.game.entities.xp_gem")
 local SpawnDirector = require("src.game.systems.spawn_director")
 local VFXSystem = require("src.game.systems.vfx_system")
 local WeaponInventory = require("src.game.systems.weapon_inventory")
 local WeaponRuntime = require("src.game.systems.weapon_runtime")
 local XPSystem = require("src.game.systems.xp_system")
+local XPRewards = require("src.game.xp_rewards")
 local ProgressionSystem = require("src.game.systems.progression_system")
 local TestMode = require("src.game.test_mode")
 local settings = require("src.config.settings")
@@ -55,6 +57,7 @@ function CombatSystem:init(opts)
   self.enemy_projectile_pool = Pool(function() return EnemyProjectile() end)
   self.projectile_pool = Pool(function() return Projectile() end)
   self.gem_pool = Pool(function() return XPGem() end)
+  self.pickup_pool = Pool(function() return Pickup() end)
   self.vfx = VFXSystem(self.assets)
 
   self.inventory = WeaponInventory(self.content)
@@ -101,12 +104,16 @@ function CombatSystem:init(opts)
   self.music_final_phase_latched = false
   self.wave_notice = nil
   self.wave_notice_time = 0
+  self.pickup_notice = 0
+  self.pickup_notice_text = nil
+  self.buffs = { damage = 0, defense = 0, speed = 0 }
   self.stages = self.content.stages
   self.stage_index = 0
   self.stage_started_at = 0
   self.stage_notice = 0
   self.stage_notice_text = nil
   self.stage_clear_reported = false
+  self.overtime_latched = false
   self:begin_stage(1, self.arena, true)
 end
 
@@ -153,6 +160,7 @@ function CombatSystem:begin_stage(index, arena, initial)
   self.stage_clear_reported = false
   self.final_boss_dead = false
   self.final_boss_spawned = false
+  self.overtime_latched = false
   self.music_final_phase_latched = false
   self.arena = assert(arena)
   self.spawner = self:_make_spawner(stage)
@@ -163,6 +171,7 @@ function CombatSystem:begin_stage(index, arena, initial)
     self.ctx.world:each("projectile", function(entity) entity.dead = true end)
     self.ctx.world:each("enemy_projectile", function(entity) entity.dead = true end)
     self.ctx.world:each("xp_gem", function(entity) entity.dead = true end)
+    self.ctx.world:each("pickup", function(entity) entity.dead = true end)
     self:_release_removed()
     local cx, cy = self.arena:center()
     self.player.x, self.player.y = cx, cy
@@ -188,6 +197,8 @@ function CombatSystem:stage_snapshot(time)
     elapsed = elapsed,
     duration = duration,
     remaining = math.max(0, duration - elapsed),
+    overtime = math.max(0, elapsed - duration),
+    is_overtime = elapsed >= duration,
     notice = self.stage_notice,
     notice_text = self.stage_notice_text,
   }
@@ -230,6 +241,9 @@ function CombatSystem:_difficulty_multiplier()
 end
 
 function CombatSystem:spawn_enemy(definition, x, y)
+  if definition.boss_type == "final" and self.final_boss_spawned then
+    return nil
+  end
   if definition.boss_type == "final" then
     local cx, cy = self.arena:center()
     x, y = cx + 360, cy
@@ -364,15 +378,24 @@ function CombatSystem:_kill_enemy(enemy)
     self.stats.bosses = self.stats.bosses + 1
     self.final_boss_dead = true
   end
-  local gem = self.gem_pool:acquire({
-    assets = self.assets,
-    x = enemy.x,
-    y = enemy.y,
-    value = math.floor(
-      enemy.definition.xp * ((self.character.stats or {}).resonance or 1) + 0.5),
-    phase = self.ctx.rng.vfx:uniform(0, math.pi * 2),
-  })
-  self.ctx.world:add("xp_gem", gem)
+  local reward = math.floor(
+    enemy.definition.xp * ((self.character.stats or {}).resonance or 1) + 0.5)
+  local drops = XPRewards.split(reward, enemy.definition)
+  for index, drop in ipairs(drops) do
+    local angle = self.ctx.rng.vfx:uniform(0, math.pi * 2)
+    local radius = #drops == 1 and 0
+      or (12 + (index % 3) * 7 + self.ctx.rng.vfx:uniform(0, 8))
+    local gem = self.gem_pool:acquire({
+      assets = self.assets,
+      x = enemy.x + math.cos(angle) * radius,
+      y = enemy.y + math.sin(angle) * radius,
+      value = drop.value,
+      tier = drop.tier,
+      phase = self.ctx.rng.vfx:uniform(0, math.pi * 2),
+    })
+    self.ctx.world:add("xp_gem", gem)
+  end
+  self:_try_spawn_rare_pickup(enemy)
   self.vfx:spawn(
     "explosion", enemy.x, enemy.y,
     {
@@ -381,6 +404,73 @@ function CombatSystem:_kill_enemy(enemy)
     })
   if self.assets then self.assets:play("enemy_death", 0.05) end
   return true
+end
+
+function CombatSystem:_try_spawn_rare_pickup(enemy)
+  if enemy.definition.boss_type == "final" then return nil end
+  local chance = enemy.definition.boss_type == "miniboss" and 0.10 or 0.0125
+  if not self.ctx.rng.loot:chance(chance) then return nil end
+  local kind = self.ctx.rng.loot:pick({ "heal", "magnet", "damage", "defense", "speed" })
+  local pickup = self.pickup_pool:acquire({
+    kind = kind,
+    assets = self.assets,
+    x = enemy.x,
+    y = enemy.y,
+    phase = self.ctx.rng.vfx:uniform(0, math.pi * 2),
+  })
+  return self.ctx.world:add("pickup", pickup)
+end
+
+function CombatSystem:_apply_pickup(kind)
+  if kind == "heal" then
+    local amount = self.player.max_hp * 0.25
+    self.player.hp = math.min(self.player.max_hp, self.player.hp + amount)
+    self.pickup_notice_text = "RARE DROP  •  +25% HEALTH"
+  elseif kind == "magnet" then
+    self.ctx.world:each("xp_gem", function(gem) gem.magnetized = true end)
+    self.pickup_notice_text = "RARE DROP  •  ALL XP MAGNETIZED"
+  else
+    self.buffs[kind] = 15
+    local labels = {
+      damage = "+50% DAMAGE",
+      defense = "+50% DEFENSE",
+      speed = "+35% SPEED",
+    }
+    self.pickup_notice_text = "RARE DROP  •  " .. labels[kind] .. "  •  15s"
+  end
+  self.pickup_notice = 3.5
+  if self.assets then self.assets:play("xp", 0.08) end
+end
+
+function CombatSystem:_update_pickups(dt)
+  self.ctx.world:each("pickup", function(pickup)
+    if pickup:update(dt, self.player) then
+      self:_apply_pickup(pickup.pickup_kind)
+    end
+  end)
+end
+
+function CombatSystem:_update_buffs(dt)
+  for kind, remaining in pairs(self.buffs) do
+    self.buffs[kind] = math.max(0, remaining - dt)
+  end
+  self.weapon_runtime:set_temporary_damage_multiplier(
+    self.buffs.damage > 0 and 1.5 or 1)
+  self.player.temporary_defense_multiplier = self.buffs.defense > 0 and 1.5 or 1
+  self.player.temporary_speed_multiplier = self.buffs.speed > 0 and 1.35 or 1
+end
+
+function CombatSystem:_update_overtime()
+  local snapshot = self:stage_snapshot(self.ctx.time)
+  if not snapshot.is_overtime or self.final_boss_dead then return end
+  if not self.final_boss_spawned then self:admin_spawn_final_boss() end
+  if self.overtime_latched then return end
+  self.overtime_latched = true
+  self.wave_notice = "OVERTIME  •  BOSS POWER ×3"
+  self.wave_notice_time = 5
+  self.ctx.world:each("enemy", function(enemy)
+    if enemy.definition.boss_type == "final" then enemy:enrage_overtime(3) end
+  end)
 end
 
 function CombatSystem:_update_projectiles(dt)
@@ -468,7 +558,7 @@ function CombatSystem:_update_enemies(dt)
       local dx, dy = self.player.x - enemy.x, self.player.y - enemy.y
       local length = math.max(0.001, math.sqrt(dx * dx + dy * dy))
       if self.player:take_damage(
-        enemy.definition.damage * damage_multiplier,
+        enemy.definition.damage * damage_multiplier * enemy.overtime_multiplier,
         dx / length, dy / length, 155 * knockback)
       then
         self:_player_hit_feedback(0.28)
@@ -483,7 +573,8 @@ function CombatSystem:_update_enemies(dt)
         <= (enemy.definition.attack_range or 0) ^ 2
     then
       enemy.attack_cooldown = enemy.definition.attack_interval
-      if self.player:take_damage(enemy.definition.damage * damage_multiplier) then
+      if self.player:take_damage(enemy.definition.damage * damage_multiplier
+        * enemy.overtime_multiplier) then
         self:_player_hit_feedback(0.38)
         self.vfx:spawn("player_hurt", self.player.x, self.player.y, {
           scale = 0.30,
@@ -500,7 +591,7 @@ function CombatSystem:_update_enemies(dt)
         local dx, dy = self.player.x - enemy.x, self.player.y - enemy.y
         local length = math.max(0.001, math.sqrt(dx * dx + dy * dy))
         if self.player:take_damage(
-          enemy.definition.damage * damage_multiplier,
+          enemy.definition.damage * damage_multiplier * enemy.overtime_multiplier,
           dx / length, dy / length, 210 * knockback)
         then
           self:_player_hit_feedback(0.42)
@@ -524,7 +615,7 @@ function CombatSystem:_spawn_enemy_projectile(enemy, action, damage_multiplier)
     dx = action.dx,
     dy = action.dy,
     speed = enemy.definition.projectile_speed or 270,
-    damage = enemy.definition.damage * damage_multiplier,
+    damage = enemy.definition.damage * damage_multiplier * enemy.overtime_multiplier,
     radius = enemy.definition.boss_type and 11 or 8,
     color = enemy.definition.color,
   })
@@ -587,12 +678,16 @@ function CombatSystem:_release_removed()
     self.enemy_projectile_pool:release(projectile)
   end
   for _, gem in ipairs(removed.xp_gem or {}) do self.gem_pool:release(gem) end
+  for _, pickup in ipairs(removed.pickup or {}) do self.pickup_pool:release(pickup) end
 end
 
 function CombatSystem:update(dt)
   local frame_started = os.clock()
   self.wave_notice_time = math.max(0, self.wave_notice_time - dt)
+  self.pickup_notice = math.max(0, self.pickup_notice - dt)
   self.stage_notice = math.max(0, self.stage_notice - dt)
+  self:_update_buffs(dt)
+  self:_update_overtime()
   local stage_time = self.ctx.time - self.stage_started_at
   local difficulty = self:_difficulty_multiplier()
   self.spawner:update(
@@ -602,6 +697,7 @@ function CombatSystem:update(dt)
   self:_update_projectiles(dt)
   self:_update_enemy_projectiles(dt)
   self:_update_gems(dt)
+  self:_update_pickups(dt)
   self.vfx:update(dt)
   self.xp:update(dt)
   self.progression:update(dt)
@@ -621,7 +717,6 @@ function CombatSystem:update(dt)
     if self.stage_index < #self.stages then return "stage_clear" end
     return "victory"
   end
-  if self.ctx.time >= self:_campaign_timeout() then return "defeat" end
   return nil
 end
 

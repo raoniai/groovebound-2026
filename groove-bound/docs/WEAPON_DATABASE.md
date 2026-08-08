@@ -6,7 +6,8 @@ The live database now projects three authoritative content families:
 - 8 support enhancements;
 - 8 fused evolution weapons.
 
-Open **Arsenal Database** from the title, pause, or Admin screen. Use
+Open **Arsenal Database** from the development-only Admin tab. It is no longer
+exposed on the title or pause menu. Use
 arrows/WASD or D-pad to navigate, Tab or controller shoulders to change
 filters, and Escape/B to return. The Supports filter shows live support
 ownership, rank, effect, level-up availability, and authored fusion pairings.

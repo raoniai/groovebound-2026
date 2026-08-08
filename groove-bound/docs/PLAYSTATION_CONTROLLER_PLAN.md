@@ -10,6 +10,11 @@ and DualShock controllers recognized by SDL can currently provide:
 - D-pad and shoulder navigation in menus and Admin;
 - configurable dead zone and optional vibration.
 
+The app-level input gate now suppresses the duplicate keyboard-arrow event
+that some controller drivers emit alongside a D-pad press. Options pause also
+normalizes standardized `start` and `back` events and common raw PlayStation
+button indices before forwarding one pause action to the active screen.
+
 Keyboard and mouse remain independent and must continue working when a
 controller connects or disconnects during play.
 
@@ -68,3 +73,7 @@ Controller support is ready for release only when:
 5. USB and Bluetooth test passes are recorded for DualSense and DualShock 4;
 6. automated input-mapping tests, a full controller playthrough, and package
    boot verification all pass.
+
+Automated duplicate-direction and Options-normalization checks are implemented.
+Physical USB/Bluetooth passes remain required before release readiness is
+claimed.

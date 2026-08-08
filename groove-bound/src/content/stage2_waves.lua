@@ -32,19 +32,19 @@ return {
       { id = "trumpet_ray", count = 24, cadence = 0.95 },
       { id = "keyboard_centipede", count = 10, cadence = 1.85 },
   } },
-  { at = 480, enemies = {
+  { at = 440, enemies = {
       { id = "keyboard_centipede", count = 18, cadence = 1.35 },
       { id = "drum_wheel", count = 32, cadence = 0.72 },
       { id = "theremin_jelly", count = 26, cadence = 0.88 },
       { id = "trumpet_ray", count = 18, cadence = 0.9 },
   } },
-  { at = 545, enemies = {
+  { at = 470, enemies = {
       { id = "amp_hound", count = 22, cadence = 1.18 },
       { id = "keyboard_centipede", count = 20, cadence = 1.15 },
       { id = "vinyl_drone", count = 55, cadence = 0.30 },
       { id = "trumpet_ray", count = 22, cadence = 0.78 },
   } },
-  { at = 580, enemies = {
+  { at = 500, enemies = {
       { id = "grand_orchestrator", count = 1, cadence = 1.0, continuous = false },
       { id = "trumpet_ray", count = 24, cadence = 0.82 },
       { id = "drum_wheel", count = 24, cadence = 0.76 },

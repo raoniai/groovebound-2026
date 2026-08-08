@@ -166,6 +166,7 @@ function RunScreen:draw()
   self.camera:apply()
   self.arena:draw()
   self.ctx.world:each("xp_gem", function(gem) gem:draw() end)
+  self.ctx.world:each("pickup", function(pickup) pickup:draw() end)
   self.ctx.world:each("enemy", function(enemy) enemy:draw() end)
   self.ctx.world:each("projectile", function(projectile) projectile:draw() end)
   self.ctx.world:each(

@@ -78,7 +78,7 @@ return {
       ttl_secs  = 10,
       font_size = 15,
       toggle_key = "tab",
-      visible = true,
+      visible = false,
     },
     channels = {
       -- Per-channel log toggles; unlisted channels default to enabled.
@@ -95,6 +95,7 @@ return {
         master_volume = 1.0,
         music_volume = 0.8,
         sfx_volume   = 0.8,
+        muted = false,
         screen_shake = true,
         hit_flash = true,
         vibration = true,

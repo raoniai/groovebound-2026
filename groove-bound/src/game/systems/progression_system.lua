@@ -38,6 +38,8 @@ function ProgressionSystem:init(opts)
   self.last_offer = nil
   self.evolution_notice = 0
   self.evolution_notice_text = nil
+  self.upgrade_notice = 0
+  self.upgrade_notice_text = nil
   self.last_evolution_signature = ""
 end
 
@@ -102,6 +104,7 @@ end
 
 function ProgressionSystem:update(dt)
   self.evolution_notice = math.max(0, self.evolution_notice - dt)
+  self.upgrade_notice = math.max(0, self.upgrade_notice - dt)
   local eligible = self:eligible_evolutions()
   local signature = table.concat(eligible, "|")
   if signature ~= "" and signature ~= self.last_evolution_signature then
@@ -132,7 +135,7 @@ function ProgressionSystem:_weapon_cards(out)
         out[#out + 1] = card(
           "weapon_add",
           id,
-          "NEW: " .. definition.name,
+          definition.name,
           definition.description,
           4)
       end
@@ -154,7 +157,7 @@ function ProgressionSystem:_passive_cards(out)
       out[#out + 1] = card(
         "passive_add",
         id,
-        "SUPPORT: " .. definition.name,
+          definition.name,
         definition.description,
         id == "breath_control" and 2 or 5)
     end
@@ -301,11 +304,34 @@ function ProgressionSystem:apply(choice)
   assert(choice and choice.kind, "progression choice required")
   local result
   if choice.kind == "weapon_level" then
+    local before = self.inventory:get(choice.id).level
     result = assert(self.inventory:level_up(choice.id))
     self.weapon_runtime:sync(self.inventory)
+    local definition = self.content.weapons[choice.id]
+    local old_stats = definition.levels[before]
+    local new_stats = definition.levels[result.level]
+    local changes = {}
+    if new_stats.damage ~= old_stats.damage then
+      changes[#changes + 1] = string.format("%+d DMG", new_stats.damage - old_stats.damage)
+    end
+    if new_stats.cooldown ~= old_stats.cooldown then
+      changes[#changes + 1] = string.format("%.2fs FASTER", old_stats.cooldown - new_stats.cooldown)
+    end
+    if (new_stats.count or 1) ~= (old_stats.count or 1) then
+      changes[#changes + 1] = string.format("%+d PROJECTILE",
+        (new_stats.count or 1) - (old_stats.count or 1))
+    end
+    if new_stats.speed ~= old_stats.speed then
+      changes[#changes + 1] = string.format("%+d SPEED", new_stats.speed - old_stats.speed)
+    end
+    self.upgrade_notice = 3.5
+    self.upgrade_notice_text = definition.name .. " R" .. result.level
+      .. "  •  " .. table.concat(changes, "  •  ")
   elseif choice.kind == "weapon_add" then
     result = assert(self.inventory:add(choice.id, 1))
     self.weapon_runtime:sync(self.inventory)
+    self.upgrade_notice = 3.5
+    self.upgrade_notice_text = "NEW WEAPON  •  " .. self.content.weapons[choice.id].name
   elseif choice.kind == "passive_add" then
     result = assert(self.passives:add(choice.id, 1))
     self:_apply_passive_effects()
@@ -322,6 +348,9 @@ function ProgressionSystem:apply(choice)
     self:_apply_passive_effects()
     self.last_evolution_signature = ""
     self.evolution_notice = 0
+    self.upgrade_notice = 5
+    self.upgrade_notice_text = "EVOLVED  •  "
+      .. self.content.weapons[result.new_weapon_id].name
     self.evolutions[#self.evolutions + 1] = {
       id = choice.id,
       result_weapon = result.new_weapon_id,

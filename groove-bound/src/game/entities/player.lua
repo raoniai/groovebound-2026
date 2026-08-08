@@ -49,6 +49,9 @@ function Player:init(opts)
   self.base_max_hp = self.hp
   self.defense_multiplier = stats.defense or 1
   self.passive_speed_multiplier = 1
+  self.temporary_speed_multiplier = 1
+  self.temporary_defense_multiplier = 1
+  self.time_since_hit = 5
   self.aim_x, self.aim_y = 1, 0
   self.anim_time = 0
   self.anim_frame = 1
@@ -70,7 +73,16 @@ function Player:update(dt, input, camera, arena)
   local mx, my = input:move_vector()
   local speed_multiplier = self.tuning and self.tuning:get("player.speed_multiplier") or 1
   speed_multiplier = speed_multiplier * TestMode.factor(self.tuning)
+  local previous_since_hit = self.time_since_hit
+  self.time_since_hit = self.time_since_hit + dt
+  local regeneration_dt = math.max(0, self.time_since_hit - 5)
+    - math.max(0, previous_since_hit - 5)
+  if regeneration_dt > 0 and self.hp > 0 and self.hp < self.max_hp then
+    self.hp = math.min(self.max_hp,
+      self.hp + self.max_hp * 0.0002 * regeneration_dt)
+  end
   self.speed = self.base_speed * speed_multiplier * self.passive_speed_multiplier
+    * self.temporary_speed_multiplier
   local old_x, old_y = self.x, self.y
   local next_x = self.x + (mx * self.speed + self.knockback_x) * dt
   local next_y = self.y + (my * self.speed + self.knockback_y) * dt
@@ -111,11 +123,13 @@ end
 function Player:take_damage(amount, push_x, push_y, push_force)
   if self.dead or self.invulnerability > 0 then return false end
   if self.tuning and self.tuning:get("player.invincible") then return false end
-  amount = amount / math.max(0.25, self.defense_multiplier)
+  amount = amount / math.max(0.25,
+    self.defense_multiplier * self.temporary_defense_multiplier)
   local absorbed = math.min(self.guard, amount)
   self.guard = self.guard - absorbed
   amount = amount - absorbed
   self.hp = math.max(0, self.hp - amount)
+  self.time_since_hit = 0
   self.invulnerability = settings.combat.player_invulnerability
   self.flash = self.options.hit_flash == false and 0 or 0.12
   self.hurt_timer = 0.28

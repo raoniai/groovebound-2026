@@ -11,12 +11,15 @@ local MusicCatalog = require("src.audio.music_catalog")
 local MusicContext = require("src.audio.music_context")
 local MusicDirector = require("src.audio.music_director")
 local MusicRouter = require("src.audio.music_router")
+local AudioSettings = require("src.audio.audio_settings")
+local InputEventGate = require("src.game.input_event_gate")
 local Tuning = require("src.debug.tuning")
 local admin_controls = require("src.config.admin_controls")
 local settings = require("src.config.settings")
 
 local Overlay = require("src.debug.overlay")
 local TitleScreen = require("src.ui.screens.title")
+local GlobalAudioControl = require("src.ui.global_audio_control")
 
 -- The app container: every screen receives this instead of reaching for
 -- globals. App-scoped only — per-run objects live in RunContext (Phase 1).
@@ -32,6 +35,8 @@ local app = {
   weapon_catalog = nil,
   music = nil,
   music_catalog = nil,
+  global_audio = nil,
+  input_gate = nil,
 }
 
 function love.load()
@@ -50,11 +55,12 @@ function love.load()
     defaults = settings.save.defaults,
   })
   app.profile = app.save:load()
+  if app.profile.options.fullscreen then
+    love.window.setFullscreen(true, "desktop")
+  end
   require("src.config.controls").apply_saved(app.profile.options.controls)
   app.tuning = Tuning(admin_controls)
   app.assets = Assets.load()
-  app.assets:set_sfx_volume(
-    app.profile.options.master_volume * app.profile.options.sfx_volume)
   app.music_catalog = MusicCatalog(require("src.content.music"), {
     file_exists = function(path)
       return love.filesystem.getInfo(path, "file") ~= nil
@@ -67,6 +73,9 @@ function love.load()
     master_volume = app.profile.options.master_volume,
     music_volume = app.profile.options.music_volume,
   })
+  AudioSettings.apply(app)
+  app.global_audio = GlobalAudioControl.new(app)
+  app.input_gate = InputEventGate.new({ clock = love.timer.getTime })
 
   app.states:push(TitleScreen(app))
   Log.info("boot", "Boot complete")
@@ -87,10 +96,12 @@ end
 function love.draw()
   app.states:draw()
   Overlay.draw()
+  app.global_audio:draw()
 end
 
 function love.keypressed(key)
   if Overlay.keypressed(key) then return end
+  if not app.input_gate:accept("keyboard", key) then return end
   app.states:keypressed(key)
 end
 
@@ -99,6 +110,7 @@ function love.keyreleased(key)
 end
 
 function love.mousepressed(x, y, button)
+  if app.global_audio:mousepressed(x, y, button) then return end
   app.states:mousepressed(x, y, button)
 end
 
@@ -107,11 +119,23 @@ function love.mousereleased(x, y, button)
 end
 
 function love.mousemoved(x, y, dx, dy)
+  app.global_audio:mousemoved(x, y)
   app.states:mousemoved(x, y, dx, dy)
 end
 
 function love.gamepadpressed(joystick, button)
+  if not app.input_gate:accept("gamepad", button) then return end
+  if app.input_gate:gamepad_button(button) == "pause" then
+    app.states:gamepadpressed(joystick, "start")
+    return
+  end
   app.states:gamepadpressed(joystick, button)
+end
+
+function love.joystickpressed(joystick, button)
+  if app.input_gate:joystick_button(button) ~= "pause" then return end
+  if not app.input_gate:accept("joystick", button) then return end
+  app.states:gamepadpressed(joystick, "start")
 end
 
 function love.resize(w, h)

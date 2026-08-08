@@ -86,4 +86,37 @@ T["run animation cycles through four distinct locomotion poses"] = function()
   H.eq(player.anim_frame, 4)
 end
 
+T["health regenerates at 0.02 percent per second only after five hit-free seconds"] = function()
+  local tuning = Tuning(definitions)
+  local player = Player({ x = 0, y = 0, tuning = tuning })
+  local input = {
+    move_vector = function() return 1, 0 end,
+    aim_vector = function() return 1, 0 end,
+  }
+  local arena = { clamp = function(_, x, y) return x, y end }
+  H.is_true(player:take_damage(20))
+  local damaged = player.hp
+  player:update(5, input, nil, arena)
+  H.near(player.hp, damaged)
+  player:update(1, input, nil, arena)
+  H.near(player.hp, damaged + player.max_hp * 0.0002, 1e-8)
+end
+
+T["temporary speed and defense multipliers affect movement and incoming damage"] = function()
+  local tuning = Tuning(definitions)
+  local player = Player({ x = 0, y = 0, tuning = tuning })
+  player.temporary_speed_multiplier = 1.35
+  player.temporary_defense_multiplier = 1.5
+  local input = {
+    move_vector = function() return 1, 0 end,
+    aim_vector = function() return 1, 0 end,
+  }
+  local arena = { clamp = function(_, x, y) return x, y end }
+  player:update(1, input, nil, arena)
+  H.near(player.x, player.base_speed * 1.35)
+  local hp = player.hp
+  H.is_true(player:take_damage(15))
+  H.near(player.hp, hp - 10)
+end
+
 return T

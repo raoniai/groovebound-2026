@@ -1,8 +1,9 @@
 # Admin Controls
 
-The visual admin dashboard is a development-only modal available through the
-**Admin Controls** button on the title/pause menus or with **F1** from the title
-screen, an active run, or the pause screen.
+The visual admin dashboard is a development-only tab inside **Settings**, or it
+can be opened directly with **F1** from the title screen, an active run, or the
+pause screen. Public-facing title and pause menus no longer expose separate
+Admin or Arsenal entries.
 
 Controls are segmented into Overview, Simulation, Run & Stages, Player,
 Combat, Bullets, Enemies, Rewards, and Groove. Each section has a consistent vector icon,
@@ -12,7 +13,7 @@ accent, bounded value bar, formatted current value, and explicit −/+ controls.
 
 | Action | Keyboard | Gamepad | Mouse |
 |---|---|---|---|
-| Open/close | F1 / Escape | Start or B closes | Menu/Close button |
+| Open/close | F1 / Escape | Options/Start or B closes | Menu/Close button |
 | Change section | `[` / `]` | Left/Right shoulder | Select sidebar section |
 | Select | Up/Down or W/S | D-pad Up/Down | Hover row |
 | Decrease/increase | Left/Right or A/D | D-pad Left/Right | − / + |
@@ -23,6 +24,8 @@ accent, bounded value bar, formatted current value, and explicit −/+ controls.
 
 Opening the panel pushes a modal state, so the run beneath it stops updating.
 Menu input itself is never time-scaled.
+Mirrored controller/keyboard direction events are deduplicated before they
+reach this screen, so each D-pad press changes one row or value only once.
 
 ## Safety model
 

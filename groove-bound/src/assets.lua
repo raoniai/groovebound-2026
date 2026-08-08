@@ -72,7 +72,8 @@ function Assets.load()
   }
 
   self.campaign = {
-    logo = image("assets/generated/campaign/groove-bound-logo.png"),
+    logo = image("assets/generated/campaign/groove-bound-title-v2.png"),
+    title_background = image("assets/generated/campaign/title-background-v3.png"),
     portraits = image("assets/generated/campaign/character-portraits-atlas.png"),
     talking = {
       joe = image("assets/generated/campaign/joe-talking-strip.png"),
@@ -158,6 +159,14 @@ function Assets.load()
     frame_w = 313, frame_h = 313, cols = 4, rows = 4,
   })
   self.xp_gem = image("assets/legacy/images/xp-gem.png")
+  self.xp_gems = image("assets/generated/campaign/xp-gems-atlas.png")
+  self.xp_gem_quads,
+    self.xp_gem_cell_w,
+    self.xp_gem_cell_h = grid_quads(self.xp_gems, 2, 2)
+  self.pickups = image("assets/generated/campaign/pickup-consumables-atlas.png")
+  self.pickup_quads,
+    self.pickup_cell_w,
+    self.pickup_cell_h = grid_quads(self.pickups, 4, 2)
   self.gameover = image("assets/legacy/images/ui/gameover.png")
   self.icon = image("assets/generated/campaign/app-icon.png")
   self.weapon_icons = image("assets/generated/weapon-icons-atlas.png")
@@ -373,6 +382,41 @@ function Assets:draw_talking_character(id, frame, x, bottom, height, opts)
   love.graphics.draw(
     strip, quad, x, bottom, opts.rotation or 0,
     scale, scale, cell_w / 2, cell_h)
+  return true
+end
+
+local pickup_cells = {
+  heal = { col = 1, row = 1 },
+  magnet = { col = 2, row = 1 },
+  damage = { col = 3, row = 1 },
+  defense = { col = 4, row = 1 },
+  speed = { col = 1, row = 2 },
+}
+
+function Assets:draw_pickup(kind, x, y, size, opts)
+  local cell = pickup_cells[kind]
+  if not cell then return false end
+  opts = opts or {}
+  local scale = size / math.max(self.pickup_cell_w, self.pickup_cell_h)
+  love.graphics.setColor(opts.color or { 1, 1, 1, 1 })
+  love.graphics.draw(
+    self.pickups, self.pickup_quads[cell.row][cell.col], x, y,
+    opts.rotation or 0, scale, scale,
+    self.pickup_cell_w / 2, self.pickup_cell_h / 2)
+  return true
+end
+
+function Assets:draw_xp_gem(tier, x, y, size, opts)
+  tier = math.max(1, math.min(4, tier or 1))
+  opts = opts or {}
+  local col = (tier - 1) % 2 + 1
+  local row = math.floor((tier - 1) / 2) + 1
+  local scale = size / math.max(self.xp_gem_cell_w, self.xp_gem_cell_h)
+  love.graphics.setColor(opts.color or { 1, 1, 1, 1 })
+  love.graphics.draw(
+    self.xp_gems, self.xp_gem_quads[row][col], x, y,
+    opts.rotation or 0, scale, scale,
+    self.xp_gem_cell_w / 2, self.xp_gem_cell_h / 2)
   return true
 end
 

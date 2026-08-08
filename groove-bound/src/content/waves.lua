@@ -34,7 +34,7 @@ return {
       { id = "bass_brute", count = 12, cadence = 1.9 },
       { id = "noise_turret", count = 12, cadence = 1.55 },
   } },
-  { at = 145, enemies = {
+  { at = 125, enemies = {
       { id = "static_baron", count = 1, cadence = 1.0, continuous = false },
       { id = "tempo_leech", count = 20, cadence = 0.85 },
       { id = "bass_brute", count = 12, cadence = 1.65 },

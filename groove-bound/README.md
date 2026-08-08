@@ -15,9 +15,12 @@ public release.
 The current build now includes:
 
 - an illustrated prologue, character intros, inter-stage scene, and ending with
-  centred word-by-word dialogue, animated Joe/Lyra talking sprites, richer
-  motion, manual advance, automatic timing, and confirmed skip;
-- a professional title flow and two-character selection screen;
+  word-by-word dialogue that waits for confirmation, plus large left-side
+  Joe/Lyra portraits whose heads break above the dialogue panel while their
+  bodies remain cropped inside it;
+- a full-screen title flow with a separate transparent logo, readable central
+  menu lane, and a world panorama that frames Joe, Lyra, both stages, enemies,
+  bosses, and music-powered landmarks around the interface;
 - Joe and Lyra Vex with distinct stats, passive traits, starting weapons, and
   directional idle, walk, high-speed run, and hurt animations;
 - two stage-specific environments and sixteen enemy variants;
@@ -26,9 +29,10 @@ The current build now includes:
   arena elements;
 - 16 base weapons, seven distinct firing patterns, auto-targeting and
   auto-fire;
-- pooled projectiles, enemies, and XP gems;
+- pooled projectiles, enemies, four visual XP-gem tiers, and rare consumables;
 - damage, contact damage, invulnerability frames, death, and drops;
-- gem attraction, multi-threshold XP and a paused three-card choice every level;
+- difficulty-scaled gem showers that preserve each enemy's exact XP value,
+  gem attraction, multi-threshold XP and a paused three-card choice every level;
 - seeded randomized offers with immediate anti-repeat protection, guaranteed
   new-weapon variety while slots are open, and owned-rank cards when both
   inventories are full;
@@ -58,13 +62,38 @@ The current build now includes:
 - a segmented visual Admin dashboard with category icons, value bars, live
   tools, a toggleable 5x speed/power/XP/magnetism test mode, and direct Arsenal
   access;
-- persistent options, conflict-checked keyboard rebinding and seed copy;
+- a unified Settings/Admin hub with 1% audio sliders, explicit ON/OFF states,
+  persistent corner mute, PlayStation guidance, keyboard rebinding and seed copy;
+- deduplicated controller/keyboard navigation and PlayStation Options pause
+  fallback across standardized Start/Back and common raw controller mappings;
+- illustrated rare healing, XP magnet, damage, defense and speed drops; delayed passive
+  health regeneration; timed-buff HUD readouts; and survivable boss overtime;
 - a `Tab` toggle for the debug overlay;
 - legacy floor art and SFX combined with campaign sprite, projectile, combat
   effect, environment, portrait, and cutscene atlases.
 
 The next production step is canon and balance refinement, supplied cinematic
 video/audio, and the BeatClock groove layer.
+
+## Latest generated visuals
+
+The title remains layered: the world panorama is full-screen, while the logo
+and menu are rendered separately in the central safe area.
+
+![Groove Bound full-screen title menu](docs/screenshots/title-menu.png)
+
+Cutscene dialogue now keeps the speaking player large and readable on the left,
+with a controlled head bleed and lower-body crop:
+
+![Joe speaking in the revised cutscene dialogue panel](docs/screenshots/cutscene-dialogue.png)
+
+Rare consumables now use a dedicated transparent runtime atlas:
+
+![Healing, magnet, damage, defense and speed pickup sprites](assets/generated/campaign/pickup-consumables-atlas.png)
+
+Enemy difficulty now maps to four readable XP reward tiers:
+
+![Four XP gem tiers](assets/generated/campaign/xp-gems-atlas.png)
 
 ## Requirements
 

@@ -5,6 +5,7 @@ local class = require("src.core.class")
 local Fonts = require("src.ui.fonts")
 local settings = require("src.config.settings")
 local widgets = require("src.ui.widgets.button")
+local Hints = require("src.ui.controller_hints")
 
 local LevelUpScreen = class()
 LevelUpScreen.kind = "level_up"
@@ -58,7 +59,7 @@ function LevelUpScreen:_layout()
   local total_w = card_w * 3 + gap * 2
   local x = (w - total_w) / 2
   local y = h * 0.24
-  local card_h = 300
+  local card_h = 320
   local buttons = {}
 
   for index, choice in ipairs(self.offer) do
@@ -136,6 +137,18 @@ function LevelUpScreen:draw()
         and "FUSION READY"
         or string.upper(choice.kind:gsub("_", " "))),
       button.x + 12, button.y + 10, button.w - 24, "left")
+    if choice.kind == "weapon_add" or choice.kind == "passive_add" then
+      local tag_w, tag_h = 58, 25
+      local tag_x, tag_y = button.x + button.w - tag_w - 8, button.y + 8
+      love.graphics.setColor(0.96, 0.24, 0.64, 1)
+      love.graphics.polygon("fill",
+        tag_x, tag_y, tag_x + tag_w, tag_y,
+        tag_x + tag_w, tag_y + tag_h,
+        tag_x + 8, tag_y + tag_h, tag_x, tag_y + tag_h - 8)
+      love.graphics.setColor(1, 1, 1, 1)
+      love.graphics.setFont(Fonts.get(13))
+      love.graphics.printf("NEW", tag_x, tag_y + 6, tag_w, "center")
+    end
     self:_draw_choice_icon(choice, button.x + button.w / 2, button.y + 84, 98, color)
 
     love.graphics.setColor(settings.ui.text_color)
@@ -161,18 +174,37 @@ function LevelUpScreen:draw()
         button.w - 24,
         "center")
     end
-    local stats = self:_choice_stats(choice)
+    local stats, improvements = self:_choice_stats(choice)
     if stats then
+      love.graphics.setColor(0.035, 0.03, 0.075, 0.98)
+      love.graphics.rectangle("fill",
+        button.x + 12, button.y + 260, button.w - 24, 48, 6, 6)
       love.graphics.setColor(color)
+      love.graphics.rectangle("line",
+        button.x + 12, button.y + 260, button.w - 24, 48, 6, 6)
       love.graphics.setFont(Fonts.get(14))
       love.graphics.printf(stats,
-        button.x + 12, button.y + 274, button.w - 24, "center")
+        button.x + 20, button.y + 268, button.w - 40, "center")
+      if improvements then
+        love.graphics.setColor(0.34, 1.0, 0.68, 1)
+        love.graphics.setFont(Fonts.get(13))
+        love.graphics.printf(improvements,
+          button.x + 20, button.y + 289, button.w - 40, "center")
+      end
     end
   end
 
   if self:_requirements_visible() then
     self:_draw_evolution_guide(w, h)
   end
+  love.graphics.setColor(0.015, 0.01, 0.05, 0.92)
+  love.graphics.rectangle("fill", 0, h - 40, w, 40)
+  Hints.draw({
+    { symbol = "dpad", label = "Choose" },
+    { symbol = "cross", label = "Select" },
+    { symbol = "square", label = "Reroll" },
+    { symbol = "circle", label = "Skip" },
+  }, h - 30, w, { font_size = 13, glyph_size = 18, gap = 18 })
 end
 
 function LevelUpScreen:_requirements_visible()
@@ -220,7 +252,7 @@ function LevelUpScreen:_draw_evolution_guide(w, h)
 
   local shown = math.min(3, #progress)
   local panel_w = math.min(1040, w - 48)
-  local panel_h = math.min(118, h - self.guide_y - 16)
+  local panel_h = math.min(118, h - self.guide_y - 52)
   if panel_h < 72 then return end
   local panel_x = (w - panel_w) / 2
   local column_w = (panel_w - 28) / shown
@@ -243,15 +275,20 @@ function LevelUpScreen:_draw_evolution_guide(w, h)
     local x = panel_x + 14 + (index - 1) * column_w
     local icon_y = self.guide_y + 70
     self.app.assets:draw_weapon_icon(
-      record.base.icon, x + 19, icon_y, 34)
+      record.base.icon, x + 18, icon_y, 34)
+    love.graphics.setColor(1.0, 0.76, 0.24, 1)
+    love.graphics.setFont(Fonts.get(20))
+    love.graphics.print("+", x + 35, icon_y - 12)
     self.app.assets:draw_support_icon(
-      record.support.icon, x + 55, icon_y, 34)
+      record.support.icon, x + 58, icon_y, 34)
+    love.graphics.setColor(1.0, 0.76, 0.24, 1)
+    love.graphics.print("=", x + 76, icon_y - 12)
     self.app.assets:draw_weapon_icon(
-      record.result.icon, x + 91, icon_y, 34)
+      record.result.icon, x + 104, icon_y, 38)
 
     love.graphics.setColor(settings.ui.text_color)
     love.graphics.setFont(Fonts.get(14))
-    love.graphics.print(record.result.name, x + 112, self.guide_y + 39)
+    love.graphics.print(record.result.name, x + 130, self.guide_y + 39)
 
     local missing = {}
     if not record.weapon_ready then
@@ -269,9 +306,9 @@ function LevelUpScreen:_draw_evolution_guide(w, h)
       record.eligible
         and "READY: SELECT THE GOLD FUSION CARD"
         or ("MISSING: " .. table.concat(missing, " + ")),
-      x + 112,
+      x + 130,
       self.guide_y + 61,
-      column_w - 122,
+      column_w - 140,
       "left")
   end
 
@@ -349,15 +386,51 @@ end
 
 function LevelUpScreen:_choice_stats(choice)
   local weapon = self:_weapon_for_choice(choice)
-  if not weapon then return nil end
+  if not weapon then
+    if choice.kind == "passive_add" or choice.kind == "passive_level" then
+      local passive = self.app.content.passives[choice.id]
+      local owned = self.combat.progression.passives:get(choice.id)
+      local from = owned and owned.level or 0
+      local to = math.min(passive.max_level, from + 1)
+      local value = passive.per_level * to
+      local delta = passive.per_level
+      return string.format("R%d  TOTAL %+d%%", to, math.floor(value * 100 + 0.5)),
+        string.format("%+d%% %s", math.floor(delta * 100 + 0.5),
+          string.upper(passive.stat:gsub("_", " ")))
+    end
+    if choice.kind == "heal" then return "RESTORE 30% MAX HP", "+30% HEALTH" end
+    if choice.kind == "guard" then return "ADD 25 GUARD", "+25 DEFENSE" end
+    if choice.kind == "coins" then return "BANK 25 COINS", "+25 RESULTS VALUE" end
+    return nil
+  end
   local level = 1
+  local previous
   if choice.kind == "weapon_level" then
     local owned = self.combat.inventory:get(choice.id)
+    previous = weapon.levels[owned.level]
     level = math.min(weapon.max_level, owned.level + 1)
   end
   local stats = weapon.levels[level]
-  return string.format("DMG %d   CD %.2fs   ×%d   %s",
-    stats.damage, stats.cooldown, stats.count or 1, string.upper(weapon.pattern))
+  local summary = string.format("DMG %d   %.2fs   ×%d   SPD %d",
+    stats.damage, stats.cooldown, stats.count or 1, stats.speed or 0)
+  if not previous then
+    return summary, choice.kind == "evolution" and "NEW EVOLVED ATTACK PATTERN" or "NEW ACTIVE WEAPON"
+  end
+  local improvements = {}
+  if stats.damage ~= previous.damage then
+    improvements[#improvements + 1] = string.format("%+d DMG", stats.damage - previous.damage)
+  end
+  if stats.cooldown ~= previous.cooldown then
+    improvements[#improvements + 1] = string.format("%.2fs FASTER", previous.cooldown - stats.cooldown)
+  end
+  if (stats.count or 1) ~= (previous.count or 1) then
+    improvements[#improvements + 1] = string.format("%+d SHOT",
+      (stats.count or 1) - (previous.count or 1))
+  end
+  if stats.speed ~= previous.speed then
+    improvements[#improvements + 1] = string.format("%+d SPEED", stats.speed - previous.speed)
+  end
+  return summary, table.concat(improvements, "  •  ")
 end
 
 function LevelUpScreen:keypressed(key)

@@ -264,3 +264,51 @@ beacon, cable/debris clusters, and a cosmic gate.
 The bundled chroma-key removal helper converted the magenta source backgrounds
 to alpha. The Orbit runtime sheet was then resampled to dimensions divisible by
 the authored 4×2 grid. Source candidates remain excluded from release packages.
+
+## Full-screen title-menu layers
+
+**Runtime files:**
+`campaign/title-background-v2.png` (1672×941 RGB),
+`campaign/groove-bound-title-v2.png` (1683×935 RGBA)
+
+Generated with OpenAI image generation on 2026-08-08 using the previous
+repository title banner as the visual-identity reference. The background pass
+removed all title typography and rebuilt the neon supernatural music venue as
+a full-bleed 16:9 scene with a calm central menu zone. The title pass preserved
+the exact two-line gold pixel-arcade treatment on a flat green chroma key.
+
+The bundled chroma-key helper removed that green field with a soft matte and
+despill pass. The resulting title asset was visually inspected with its alpha
+channel intact before runtime integration. Neither runtime asset contains a
+watermark or additional copy.
+
+## World-overview title background and collectible atlases
+
+**Generated:** 2026-08-09 with OpenAI image generation in Codex
+
+**Runtime files:**
+
+| File | Mode | Role |
+|---|---|---|
+| `campaign/title-background-v3.png` (1672×941 RGB) | Edit with project-owned references | Full-screen two-world panorama with Joe and Lyra outside a clean central UI lane |
+| `campaign/pickup-consumables-atlas.png` (1774×887 RGBA) | New 4×2 keyed atlas | Heal, magnet, damage, defense and speed pickups in cells 1–5 |
+| `campaign/xp-gems-atlas.png` (1254×1254 RGBA) | New 2×2 keyed atlas | Common, uncommon, rare and legendary XP reward tiers |
+
+The title edit used `title-background-v2.png` as its base and the project-owned
+Joe/Lyra character portrait atlas as an identity reference. Its prompt required
+Backbeat City on the left, Resonance Orbit on the right, large inward-facing
+heroes at the outer thirds, peripheral enemies and landmarks, no typography,
+and a dark low-contrast central 42% safe area for the separate logo and menu.
+
+The consumable prompt required a strict 4×2 arcade pixel-art grid on solid
+green chroma key: heart capsule, XP magnet, amplifier lightning badge,
+soundwave shield and winged sneaker, followed by three empty cells. The XP
+prompt required a strict 2×2 family of increasingly valuable crystal rewards:
+mint shard, cyan diamond, gold cluster and magenta cosmic cluster. The final XP
+source used a red chroma field to preserve the green common gem.
+
+Both gameplay atlases were converted to transparent RGBA locally. Alpha and
+cell layout were inspected after key removal; the XP atlas received a small
+key-spill cleanup on its navy outlines. The original generator outputs remain
+in Codex's generated-image store rather than the release package. No third-party
+images, typography, watermarks or external copyrighted assets were introduced.

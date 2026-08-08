@@ -24,6 +24,11 @@ function WeaponRuntime:init(content, tuning, opts)
   self.passives = {}
   self.emitters = {}
   self.inventory_revision = -1
+  self.temporary_damage_multiplier = 1
+end
+
+function WeaponRuntime:set_temporary_damage_multiplier(multiplier)
+  self.temporary_damage_multiplier = multiplier or 1
 end
 
 function WeaponRuntime:set_passives(levels)
@@ -118,7 +123,8 @@ function WeaponRuntime:projectile_snapshot(slot)
       * self:_value("combat.damage_multiplier", 1)
       * TestMode.factor(self.tuning)
       * ((self.character.stats or {}).power or 1)
-      * (1 + self:_passive_bonus("damage")),
+      * (1 + self:_passive_bonus("damage"))
+      * self.temporary_damage_multiplier,
     speed = (stats.speed or 0) * self:_value("projectiles.speed_multiplier", 1),
     count = math.max(1,
       (stats.count or 1)

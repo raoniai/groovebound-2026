@@ -34,6 +34,18 @@ function Enemy:reset(opts)
   self.brain_time = 0
   self.flash = 0
   self.knockback_x, self.knockback_y = 0, 0
+  self.overtime_multiplier = 1
+  self.overtime_enraged = false
+end
+
+function Enemy:enrage_overtime(multiplier)
+  if self.overtime_enraged then return false end
+  multiplier = multiplier or 3
+  self.overtime_enraged = true
+  self.overtime_multiplier = multiplier
+  self.hp = self.hp * multiplier
+  self.max_hp = self.max_hp * multiplier
+  return true
 end
 
 function Enemy:update(dt, player, speed_multiplier, arena)
@@ -53,7 +65,7 @@ function Enemy:update(dt, player, speed_multiplier, arena)
   end
   if length > 0.001 and self.definition.brain ~= "static" then
     dx, dy = dx / length, dy / length
-    local speed = self.definition.speed * speed_multiplier
+    local speed = self.definition.speed * speed_multiplier * self.overtime_multiplier
     if self.definition.brain == "zigzag" then
       local wobble = math.sin(self.brain_time * 5 + self.x * 0.01) * 0.65
       dx, dy = dx - dy * wobble, dy + dx * wobble

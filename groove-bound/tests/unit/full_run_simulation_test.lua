@@ -167,7 +167,10 @@ T["boss rewards cannot be claimed twice"] = function()
   H.is_false(combat:_kill_enemy(boss))
   H.eq(combat.progression.rerolls, 2)
   H.eq(combat.stats.minibosses, 1)
-  H.eq(ctx.world:count("xp_gem"), 1)
+  H.eq(ctx.world:count("xp_gem"), 5)
+  local reward = 0
+  ctx.world:each("xp_gem", function(gem) reward = reward + gem.value end)
+  H.eq(reward, Content.enemies.metronome_guardian.xp)
 end
 
 T["admin evolution preparation creates a legal consumable fusion"] = function()

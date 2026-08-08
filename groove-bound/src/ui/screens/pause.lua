@@ -7,6 +7,7 @@ local Fonts = require("src.ui.fonts")
 local Input = require("src.game.input")
 local settings = require("src.config.settings")
 local widgets = require("src.ui.widgets.button")
+local Hints = require("src.ui.controller_hints")
 
 local PauseScreen = class()
 PauseScreen.kind = "pause"
@@ -35,24 +36,6 @@ function PauseScreen:_layout()
     }),
   }
 
-  if settings.debug.admin.enabled then
-    buttons[#buttons + 1] = widgets.Button({
-      label = "Admin Controls", x = x, y = y + (#buttons * (bh + gap)), w = bw, h = bh,
-      on_press = function()
-        local AdminScreen = require("src.ui.screens.admin")
-        self.app.states:push(AdminScreen(self.app))
-      end,
-    })
-  end
-
-  buttons[#buttons + 1] = widgets.Button({
-    label = "Arsenal Database", x = x, y = y + (#buttons * (bh + gap)), w = bw, h = bh,
-    on_press = function()
-      local ArsenalScreen = require("src.ui.screens.arsenal")
-      self.app.states:push(ArsenalScreen(self.app))
-    end,
-  })
-
   buttons[#buttons + 1] = widgets.Button({
     label = "Copy Run Seed", x = x, y = y + (#buttons * (bh + gap)), w = bw, h = bh,
     on_press = function()
@@ -61,7 +44,7 @@ function PauseScreen:_layout()
   })
 
   buttons[#buttons + 1] = widgets.Button({
-    label = "Options", x = x, y = y + (#buttons * (bh + gap)), w = bw, h = bh,
+    label = "Settings", x = x, y = y + (#buttons * (bh + gap)), w = bw, h = bh,
     on_press = function()
       local OptionsScreen = require("src.ui.screens.options")
       self.app.states:push(OptionsScreen(self.app))
@@ -94,6 +77,14 @@ function PauseScreen:draw()
   love.graphics.printf("PAUSED", 0, h * 0.3, w, "center")
 
   self.button_list:draw()
+  love.graphics.setColor(0.01, 0.005, 0.035, 0.86)
+  love.graphics.rectangle("fill", 0, h - 42, w, 42)
+  Hints.draw({
+    { symbol = "dpad", label = "Navigate" },
+    { symbol = "cross", label = "Select" },
+    { symbol = "circle", label = "Resume" },
+    { symbol = "options", label = "Resume" },
+  }, h - 31, w, { font_size = 13, glyph_size = 18, gap = 17 })
 end
 
 function PauseScreen:keypressed(key)

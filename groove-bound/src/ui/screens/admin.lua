@@ -4,6 +4,8 @@
 local class = require("src.core.class")
 local Fonts = require("src.ui.fonts")
 local settings = require("src.config.settings")
+local Icons = require("src.ui.icons")
+local Hints = require("src.ui.controller_hints")
 
 local AdminScreen = class()
 AdminScreen.kind = "admin"
@@ -70,8 +72,9 @@ local function draw_glyph(kind, x, y, size, color)
   love.graphics.setLineWidth(1)
 end
 
-function AdminScreen:init(app)
+function AdminScreen:init(app, opts)
   self.app = app
+  self.opts = opts or {}
   self.category_index = 1
   self.selected = 1
   self.scroll = 1
@@ -137,6 +140,12 @@ function AdminScreen:_layout()
     y = self.panel.y + self.panel.h - 50,
     w = 130,
     h = 34,
+  }
+  self.options_tab = {
+    x = self.content_x, y = self.panel.y + 14, w = 148, h = 38,
+  }
+  self.admin_tab = {
+    x = self.content_x + 158, y = self.panel.y + 14, w = 148, h = 38,
   }
   if self.app.active_run then
     if compact_run_tools then
@@ -329,14 +338,26 @@ function AdminScreen:draw()
   self:_draw_sidebar()
 
   local category = categories[self.category_index]
+  self:_draw_button(self.options_tab, "OPTIONS", { 0.38, 0.82, 1.0, 1 })
+  self:_draw_button(self.admin_tab, "ADMIN", category.color)
+  Icons.draw("display", self.options_tab.x + 18, self.options_tab.y + 17,
+    16, { 0.38, 0.82, 1.0, 1 })
+  Icons.draw("admin", self.admin_tab.x + 18, self.admin_tab.y + 17,
+    16, category.color)
   love.graphics.setColor(category.color)
-  love.graphics.setFont(Fonts.get(30))
-  love.graphics.print(category.label, self.content_x, self.panel.y + 18)
+  love.graphics.setFont(Fonts.get(24))
+  love.graphics.print(category.label, self.content_x + 326, self.panel.y + 20)
   love.graphics.setColor(0.68, 0.66, 0.76, 1)
   love.graphics.setFont(Fonts.get(14))
   love.graphics.print(
-    "Bounded live tuning  •  [ / ] or LB/RB sections  •  F1/Esc closes",
-    self.content_x, self.panel.y + 54)
+    "Live tuning  •  [ / ] or L1/R1 sections  •  F1/Esc closes",
+    self.content_x, self.panel.y + 62)
+  Hints.draw({
+    { symbol = "dpad", label = "Adjust" },
+    { symbol = "triangle", label = "Reset selected" },
+    { symbol = "circle", label = "Close" },
+  }, self.panel.y + 79, self.content_w,
+    { x = self.content_x, font_size = 12, glyph_size = 16, gap = 14 })
   self:_draw_rows()
 
   if self.run_tool_rects then
@@ -349,6 +370,15 @@ function AdminScreen:draw()
   self:_draw_button(self.reset_all_rect, "Reset all", category.color)
   self:_draw_button(self.arsenal_rect, "Arsenal Database", { 0.38, 0.92, 1.0, 1 })
   self:_draw_button(self.close_rect, "Close", category.color)
+end
+
+function AdminScreen:_open_options()
+  if self.opts.settings_hub then
+    self.app.states:pop()
+  else
+    local OptionsScreen = require("src.ui.screens.options")
+    self.app.states:push(OptionsScreen(self.app))
+  end
 end
 
 function AdminScreen:_open_arsenal()
@@ -444,6 +474,10 @@ end
 
 function AdminScreen:mousepressed(x, y, button)
   if button ~= 1 then return false end
+  if contains(self.options_tab, x, y) then
+    self:_open_options()
+    return true
+  end
   for index, rect in ipairs(self.category_rects) do
     if contains(rect, x, y) then self:_set_category(index) return true end
   end
