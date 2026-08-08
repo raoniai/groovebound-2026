@@ -19,8 +19,10 @@ package: clean
 	zip -9 -r dist/groove-bound.love . \
 		-x "dist/*" -x "tests/*" -x "docs/*" -x "design-system/*" \
 		-x "Makefile" -x ".luacheckrc" -x "*.md" \
+		-x "scripts/*" \
 		-x ".DS_Store" -x "*/.DS_Store" -x "assets/generated/*-source.png" \
 		-x "assets/generated/source-candidates/*" \
+		-x "music/*" \
 		-x "docs/screenshots/*"
 
 clean:

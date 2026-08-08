@@ -21,6 +21,9 @@ local function make_director(opts)
       get = function(_, id) return values[id] end,
     },
     arena = { width = 1000, height = 800, wall = 20 },
+    focus_position = opts.focus_position,
+    spawn_radius_min = opts.spawn_radius_min,
+    spawn_radius_max = opts.spawn_radius_max,
     count_enemies = function() return active end,
     spawn = function(definition, x, y)
       active = active + 1
@@ -34,6 +37,28 @@ local definitions = {
   monotone = { id = "monotone", size = 12 },
   tempo_leech = { id = "tempo_leech", size = 18 },
 }
+
+T["large arenas spawn pressure around the player instead of distant walls"] = function()
+  local director, spawned = make_director({
+    focus_position = function() return 500, 400 end,
+    spawn_radius_min = 220,
+    spawn_radius_max = 280,
+    waves = {
+      { at = 0, enemies = {
+          { id = "monotone", count = 8, cadence = 0.01, continuous = false },
+      } },
+    },
+  })
+  director:update(1, 0, definitions)
+  H.eq(#spawned, 8)
+  for _, enemy in ipairs(spawned) do
+    local dx, dy = enemy.x - 500, enemy.y - 400
+    local distance = math.sqrt(dx * dx + dy * dy)
+    H.is_true(distance >= 219 and distance <= 281)
+    H.is_true(enemy.x > 20 and enemy.x < 980)
+    H.is_true(enemy.y > 20 and enemy.y < 780)
+  end
+end
 
 T["waves stay dormant until their scheduled run time"] = function()
   local director, spawned = make_director()

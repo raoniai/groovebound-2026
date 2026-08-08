@@ -27,6 +27,23 @@ T["projectiles move by their normalized direction and speed"] = function()
   H.is_false(projectile.dead)
 end
 
+T["projectile render pose loops subtle scale and position motion"] = function()
+  local projectile = Projectile()
+  projectile:reset({
+    x = 20, y = 20, dx = 1, dy = 0, speed = 50, damage = 10,
+    lifetime = 2, source_weapon_id = "kazoo_pistol",
+  })
+  local first = projectile:render_pose()
+  projectile:update(0.25, arena)
+  local second = projectile:render_pose()
+  H.is_true(first.x ~= second.x or first.y ~= second.y)
+  H.is_true(first.scale_x ~= second.scale_x or first.scale_y ~= second.scale_y)
+  H.is_true(second.scale_x >= 0.90 and second.scale_x <= 1.10)
+  H.is_true(second.scale_y >= 0.90 and second.scale_y <= 1.10)
+  H.is_true(math.abs(second.x - projectile.x) <= 4)
+  H.is_true(math.abs(second.y - projectile.y) <= 4)
+end
+
 T["projectile pierce is consumed once per distinct enemy"] = function()
   local projectile = Projectile()
   projectile:reset({

@@ -3,6 +3,7 @@ local Fonts = require("src.ui.fonts")
 local settings = require("src.config.settings")
 
 local CutsceneScreen = class()
+CutsceneScreen.kind = "cutscene"
 
 local speaker_characters = {
   JOE = "joe",
@@ -85,8 +86,15 @@ function CutsceneScreen:presentation()
     character = speaker_characters[slide.speaker],
     mouth_open = actively_speaking
       and math.floor(speaking_time / 0.10) % 2 == 0,
-    pulse = revealed > 0 and math.max(0,
-      1 - (speaking_time % word_interval) / word_interval) or 0,
+  }
+end
+
+function CutsceneScreen:talking_pose(w, h)
+  return {
+    x = w / 2,
+    bottom = h + 26,
+    height = math.min(390, h * 0.44),
+    rotation = 0,
   }
 end
 
@@ -119,17 +127,15 @@ function CutsceneScreen:draw()
   love.graphics.setColor(0.015, 0.01, 0.05, 0.34)
   love.graphics.rectangle("fill", 0, 0, w, h)
 
-  local sprite_height = math.min(390, h * 0.44)
   if presentation.character then
-    local bob = math.sin(self.elapsed * 2.4) * 3
-    local lean = math.sin(self.elapsed * 1.3) * 0.008
+    local pose = self:talking_pose(w, h)
     self.app.assets:draw_talking_character(
       presentation.character,
       presentation.mouth_open and 2 or 1,
-      w / 2,
-      h + 26 + bob,
-      sprite_height,
-      { rotation = lean })
+      pose.x,
+      pose.bottom,
+      pose.height,
+      { rotation = pose.rotation })
   end
 
   local panel_w = math.min(900, w - 120)
@@ -154,19 +160,14 @@ function CutsceneScreen:draw()
   love.graphics.printf(slide.speaker, panel_x + 28, panel_y + 25,
     panel_w - 56, "center")
 
-  local pulse_scale = 1 + presentation.pulse * 0.035
-  local bounce = presentation.pulse * -5
-  love.graphics.push()
-  love.graphics.translate(w / 2, panel_y + panel_h * 0.47 + bounce)
-  love.graphics.scale(pulse_scale, pulse_scale)
   love.graphics.setFont(Fonts.get(27))
-  love.graphics.setColor(0.18, 0.92, 1.0, 0.16 * presentation.pulse)
-  love.graphics.printf(presentation.text, -panel_w * 0.41 + 2, 2,
-    panel_w * 0.82, "center")
   love.graphics.setColor(settings.ui.text_color)
-  love.graphics.printf(presentation.text, -panel_w * 0.41, 0,
-    panel_w * 0.82, "center")
-  love.graphics.pop()
+  love.graphics.printf(
+    presentation.text,
+    panel_x + panel_w * 0.09,
+    panel_y + panel_h * 0.47,
+    panel_w * 0.82,
+    "center")
 
   local progress = presentation.word_count > 0
     and presentation.revealed / presentation.word_count or 0

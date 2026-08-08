@@ -3,6 +3,7 @@ local Fonts = require("src.ui.fonts")
 local settings = require("src.config.settings")
 
 local CharacterSelectScreen = class()
+CharacterSelectScreen.kind = "character_select"
 
 local stat_order = {
   { id = "vitality", label = "VITALITY" },

@@ -13,6 +13,7 @@ local RunContext = require("src.game.run_context")
 local CombatSystem = require("src.game.systems.combat_system")
 
 local RunScreen = class()
+RunScreen.kind = "run"
 
 function RunScreen:init(app, opts)
   self.app = app
@@ -67,6 +68,8 @@ function RunScreen:enter()
   self.transitioning = false
   self.choice_open = false
   self.seed_notice = 0
+  self.music_event_serial = 0
+  self.music_event = nil
   self.app.active_run = self
 end
 
@@ -109,6 +112,11 @@ function RunScreen:update(dt)
 
   if outcome == "stage_clear" and not self.transitioning then
     self.transitioning = true
+    self.music_event_serial = self.music_event_serial + 1
+    self.music_event = {
+      cue = "stage_clear_sting",
+      serial = self.music_event_serial,
+    }
     local CutsceneScreen = require("src.ui.screens.cutscene")
     self.app.states:push(CutsceneScreen(
       self.app,
@@ -140,6 +148,7 @@ end
 function RunScreen:resume(result)
   self.choice_open = false
   if result == "stage2" then
+    self.music_event = nil
     self.arena = Arena({
       assets = self.app.assets,
       stage = self.app.content.stages[2],

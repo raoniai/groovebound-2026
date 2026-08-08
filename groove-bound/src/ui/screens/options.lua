@@ -4,6 +4,7 @@ local settings = require("src.config.settings")
 local widgets = require("src.ui.widgets.button")
 
 local OptionsScreen = class()
+OptionsScreen.kind = "options"
 
 function OptionsScreen:init(app)
   self.app = app
@@ -17,6 +18,7 @@ function OptionsScreen:_save()
   self.app.save:save(self.app.profile)
   local options = self.app.profile.options
   self.app.assets:set_sfx_volume(options.master_volume * options.sfx_volume)
+  self.app.music:set_volume(options.master_volume, options.music_volume)
 end
 
 function OptionsScreen:_cycle_volume(key)

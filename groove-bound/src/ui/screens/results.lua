@@ -4,6 +4,7 @@ local settings = require("src.config.settings")
 local widgets = require("src.ui.widgets.button")
 
 local ResultsScreen = class()
+ResultsScreen.kind = "results"
 
 ResultsScreen.opaque = false
 

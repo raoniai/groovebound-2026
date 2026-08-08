@@ -15,6 +15,8 @@ function EnemyProjectile:reset(opts)
   self.radius = opts.radius or 8
   self.lifetime = opts.lifetime or 4
   self.color = opts.color or { 1.0, 0.30, 0.72, 1 }
+  self.anim_time = 0
+  self.anim_phase = ((math.floor(self.x * 5 + self.y * 3)) % 628) / 100
   self.dead = false
 end
 
@@ -22,19 +24,28 @@ function EnemyProjectile:update(dt, arena)
   self.x = self.x + self.dx * self.speed * dt
   self.y = self.y + self.dy * self.speed * dt
   self.lifetime = self.lifetime - dt
+  self.anim_time = self.anim_time + dt
   if self.lifetime <= 0 or not arena:contains(self.x, self.y, self.radius) then
     self.dead = true
   end
 end
 
 function EnemyProjectile:draw()
+  local cycle = self.anim_time * 2.6 + self.anim_phase
+  local sideways = math.sin(cycle) * 1.8
+  local x = self.x - self.dy * sideways
+  local y = self.y + self.dx * sideways
+  local scale_x = 1 + math.sin(cycle) * 0.08
+  local scale_y = 1 + math.cos(cycle * 0.78) * 0.07
+  love.graphics.push()
+  love.graphics.translate(x, y)
+  love.graphics.scale(scale_x, scale_y)
   love.graphics.setColor(self.color)
-  love.graphics.circle("fill", self.x, self.y, self.radius)
+  love.graphics.circle("fill", 0, 0, self.radius)
   love.graphics.setColor(1, 0.92, 0.42, 0.85)
-  love.graphics.circle("line", self.x, self.y, self.radius + 4)
-  love.graphics.line(
-    self.x - self.dx * 18, self.y - self.dy * 18,
-    self.x, self.y)
+  love.graphics.circle("line", 0, 0, self.radius + 4)
+  love.graphics.line(-self.dx * 18, -self.dy * 18, 0, 0)
+  love.graphics.pop()
 end
 
 return EnemyProjectile

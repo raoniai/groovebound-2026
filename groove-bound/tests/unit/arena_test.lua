@@ -55,4 +55,13 @@ T["solid stage equipment blocks circle movement"] = function()
   H.eq(y, 350)
 end
 
+T["stage-specific dimensions override the global arena fallback"] = function()
+  local a = Arena({ stage = { width = 5000, height = 3200 } })
+  H.eq(a.width, 5000)
+  H.eq(a.height, 3200)
+  local cx, cy = a:center()
+  H.eq(cx, 2500)
+  H.eq(cy, 1600)
+end
+
 return T

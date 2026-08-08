@@ -7,6 +7,10 @@ local Log = require("src.core.log")
 local Save = require("src.core.save")
 local StateMachine = require("src.core.state_machine")
 local Assets = require("src.assets")
+local MusicCatalog = require("src.audio.music_catalog")
+local MusicContext = require("src.audio.music_context")
+local MusicDirector = require("src.audio.music_director")
+local MusicRouter = require("src.audio.music_router")
 local Tuning = require("src.debug.tuning")
 local admin_controls = require("src.config.admin_controls")
 local settings = require("src.config.settings")
@@ -26,6 +30,8 @@ local app = {
   assets = nil,
   active_run = nil,
   weapon_catalog = nil,
+  music = nil,
+  music_catalog = nil,
 }
 
 function love.load()
@@ -49,6 +55,18 @@ function love.load()
   app.assets = Assets.load()
   app.assets:set_sfx_volume(
     app.profile.options.master_volume * app.profile.options.sfx_volume)
+  app.music_catalog = MusicCatalog(require("src.content.music"), {
+    file_exists = function(path)
+      return love.filesystem.getInfo(path, "file") ~= nil
+    end,
+  })
+  app.music = MusicDirector(app.music_catalog, {
+    source_factory = function(path)
+      return love.audio.newSource(path, "stream")
+    end,
+    master_volume = app.profile.options.master_volume,
+    music_volume = app.profile.options.music_volume,
+  })
 
   app.states:push(TitleScreen(app))
   Log.info("boot", "Boot complete")
@@ -62,6 +80,8 @@ end
 
 function love.update(dt)
   app.states:update(dt)
+  app.music:request(MusicRouter.route(MusicContext.snapshot(app)))
+  app.music:update(dt)
 end
 
 function love.draw()
@@ -96,4 +116,9 @@ end
 
 function love.resize(w, h)
   app.states:resize(w, h)
+end
+
+function love.focus(focused)
+  if not app.music then return end
+  if focused then app.music:resume_all() else app.music:pause_all() end
 end

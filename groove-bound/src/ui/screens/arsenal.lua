@@ -6,6 +6,7 @@ local Fonts = require("src.ui.fonts")
 local settings = require("src.config.settings")
 
 local ArsenalScreen = class()
+ArsenalScreen.kind = "arsenal"
 
 local filters = {
   { id = "all", label = "ALL" },

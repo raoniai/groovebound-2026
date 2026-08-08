@@ -9,11 +9,11 @@ local Arena = class()
 function Arena:init(opts)
   opts = opts or {}
   local cfg = settings.arena
-  self.width = opts.width or cfg.width
-  self.height = opts.height or cfg.height
+  self.stage = opts.stage or {}
+  self.width = opts.width or self.stage.width or cfg.width
+  self.height = opts.height or self.stage.height or cfg.height
   self.wall = opts.wall or cfg.wall
   self.assets = opts.assets
-  self.stage = opts.stage or {}
   self.obstacles = opts.obstacles or self.stage.obstacles or {
     { x = 420, y = 360, w = 120, h = 180, icon = { col = 1, row = 1 } },
     { x = 910, y = 280, w = 150, h = 120, icon = { col = 2, row = 1 } },
@@ -140,7 +140,7 @@ function Arena:draw()
         decoration.icon, decoration.x, decoration.y, decoration.size,
         {
           color = { 1, 1, 1, 0.72 },
-          atlas = environment_atlas,
+          atlas = decoration.atlas or environment_atlas,
         })
     end
   end
@@ -163,7 +163,7 @@ function Arena:draw()
         obstacle.x + obstacle.w / 2,
         obstacle.y + obstacle.h / 2,
         math.max(obstacle.w, obstacle.h),
-        { atlas = environment_atlas })
+        { atlas = obstacle.atlas or environment_atlas })
     end
   end
 

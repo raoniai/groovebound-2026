@@ -6,6 +6,7 @@ local Fonts = require("src.ui.fonts")
 local settings = require("src.config.settings")
 
 local AdminScreen = class()
+AdminScreen.kind = "admin"
 AdminScreen.opaque = false
 
 local categories = {

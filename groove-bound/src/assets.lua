@@ -198,6 +198,18 @@ function Assets.load()
     self.environment_stage2_cell_w,
     self.environment_stage2_cell_h = grid_quads(
       self.environment_stage2, 4, 2)
+  self.environment_backbeat_expansion = image(
+    "assets/generated/campaign/backbeat-environment-expansion-atlas.png")
+  self.environment_backbeat_expansion_quads,
+    self.environment_backbeat_expansion_cell_w,
+    self.environment_backbeat_expansion_cell_h = grid_quads(
+      self.environment_backbeat_expansion, 4, 2)
+  self.environment_orbit_expansion = image(
+    "assets/generated/campaign/orbit-environment-expansion-atlas.png")
+  self.environment_orbit_expansion_quads,
+    self.environment_orbit_expansion_cell_w,
+    self.environment_orbit_expansion_cell_h = grid_quads(
+      self.environment_orbit_expansion, 4, 2)
 
   self.sfx = {
     projectile = source("assets/legacy/sfx/projectile.ogg", 0.08),
@@ -278,21 +290,40 @@ function Assets:draw_environment(icon, x, y, size, opts)
     origin_y = self.environment_stage2_cell_h / 2
     cell_size = math.max(
       self.environment_stage2_cell_w, self.environment_stage2_cell_h)
+  elseif opts.atlas == "backbeat_expansion" then
+    atlas = self.environment_backbeat_expansion
+    quad = self.environment_backbeat_expansion_quads[icon.row][icon.col]
+    origin_x = self.environment_backbeat_expansion_cell_w / 2
+    origin_y = self.environment_backbeat_expansion_cell_h / 2
+    cell_size = math.max(
+      self.environment_backbeat_expansion_cell_w,
+      self.environment_backbeat_expansion_cell_h)
+  elseif opts.atlas == "orbit_expansion" then
+    atlas = self.environment_orbit_expansion
+    quad = self.environment_orbit_expansion_quads[icon.row][icon.col]
+    origin_x = self.environment_orbit_expansion_cell_w / 2
+    origin_y = self.environment_orbit_expansion_cell_h / 2
+    cell_size = math.max(
+      self.environment_orbit_expansion_cell_w,
+      self.environment_orbit_expansion_cell_h)
   end
   local scale = size / cell_size
   love.graphics.setColor(opts.color or { 1, 1, 1, 1 })
   love.graphics.draw(atlas, quad, x, y, 0, scale, scale, origin_x, origin_y)
 end
 
-function Assets:draw_projectile(weapon_id, x, y, size, rotation, color)
+function Assets:draw_projectile(
+  weapon_id, x, y, size, rotation, color, scale_x, scale_y)
   local cell = self.projectile_cells[weapon_id]
   if not cell then return false end
   local quad = self.projectile_quads[cell.row][cell.col]
   local scale = math.max(12, size * 2.5) / 256
+  scale_x = scale_x or 1
+  scale_y = scale_y or 1
   love.graphics.setColor(color or { 1, 1, 1, 1 })
   love.graphics.draw(
     self.projectile_atlas, quad, x, y, rotation or 0,
-    scale, scale, 128, 128)
+    scale * scale_x, scale * scale_y, 128, 128)
   return true
 end
 

@@ -42,6 +42,21 @@ T["dialogue reveals word by word and animates the active character mouth"] = fun
   H.is_false(complete.mouth_open)
 end
 
+T["karaoke text and talking characters do not pulse or drift"] = function()
+  local screen = fresh("LYRA", "Same pose changing mouth only")
+  screen:update(0.5)
+  H.is_nil(screen:presentation().pulse)
+
+  local first = screen:talking_pose(1200, 800)
+  screen:update(1.3)
+  local second = screen:talking_pose(1200, 800)
+  H.eq(first.x, second.x)
+  H.eq(first.bottom, second.bottom)
+  H.eq(first.height, second.height)
+  H.eq(first.rotation, 0)
+  H.eq(second.rotation, 0)
+end
+
 T["non-character narration has no talking sprite"] = function()
   local screen = fresh("NARRATOR", "Backbeat never slept")
   screen:update(0.5)

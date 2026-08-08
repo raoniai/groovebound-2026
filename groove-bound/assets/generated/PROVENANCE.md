@@ -211,6 +211,8 @@ from release packages. Runtime assets are:
 | `campaign/character-portraits-atlas.png` | 2×1 landscape character-selection portraits |
 | `campaign/stage2-enemies-atlas.png` | 4×2 Orbit Line roster |
 | `campaign/stage2-environment-atlas.png` | 4×2 collision and decorative props |
+| `campaign/backbeat-environment-expansion-atlas.png` | 4×2 Backbeat trees, barriers, street equipment, and decoration |
+| `campaign/orbit-environment-expansion-atlas.png` | 4×2 Orbit Line crystal trees, rails, beacons, debris, and gates |
 | `campaign/projectile-atlas.png` | 6×4 unique base/evolved weapon bullets |
 | `campaign/combat-fx-atlas.png` | 4×4 impacts, explosions, deaths, damage |
 | `campaign/app-icon.png` | 512×512 RGBA application/window icon |
@@ -236,3 +238,29 @@ helper before the runtime icon was downsampled.
 
 The complete normalized prompt is recorded in
 [`../../docs/STAGE2_VISUAL_PROMPTS.md`](../../docs/STAGE2_VISUAL_PROMPTS.md).
+
+## Five-times-area environment expansions
+
+**Source candidates:**
+`source-candidates/environment/backbeat-expansion-chroma.png`,
+`source-candidates/environment/orbit-expansion-chroma.png`
+
+**Runtime files:**
+`campaign/backbeat-environment-expansion-atlas.png` (1536×1024 RGBA),
+`campaign/orbit-environment-expansion-atlas.png` (1660×948 RGBA)
+
+Generated with OpenAI image generation on 2026-08-08 using the existing
+environment atlases as style references. Both prompts requested a strict 4×2
+pixel-art prop grid on flat chroma-key magenta, consistent top-down/isometric
+perspective, no text, no characters, no shadows crossing cell boundaries, and
+clear silhouettes at gameplay scale.
+
+The Backbeat sheet contains neon speaker trees, graffiti speaker barricades,
+road cases, a synth streetlamp, a smaller tree, a poster column without text,
+cable cones, and a street vent. The Orbit sheet contains crystal speaker trees,
+energy rails, a satellite speaker, a signal pillar, a smaller crystal tree, a
+beacon, cable/debris clusters, and a cosmic gate.
+
+The bundled chroma-key removal helper converted the magenta source backgrounds
+to alpha. The Orbit runtime sheet was then resampled to dimensions divisible by
+the authored 4×2 grid. Source candidates remain excluded from release packages.

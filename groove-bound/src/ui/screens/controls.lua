@@ -5,6 +5,7 @@ local settings = require("src.config.settings")
 local widgets = require("src.ui.widgets.button")
 
 local ControlsScreen = class()
+ControlsScreen.kind = "controls"
 
 local actions = { "up", "down", "left", "right", "confirm", "cancel", "pause" }
 

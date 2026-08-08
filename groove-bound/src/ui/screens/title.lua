@@ -8,6 +8,8 @@ local widgets = require("src.ui.widgets.button")
 
 local TitleScreen = class()
 
+TitleScreen.kind = "title"
+
 function TitleScreen:init(app)
   self.app = app
 end

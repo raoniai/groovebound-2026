@@ -80,6 +80,7 @@ function CombatSystem:init(opts)
   self.stats = {
     kills = 0,
     shots = 0,
+    enemy_shots_cancelled = 0,
     damage = 0,
     xp = 0,
     coins = 0,
@@ -97,6 +98,7 @@ function CombatSystem:init(opts)
   self.frame_time_ms = 0
   self.final_boss_dead = false
   self.final_boss_spawned = false
+  self.music_final_phase_latched = false
   self.wave_notice = nil
   self.wave_notice_time = 0
   self.stages = self.content.stages
@@ -128,6 +130,7 @@ function CombatSystem:_make_spawner(stage)
     rng = self.ctx.rng.spawn,
     tuning = self.tuning,
     arena = self.arena,
+    focus_position = function() return self.player.x, self.player.y end,
     count_enemies = function() return self.ctx.world:count("enemy") end,
     spawn = function(definition, x, y) self:spawn_enemy(definition, x, y) end,
     on_wave = function(index, wave)
@@ -150,6 +153,7 @@ function CombatSystem:begin_stage(index, arena, initial)
   self.stage_clear_reported = false
   self.final_boss_dead = false
   self.final_boss_spawned = false
+  self.music_final_phase_latched = false
   self.arena = assert(arena)
   self.spawner = self:_make_spawner(stage)
   self.vfx:clear()
@@ -186,6 +190,35 @@ function CombatSystem:stage_snapshot(time)
     remaining = math.max(0, duration - elapsed),
     notice = self.stage_notice,
     notice_text = self.stage_notice_text,
+  }
+end
+
+function CombatSystem:music_snapshot()
+  local selected
+  self.ctx.world:each("enemy", function(enemy)
+    if enemy.dead or not enemy.definition.boss_type then return end
+    if not selected
+      or enemy.definition.boss_type == "final"
+      or selected.definition.boss_type ~= "final"
+    then
+      selected = enemy
+    end
+  end)
+  if not selected then
+    return {
+      boss_id = nil,
+      boss_hp_fraction = nil,
+      boss_phase_two = self.music_final_phase_latched,
+    }
+  end
+  local hp_fraction = selected.hp / math.max(1, selected.max_hp)
+  if selected.definition.id == "grand_orchestrator" and hp_fraction <= 0.45 then
+    self.music_final_phase_latched = true
+  end
+  return {
+    boss_id = selected.definition.id,
+    boss_hp_fraction = hp_fraction,
+    boss_phase_two = self.music_final_phase_latched,
   }
 end
 
@@ -360,7 +393,19 @@ function CombatSystem:_update_projectiles(dt)
         projectile.y,
         projectile.radius,
         function(candidate)
-          if candidate.kind == "enemy"
+          if candidate.kind == "enemy_projectile"
+            and not candidate.dead
+            and not projectile.dead
+          then
+            projectile.dead = true
+            candidate.dead = true
+            self.stats.enemy_shots_cancelled =
+              self.stats.enemy_shots_cancelled + 1
+            self.vfx:spawn("hit", projectile.x, projectile.y, {
+              scale = 0.22,
+              rotation = math.atan2(projectile.dy, projectile.dx),
+            })
+          elseif candidate.kind == "enemy"
             and not candidate.dead
             and not projectile.dead
             and projectile:register_hit(candidate)

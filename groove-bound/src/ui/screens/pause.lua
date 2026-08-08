@@ -9,6 +9,7 @@ local settings = require("src.config.settings")
 local widgets = require("src.ui.widgets.button")
 
 local PauseScreen = class()
+PauseScreen.kind = "pause"
 
 PauseScreen.opaque = false
 

@@ -7,6 +7,7 @@ local settings = require("src.config.settings")
 local widgets = require("src.ui.widgets.button")
 
 local LevelUpScreen = class()
+LevelUpScreen.kind = "level_up"
 LevelUpScreen.opaque = false
 
 local kind_colors = {

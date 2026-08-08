@@ -12,13 +12,18 @@ function SpawnDirector:init(opts)
   self.count_enemies = assert(opts.count_enemies)
   self.spawn = assert(opts.spawn)
   self.on_wave = opts.on_wave
+  self.focus_position = opts.focus_position
+  self.spawn_radius_min = opts.spawn_radius_min or 780
+  self.spawn_radius_max = opts.spawn_radius_max or 1120
   self.next_wave = 1
+  self.active_wave_index = 0
   self.streams = {}
 end
 
 function SpawnDirector:_activate_ready_waves(time)
   while self.waves[self.next_wave] and self.waves[self.next_wave].at <= time do
     local wave = self.waves[self.next_wave]
+    self.active_wave_index = self.next_wave
     if self.on_wave then self.on_wave(self.next_wave, wave) end
     -- A wave owns the spawn mix until the next scheduled wave replaces it.
     -- This keeps pressure on the player even after the arena is cleared.
@@ -39,6 +44,16 @@ end
 
 function SpawnDirector:_spawn_position(radius)
   local wall = self.arena.wall + radius + 10
+  if self.focus_position then
+    local focus_x, focus_y = self.focus_position()
+    local angle = self.rng:uniform(0, math.pi * 2)
+    local distance = self.rng:uniform(
+      self.spawn_radius_min, self.spawn_radius_max)
+    local x = focus_x + math.cos(angle) * distance
+    local y = focus_y + math.sin(angle) * distance
+    return math.max(wall, math.min(self.arena.width - wall, x)),
+      math.max(wall, math.min(self.arena.height - wall, y))
+  end
   local edge = self.rng:range(1, 4)
   if edge == 1 then
     return self.rng:uniform(wall, self.arena.width - wall), wall
