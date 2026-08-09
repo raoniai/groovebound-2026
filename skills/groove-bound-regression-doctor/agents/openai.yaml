@@ -1,0 +1,4 @@
+interface:
+  display_name: "Groove Bound Regression Doctor"
+  short_description: "Diagnose reproducible game regressions"
+  default_prompt: "Use $groove-bound-regression-doctor to reproduce, isolate, and prove the cause of this Groove Bound issue."

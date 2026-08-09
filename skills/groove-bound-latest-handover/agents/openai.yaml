@@ -1,0 +1,4 @@
+interface:
+  display_name: "Groove Bound Latest Version Handover"
+  short_description: "Maintain the canonical latest-version handover"
+  default_prompt: "Use $groove-bound-latest-handover to refresh or read the canonical latest-version project handover from live evidence."

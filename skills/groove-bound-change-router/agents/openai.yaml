@@ -1,0 +1,4 @@
+interface:
+  display_name: "Groove Bound Change Router"
+  short_description: "Route Groove Bound work safely"
+  default_prompt: "Use $groove-bound-change-router to classify this request, protect current work, and define its acceptance contract."

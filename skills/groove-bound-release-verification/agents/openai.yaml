@@ -1,0 +1,4 @@
+interface:
+  display_name: "Groove Bound Release Verification"
+  short_description: "Verify packages and delivery state"
+  default_prompt: "Use $groove-bound-release-verification to test, package, and report the exact delivery state of this change."

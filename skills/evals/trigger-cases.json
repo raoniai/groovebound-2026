@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "cases": [
+    {"prompt": "Analyze this Groove Bound request and tell me where it belongs before changing anything.", "expect": ["groove-bound-change-router"]},
+    {"prompt": "Make the Orbit Line boss fire a deterministic spiral burst.", "expect": ["groove-bound-gameplay-feature"]},
+    {"prompt": "Add a new support and ensure its fusion remains reachable.", "expect": ["groove-bound-content-balance"]},
+    {"prompt": "Rework the pause screen and make every action usable by gamepad.", "expect": ["groove-bound-interface-accessibility"]},
+    {"prompt": "Convert these MP4 cutscenes into the runtime format and update provenance.", "expect": ["groove-bound-media-pipeline"]},
+    {"prompt": "Why do enemies still get stuck after obstacle collision was added? Diagnose only.", "expect": ["groove-bound-regression-doctor"]},
+    {"prompt": "Run every check, build the LOVE package, and report what is actually delivered.", "expect": ["groove-bound-release-verification"]},
+    {"prompt": "Create native Windows, macOS, and Linux release artifacts.", "expect": ["groove-bound-desktop-distribution"]},
+    {"prompt": "Start a Godot C# parity spike without losing the Lua behavior.", "expect": ["groove-bound-engine-migration"]},
+    {"prompt": "Update the Lore page from the latest weapons and verify mobile overflow.", "expect": ["groove-bound-site-sync"]},
+    {"prompt": "What is the latest Groove Bound version and what should the next agent do?", "expect": ["groove-bound-latest-handover"]},
+    {"prompt": "Translate this sentence into Portuguese.", "expect": []},
+    {"prompt": "What time is it in Sydney?", "expect": []},
+    {"prompt": "Review an unrelated React repository.", "expect": []}
+  ]
+}

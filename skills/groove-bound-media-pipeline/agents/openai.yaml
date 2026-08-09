@@ -1,0 +1,4 @@
+interface:
+  display_name: "Groove Bound Media Pipeline"
+  short_description: "Integrate verified game art audio and video"
+  default_prompt: "Use $groove-bound-media-pipeline to prepare and integrate these runtime assets with provenance and package checks."

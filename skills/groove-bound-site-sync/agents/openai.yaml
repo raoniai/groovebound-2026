@@ -1,0 +1,4 @@
+interface:
+  display_name: "Groove Bound Site Sync"
+  short_description: "Keep the game website aligned with source"
+  default_prompt: "Use $groove-bound-site-sync to update the landing site from canonical game lore, assets, and verified status."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Groove Bound Content and Balance"
+  short_description: "Add content and tune balance safely"
+  default_prompt: "Use $groove-bound-content-balance to add or tune this content while preserving IDs, progression, and reachability."

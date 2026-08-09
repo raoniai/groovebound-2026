@@ -1,0 +1,4 @@
+interface:
+  display_name: "Groove Bound Gameplay Feature"
+  short_description: "Build deterministic gameplay features"
+  default_prompt: "Use $groove-bound-gameplay-feature to implement this mechanic with deterministic tests and manual gameplay checks."

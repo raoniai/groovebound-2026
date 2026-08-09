@@ -1,0 +1,4 @@
+interface:
+  display_name: "Groove Bound Interface and Accessibility"
+  short_description: "Improve UI controls and accessibility"
+  default_prompt: "Use $groove-bound-interface-accessibility to update this screen or control flow across keyboard, mouse, and gamepad."

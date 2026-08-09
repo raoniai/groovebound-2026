@@ -1,0 +1,4 @@
+interface:
+  display_name: "Groove Bound Desktop Distribution"
+  short_description: "Build Windows macOS and Linux releases"
+  default_prompt: "Use $groove-bound-desktop-distribution to prepare and verify native desktop artifacts from the canonical LOVE package."

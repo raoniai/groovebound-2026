@@ -1,0 +1,26 @@
+{
+  "name": "groove-bound-studio",
+  "version": "0.1.0",
+  "status": "locally-validated",
+  "canonical_handover": "../LATEST_VERSION_HANDOVER.md",
+  "skills": [
+    "groove-bound-change-router",
+    "groove-bound-gameplay-feature",
+    "groove-bound-content-balance",
+    "groove-bound-interface-accessibility",
+    "groove-bound-media-pipeline",
+    "groove-bound-regression-doctor",
+    "groove-bound-release-verification",
+    "groove-bound-desktop-distribution",
+    "groove-bound-engine-migration",
+    "groove-bound-site-sync",
+    "groove-bound-latest-handover"
+  ],
+  "installation_state": "repository-source-only",
+  "validation": {
+    "structural": "passed-11-of-11",
+    "scripts": "passed-representative-execution",
+    "trigger_cases": "defined-and-package-validated",
+    "forward_tests": "not-run"
+  }
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Groove Bound Engine Migration"
+  short_description: "Port engines through measured parity gates"
+  default_prompt: "Use $groove-bound-engine-migration to assess or execute this engine port through baseline, replay, save, and release parity."
