@@ -16,7 +16,7 @@ lint:
 # Build a distributable .love (a zip of the game folder).
 package: clean
 	mkdir -p dist
-	zip -9 -r dist/groove-bound.love . \
+	zip -9 -y -r dist/groove-bound.love . \
 		-x "dist/*" -x "tests/*" -x "docs/*" -x "design-system/*" \
 		-x "Makefile" -x ".luacheckrc" -x "*.md" \
 		-x "scripts/*" \

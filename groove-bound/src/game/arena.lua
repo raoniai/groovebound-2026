@@ -56,6 +56,23 @@ local function circle_hits_rect(x, y, radius, rect)
   return dx * dx + dy * dy < radius * radius
 end
 
+local function passes_behind(obstacle)
+  if obstacle.pass_behind ~= nil then return obstacle.pass_behind end
+  return obstacle.h > obstacle.w * 1.12
+end
+
+local function collision_rect(obstacle)
+  if not passes_behind(obstacle) then return obstacle end
+  local ratio = obstacle.hitbox_ratio or 0.38
+  local height = obstacle.h * ratio
+  return {
+    x = obstacle.x,
+    y = obstacle.y + obstacle.h - height,
+    w = obstacle.w,
+    h = height,
+  }
+end
+
 local function segment_hits_expanded_rect(x1, y1, x2, y2, rect, padding)
   -- Shrinking by a hair makes a route that touches an expanded corner valid.
   -- The real circle/rectangle collision remains authoritative during movement.
@@ -109,7 +126,9 @@ end
 
 function Arena:blocked(x, y, radius)
   for _, obstacle in ipairs(self.obstacles) do
-    if circle_hits_rect(x, y, radius, obstacle) then return true end
+    if circle_hits_rect(x, y, radius, collision_rect(obstacle)) then
+      return true
+    end
   end
   return false
 end
@@ -122,8 +141,9 @@ function Arena:segment_clear(x1, y1, x2, y2, radius)
     return false
   end
   for _, obstacle in ipairs(self.obstacles) do
+    local collider = collision_rect(obstacle)
     if segment_hits_expanded_rect(
-      x1, y1, x2, y2, obstacle, radius + 2)
+      x1, y1, x2, y2, collider, radius + 2)
     then
       return false
     end
@@ -148,14 +168,15 @@ function Arena:navigation_direction(x, y, target_x, target_y, radius)
   }
   local clearance = (radius or 0) + 6
   for _, obstacle in ipairs(self.obstacles) do
+    local collider = collision_rect(obstacle)
     for _, point in ipairs({
-      { x = obstacle.x - clearance, y = obstacle.y - clearance },
-      { x = obstacle.x + obstacle.w + clearance,
-        y = obstacle.y - clearance },
-      { x = obstacle.x - clearance,
-        y = obstacle.y + obstacle.h + clearance },
-      { x = obstacle.x + obstacle.w + clearance,
-        y = obstacle.y + obstacle.h + clearance },
+      { x = collider.x - clearance, y = collider.y - clearance },
+      { x = collider.x + collider.w + clearance,
+        y = collider.y - clearance },
+      { x = collider.x - clearance,
+        y = collider.y + collider.h + clearance },
+      { x = collider.x + collider.w + clearance,
+        y = collider.y + collider.h + clearance },
     }) do
       if self:contains(point.x, point.y, radius)
         and not self:blocked(point.x, point.y, radius)
@@ -208,6 +229,26 @@ function Arena:navigation_direction(x, y, target_x, target_y, radius)
     return direct_x / direct_length, direct_y / direct_length, false
   end
   return route_x / route_length, route_y / route_length, true
+end
+
+function Arena:safe_drop_position(x, y, radius)
+  radius = radius or 0
+  x, y = self:clamp(x, y, radius)
+  if not self:blocked(x, y, radius) then return x, y end
+  for ring = 1, 12 do
+    local distance = ring * 32
+    for step = 0, 15 do
+      local angle = step / 16 * math.pi * 2
+      local candidate_x, candidate_y = self:clamp(
+        x + math.cos(angle) * distance,
+        y + math.sin(angle) * distance,
+        radius)
+      if not self:blocked(candidate_x, candidate_y, radius) then
+        return candidate_x, candidate_y
+      end
+    end
+  end
+  return self:center()
 end
 
 function Arena:resolve_movement(old_x, old_y, x, y, radius)
@@ -279,6 +320,33 @@ function Arena:draw()
   love.graphics.rectangle("fill", 0, self.height - self.wall, self.width, self.wall)
   love.graphics.rectangle("fill", 0, 0, self.wall, self.height)
   love.graphics.rectangle("fill", self.width - self.wall, 0, self.wall, self.height)
+end
+
+function Arena:draw_overlays()
+  if not self.assets or not self.assets.draw_environment_upper then return end
+  local environment_atlas = self.stage.environment_atlas or "stage1"
+  for _, decoration in ipairs(self.decorations) do
+    self.assets:draw_environment_upper(
+      decoration.icon, decoration.x, decoration.y, decoration.size,
+      {
+        color = { 1, 1, 1, 0.72 },
+        atlas = decoration.atlas or environment_atlas,
+        fraction = decoration.overlay_fraction or 0.54,
+      })
+  end
+  for _, obstacle in ipairs(self.obstacles) do
+    if passes_behind(obstacle) then
+      self.assets:draw_environment_upper(
+        obstacle.icon,
+        obstacle.x + obstacle.w / 2,
+        obstacle.y + obstacle.h / 2,
+        math.max(obstacle.w, obstacle.h),
+        {
+          atlas = obstacle.atlas or environment_atlas,
+          fraction = obstacle.overlay_fraction or 0.58,
+        })
+    end
+  end
 end
 
 return Arena

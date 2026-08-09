@@ -4,7 +4,9 @@
 
 local class = require("src.core.class")
 local Fonts = require("src.ui.fonts")
+local Icons = require("src.ui.icons")
 local settings = require("src.config.settings")
+local UIScale = require("src.ui.scale")
 
 local HUD = class()
 
@@ -14,16 +16,54 @@ function HUD:init(ctx, player, combat)
   self.combat = combat
 end
 
+local function draw_panel(x, y, w, h, accent, alpha)
+  accent = accent or { 0.42, 0.36, 0.66, 1 }
+  local panel_alpha = alpha or 0.50
+  love.graphics.setColor(0.022, 0.016, 0.055, panel_alpha)
+  love.graphics.rectangle("fill", x, y, w, h, 7, 7)
+  love.graphics.setColor(
+    accent[1], accent[2], accent[3], math.min(0.62, panel_alpha * 1.16))
+  love.graphics.setLineWidth(1)
+  love.graphics.rectangle("line", x, y, w, h, 7, 7)
+  love.graphics.line(x + 8, y, x + 31, y)
+  love.graphics.line(x + w - 31, y + h, x + w - 8, y + h)
+end
+
+local function draw_slot(assets, x, y, size, active)
+  love.graphics.setColor(0.018, 0.014, 0.045, active and 0.62 or 0.50)
+  love.graphics.rectangle("fill", x + 2, y + 2, size - 4, size - 4, 5, 5)
+  if assets and assets.draw_hud_slot then
+    assets:draw_hud_slot(x, y, size, size,
+      { color = { 1, 1, 1, active and 0.78 or 0.32 } })
+  else
+    love.graphics.setColor(0.34, 0.30, 0.48, active and 0.84 or 0.42)
+    love.graphics.rectangle("line", x, y, size, size, 5, 5)
+  end
+end
+
 function HUD:draw()
-  local w = love.graphics.getWidth()
+  local w = UIScale.begin()
+  local assets = self.combat.assets
 
   -- Health bar, top-left.
-  local bar_x, bar_y, bar_w, bar_h = 16, 16, 280, 24
+  local bar_x, bar_y, bar_w, bar_h = 18, 16, 258, 22
   local hp_frac = math.max(0, self.player.hp / self.player.max_hp)
+  local health_state = self.player:health_state()
+  local effects = self.player.options.hit_flash ~= false
+  local pulse_speed = health_state == "critical" and 10 or 3.5
+  local urgency = health_state == "normal" and 0
+    or effects and (0.5 + 0.5 * math.sin(self.ctx.time * pulse_speed)) or 0.55
 
+  draw_panel(8, 8, 280, 174,
+    health_state == "critical" and { 1.0, 0.12, 0.24, 1 }
+      or health_state == "concern" and { 1.0, 0.48, 0.18, 1 }
+      or { 0.28, 0.72, 1.0, 1 }, 0.50)
   love.graphics.setColor(0.15, 0.12, 0.18, 0.85)
   love.graphics.rectangle("fill", bar_x, bar_y, bar_w, bar_h, 4, 4)
-  love.graphics.setColor(0.85, 0.25, 0.30, 1)
+  love.graphics.setColor(health_state == "critical"
+    and { 1.0, 0.05, 0.12, 1 }
+    or health_state == "concern" and { 1.0, 0.34, 0.16, 1 }
+    or { 0.85, 0.25, 0.30, 1 })
   love.graphics.rectangle("fill", bar_x, bar_y, bar_w * hp_frac, bar_h, 4, 4)
   love.graphics.setColor(0.6, 0.55, 0.7, 1)
   love.graphics.setLineWidth(1)
@@ -35,6 +75,27 @@ function HUD:draw()
     string.format("HP %d / %d   GUARD %d",
       math.floor(self.player.hp), self.player.max_hp, self.player.guard),
     bar_x + 8, bar_y + 3)
+  if health_state ~= "normal" then
+    local state_color = health_state == "critical"
+      and { 1.0, 0.22, 0.32, 0.76 + urgency * 0.24 }
+      or { 1.0, 0.62, 0.22, 0.76 + urgency * 0.24 }
+    Icons.draw(health_state == "critical" and "critical" or "warning",
+      bar_x + bar_w - 13, bar_y + bar_h / 2, 18, state_color)
+    love.graphics.setColor(health_state == "critical"
+      and { 1.0, 0.22, 0.32, 1 }
+      or { 1.0, 0.62, 0.22, 1 })
+    love.graphics.setFont(Fonts.get(13))
+    love.graphics.print(health_state == "critical" and "CRITICAL HP" or "LOW HP",
+      bar_x + bar_w - 96, bar_y + 3)
+  end
+  if self.player.hit_pulse > 0 and self.player.last_damage > 0 then
+    local alpha = math.min(1, self.player.hit_pulse / 0.18)
+    love.graphics.setColor(1.0, 0.82, 0.86, alpha)
+    love.graphics.setFont(Fonts.get(18))
+    love.graphics.printf(
+      "-" .. math.ceil(self.player.last_damage) .. " HP",
+      bar_x, bar_y + 30, bar_w, "right")
+  end
 
   -- XP bar and rank.
   local xp_y = bar_y + bar_h + 8
@@ -43,11 +104,11 @@ function HUD:draw()
   love.graphics.rectangle("fill", bar_x, xp_y, bar_w, 10, 3, 3)
   love.graphics.setColor(0.18, 0.92, 0.72, 1)
   love.graphics.rectangle("fill", bar_x, xp_y, bar_w * xp_frac, 10, 3, 3)
-  love.graphics.setFont(Fonts.get(14))
+  love.graphics.setFont(Fonts.get(12))
   love.graphics.setColor(settings.ui.text_color)
   local weapon = self.combat.inventory:get_slot(1)
   love.graphics.print(
-    string.format("LV %d  %s R%d  W%d/%d  P%d/%d",
+    string.format("LV %d  •  %s R%d  •  W%d/%d  •  P%d/%d",
       self.combat.xp.level,
       self.combat.content.weapons[weapon.id].name,
       weapon.level,
@@ -59,49 +120,42 @@ function HUD:draw()
 
   -- Always-visible weapon rack. This mirrors the authoritative inventory so
   -- players can read every active emitter and rank without opening a menu.
-  local rack_y = xp_y + 48
+  local rack_y, slot_size, slot_gap = xp_y + 42, 42, 47
   for slot = 1, self.combat.inventory.capacity do
-    local rack_x = bar_x + (slot - 1) * 56
-    love.graphics.setColor(0.08, 0.07, 0.13, 0.88)
-    love.graphics.rectangle("fill", rack_x, rack_y, 48, 48, 5, 5)
+    local rack_x = bar_x + (slot - 1) * slot_gap
     local instance = self.combat.inventory:get_slot(slot)
+    draw_slot(assets, rack_x, rack_y, slot_size, instance ~= nil)
     if instance then
       local definition = self.combat.content.weapons[instance.id]
       self.combat.assets:draw_weapon_icon(
-        definition.icon, rack_x + 24, rack_y + 23, 42)
+        definition.icon, rack_x + slot_size / 2, rack_y + slot_size / 2, 34)
       love.graphics.setColor(settings.ui.accent_color)
       love.graphics.setFont(Fonts.get(14))
-      love.graphics.printf("R" .. instance.level, rack_x, rack_y + 34, 48, "right")
-    else
-      love.graphics.setColor(0.27, 0.24, 0.35, 1)
-      love.graphics.rectangle("line", rack_x, rack_y, 48, 48, 5, 5)
-      love.graphics.setFont(Fonts.get(14))
-      love.graphics.printf(tostring(slot), rack_x, rack_y + 16, 48, "center")
+      love.graphics.printf("R" .. instance.level,
+        rack_x, rack_y + slot_size - 14, slot_size - 2, "right")
     end
   end
 
-  local support_y = rack_y + 56
+  local support_y = rack_y + 47
   for slot = 1, self.combat.progression.passives.capacity do
-    local support_x = bar_x + (slot - 1) * 56
-    love.graphics.setColor(0.08, 0.07, 0.13, 0.88)
-    love.graphics.rectangle("fill", support_x, support_y, 48, 40, 5, 5)
+    local support_x = bar_x + (slot - 1) * slot_gap
     local instance = self.combat.progression.passives.slots[slot]
+    draw_slot(assets, support_x, support_y, slot_size, instance ~= nil)
     if instance then
       local definition = self.combat.content.passives[instance.id]
       self.combat.assets:draw_support_icon(
-        definition.icon, support_x + 21, support_y + 19, 34)
+        definition.icon, support_x + slot_size / 2, support_y + slot_size / 2, 31)
       love.graphics.setColor(0.78, 0.48, 1.0, 1)
       love.graphics.setFont(Fonts.get(14))
-      love.graphics.printf("R" .. instance.level, support_x, support_y + 27, 48, "right")
-    else
-      love.graphics.setColor(0.27, 0.24, 0.35, 1)
-      love.graphics.rectangle("line", support_x, support_y, 48, 40, 5, 5)
+      love.graphics.printf("R" .. instance.level,
+        support_x, support_y + slot_size - 14, slot_size - 2, "right")
     end
   end
 
   -- Run timer, top-center.
   local minutes = math.floor(self.ctx.time / 60)
   local seconds = math.floor(self.ctx.time % 60)
+  draw_panel(w / 2 - 158, 6, 316, 58, { 0.68, 0.42, 0.90, 1 }, 0.50)
   love.graphics.setFont(Fonts.get(28))
   love.graphics.setColor(settings.ui.text_color)
   love.graphics.printf(string.format("%02d:%02d", minutes, seconds), 0, 14, w, "center")
@@ -131,29 +185,31 @@ function HUD:draw()
     love.graphics.printf("LEVEL UP!", 0, 92, w, "center")
   end
 
+  local toast_y = 72
+  local function draw_toast(text, icon, color, alpha)
+    local toast_x, toast_w, toast_h = w - 246, 238, 34
+    draw_panel(toast_x, toast_y, toast_w, toast_h, color, 0.48 * alpha)
+    Icons.draw(icon, toast_x + 18, toast_y + toast_h / 2, 18,
+      { color[1], color[2], color[3], alpha })
+    love.graphics.setColor(color[1], color[2], color[3], alpha)
+    love.graphics.setFont(Fonts.get(13))
+    love.graphics.printf(text, toast_x + 34, toast_y + 10,
+      toast_w - 42, "left")
+    toast_y = toast_y + toast_h + 6
+  end
+
   if self.combat.progression.evolution_notice > 0 then
     local alpha = math.min(1, self.combat.progression.evolution_notice)
-    love.graphics.setColor(0.08, 0.04, 0.14, 0.92 * alpha)
-    love.graphics.rectangle("fill", w / 2 - 250, 104, 500, 48, 7, 7)
-    love.graphics.setColor(1.0, 0.76, 0.22, alpha)
-    love.graphics.setLineWidth(2)
-    love.graphics.rectangle("line", w / 2 - 250, 104, 500, 48, 7, 7)
-    love.graphics.setFont(Fonts.get(18))
-    love.graphics.printf(
+    draw_toast(
       self.combat.progression.evolution_notice_text or "YOU CAN EVOLVE NOW",
-      w / 2 - 238, 119, 476, "center")
+      "combo", { 1.0, 0.76, 0.22, 1 }, alpha)
   end
 
   if self.combat.progression.upgrade_notice > 0 then
     local alpha = math.min(1, self.combat.progression.upgrade_notice)
-    love.graphics.setColor(0.025, 0.06, 0.09, 0.94 * alpha)
-    love.graphics.rectangle("fill", w / 2 - 300, 158, 600, 44, 7, 7)
-    love.graphics.setColor(0.34, 1.0, 0.68, alpha)
-    love.graphics.setLineWidth(2)
-    love.graphics.rectangle("line", w / 2 - 300, 158, 600, 44, 7, 7)
-    love.graphics.setFont(Fonts.get(16))
-    love.graphics.printf(self.combat.progression.upgrade_notice_text or "UPGRADED",
-      w / 2 - 286, 171, 572, "center")
+    draw_toast(
+      self.combat.progression.upgrade_notice_text or "UPGRADED",
+      "level", { 0.34, 1.0, 0.68, 1 }, alpha)
   end
 
   if self.combat.wave_notice_time > 0 then
@@ -164,14 +220,8 @@ function HUD:draw()
 
   if self.combat.pickup_notice > 0 then
     local alpha = math.min(1, self.combat.pickup_notice)
-    love.graphics.setColor(0.03, 0.08, 0.09, 0.94 * alpha)
-    love.graphics.rectangle("fill", w / 2 - 270, 212, 540, 44, 7, 7)
-    love.graphics.setColor(0.38, 1.0, 0.76, alpha)
-    love.graphics.setLineWidth(2)
-    love.graphics.rectangle("line", w / 2 - 270, 212, 540, 44, 7, 7)
-    love.graphics.setFont(Fonts.get(16))
-    love.graphics.printf(self.combat.pickup_notice_text,
-      w / 2 - 254, 225, 508, "center")
+    draw_toast(self.combat.pickup_notice_text,
+      "health", { 0.38, 1.0, 0.76, 1 }, alpha)
   end
 
   if stage.notice > 0 then
@@ -223,10 +273,12 @@ function HUD:draw()
 
   love.graphics.setFont(Fonts.get(14))
   love.graphics.setColor(settings.ui.accent_color)
+  draw_panel(w - 272, 10, 264, 54, { 0.70, 0.42, 0.90, 1 }, 0.50)
+  Icons.draw("score", w - 248, 37, 22, { 1.0, 0.72, 0.24, 0.92 })
   love.graphics.printf(
     string.format("SCORE %06d   COMBO ×%d",
       self.combat.stats.score, self.combat.stats.combo),
-    0, 48, w - 16, "right")
+    0, 31, w - 20, "right")
 
   local buff_colors = {
     damage = { 1.0, 0.68, 0.20, 1 },
@@ -234,12 +286,12 @@ function HUD:draw()
     speed = { 0.46, 1.0, 0.66, 1 },
   }
   local buff_labels = { damage = "DAMAGE +50%", defense = "DEFENSE +50%", speed = "SPEED +35%" }
-  local buff_y = 92
+  local buff_y = toast_y + 6
   for _, kind in ipairs({ "damage", "defense", "speed" }) do
     local remaining = self.combat.buffs[kind]
     if remaining > 0 then
       local color = buff_colors[kind]
-      love.graphics.setColor(0.045, 0.035, 0.09, 0.92)
+      love.graphics.setColor(0.045, 0.035, 0.09, 0.50)
       love.graphics.rectangle("fill", w - 190, buff_y, 174, 32, 5, 5)
       love.graphics.setColor(color)
       love.graphics.rectangle("line", w - 190, buff_y, 174, 32, 5, 5)
@@ -255,6 +307,7 @@ function HUD:draw()
     love.graphics.setFont(Fonts.get(16))
     love.graphics.printf("5X TEST MODE", 0, 72, w - 16, "right")
   end
+  UIScale.finish()
 end
 
 return HUD

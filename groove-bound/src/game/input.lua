@@ -78,6 +78,8 @@ function Input:aim_vector(px, py, camera)
   if mag > self.deadzone then
     self.last_aim_x, self.last_aim_y = ax / mag, ay / mag
     self.aim_device = "gamepad"
+    self.last_pointer_world_x = px + self.last_aim_x * 72
+    self.last_pointer_world_y = py + self.last_aim_y * 72
     return self.last_aim_x, self.last_aim_y
   end
 
@@ -88,6 +90,8 @@ function Input:aim_vector(px, py, camera)
     if camera then
       mx, my = camera:screen_to_world(mx, my)
     end
+    self.aim_device = "mouse"
+    self.last_pointer_world_x, self.last_pointer_world_y = mx, my
     local dx, dy = mx - px, my - py
     local len = math.sqrt(dx * dx + dy * dy)
     if len > 0.001 then

@@ -22,17 +22,19 @@ local function fresh()
     function() return popped end
 end
 
-T["luck reels cycle before settling on every exact reward"] = function()
+T["luck reels conceal the count before revealing every exact reward"] = function()
   local screen = fresh()
   H.eq(screen:phase(), "spinning")
+  H.eq(screen:visible_reel_count(), 5)
   local _, settled = screen:visible_symbol(1)
   H.is_false(settled)
   screen:update(2.41)
-  local first = screen:visible_symbol(1)
-  H.eq(first.id, "kazoo_pistol")
+  local _, first_settled = screen:visible_symbol(1)
+  H.is_false(first_settled)
   H.eq(screen:phase(), "settling")
   screen:update(screen:animation_duration())
   H.eq(screen:phase(), "complete")
+  H.eq(screen:visible_reel_count(), 3)
   for index, expected in ipairs(screen.rewards) do
     local actual, reel_settled = screen:visible_symbol(index)
     H.eq(actual.id, expected.id)
@@ -47,6 +49,15 @@ T["chest reveal cannot be skipped until the animation finishes"] = function()
   screen:update(screen:animation_duration())
   H.is_true(screen:keypressed("return"))
   H.eq(popped(), 1)
+end
+
+T["luck multiplier remains concealed until every reel has finished"] = function()
+  local screen = fresh()
+  H.is_nil(screen:displayed_roll())
+  screen:update(2.5)
+  H.is_nil(screen:displayed_roll())
+  screen:update(screen:animation_duration())
+  H.eq(screen:displayed_roll(), 3)
 end
 
 return T

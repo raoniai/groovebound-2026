@@ -436,20 +436,28 @@ function CombatSystem:_try_spawn_rare_pickup(enemy)
 end
 
 function CombatSystem:_try_spawn_reward_chest(enemy)
-  local chance = enemy.definition.boss_type == "final" and 0.45
-    or enemy.definition.boss_type == "miniboss" and 0.18
-    or enemy.definition.elite and 0.055
-    or 0.0005
+  local chance = self:reward_chest_chance(enemy)
   if not self.ctx.rng.loot:chance(chance) then return nil end
+  local x, y = enemy.x, enemy.y
+  if self.arena.safe_drop_position then
+    x, y = self.arena:safe_drop_position(x, y, 24)
+  end
   local chest = self.reward_chest_pool:acquire({
     assets = self.assets,
-    x = enemy.x,
-    y = enemy.y,
+    x = x,
+    y = y,
     phase = self.ctx.rng.vfx:uniform(0, math.pi * 2),
   })
   self.wave_notice = "RARE DROP  •  MUSICAL CHEST"
   self.wave_notice_time = 3.5
   return self.ctx.world:add("reward_chest", chest)
+end
+
+function CombatSystem:reward_chest_chance(enemy)
+  return enemy.definition.boss_type == "final" and 0.55
+    or enemy.definition.boss_type == "miniboss" and 0.22
+    or enemy.definition.elite and 0.075
+    or 0.0015
 end
 
 function CombatSystem:_roll_chest_reward_count()

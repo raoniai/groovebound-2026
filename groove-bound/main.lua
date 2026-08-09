@@ -20,6 +20,7 @@ local settings = require("src.config.settings")
 local Overlay = require("src.debug.overlay")
 local TitleScreen = require("src.ui.screens.title")
 local GlobalAudioControl = require("src.ui.global_audio_control")
+local CursorPolicy = require("src.ui.cursor_policy")
 
 -- The app container: every screen receives this instead of reaching for
 -- globals. App-scoped only — per-run objects live in RunContext (Phase 1).
@@ -78,6 +79,7 @@ function love.load()
   app.input_gate = InputEventGate.new({ clock = love.timer.getTime })
 
   app.states:push(TitleScreen(app))
+  love.mouse.setVisible(true)
   Log.info("boot", "Boot complete")
 
   -- CI boot smoke: proving LÖVE reaches this point is sufficient. The flag is
@@ -89,6 +91,7 @@ end
 
 function love.update(dt)
   app.states:update(dt)
+  love.mouse.setVisible(CursorPolicy.visible_for(app.states:top()))
   app.music:request(MusicRouter.route(MusicContext.snapshot(app)))
   app.music:update(dt)
 end

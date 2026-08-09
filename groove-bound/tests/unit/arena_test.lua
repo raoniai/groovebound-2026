@@ -62,7 +62,7 @@ T["navigation routes enemies around solid stage equipment"] = function()
     wall = 20,
     obstacles = {
       { x = 400, y = 250, w = 120, h = 300,
-        icon = { col = 1, row = 1 } },
+        icon = { col = 1, row = 1 }, pass_behind = false },
     },
   })
   H.is_false(a:segment_clear(300, 400, 650, 400, 12))
@@ -79,6 +79,38 @@ T["stage-specific dimensions override the global arena fallback"] = function()
   local cx, cy = a:center()
   H.eq(cx, 2500)
   H.eq(cy, 1600)
+end
+
+T["tall scenery blocks only at its base so players can pass behind the top"] = function()
+  local a = Arena({
+    width = 1000,
+    height = 800,
+    wall = 20,
+    obstacles = {
+      { x = 400, y = 200, w = 120, h = 300,
+        icon = { col = 1, row = 1 }, pass_behind = true },
+    },
+  })
+  H.is_false(a:blocked(460, 250, 12))
+  H.is_true(a:blocked(460, 470, 12))
+end
+
+T["safe drop placement moves a chest out of blocked geometry deterministically"] = function()
+  local a = Arena({
+    width = 1000,
+    height = 800,
+    wall = 20,
+    obstacles = {
+      { x = 430, y = 330, w = 140, h = 140,
+        icon = { col = 1, row = 1 } },
+    },
+  })
+  local x, y = a:safe_drop_position(500, 400, 24)
+  H.is_false(a:blocked(x, y, 24))
+  H.is_true(a:contains(x, y, 24))
+  local second_x, second_y = a:safe_drop_position(500, 400, 24)
+  H.eq(x, second_x)
+  H.eq(y, second_y)
 end
 
 return T

@@ -56,6 +56,31 @@ T["screen_to_world and world_to_screen round-trip"] = function()
   H.near(sy, 360)
 end
 
+T["zoom changes the visible world and preserves coordinate round-trips"] = function()
+  local cam = make_camera({ zoom = 1.25 })
+  cam:set_bounds(4000, 4000)
+  cam:snap(1000, 900)
+
+  H.near(cam.zoom, 1.25)
+  local wx, wy = cam:screen_to_world(890, 510)
+  H.near(wx, 1200)
+  H.near(wy, 1020)
+  local sx, sy = cam:world_to_screen(wx, wy)
+  H.near(sx, 890)
+  H.near(sy, 510)
+end
+
+T["zoom is clamped and camera bounds use the scaled viewport"] = function()
+  local cam = make_camera({ zoom = 4 })
+  H.near(cam.zoom, 1.5)
+  cam:set_bounds(2000, 1600)
+  cam:snap(0, 0)
+  H.near(cam.x, 1280 / 1.5 / 2)
+  H.near(cam.y, 720 / 1.5 / 2)
+  cam:set_zoom(0.1)
+  H.near(cam.zoom, 0.75)
+end
+
 T["trauma decays to zero and clamps at one"] = function()
   local cam = make_camera()
   cam:add_trauma(0.7)

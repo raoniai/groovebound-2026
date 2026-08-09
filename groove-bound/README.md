@@ -131,7 +131,7 @@ remains available for Windows and Linux.
 cd groove-bound
 make run        # or: love .
 make package    # platform-neutral .love archive
-make package-macos VERSION=0.5.0  # universal .app ZIP and DMG
+make package-macos VERSION=0.6.0  # universal .app ZIP and DMG
 ```
 
 ## Test / lint

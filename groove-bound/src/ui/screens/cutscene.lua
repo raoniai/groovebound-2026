@@ -2,6 +2,7 @@ local class = require("src.core.class")
 local Fonts = require("src.ui.fonts")
 local settings = require("src.config.settings")
 local Hints = require("src.ui.controller_hints")
+local UIScale = require("src.ui.scale")
 
 local CutsceneScreen = class()
 CutsceneScreen.kind = "cutscene"
@@ -65,7 +66,8 @@ function CutsceneScreen:update(dt)
   if self.video then
     if self.video_source then
       local options = self.app.profile and self.app.profile.options or {}
-      self.video_source:setVolume(options.master_volume or 1)
+      self.video_source:setVolume(
+        options.muted and 0 or (options.master_volume or 1))
     end
     if self.video_end_elapsed then
       self.video_end_elapsed = self.video_end_elapsed + dt
@@ -121,7 +123,8 @@ function CutsceneScreen:_load_video()
   self.video_duration = self.video_source and self.video_source:getDuration() or 0
   if self.video_source then
     local options = self.app.profile and self.app.profile.options or {}
-    self.video_source:setVolume(options.master_volume or 1)
+    self.video_source:setVolume(
+      options.muted and 0 or (options.master_volume or 1))
   end
   self.video:play()
   if self.app.music and self.app.music.set_suspended then
@@ -265,29 +268,32 @@ function CutsceneScreen:_draw_video(w, h)
   love.graphics.setColor(1, 1, 1, 1)
   love.graphics.draw(self.video, draw_x, draw_y, 0, scale, scale)
 
-  love.graphics.setFont(Fonts.get(17))
+  local ui_scale = UIScale.factor(w, h)
+  love.graphics.setFont(Fonts.get(math.floor(17 * ui_scale + 0.5)))
   if not self.video_ended then
     self.video_replay_rect = nil
     self.video_next_rect = nil
-    self.video_skip_rect = { x = w - 156, y = h - 66, w = 124, h = 42 }
+    self.video_skip_rect = self:video_skip_layout(w, h)
     love.graphics.setColor(0.03, 0.015, 0.08, 0.88)
     love.graphics.rectangle("fill", self.video_skip_rect.x,
       self.video_skip_rect.y, self.video_skip_rect.w,
-      self.video_skip_rect.h, 8, 8)
+      self.video_skip_rect.h, 8 * ui_scale, 8 * ui_scale)
     love.graphics.setColor(1.0, 0.72, 0.20, 1)
     love.graphics.setLineWidth(2)
     love.graphics.rectangle("line", self.video_skip_rect.x,
       self.video_skip_rect.y, self.video_skip_rect.w,
-      self.video_skip_rect.h, 8, 8)
+      self.video_skip_rect.h, 8 * ui_scale, 8 * ui_scale)
     love.graphics.printf("SKIP", self.video_skip_rect.x,
-      self.video_skip_rect.y + 11, self.video_skip_rect.w, "center")
+      self.video_skip_rect.y + 11 * ui_scale,
+      self.video_skip_rect.w, "center")
     love.graphics.setLineWidth(1)
-    love.graphics.setFont(Fonts.get(13))
+    love.graphics.setFont(Fonts.get(math.floor(13 * ui_scale + 0.5)))
     love.graphics.setColor(0.78, 0.76, 0.86, 0.90)
     love.graphics.printf(self.video_paused
       and "PAUSED  •  Click video to continue"
       or "Click video to pause",
-      24, h - 47, w - 210, "left")
+      24 * ui_scale, h - 47 * ui_scale,
+      w - 250 * ui_scale, "left")
   else
     self.video_skip_rect = nil
   end
@@ -297,6 +303,19 @@ function CutsceneScreen:_draw_video(w, h)
     love.graphics.setColor(0, 0, 0, fade_alpha)
     love.graphics.rectangle("fill", 0, 0, w, h)
   end
+end
+
+function CutsceneScreen:video_skip_layout(w, h)
+  -- Keep a permanent gutter for the global mute control at bottom-right.
+  local scale = UIScale.factor(w, h)
+  local button_w, button_h = 124 * scale, 42 * scale
+  local right = (14 + 44 + 12) * scale
+  return {
+    x = w - right - button_w,
+    y = h - 14 * scale - button_h,
+    w = button_w,
+    h = button_h,
+  }
 end
 
 function CutsceneScreen:draw()
@@ -472,6 +491,10 @@ function CutsceneScreen:mousepressed(x, y, button)
 end
 
 function CutsceneScreen:gamepadpressed(_, button)
+  if button == "b" then
+    self:_finish()
+    return true
+  end
   if self.video then
     if self.video_ended then
       return true
@@ -483,7 +506,6 @@ function CutsceneScreen:gamepadpressed(_, button)
   end
   if button == "a" then return self:keypressed("return") end
   if button == "x" then return self:keypressed("left") end
-  if button == "b" then return self:keypressed("escape") end
   if button == "dpleft" then return self:keypressed("left") end
   if button == "dpright" then return self:keypressed("right") end
   return false

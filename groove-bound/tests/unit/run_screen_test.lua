@@ -53,6 +53,23 @@ T["every active chest receives its own pointer"] = function()
   H.eq(#pointers, 3)
 end
 
+T["plus and minus adjust and persist gameplay zoom presets"] = function()
+  local saved = 0
+  local screen = RunScreen({
+    profile = { options = { camera_zoom = 1.0 } },
+    save = { save = function() saved = saved + 1 end },
+  }, {})
+  screen.camera = Camera({
+    get_dimensions = function() return 1280, 720 end,
+  })
+  H.is_true(screen:keypressed("="))
+  H.near(screen.camera.zoom, 1.25)
+  H.near(screen.app.profile.options.camera_zoom, 1.25)
+  H.is_true(screen:keypressed("-"))
+  H.near(screen.camera.zoom, 1.0)
+  H.eq(saved, 2)
+end
+
 T["a final chest reveal completes before its pending stage transition"] = function()
   local pushed = {}
   local queue = {

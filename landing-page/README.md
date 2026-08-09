@@ -1,11 +1,17 @@
 # Groove Bound landing page
 
-This static site reads its visible version ledger from `status-data.js`.
+The static site has three public pages: Home, Catalog, and Builder. The complete
+campaign story is integrated into Home rather than split into a separate page.
 
 After every material game or landing-page change:
 
-1. Add a new landing-page entry to the top of `CHANGELOG.md` when the site changed.
-2. Run `node scripts/update-status.mjs` from this directory.
-3. Refresh the local preview and verify Home, Lore, Builder, the inspector, and the Status filters on desktop and mobile.
+1. Add a landing-page entry to `CHANGELOG.md` when the site changes.
+2. Refresh the local preview.
+3. Verify Home, Catalog, Builder, the integrated story route, media sound controls, catalog search and filters, the item inspector, screenshot lightboxes, drag interactions, and mobile layouts.
 
-The updater reads the complete committed game history and the current game-only working-tree count. It does not claim that unrun tests, deployment, or a public release are complete.
+All public Mac download buttons use GitHub's stable Latest-release DMG route,
+while the visible release badge and notes link identify the exact current
+version. The GB icon is the landing-page identity; rebuilding the packaged app
+icon requires a separate game release.
+
+The public landing-page status ledger was removed from the site. `CHANGELOG.md` remains the local implementation record.

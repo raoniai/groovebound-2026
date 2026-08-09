@@ -40,7 +40,10 @@
       revealObserver.unobserve(entry.target);
     });
   }, { threshold: 0.12, rootMargin: "0px 0px -5%" });
-  document.querySelectorAll(".reveal:not(.is-visible)").forEach((element) => revealObserver.observe(element));
+  const observeReveal = (element) => {
+    if (element.matches(".reveal:not(.is-visible)")) revealObserver.observe(element);
+  };
+  document.querySelectorAll(".reveal:not(.is-visible)").forEach(observeReveal);
 
   const setMediaLabel = (video, playingSound) => {
     document.querySelectorAll(`[data-video-sound="#${video.id}"]`).forEach((control) => {
@@ -52,6 +55,8 @@
       if (icon) {
         icon.classList.toggle("is-playing", playingSound);
         icon.classList.toggle("is-muted", !playingSound);
+        const glyph = icon.querySelector("[data-sound-glyph]");
+        if (glyph) glyph.src = playingSound ? "assets/icons/sound-on.png" : "assets/icons/sound-off.png";
       }
     });
   };
@@ -186,10 +191,10 @@
   ].map((item, index) => ({ ...item, key: `evolved-${index + 1}`, type: "Evolved weapon", rarity: "Legendary fusion", image: `assets/sprites/evolved/evolved-${index + 1}.png`, facts: [item.recipe, item.pattern, "Consumes both ingredients"] }));
 
   const gems = [
-    { name: "Pulse Shard", role: "Tier 1 Resonance gem", description: "A standard enemy condenses its exact XP reward into one collectible shard.", strength: "Simple, immediate progression from common threats.", weakness: "The lowest XP concentration in the current roster.", experience: "10-24 XP", source: "Standard enemies", radius: 8 },
-    { name: "Charged Shard", role: "Tier 2 Resonance gem", description: "Enemies worth at least 30 XP split their reward across two charged gems.", strength: "A denser pickup shower from tougher regular enemies.", weakness: "The total reward is divided between both drops.", experience: "15-24 XP each", source: "30+ XP enemies", radius: 9 },
-    { name: "Elite Crystal", role: "Tier 3 Resonance gem", description: "Elites drop three crystals and minibosses drop five. Their split always preserves the exact XP total.", strength: "High progression density after major threats.", weakness: "Requires defeating an elite or miniboss.", experience: "22-72 XP each", source: "Elites and minibosses", radius: 10 },
-    { name: "Boss Resonance", role: "Tier 4 Resonance gem", description: "A final boss releases eight large crystals carrying its complete Resonance reward.", strength: "The highest individual and total XP yield.", weakness: "Only appears after a final boss falls.", experience: "62-125 XP each", source: "Final bosses", radius: 11 }
+    { name: "Pulse Shard", role: "Tier 1 Resonance gem", description: "A standard enemy condenses its exact XP reward into one collectible shard.", strength: "Simple, immediate progression from common threats.", weakness: "The lowest XP concentration in the current roster.", experience: "10-24 XP", source: "Standard enemies", radius: 8, dropCount: "1", dropRate: "100%" },
+    { name: "Charged Shard", role: "Tier 2 Resonance gem", description: "Enemies worth at least 30 XP split their reward across two charged gems.", strength: "A denser pickup shower from tougher regular enemies.", weakness: "The total reward is divided between both drops.", experience: "15-24 XP each", source: "30+ XP enemies", radius: 9, dropCount: "2", dropRate: "100%" },
+    { name: "Elite Crystal", role: "Tier 3 Resonance gem", description: "Elites drop three crystals and minibosses drop five. Their split always preserves the exact XP total.", strength: "High progression density after major threats.", weakness: "Requires defeating an elite or miniboss.", experience: "22-72 XP each", source: "Elites and minibosses", radius: 10, dropCount: "3 / 5", dropRate: "100%" },
+    { name: "Boss Resonance", role: "Tier 4 Resonance gem", description: "A final boss releases eight large crystals carrying its complete Resonance reward.", strength: "The highest individual and total XP yield.", weakness: "Only appears after a final boss falls.", experience: "62-125 XP each", source: "Final bosses", radius: 11, dropCount: "8", dropRate: "100%" }
   ].map((gem, index) => ({
     ...gem,
     key: `gem-${index + 1}`,
@@ -201,8 +206,8 @@
   }));
 
   const characters = [
-    { key: "character-joe", name: "Joe", type: "Playable Resonant", rarity: "The Backbeat", role: "Durable control", image: "assets/sprites/talking/joe-1.png", description: "A steady street fighter who turns pressure into power.", strength: "Starts with 18 Guard and delivers 20% heavier knockback.", weakness: "His activation tempo is 6% below baseline.", facts: ["Kazoo Pistol", "Hold the Line", "18 starting Guard"], stats: [stat("VIT","Vitality","1.15x",96),stat("PWR","Power","1.12x",93),stat("SPD","Speed","1.00x",83),stat("DEF","Defense","1.12x",93),stat("BPM","Tempo","0.94x",78),stat("RES","Resonance XP","1.00x",83)] },
-    { key: "character-lyra", name: "Lyra Vex", type: "Playable Resonant", rarity: "The Live Wire", role: "Speed and tempo", image: "assets/sprites/talking/lyra-1.png", description: "A cosmic rock explorer built for fast, risky movement.", strength: "Moves 16% faster, fires 12% faster, and earns 8% more Resonance XP.", weakness: "Lower vitality, defense, and knockback than Joe.", facts: ["Keytar Chord", "Stage Dive", "+8% Resonance XP"], stats: [stat("VIT","Vitality","0.94x",78),stat("PWR","Power","0.96x",80),stat("SPD","Speed","1.16x",97),stat("DEF","Defense","0.92x",77),stat("BPM","Tempo","1.12x",93),stat("RES","Resonance XP","1.08x",90)] }
+    { key: "character-joe", name: "Joe", logo: "assets/character-logos/joe-logo.png", type: "Playable Resonant", rarity: "The Backbeat", role: "Durable control", image: "assets/sprites/talking/joe-1.png", description: "A steady street fighter who turns pressure into power.", strength: "Starts with 18 Guard and delivers 20% heavier knockback.", weakness: "His activation tempo is 6% below baseline.", facts: ["Kazoo Pistol", "Hold the Line", "18 starting Guard"], stats: [stat("VIT","Vitality","1.15x",96),stat("PWR","Power","1.12x",93),stat("SPD","Speed","1.00x",83),stat("DEF","Defense","1.12x",93),stat("BPM","Tempo","0.94x",78),stat("RES","Resonance XP","1.00x",83)] },
+    { key: "character-lyra", name: "Lyra Vex", logo: "assets/character-logos/lyra-vex-logo.png", type: "Playable Resonant", rarity: "The Live Wire", role: "Speed and tempo", image: "assets/sprites/talking/lyra-1.png", description: "A cosmic rock explorer built for fast, risky movement.", strength: "Moves 16% faster, fires 12% faster, and earns 8% more Resonance XP.", weakness: "Lower vitality, defense, and knockback than Joe.", facts: ["Keytar Chord", "Stage Dive", "+8% Resonance XP"], stats: [stat("VIT","Vitality","0.94x",78),stat("PWR","Power","0.96x",80),stat("SPD","Speed","1.16x",97),stat("DEF","Defense","0.92x",77),stat("BPM","Tempo","1.12x",93),stat("RES","Resonance XP","1.08x",90)] }
   ];
 
   const inspectionCatalog = new Map();
@@ -288,6 +293,155 @@
     return "gem";
   };
   inspectionCatalog.forEach((item) => { item.category = categoryFor(item); });
+
+  const evolutionRecipes = [
+    { evolution: "evolved-1", weapon: "weapon-1", support: "support-3" },
+    { evolution: "evolved-2", weapon: "weapon-2", support: "support-4" },
+    { evolution: "evolved-3", weapon: "weapon-3", support: "support-1" },
+    { evolution: "evolved-4", weapon: "weapon-4", support: "support-6" },
+    { evolution: "evolved-5", weapon: "weapon-5", support: "support-2" },
+    { evolution: "evolved-6", weapon: "weapon-6", support: "support-8" },
+    { evolution: "evolved-7", weapon: "weapon-7", support: "support-5" },
+    { evolution: "evolved-8", weapon: "weapon-8", support: "support-7" }
+  ];
+  const connectRecord = (sourceKey, targetKey, label) => {
+    const source = inspectionCatalog.get(sourceKey);
+    if (!source || !inspectionCatalog.has(targetKey)) return;
+    source.relations = [...(source.relations || []), { key: targetKey, label }];
+  };
+  evolutionRecipes.forEach(({ evolution, weapon, support }) => {
+    connectRecord(evolution, weapon, "Base weapon");
+    connectRecord(evolution, support, "Required passive");
+    connectRecord(weapon, support, "Required passive");
+    connectRecord(weapon, evolution, "Evolution");
+    connectRecord(support, weapon, "Paired weapon");
+    connectRecord(support, evolution, "Evolution");
+  });
+  connectRecord("character-joe", "weapon-1", "Starting weapon");
+  connectRecord("character-lyra", "weapon-13", "Starting weapon");
+  enemies.forEach((enemy) => {
+    const gemKey = enemy.rank === "Final boss" ? "gem-4" : enemy.rank === "Miniboss" || enemy.rank === "Elite" ? "gem-3" : enemy.xp >= 30 ? "gem-2" : "gem-1";
+    connectRecord(enemy.key, gemKey, "Resonance drop");
+  });
+
+  const catalogGroups = document.querySelector("[data-catalog-groups]");
+  const catalogFilters = document.querySelector("[data-catalog-filters]");
+  const catalogSearch = document.querySelector("[data-catalog-search]");
+  const catalogCount = document.querySelector("[data-catalog-count]");
+  const catalogEmpty = document.querySelector("[data-catalog-empty]");
+  if (catalogGroups && catalogFilters) {
+    const catalogOrder = ["character", "weapon", "support", "evolution", "gem", "enemy"];
+    const pluralLabels = { character: "Resonants", weapon: "Weapons", support: "Passives", evolution: "Evolutions", gem: "Resonance gems", enemy: "Enemies" };
+    let activeCategory = "all";
+    const allItems = Array.from(inspectionCatalog.values());
+    const makeFilter = (category, label, icon, count) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.dataset.catalogFilter = category;
+      button.setAttribute("aria-pressed", String(category === "all"));
+      if (icon) {
+        const image = document.createElement("img");
+        image.src = icon;
+        image.alt = "";
+        button.append(image);
+      }
+      const name = document.createElement("span");
+      name.textContent = label;
+      const amount = document.createElement("strong");
+      amount.textContent = String(count);
+      button.append(name, amount);
+      return button;
+    };
+    catalogFilters.append(makeFilter("all", "All records", "assets/gb-icon.png", allItems.length));
+    catalogOrder.forEach((category) => {
+      const items = allItems.filter((item) => item.category === category);
+      catalogFilters.append(makeFilter(category, pluralLabels[category], categoryMeta[category].icon, items.length));
+    });
+    catalogOrder.forEach((category) => {
+      const items = allItems.filter((item) => item.category === category);
+      const section = document.createElement("section");
+      section.className = "catalog-group";
+      section.dataset.catalogGroup = category;
+      const header = document.createElement("div");
+      header.className = "catalog-group__header";
+      const icon = document.createElement("img");
+      icon.src = categoryMeta[category].icon;
+      icon.alt = "";
+      const title = document.createElement("h2");
+      title.textContent = pluralLabels[category];
+      const total = document.createElement("span");
+      total.textContent = `${items.length} records`;
+      header.append(icon, title, total);
+      const grid = document.createElement("div");
+      grid.className = "catalog-grid";
+      items.forEach((item) => {
+        const card = document.createElement("button");
+        card.type = "button";
+        card.className = "catalog-card";
+        card.dataset.inspectKey = item.key;
+        card.dataset.catalogCard = "";
+        card.dataset.search = [item.name, item.role, item.type, item.rarity, item.description, item.strength, ...(item.facts || [])].join(" ").toLowerCase();
+        card.setAttribute("aria-label", `Inspect ${item.name}`);
+        const image = document.createElement("img");
+        image.src = item.image;
+        image.alt = item.name;
+        image.loading = "lazy";
+        image.decoding = "async";
+        const copy = document.createElement("span");
+        copy.className = "catalog-card__copy";
+        const role = document.createElement("small");
+        role.textContent = item.role;
+        const name = document.createElement("strong");
+        name.textContent = item.name;
+        const action = document.createElement("em");
+        action.textContent = "Open full record";
+        copy.append(role, name, action);
+        card.append(image, copy);
+        if (item.category === "enemy" && (item.rank === "Miniboss" || item.rank === "Final boss")) {
+          const bossTag = document.createElement("span");
+          bossTag.className = `catalog-boss-tag${item.rank === "Final boss" ? " catalog-boss-tag--final" : ""}`;
+          bossTag.textContent = item.rank === "Final boss" ? "Boss" : "Miniboss";
+          card.append(bossTag);
+        }
+        grid.append(card);
+      });
+      section.append(header, grid);
+      catalogGroups.append(section);
+    });
+    const applyCatalogFilter = () => {
+      const query = catalogSearch?.value.trim().toLowerCase() || "";
+      let visibleCount = 0;
+      catalogGroups.querySelectorAll("[data-catalog-group]").forEach((group) => {
+        let groupCount = 0;
+        group.querySelectorAll("[data-catalog-card]").forEach((card) => {
+          const matchesCategory = activeCategory === "all" || group.dataset.catalogGroup === activeCategory;
+          const matchesQuery = !query || card.dataset.search.includes(query);
+          card.hidden = !(matchesCategory && matchesQuery);
+          if (!card.hidden) { visibleCount += 1; groupCount += 1; }
+        });
+        group.hidden = groupCount === 0;
+      });
+      catalogFilters.querySelectorAll("[data-catalog-filter]").forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.catalogFilter === activeCategory)));
+      if (catalogCount) catalogCount.textContent = String(visibleCount);
+      if (catalogEmpty) catalogEmpty.hidden = visibleCount !== 0;
+    };
+    catalogFilters.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-catalog-filter]");
+      if (!button) return;
+      activeCategory = button.dataset.catalogFilter;
+      applyCatalogFilter();
+    });
+    catalogSearch?.addEventListener("input", applyCatalogFilter);
+    applyCatalogFilter();
+    const requestedRecord = new URLSearchParams(window.location.search).get("record");
+    const requestedCard = requestedRecord ? catalogGroups.querySelector(`[data-inspect-key="${CSS.escape(requestedRecord)}"]`) : null;
+    if (requestedCard) requestAnimationFrame(() => {
+      requestedCard.classList.add("is-catalog-target");
+      requestedCard.scrollIntoView({ behavior: reducedMotion.matches ? "auto" : "smooth", block: "center" });
+      requestedCard.focus({ preventScroll: true });
+    });
+  }
+
   const remixStage = document.querySelector("[data-remix-stage]");
   if (remixStage) {
     const positions = [[7,16,9],[21,10,11],[36,20,13],[52,12,16],[67,23,10],[81,12,11],[93,28,12],[13,51,10],[28,65,11],[43,49,11],[58,65,12],[72,47,12],[87,66,13],[94,49,13],[39,86,17],[70,86,20]];
@@ -340,12 +494,12 @@
   const characterData = {
     joe: {
       portrait: "assets/sprites/talking/joe-1.png", logo: "assets/character-logos/joe-logo.png", inspect: "character-joe", video: "assets/video/joe-intro.mp4",
-      alt: "Joe, The Backbeat", label: "The Backbeat", heading: "Hold the line.", copy: "Joe turns pressure into power with Guard, stronger knockback, and the Kazoo Pistol.",
+      alt: "Joe, The Backbeat", copy: "Joe turns pressure into power with Guard, stronger knockback, and the Kazoo Pistol.",
       stats: [["Style", "Durable control", "assets/sprites/characters/joe-4.png"], ["Starting weapon", "Kazoo Pistol", "assets/sprites/weapons/weapon-1.png"], ["Trait", "Hold the Line", "assets/sprites/supports/support-8.png"]]
     },
     lyra: {
       portrait: "assets/sprites/talking/lyra-1.png", logo: "assets/character-logos/lyra-vex-logo.png", inspect: "character-lyra", video: "assets/video/lyra-intro.mp4",
-      alt: "Lyra Vex, The Live Wire", label: "The Live Wire", heading: "Turn danger into an entrance.", copy: "Lyra trades defense for speed, fire rate, and extra Resonance XP with the Keytar Chord.",
+      alt: "Lyra Vex, The Live Wire", copy: "Lyra trades defense for speed, fire rate, and extra Resonance XP with the Keytar Chord.",
       stats: [["Style", "Fast movement", "assets/sprites/characters/lyra-4.png"], ["Starting weapon", "Keytar Chord", "assets/sprites/weapons/weapon-13.png"], ["Trait", "Stage Dive", "assets/sprites/supports/support-1.png"]]
     }
   };
@@ -374,7 +528,7 @@
       video.muted = true;
       video.load();
       video.play().catch(() => {});
-      copy.innerHTML = `<p class="pixel-label">${data.label}</p><h3>${data.heading}</h3><p>${data.copy}</p><dl class="stat-lines">${data.stats.map(([term, value, icon]) => `<div><dt><img src="${icon}" alt="" width="627" height="627">${term}</dt><dd>${value}</dd></div>`).join("")}</dl>`;
+      copy.innerHTML = `<p>${data.copy}</p><dl class="stat-lines">${data.stats.map(([term, value, icon]) => `<div><dt><img src="${icon}" alt="" width="627" height="627">${term}</dt><dd>${value}</dd></div>`).join("")}</dl>`;
     };
     if (document.startViewTransition && !reducedMotion.matches) document.startViewTransition(swap); else swap();
   };
@@ -442,54 +596,104 @@
     <button class="inspect-dialog__close" type="button" data-inspect-close aria-label="Close details" title="Close details">×</button>
     <article class="inspect-card">
       <div class="inspect-card__visual"><div class="inspect-card__rings" aria-hidden="true"><i></i><i></i><i></i></div><img data-inspect-image src="assets/sprites/gems/gem-1.png?v=site005" alt=""></div>
-      <div class="inspect-card__body">
-        <div class="inspect-card__category"><span class="inspect-card__category-mark"><img data-inspect-category-icon src="assets/sprites/gems/gem-2.png?v=site005" alt=""></span><span data-inspect-category></span></div>
-        <div class="inspect-card__meta"><span data-inspect-type></span><span data-inspect-rarity></span></div>
-        <h2 id="inspect-title" data-inspect-title></h2>
+      <div class="inspect-card__body" aria-live="polite">
+        <div class="inspect-card__category" data-inspect-category></div>
+        <div class="inspect-card__meta" data-inspect-meta></div>
+        <img class="inspect-card__title-logo" data-inspect-title-logo src="assets/character-logos/joe-logo.png" alt="" hidden>
+        <h2 id="inspect-title" data-inspect-title tabindex="-1"></h2>
         <p class="inspect-card__role" data-inspect-role></p>
         <p class="inspect-card__description" data-inspect-description></p>
-        <div class="inspect-card__readout" data-inspect-facts></div>
-        <div class="inspect-card__analysis">
-          <section><span class="inspect-mini-icon" aria-hidden="true">STR</span><div><b data-inspect-strength-label>Best at</b><p data-inspect-strength></p></div></section>
-          <section><span class="inspect-mini-icon" aria-hidden="true">RISK</span><div><b data-inspect-weakness-label>Watch for</b><p data-inspect-weakness></p></div></section>
-        </div>
-        <ul class="inspect-stats" data-inspect-stats></ul>
+        <div class="inspect-card__category-content" data-inspect-content></div>
+        <section class="inspect-relations" data-inspect-relations hidden><div class="inspect-relations__head"><h3>Connected records</h3><p>Open any linked ingredient or result.</p></div><div class="inspect-relations__grid" data-inspect-relations-grid></div></section>
+        <div class="inspect-card__actions"><a class="button button--gold" data-inspect-catalog href="catalog.html#archive"><span>View in full catalog</span><span aria-hidden="true">→</span></a></div>
       </div>
     </article>`;
   document.body.append(inspector);
   let inspectReturnTarget = null;
-  const renderSegments = (level) => Array.from({ length: 10 }, (_, index) => `<i class="${index < Math.max(0, Math.round(level / 10)) ? "is-filled" : ""}"></i>`).join("");
-  const openInspector = (key, opener) => {
+  const statGlyphs = { DMG: "✦", BPM: "◷", AMT: "×", VEL: "»", PXR: "⇥", LVL: "↑", BON: "+", FUS: "⇄", VIT: "♡", PWR: "✦", SPD: "»", DEF: "◇", RES: "◆", HP: "♡", XP: "◆", COIN: "◎" };
+  const renderMetricGrid = (entries, modifier = "") => `<div class="inspect-metrics ${modifier}">${entries.map((entry) => `<div class="inspect-metric"><span class="inspect-metric__icon" aria-hidden="true">${escapeHTML(statGlyphs[entry.icon] || entry.icon)}</span><strong>${escapeHTML(entry.value)}</strong><span>${escapeHTML(entry.label)}</span></div>`).join("")}</div>`;
+  const renderAnalysis = (item, labels) => `<div class="inspect-analysis"><section><span class="inspect-analysis__icon" aria-hidden="true">+</span><div><b>${escapeHTML(labels[0])}</b><p>${escapeHTML(item.strength)}</p></div></section><section><span class="inspect-analysis__icon" aria-hidden="true">!</span><div><b>${escapeHTML(labels[1])}</b><p>${escapeHTML(item.weakness)}</p></div></section></div>`;
+  const renderCategoryContent = (item) => {
+    if (item.category === "gem") {
+      const xpValue = item.experience.replace(/ XP(?: each)?$/i, "");
+      const xpLabel = /each/i.test(item.experience) ? "XP each" : "XP value";
+      return `<div class="inspect-gem-summary"><div class="inspect-gem-metrics"><div><strong>${escapeHTML(xpValue)}</strong><span>${xpLabel}</span></div><div><strong>${escapeHTML(item.dropRate)}</strong><span>Drop rate</span></div><div><strong>${escapeHTML(item.dropCount)}</strong><span>Gems per kill</span></div><div><strong>${escapeHTML(`${item.radius}px`)}</strong><span>Pickup body</span></div></div><p><b>Drops from</b> ${escapeHTML(item.source)}. The full enemy XP reward is always preserved.</p></div>`;
+    }
+    if (item.category === "support") {
+      return `<div class="inspect-support-core"><div><strong>${escapeHTML(item.bonus)}</strong><span>Per rank</span></div><div><strong>${escapeHTML(String(item.max))}</strong><span>Maximum rank</span></div></div>${renderAnalysis(item, ["Build advantage", "Opportunity cost"])}`;
+    }
+    if (item.category === "character") {
+      const characterFacts = (item.facts || []).slice(1).map((fact, index) => `<div><span aria-hidden="true">${index === 0 ? "◆" : "+"}</span><strong>${escapeHTML(fact)}</strong></div>`).join("");
+      return `<div class="inspect-character-signals">${characterFacts}</div>${renderAnalysis(item, ["Signature edge", "Character risk"])}${renderMetricGrid(item.stats || [], "inspect-metrics--character")}`;
+    }
+    if (item.category === "enemy") {
+      const enemyMetrics = [stat("HP", "Vitality", String(item.hp), 0), stat("DMG", "Contact damage", String(item.damage), 0), stat("SPD", "Movement speed", `${item.speed} px/s`, 0), stat("XP", "Resonance reward", String(item.xp), 0), stat("COIN", "Coin reward", String(item.coins), 0)];
+      return `${renderAnalysis(item, ["Threat profile", "Counterplay"])}${renderMetricGrid(enemyMetrics, "inspect-metrics--enemy")}`;
+    }
+    const labels = item.category === "evolution" ? ["Legendary strength", "Pattern limit"] : ["Combat strength", "Tradeoff"];
+    return `${renderAnalysis(item, labels)}${renderMetricGrid(item.stats || [], item.category === "evolution" ? "inspect-metrics--evolution" : "inspect-metrics--weapon")}`;
+  };
+  const openInspector = (key, opener, linked = false) => {
     const item = inspectionCatalog.get(key);
     if (!item) return;
-    document.querySelectorAll(".is-inspect-active").forEach((element) => element.classList.remove("is-inspect-active"));
-    inspectReturnTarget = opener instanceof HTMLElement ? opener : null;
-    inspectReturnTarget?.classList.add("is-inspect-active");
+    if (!linked) {
+      document.querySelectorAll(".is-inspect-active").forEach((element) => element.classList.remove("is-inspect-active"));
+      inspectReturnTarget = opener instanceof HTMLElement ? opener : null;
+      inspectReturnTarget?.classList.add("is-inspect-active");
+    }
     const image = inspector.querySelector("[data-inspect-image]");
     image.src = item.image;
     image.alt = item.name;
-    inspector.querySelector("[data-inspect-type]").textContent = item.type;
-    inspector.querySelector("[data-inspect-rarity]").textContent = item.rarity;
     const category = categoryMeta[item.category] || categoryMeta.gem;
     inspector.querySelector("[data-inspect-category]").textContent = category.label;
-    inspector.querySelector("[data-inspect-category-icon]").src = category.icon;
-    inspector.querySelector("[data-inspect-title]").textContent = item.name;
-    inspector.querySelector("[data-inspect-role]").textContent = item.role;
+    const metaByCategory = {
+      weapon: [item.rarity, item.pattern],
+      support: [],
+      evolution: [item.rarity, item.pattern],
+      character: [item.rarity],
+      enemy: [item.rank],
+      gem: [item.rarity]
+    };
+    inspector.querySelector("[data-inspect-meta]").innerHTML = (metaByCategory[item.category] || []).filter(Boolean).map((value) => `<span>${escapeHTML(value)}</span>`).join("");
+    const title = inspector.querySelector("[data-inspect-title]");
+    const titleLogo = inspector.querySelector("[data-inspect-title-logo]");
+    title.textContent = item.name;
+    title.hidden = Boolean(item.logo);
+    titleLogo.hidden = !item.logo;
+    if (item.logo) {
+      titleLogo.src = item.logo;
+      titleLogo.alt = item.name;
+    }
+    const role = inspector.querySelector("[data-inspect-role]");
+    const roleCopy = item.category === "support" || item.category === "gem" ? "" : item.role;
+    role.textContent = roleCopy;
+    role.hidden = !roleCopy;
     inspector.querySelector("[data-inspect-description]").textContent = item.description;
-    inspector.querySelector("[data-inspect-strength]").textContent = item.strength;
-    inspector.querySelector("[data-inspect-weakness]").textContent = item.weakness;
-    const analysisLabels = {
-      weapon: ["Combat strength", "Tradeoff"], support: ["Build advantage", "Opportunity cost"], evolution: ["Legendary strength", "Pattern limit"],
-      character: ["Signature edge", "Character risk"], enemy: ["Threat profile", "Counterplay"], gem: ["Progression value", "Drop condition"]
-    }[item.category] || ["Best at", "Watch for"];
-    inspector.querySelector("[data-inspect-strength-label]").textContent = analysisLabels[0];
-    inspector.querySelector("[data-inspect-weakness-label]").textContent = analysisLabels[1];
-    inspector.querySelector("[data-inspect-facts]").innerHTML = (item.facts || []).map((fact, index) => `<span><b aria-hidden="true">${["A","B","C"][index] || "D"}</b>${escapeHTML(fact)}</span>`).join("");
-    inspector.querySelector("[data-inspect-stats]").innerHTML = (item.stats || []).map((entry) => `<li><span class="inspect-stat__icon" aria-hidden="true">${escapeHTML(entry.icon)}</span><div><span><b>${escapeHTML(entry.label)}</b><strong>${escapeHTML(entry.value)}</strong></span><div class="inspect-stat__segments" aria-label="${escapeHTML(entry.label)} strength ${Math.round(entry.level)} percent">${renderSegments(entry.level)}</div></div></li>`).join("");
+    inspector.querySelector("[data-inspect-content]").innerHTML = renderCategoryContent(item);
+    const relations = inspector.querySelector("[data-inspect-relations]");
+    const relationGrid = inspector.querySelector("[data-inspect-relations-grid]");
+    relationGrid.innerHTML = (item.relations || []).map((relation) => {
+      const related = inspectionCatalog.get(relation.key);
+      if (!related) return "";
+      return `<button type="button" class="inspect-relation" data-related-record="${escapeHTML(related.key)}"><img src="${escapeHTML(related.image)}" alt=""><span><small>${escapeHTML(relation.label)}</small><strong>${escapeHTML(related.name)}</strong><em>Open details</em></span></button>`;
+    }).join("");
+    relations.hidden = relationGrid.childElementCount === 0;
+    inspector.querySelector("[data-inspect-catalog]").href = `catalog.html?record=${encodeURIComponent(item.key)}#archive`;
     inspector.dataset.kind = item.type.toLowerCase().replace(/\s+/g, "-");
     inspector.dataset.category = item.category;
-    if (document.startViewTransition && !reducedMotion.matches) document.startViewTransition(() => inspector.showModal()); else inspector.showModal();
+    inspector.dataset.record = item.key;
+    if (!inspector.open) {
+      if (document.startViewTransition && !reducedMotion.matches) document.startViewTransition(() => inspector.showModal()); else inspector.showModal();
+    } else if (!reducedMotion.matches) {
+      inspector.querySelector(".inspect-card__body").animate([{ opacity: .42, transform: "translateY(8px)" }, { opacity: 1, transform: "translateY(0)" }], { duration: 280, easing: "cubic-bezier(.16,1,.3,1)" });
+      title.focus({ preventScroll: true });
+    }
   };
+  inspector.addEventListener("click", (event) => {
+    const relation = event.target.closest("[data-related-record]");
+    if (!relation) return;
+    openInspector(relation.dataset.relatedRecord, relation, true);
+  });
   inspector.querySelector("[data-inspect-close]").addEventListener("click", () => inspector.close());
   inspector.addEventListener("click", (event) => { if (event.target === inspector) inspector.close(); });
   inspector.addEventListener("close", () => {
@@ -502,15 +706,30 @@
     element.classList.add("is-inspectable");
     element.dataset.category = item?.category || "gem";
     element.dataset.categoryLabel = category.label;
-    if (element.matches("button, a") && !element.querySelector(":scope > .type-tag")) {
-      const tag = document.createElement("span");
-      tag.className = "type-tag";
-      tag.setAttribute("aria-hidden", "true");
-      tag.innerHTML = `<img src="${category.icon}" alt="">`;
+    const hasVisual = Boolean(element.querySelector(":scope > img")) || element.matches(".fusion-piece, .fusion-result, .character-profile__visual");
+    if (element.matches("button, a") && hasVisual && !element.querySelector(":scope > .inspect-cue")) {
       const cue = document.createElement("span");
       cue.className = "inspect-cue";
       cue.textContent = "Inspect";
-      element.append(tag, cue);
+      element.append(cue);
+      let pointerFrame = 0;
+      element.addEventListener("pointermove", (event) => {
+        if (event.pointerType && event.pointerType !== "mouse") return;
+        if (pointerFrame) cancelAnimationFrame(pointerFrame);
+        pointerFrame = requestAnimationFrame(() => {
+          const rect = element.getBoundingClientRect();
+          const cueRect = cue.getBoundingClientRect();
+          const x = Math.max(8, Math.min(rect.width - cueRect.width - 8, event.clientX - rect.left + 18));
+          const y = Math.max(cueRect.height / 2 + 8, Math.min(rect.height - cueRect.height / 2 - 8, event.clientY - rect.top));
+          element.style.setProperty("--inspect-x", `${x}px`);
+          element.style.setProperty("--inspect-y", `${y}px`);
+          pointerFrame = 0;
+        });
+      });
+      element.addEventListener("pointerleave", () => {
+        if (pointerFrame) cancelAnimationFrame(pointerFrame);
+        pointerFrame = 0;
+      });
     }
     if (!element.matches("button, a")) {
       element.tabIndex = 0;
@@ -737,43 +956,6 @@
   }));
   document.querySelector("[data-dialog-close]")?.addEventListener("click", () => shotDialog?.close());
   shotDialog?.addEventListener("click", (event) => { if (event.target === shotDialog) shotDialog.close(); });
-
-  const statusData = window.GROOVE_STATUS;
-  const statusLedger = document.querySelector("[data-status-ledger]");
-  if (statusData && statusLedger) {
-    const setStatusText = (selector, value) => {
-      const element = document.querySelector(selector);
-      if (element) element.textContent = value;
-    };
-    setStatusText("[data-status-state]", statusData.game.dirty ? "Local changes in progress" : "Committed snapshot");
-    setStatusText("[data-status-branch]", statusData.game.branch);
-    setStatusText("[data-status-commit]", statusData.game.commit);
-    setStatusText("[data-status-tree]", statusData.game.dirty ? `${statusData.game.workingChanges} local changes` : "Clean");
-    setStatusText("[data-status-updated]", statusData.generatedAtLabel);
-
-    const entries = [
-      ...statusData.site.history.map((entry) => ({ ...entry, kind: "site", label: "Landing page" })),
-      ...statusData.game.history.map((entry) => ({ ...entry, kind: "game", label: "Game" }))
-    ].sort((a, b) => b.sortKey.localeCompare(a.sortKey));
-    const renderStatus = (filter = "all") => {
-      const visible = entries.filter((entry) => filter === "all" || entry.kind === filter);
-      statusLedger.innerHTML = visible.map((entry) => `
-        <article class="status-entry" data-status-kind="${entry.kind}">
-          <div class="status-entry__meta"><span>${entry.label}</span><time datetime="${escapeHTML(entry.date)}">${escapeHTML(entry.dateLabel || entry.date)}</time></div>
-          <div><h3>${escapeHTML(entry.title || entry.subject)}</h3>${entry.summary ? `<p>${escapeHTML(entry.summary)}</p>` : ""}</div>
-          <code>${escapeHTML(entry.hash || entry.id)}</code>
-        </article>`).join("");
-    };
-    renderStatus();
-    document.querySelectorAll("[data-status-filter]").forEach((button) => button.addEventListener("click", () => {
-      document.querySelectorAll("[data-status-filter]").forEach((other) => {
-        const active = other === button;
-        other.classList.toggle("is-active", active);
-        other.setAttribute("aria-pressed", String(active));
-      });
-      renderStatus(button.dataset.statusFilter);
-    }));
-  }
 
   document.addEventListener("error", (event) => {
     const target = event.target;

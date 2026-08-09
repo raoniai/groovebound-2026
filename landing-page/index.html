@@ -9,10 +9,12 @@
     <meta property="og:description" content="Choose a Resonant, survive the Break, and fuse sixteen musical weapons into a city-saving set.">
     <meta property="og:image" content="assets/campaign-banner.png">
     <title>Groove Bound | Restore rhythm to the universe</title>
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
     <link rel="preload" href="assets/groove-bound-title.png" as="image">
     <link rel="preload" href="assets/video/main-menu.mp4" as="video" type="video/mp4">
     <link rel="preload" href="assets/m6x11plus.ttf" as="font" type="font/ttf" crossorigin>
-    <link rel="stylesheet" href="styles.css?v=20260809-9">
+    <link rel="stylesheet" href="styles.css?v=20260810-18">
   </head>
   <body data-page="home">
     <div class="loader" data-loader role="status" aria-live="polite">
@@ -23,23 +25,18 @@
     <div class="page-progress" aria-hidden="true"></div>
 
     <header class="site-header" data-header>
-      <a class="brand" href="index.html" aria-label="Groove Bound home">
-        <img src="assets/groove-bound-title.png" alt="Groove Bound" width="700" height="389">
-      </a>
+      <a class="brand" href="index.html" aria-label="Groove Bound home"><img src="assets/gb-icon.png" alt="Groove Bound" width="512" height="512"></a>
       <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
       <nav class="site-nav" id="site-nav" aria-label="Primary navigation">
-        <a href="lore.html">Lore</a>
-        <a href="#resonants">Resonants</a>
-        <a href="#arsenal">Arsenal</a>
-        <a href="#status">Status</a>
+        <a class="is-current" href="index.html">Home</a>
+        <a href="catalog.html">Catalog</a>
         <a href="builder.html">Builder</a>
       </nav>
-      <span class="download-cta download-cta--header">
-        <a class="button button--gold header-download magnetic" href="https://github.com/raoniai/groovebound-2026/releases/latest/download/Groove-Bound-macOS.dmg" target="_blank" rel="noreferrer">
-          <span class="apple-mark" aria-hidden="true">&#63743;</span><span>Download for Mac</span>
-        </a>
-        <small>Windows coming soon</small>
-      </span>
+      <div class="header-actions">
+        <a class="header-version" href="https://github.com/raoniai/groovebound-2026/releases/tag/v0.6.0" target="_blank" rel="noreferrer" aria-label="View public build v0.6.0 release"><span>Public build</span><strong>v0.6.0</strong></a>
+        <a class="button button--glass header-repo" href="https://github.com/raoniai/groovebound-2026" target="_blank" rel="noreferrer"><img class="button__icon" src="assets/icons/github.svg" alt="" width="20" height="20"><span>GitHub</span></a>
+        <a class="button button--gold header-download magnetic" href="https://github.com/raoniai/groovebound-2026/releases/latest/download/Groove-Bound-macOS.dmg" target="_blank" rel="noreferrer"><span class="apple-mark" aria-hidden="true">&#63743;</span><span>Mac</span></a>
+      </div>
     </header>
 
     <main>
@@ -57,10 +54,10 @@
             <a class="button button--gold button--large magnetic" href="https://github.com/raoniai/groovebound-2026" target="_blank" rel="noreferrer"><img class="button__icon" src="assets/icons/github.svg" alt="" width="22" height="22"><span>View repository</span></a>
             <small class="platform-note">Mac only / Windows coming soon</small>
           </div>
-          <a class="hero__lore-link" href="lore.html"><img src="assets/sprites/gems/gem-4.png?v=site005" alt="" width="24" height="24"><span>Enter the lore</span></a>
+          <a class="hero__lore-link" href="#story"><img src="assets/sprites/gems/gem-4.png?v=site005" alt="" width="24" height="24"><span>Explore the story</span></a>
         </div>
         <button class="media-control" type="button" data-video-sound="#hero-video" aria-pressed="false" aria-label="Unmute scene" title="Unmute scene">
-          <span class="sound-icon is-muted" data-sound-icon aria-hidden="true"><img src="assets/sprites/weapons/weapon-7.png" alt="" width="256" height="256"></span>
+          <span class="sound-icon is-muted" data-sound-icon aria-hidden="true"><img data-sound-glyph src="assets/icons/sound-off.png" alt="" width="96" height="96"></span>
         </button>
 
         <button class="float-token float-token--joe draggable" type="button" data-drag data-inspect-key="character-joe" data-name="Joe, The Backbeat. Drag or inspect." data-depth="1.1" aria-label="Drag or inspect Joe, The Backbeat">
@@ -72,6 +69,10 @@
         <button class="float-token float-token--gem draggable" type="button" data-drag data-inspect-key="gem-4" data-name="Tier 4 Resonance gem. Drag or inspect." data-depth="1.4" aria-label="Drag or inspect a tier 4 Resonance gem">
           <img src="assets/sprites/gems/gem-4.png?v=site005" alt="Rare Resonance XP crystal" width="627" height="627">
         </button>
+        <button class="float-token float-token--weapon draggable" type="button" data-drag data-inspect-key="weapon-13" data-name="Keytar Chord. Drag or inspect." data-depth="1.6" aria-label="Drag or inspect the Keytar Chord"><img src="assets/sprites/weapons/weapon-13.png" alt="Keytar Chord" width="256" height="256"></button>
+        <button class="float-token float-token--enemy draggable" type="button" data-drag data-inspect-key="enemy-10" data-name="Trumpet Ray. Drag or inspect." data-depth=".72" aria-label="Drag or inspect the Trumpet Ray"><img src="assets/sprites/enemies/orbit-2.png?v=site005" alt="Trumpet Ray" width="627" height="627"></button>
+        <button class="float-token float-token--shard draggable" type="button" data-drag data-inspect-key="gem-2" data-name="Charged Shard. Drag or inspect." data-depth="1.25" aria-label="Drag or inspect a Charged Shard"><img src="assets/sprites/gems/gem-2.png?v=site005" alt="Charged Shard" width="627" height="627"></button>
+        <button class="float-token float-token--evolution draggable" type="button" data-drag data-inspect-key="evolved-2" data-name="Subwoofer Supernova. Drag or inspect." data-depth=".9" aria-label="Drag or inspect Subwoofer Supernova"><img src="assets/sprites/evolved/evolved-2.png" alt="Subwoofer Supernova" width="256" height="256"></button>
       </section>
 
       <section class="signal-strip" data-signal-strip tabindex="0" aria-label="Current game highlights. Drag or use arrow keys to explore.">
@@ -92,21 +93,56 @@
         </div>
       </section>
 
-      <section class="story-portal section-pad" aria-labelledby="story-title">
-        <div class="story-portal__copy reveal">
+      <section id="story" class="story-portal cinematic-section" aria-labelledby="story-title">
+        <video id="prologue-video" class="ambient-video cinematic-section__video" muted loop playsinline preload="none" poster="assets/cutscene-dialogue.png">
+          <source src="assets/video/prologue.mp4" type="video/mp4">
+        </video>
+        <div class="media-scrim media-scrim--cinematic" aria-hidden="true"></div>
+        <div class="story-portal__copy cinematic-section__content reveal">
           <h2 id="story-title">Music keeps the city alive.</h2>
-          <p>Then a cosmic chord plays backwards through every speaker. The Break turns familiar sound into hostile patterns.</p>
-          <a class="button button--glass" href="lore.html"><img class="button__icon button__icon--pixel" src="assets/sprites/gems/gem-4.png?v=site005" alt="" width="27" height="27"><span>Follow the story</span></a>
+          <p>The Resonance synchronises transport, street lights, rooftop venues, speakers, and Pulse Tower. Then a cosmic chord plays backwards through the network. The Break turns familiar sound into hostile patterns.</p>
+          <a class="button button--glass" href="#backbeat"><img class="button__icon button__icon--pixel" src="assets/sprites/gems/gem-4.png?v=site005" alt="" width="27" height="27"><span>Follow the campaign</span></a>
         </div>
-        <div class="story-portal__media reveal">
-          <video id="prologue-video" class="ambient-video" muted loop playsinline preload="none" poster="assets/cutscene-dialogue.png">
-            <source src="assets/video/prologue.mp4" type="video/mp4">
-          </video>
-          <div class="media-scrim" aria-hidden="true"></div>
-          <div class="story-portal__caption">
-            <p>Backbeat emergency broadcast</p>
-            <button class="media-control media-control--inline" type="button" data-video-sound="#prologue-video" aria-pressed="false" aria-label="Unmute scene" title="Unmute scene"><span class="sound-icon is-muted" data-sound-icon aria-hidden="true"><img src="assets/sprites/weapons/weapon-7.png" alt="" width="256" height="256"></span></button>
-          </div>
+        <button class="media-control media-control--cinematic" type="button" data-video-sound="#prologue-video" aria-pressed="false" aria-label="Unmute scene" title="Unmute scene"><span class="sound-icon is-muted" data-sound-icon aria-hidden="true"><img data-sound-glyph src="assets/icons/sound-off.png" alt="" width="96" height="96"></span></button>
+      </section>
+
+      <section id="backbeat" class="lore-stage lore-stage--home section-pad" aria-labelledby="backbeat-title">
+        <div class="lore-stage__mast reveal">
+          <img src="assets/backbeat-environment.png" alt="Backbeat city environment under the Break" width="1517" height="936" loading="lazy" decoding="async">
+          <div><span class="stage-tag">Stage 01</span><h2 id="backbeat-title">Backbeat</h2><p>Protect Pulse Tower while the Break learns the city's rhythm.</p></div>
+        </div>
+        <div class="lore-stage__brief reveal">
+          <article><strong>Objective</strong><p>Survive escalating waves, gather Resonance, and stop the Static Baron from anchoring the hostile signal.</p></article>
+          <article><strong>Pressure</strong><p>Fast skitters, heavy chargers, ranged turrets, and spectral chasers overlap until safe lanes collapse.</p></article>
+          <article><strong>The turn</strong><p>The fallen Baron leaves the First Press: a record that behaves like a map and points below the city.</p></article>
+        </div>
+      </section>
+
+      <section id="first-press" class="first-press first-press--linear section-pad" aria-labelledby="first-press-title">
+        <div class="first-press__copy reveal"><span class="stage-tag">Interstage signal</span><h2 id="first-press-title">The First Press is a map pretending to be music.</h2><p>The groove encodes a route from defeated Backbeat into an abandoned transit system far below Pulse Tower. Drag the record across the map to lock onto the Orbit signal.</p><p class="route-status" data-route-status aria-live="polite">Signal origin: Pulse Tower</p></div>
+        <div class="route-map reveal" data-drag-zone data-route-map>
+          <img src="assets/first-press-orbit.png" alt="The First Press route from Backbeat to the Orbit Line" width="1672" height="941" loading="lazy" decoding="async">
+          <button class="route-record draggable" type="button" data-drag data-route-marker data-inspect-key="weapon-7" data-name="The First Press. Drag or inspect." aria-label="Drag or inspect the First Press record"><img src="assets/sprites/weapons/weapon-7.png" alt="The First Press record" width="256" height="256"></button>
+          <span class="route-target" aria-hidden="true">Orbit signal</span>
+        </div>
+      </section>
+
+      <section class="cinematic-section lore-cinematic" aria-labelledby="stage2-title">
+        <video id="stage2-video" class="ambient-video cinematic-section__video" muted loop playsinline preload="none" poster="assets/screens/stage2-arrival.png"><source src="assets/video/stage2-transition.mp4" type="video/mp4"></video>
+        <div class="media-scrim media-scrim--cinematic" aria-hidden="true"></div>
+        <div class="cinematic-section__content reveal"><h2 id="stage2-title">The Orbit Line answers.</h2><p>Joe and Lyra carry their build beyond Backbeat as a new machine orchestra assembles around them.</p></div>
+        <button class="media-control media-control--cinematic" type="button" data-video-sound="#stage2-video" aria-pressed="false" aria-label="Unmute Stage 2 transition" title="Unmute Stage 2 transition"><span class="sound-icon is-muted" data-sound-icon aria-hidden="true"><img data-sound-glyph src="assets/icons/sound-off.png" alt="" width="96" height="96"></span></button>
+      </section>
+
+      <section id="orbit" class="lore-stage lore-stage--orbit lore-stage--home section-pad" aria-labelledby="orbit-title">
+        <div class="lore-stage__mast reveal">
+          <img src="assets/orbit-environment.png" alt="Alien Orbit Line platform" width="1926" height="1137" loading="lazy" decoding="async">
+          <div><span class="stage-tag">Stage 02</span><h2 id="orbit-title">Orbit Line</h2><p>A dead transit platform is still broadcasting into space.</p></div>
+        </div>
+        <div class="lore-stage__brief reveal">
+          <article><strong>Objective</strong><p>Carry the build from Backbeat and interrupt the broadcast at its source.</p></article>
+          <article><strong>Pressure</strong><p>Ranged rays, pulse fields, lane chargers, and elite predators turn open space into timed geometry.</p></article>
+          <article><strong>Boss signal</strong><p>The Grand Orchestrator conducts every remaining machine through a vast Resonance pulse.</p></article>
         </div>
       </section>
 
@@ -116,7 +152,7 @@
             <source src="assets/video/joe-intro.mp4" type="video/mp4">
           </video>
           <div class="media-scrim media-scrim--soft" aria-hidden="true"></div>
-          <button class="media-control media-control--corner" type="button" data-video-sound="#character-video" aria-pressed="false" aria-label="Unmute character intro" title="Unmute character intro"><span class="sound-icon is-muted" data-sound-icon aria-hidden="true"><img src="assets/sprites/weapons/weapon-7.png" alt="" width="256" height="256"></span></button>
+          <button class="media-control media-control--corner" type="button" data-video-sound="#character-video" aria-pressed="false" aria-label="Unmute character intro" title="Unmute character intro"><span class="sound-icon is-muted" data-sound-icon aria-hidden="true"><img data-sound-glyph src="assets/icons/sound-off.png" alt="" width="96" height="96"></span></button>
         </div>
         <div class="resonant-lab__content reveal">
           <h2 id="resonant-title">Choose your Resonant.</h2>
@@ -129,8 +165,6 @@
             <div class="character-profile__info">
               <img class="character-profile__logo" data-character-logo src="assets/character-logos/joe-logo.png" alt="Joe" width="1350" height="600">
               <div data-character-copy>
-                <p class="pixel-label">The Backbeat</p>
-                <h3>Hold the line.</h3>
                 <p>Joe turns pressure into power with Guard, stronger knockback, and the Kazoo Pistol.</p>
                 <dl class="stat-lines">
                   <div><dt><img src="assets/sprites/characters/joe-4.png" alt="" width="627" height="627">Style</dt><dd>Durable control</dd></div>
@@ -185,55 +219,34 @@
         <div class="screenshot-grid screenshot-grid--latest">
           <button class="screenshot-shot reveal" type="button" data-shot="assets/screens/gameplay-combat.png" data-shot-alt="Current Groove Bound combat run with live enemies, projectiles, and HUD"><img src="assets/screens/gameplay-combat.png" alt="Current Groove Bound combat run with live enemies, projectiles, and HUD" width="1366" height="768" loading="lazy" decoding="async"><span>Live Backbeat combat</span></button>
           <button class="screenshot-shot reveal" type="button" data-shot="assets/screens/gameplay-level-up.png" data-shot-alt="Current Groove Bound in-run level-up choice"><img src="assets/screens/gameplay-level-up.png" alt="Current Groove Bound in-run level-up choice" width="1366" height="768" loading="lazy" decoding="async"><span>Current in-run level-up</span></button>
+          <button class="screenshot-shot reveal" type="button" data-shot="assets/screens/stage2-arrival.png" data-shot-alt="Joe and Lyra entering the current Stage 2 transition"><img src="assets/screens/stage2-arrival.png" alt="Joe and Lyra entering the current Stage 2 transition" width="1366" height="768" loading="lazy" decoding="async"><span>Stage 2 arrival</span></button>
+          <button class="screenshot-shot reveal" type="button" data-shot="assets/screens/stage2-escalation.png" data-shot-alt="Current Stage 2 transition revealing the Orbit Line threat"><img src="assets/screens/stage2-escalation.png" alt="Current Stage 2 transition revealing the Orbit Line threat" width="1366" height="768" loading="lazy" decoding="async"><span>Orbit Line escalation</span></button>
         </div>
-      </section>
-
-      <section id="status" class="build-status section-pad" aria-labelledby="status-title">
-        <div class="build-status__head reveal">
-          <div><h2 id="status-title">Current build status.</h2><p>A generated record of the active game branch, committed history, working changes, and landing-page passes.</p></div>
-          <span class="build-status__state" data-status-state>Reading repository</span>
-        </div>
-        <div class="build-status__summary reveal" aria-label="Current build summary">
-          <article><span>Branch</span><strong data-status-branch>Loading</strong></article>
-          <article><span>Commit</span><strong data-status-commit>Loading</strong></article>
-          <article><span>Game tree</span><strong data-status-tree>Loading</strong></article>
-          <article><span>Updated</span><strong data-status-updated>Loading</strong></article>
-        </div>
-        <div class="status-filter reveal" role="group" aria-label="Filter change log">
-          <button class="is-active" type="button" data-status-filter="all" aria-pressed="true">All changes</button>
-          <button type="button" data-status-filter="game" aria-pressed="false">Game</button>
-          <button type="button" data-status-filter="site" aria-pressed="false">Landing page</button>
-        </div>
-        <div class="status-ledger reveal" data-status-ledger aria-live="polite">
-          <p class="status-ledger__loading">Building the version ledger...</p>
-        </div>
-        <div class="build-status__note reveal"><p>This ledger is refreshed by running the included status updater after game or website changes. Local edits, committed history, and deployment state are kept separate.</p><a class="button button--gold" href="https://github.com/raoniai/groovebound-2026" target="_blank" rel="noreferrer"><img class="button__icon" src="assets/icons/github.svg" alt="" width="20" height="20"><span>Inspect on GitHub</span></a></div>
       </section>
 
       <section class="download-stage" aria-labelledby="download-title">
-        <img class="download-stage__backdrop" src="assets/title-background.png" alt="Groove Bound city skyline" width="1920" height="1080" loading="lazy" decoding="async">
+        <video id="download-video" class="ambient-video" muted loop playsinline preload="none" poster="assets/screens/stage2-escalation.png"><source src="assets/video/ending.mp4" type="video/mp4"></video>
         <div class="media-scrim media-scrim--center" aria-hidden="true"></div>
         <div class="download-stage__content reveal">
-          <img src="assets/groove-bound-title.png" alt="Groove Bound" width="700" height="389">
-          <h2 id="download-title">Take the first movement.</h2>
-          <p>Download the current <code>.love</code> build, open it with LÖVE 11.5, and send the bugs back through GitHub.</p>
+          <img src="assets/gb-icon.png" alt="Groove Bound GB icon" width="512" height="512">
+          <h2 id="download-title">The Orchestrator falls. The Conductor hears everything.</h2>
+          <p>Backbeat survives and the Orbit broadcast is interrupted, but a signal beyond the platform answers. Play public build v0.6.0 and continue the next movement.</p>
           <div class="download-stage__actions cta-pair">
             <a class="button button--gold button--large magnetic" href="https://github.com/raoniai/groovebound-2026/releases/latest/download/Groove-Bound-macOS.dmg" target="_blank" rel="noreferrer"><span class="apple-mark" aria-hidden="true">&#63743;</span><span>Download for Mac</span></a>
             <a class="button button--gold button--large magnetic" href="https://github.com/raoniai/groovebound-2026" target="_blank" rel="noreferrer"><img class="button__icon" src="assets/icons/github.svg" alt="" width="22" height="22"><span>View repository</span></a>
             <small class="platform-note">Mac only / Windows coming soon</small>
           </div>
         </div>
+        <button class="media-control" type="button" data-video-sound="#download-video" aria-pressed="false" aria-label="Unmute scene" title="Unmute scene"><span class="sound-icon is-muted" data-sound-icon aria-hidden="true"><img data-sound-glyph src="assets/icons/sound-off.png" alt="" width="96" height="96"></span></button>
       </section>
     </main>
 
     <footer class="site-footer">
-      <a class="footer-brand" href="index.html"><img src="assets/groove-bound-title.png" alt="Groove Bound" width="700" height="389"></a>
-      <nav aria-label="Footer navigation"><a href="lore.html">Lore</a><a href="builder.html">Builder</a><a href="https://love2d.org/" target="_blank" rel="noreferrer">LÖVE 11.5</a></nav>
-      <div class="social-links" aria-label="Raoni Lima social profiles">
-        <a href="https://github.com/raoniai" target="_blank" rel="noreferrer" data-name="GitHub" aria-label="Raoni Lima on GitHub"><img src="assets/icons/github.svg" alt="" width="24" height="24"></a>
-        <a href="https://www.linkedin.com/in/raonilima" target="_blank" rel="noreferrer" data-name="LinkedIn" aria-label="Raoni Lima on LinkedIn"><img src="assets/icons/linkedin.svg" alt="" width="24" height="24"></a>
-        <a href="https://x.com/raonilima" target="_blank" rel="noreferrer" data-name="X" aria-label="Raoni Lima on X"><img src="assets/icons/x.svg" alt="" width="24" height="24"></a>
+      <div class="footer-main">
+        <div class="footer-intro"><a class="footer-brand" href="index.html"><img src="assets/gb-icon.png" alt="" width="512" height="512"><span>Groove Bound</span></a><p>A music-powered survival roguelike built in LÖVE 11.5.</p><a class="footer-version" href="https://github.com/raoniai/groovebound-2026/releases/tag/v0.6.0" target="_blank" rel="noreferrer">Public build v0.6.0</a></div>
+        <nav class="footer-map" aria-label="Website map"><div><h2>Explore</h2><a href="index.html">Home</a><a href="index.html#story">Story</a><a href="catalog.html">Catalog</a><a href="index.html#arsenal">Arsenal</a></div><div><h2>Play and build</h2><a href="https://github.com/raoniai/groovebound-2026/releases/latest/download/Groove-Bound-macOS.dmg" target="_blank" rel="noreferrer">Download for Mac</a><a href="https://github.com/raoniai/groovebound-2026" target="_blank" rel="noreferrer">GitHub repository</a><a href="https://github.com/raoniai/groovebound-2026/releases/tag/v0.6.0" target="_blank" rel="noreferrer">Release notes</a></div><div><h2>Creator</h2><a href="builder.html">Meet Raoni</a><a href="https://www.linkedin.com/in/raonilima" target="_blank" rel="noreferrer">LinkedIn</a><a href="https://github.com/raoniai" target="_blank" rel="noreferrer">GitHub profile</a></div></nav>
       </div>
+      <div class="footer-bottom"><p>© 2026 Raoni Lima. Mac only. Windows coming soon.</p><div class="social-links" aria-label="Raoni Lima social profiles"><a href="https://github.com/raoniai" target="_blank" rel="noreferrer" data-name="GitHub" aria-label="Raoni Lima on GitHub"><img src="assets/icons/github.svg" alt="" width="24" height="24"></a><a href="https://www.linkedin.com/in/raonilima" target="_blank" rel="noreferrer" data-name="LinkedIn" aria-label="Raoni Lima on LinkedIn"><img src="assets/icons/linkedin.svg" alt="" width="24" height="24"></a><a href="https://x.com/raonilima" target="_blank" rel="noreferrer" data-name="X" aria-label="Raoni Lima on X"><img src="assets/icons/x.svg" alt="" width="24" height="24"></a></div></div>
     </footer>
 
     <dialog class="shot-dialog" data-shot-dialog>
@@ -242,7 +255,6 @@
     </dialog>
 
     <audio data-audio src="assets/title-theme.ogg" preload="none"></audio>
-    <script src="status-data.js?v=20260809-2" defer></script>
-    <script src="script.js?v=20260809-7" defer></script>
+    <script src="script.js?v=20260810-14" defer></script>
   </body>
 </html>

@@ -60,13 +60,90 @@ function Icons.draw(kind, x, y, size, color)
       x - r * 0.18, y + r,
       x + r * 0.66, y - r * 0.20,
       x + r * 0.12, y - r * 0.20)
-  elseif kind == "target" then
+  elseif kind == "target" or kind == "aim" or kind == "zoom" then
     love.graphics.circle("line", x, y, r * 0.82)
     love.graphics.circle("line", x, y, r * 0.28)
     love.graphics.line(x - r, y, x - r * 0.58, y)
     love.graphics.line(x + r * 0.58, y, x + r, y)
     love.graphics.line(x, y - r, x, y - r * 0.58)
     love.graphics.line(x, y + r * 0.58, x, y + r)
+    if kind == "zoom" then
+      love.graphics.line(x + r * 0.58, y + r * 0.58,
+        x + r, y + r)
+    end
+  elseif kind == "health" then
+    love.graphics.polygon("line",
+      x, y + r * 0.88,
+      x - r * 0.86, y,
+      x - r * 0.58, y - r * 0.68,
+      x, y - r * 0.24,
+      x + r * 0.58, y - r * 0.68,
+      x + r * 0.86, y)
+  elseif kind == "guard" then
+    love.graphics.polygon("line",
+      x, y - r, x + r * 0.78, y - r * 0.62,
+      x + r * 0.62, y + r * 0.42, x, y + r,
+      x - r * 0.62, y + r * 0.42, x - r * 0.78, y - r * 0.62)
+  elseif kind == "damage" or kind == "score" then
+    for index = 0, 7 do
+      local a = index * math.pi / 4
+      local radius = index % 2 == 0 and r or r * 0.46
+      local next_a = a + math.pi / 8
+      local next_radius = index % 2 == 0 and r * 0.46 or r
+      love.graphics.line(x + math.cos(a) * radius, y + math.sin(a) * radius,
+        x + math.cos(next_a) * next_radius, y + math.sin(next_a) * next_radius)
+    end
+  elseif kind == "cooldown" or kind == "clock" then
+    love.graphics.circle("line", x, y, r * 0.86)
+    love.graphics.line(x, y, x, y - r * 0.56)
+    love.graphics.line(x, y, x + r * 0.44, y + r * 0.20)
+  elseif kind == "count" then
+    love.graphics.line(x - r * 0.72, y - r * 0.72,
+      x + r * 0.72, y + r * 0.72)
+    love.graphics.line(x + r * 0.72, y - r * 0.72,
+      x - r * 0.72, y + r * 0.72)
+  elseif kind == "speed" or kind == "skip" then
+    love.graphics.polygon("line",
+      x - r * 0.82, y - r * 0.72,
+      x + r * 0.16, y,
+      x - r * 0.82, y + r * 0.72)
+    love.graphics.polygon("line",
+      x - r * 0.08, y - r * 0.72,
+      x + r * 0.90, y,
+      x - r * 0.08, y + r * 0.72)
+  elseif kind == "reroll" then
+    love.graphics.arc("line", "open", x, y, r * 0.78,
+      math.pi * 0.18, math.pi * 1.55)
+    love.graphics.polygon("line",
+      x + r * 0.22, y - r * 0.92,
+      x + r * 0.82, y - r * 0.70,
+      x + r * 0.56, y - r * 0.12)
+  elseif kind == "combo" then
+    love.graphics.line(x - r * 0.82, y + r * 0.50,
+      x - r * 0.20, y - r * 0.42,
+      x + r * 0.20, y + r * 0.22,
+      x + r * 0.82, y - r * 0.64)
+    love.graphics.circle("line", x - r * 0.82, y + r * 0.50, r * 0.16)
+    love.graphics.circle("line", x + r * 0.82, y - r * 0.64, r * 0.16)
+  elseif kind == "stage" or kind == "level" then
+    love.graphics.polygon("line",
+      x, y - r, x + r * 0.28, y - r * 0.28,
+      x + r, y, x + r * 0.28, y + r * 0.28,
+      x, y + r, x - r * 0.28, y + r * 0.28,
+      x - r, y, x - r * 0.28, y - r * 0.28)
+  elseif kind == "chest" then
+    love.graphics.rectangle("line", x - r * 0.90, y - r * 0.20,
+      r * 1.80, r * 0.95, 2, 2)
+    love.graphics.arc("line", "open", x, y - r * 0.16, r * 0.82,
+      math.pi, math.pi * 2)
+    love.graphics.rectangle("line", x - r * 0.12, y + r * 0.05,
+      r * 0.24, r * 0.36)
+  elseif kind == "warning" or kind == "critical" then
+    love.graphics.polygon("line",
+      x, y - r, x + r * 0.90, y + r * 0.82,
+      x - r * 0.90, y + r * 0.82)
+    love.graphics.line(x, y - r * 0.45, x, y + r * 0.28)
+    love.graphics.circle("fill", x, y + r * 0.58, r * 0.08)
   elseif kind == "vibration" then
     love.graphics.rectangle("line", x - r * 0.52, y - r * 0.56,
       r * 1.04, r * 1.12, 4, 4)

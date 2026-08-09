@@ -135,4 +135,48 @@ T["video cutscenes fade in and auto-finish two seconds after ending"] = function
   H.eq(completed, 1)
 end
 
+T["Circle skips both video and storyboard cutscenes immediately"] = function()
+  local completed = 0
+  local storyboard = fresh("JOE", "Skip me")
+  storyboard.opts.on_complete = function() completed = completed + 1 end
+  H.is_true(storyboard:gamepadpressed(nil, "b"))
+  H.eq(completed, 1)
+
+  local video = fresh("LYRA", "Skip video")
+  video.opts.on_complete = function() completed = completed + 1 end
+  video.video = { pause = function() end }
+  H.is_true(video:gamepadpressed(nil, "b"))
+  H.eq(completed, 2)
+end
+
+T["video skip control stays clear of the global mute control"] = function()
+  local screen = fresh("JOE", "Layout")
+  local skip = screen:video_skip_layout(1280, 720)
+  local mute = { x = 1280 - 58, y = 720 - 58, w = 44, h = 44 }
+  local overlaps = skip.x < mute.x + mute.w and mute.x < skip.x + skip.w
+    and skip.y < mute.y + mute.h and mute.y < skip.y + skip.h
+  H.is_false(overlaps)
+end
+
+T["video audio follows master mute as well as master volume"] = function()
+  local screen = fresh("JOE", "Audio")
+  screen.app.profile = {
+    options = { muted = true, master_volume = 0.7 },
+  }
+  local volume
+  screen.video = {
+    isPlaying = function() return true end,
+    tell = function() return 0 end,
+  }
+  screen.video_source = {
+    setVolume = function(_, value) volume = value end,
+  }
+  screen:update(0.1)
+  H.eq(volume, 0)
+
+  screen.app.profile.options.muted = false
+  screen:update(0.1)
+  H.near(volume, 0.7)
+end
+
 return T

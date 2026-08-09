@@ -37,6 +37,8 @@ local sections = {
       { key = "screen_shake", label = "Screen shake", kind = "toggle", icon = "shake" },
       { key = "hit_flash", label = "Hit flash", kind = "toggle", icon = "flash" },
       { key = "aim_assist", label = "Aim assist", kind = "toggle", icon = "target" },
+      { key = "camera_zoom", label = "Gameplay zoom", kind = "slider", icon = "zoom",
+        min = 0.75, max = 1.50, step = 0.25 },
       { key = "vibration", label = "Controller vibration", kind = "toggle", icon = "vibration" },
     },
   },
@@ -69,12 +71,22 @@ function OptionsScreen:_set_value(row, value, persist)
   local options = self.app.profile.options
   if row.kind == "slider" then
     local minimum, maximum = row.min or 0, row.max or 1
-    options[row.key] = math.floor(clamp(value, minimum, maximum) * 100 + 0.5) / 100
+    value = clamp(value, minimum, maximum)
+    if row.step then
+      value = minimum + math.floor(
+        (value - minimum) / row.step + 0.5) * row.step
+    end
+    options[row.key] = math.floor(value * 100 + 0.5) / 100
   elseif row.kind == "toggle" then
     options[row.key] = value == true
     if row.key == "fullscreen" then
       love.window.setFullscreen(options[row.key], "desktop")
     end
+  end
+  if row.key == "camera_zoom" and self.app.active_run
+    and self.app.active_run.camera
+  then
+    self.app.active_run.camera:set_zoom(options.camera_zoom)
   end
   if persist == false then AudioSettings.apply(self.app) else self:_save() end
 end
@@ -90,7 +102,8 @@ end
 
 function OptionsScreen:_adjust(row, direction)
   if row.kind == "slider" then
-    self:_set_value(row, self.app.profile.options[row.key] + direction * 0.01)
+    self:_set_value(row,
+      self.app.profile.options[row.key] + direction * (row.step or 0.01))
   elseif row.kind == "toggle" then
     self:_set_value(row, direction > 0)
   end
@@ -138,7 +151,7 @@ function OptionsScreen:_layout()
       local row = {
         key = definition.key, label = definition.label,
         kind = definition.kind, icon = definition.icon,
-        min = definition.min, max = definition.max,
+        min = definition.min, max = definition.max, step = definition.step,
         focus = focus,
         rect = { x = col_x[column], y = cursor_y[column], w = col_w, h = row_h },
       }

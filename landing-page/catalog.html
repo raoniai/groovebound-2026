@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="Browse the complete current Groove Bound catalog of Resonants, weapons, passives, evolutions, gems, and enemies.">
+    <meta name="theme-color" content="#090612">
+    <meta property="og:title" content="Groove Bound Catalog | The Resonance Archive">
+    <meta property="og:image" content="assets/campaign-banner.png">
+    <title>Groove Bound Catalog | The Resonance Archive</title>
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+    <link rel="preload" href="assets/video/prologue.mp4" as="video" type="video/mp4">
+    <link rel="preload" href="assets/m6x11plus.ttf" as="font" type="font/ttf" crossorigin>
+    <link rel="stylesheet" href="styles.css?v=20260810-18">
+  </head>
+  <body data-page="catalog">
+    <div class="loader" data-loader role="status" aria-live="polite"><div class="loader__meter" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div><p>Indexing the Resonance</p></div>
+    <div class="noise" aria-hidden="true"></div>
+    <div class="page-progress" aria-hidden="true"></div>
+
+    <header class="site-header" data-header>
+      <a class="brand" href="index.html" aria-label="Groove Bound home"><img src="assets/gb-icon.png" alt="Groove Bound" width="512" height="512"></a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+      <nav class="site-nav" id="site-nav" aria-label="Primary navigation"><a href="index.html">Home</a><a class="is-current" href="catalog.html">Catalog</a><a href="builder.html">Builder</a></nav>
+      <div class="header-actions"><a class="header-version" href="https://github.com/raoniai/groovebound-2026/releases/tag/v0.6.0" target="_blank" rel="noreferrer" aria-label="View public build v0.6.0 release"><span>Public build</span><strong>v0.6.0</strong></a><a class="button button--glass header-repo" href="https://github.com/raoniai/groovebound-2026" target="_blank" rel="noreferrer"><img class="button__icon" src="assets/icons/github.svg" alt="" width="20" height="20"><span>GitHub</span></a><a class="button button--gold header-download" href="https://github.com/raoniai/groovebound-2026/releases/latest/download/Groove-Bound-macOS.dmg" target="_blank" rel="noreferrer"><span class="apple-mark" aria-hidden="true">&#63743;</span><span>Mac</span></a></div>
+    </header>
+
+    <main>
+      <section class="subhero catalog-hero" aria-labelledby="catalog-title" data-parallax-zone>
+        <video id="catalog-hero-video" class="ambient-video" autoplay muted loop playsinline preload="metadata" poster="assets/cutscene-dialogue.png"><source src="assets/video/prologue.mp4" type="video/mp4"></video>
+        <div class="media-scrim media-scrim--hero" aria-hidden="true"></div>
+        <div class="subhero__content reveal is-visible"><img src="assets/groove-bound-title.png" alt="Groove Bound" width="700" height="389"><h1 id="catalog-title">The Resonance Archive.</h1><p>Every current Resonant, weapon, passive, evolution, gem, and enemy in one interactive field catalog.</p><a class="button button--gold button--large" href="#archive">Open all 54 records</a></div>
+        <button class="media-control" type="button" data-video-sound="#catalog-hero-video" aria-pressed="false" aria-label="Unmute scene" title="Unmute scene"><span class="sound-icon is-muted" data-sound-icon aria-hidden="true"><img data-sound-glyph src="assets/icons/sound-off.png" alt="" width="96" height="96"></span></button>
+        <button class="float-token catalog-hero__weapon draggable" type="button" data-drag data-inspect-key="evolved-8" data-name="Neon Crescendo. Drag or inspect." data-depth="1.2" aria-label="Drag or inspect Neon Crescendo"><img src="assets/sprites/evolved/evolved-8.png" alt="Neon Crescendo" width="256" height="256"></button>
+        <button class="float-token catalog-hero__gem draggable" type="button" data-drag data-inspect-key="gem-3" data-name="Elite Crystal. Drag or inspect." data-depth="1.5" aria-label="Drag or inspect an Elite Crystal"><img src="assets/sprites/gems/gem-3.png?v=site005" alt="Elite Crystal" width="627" height="627"></button>
+      </section>
+
+      <section id="archive" class="catalog-shell section-pad" aria-labelledby="archive-title">
+        <div class="catalog-intro reveal"><div><h2 id="archive-title">All signals. One field guide.</h2><p>Search by name, behavior, role, or recipe. Select a category to isolate a system. Every card opens the same full visual inspector used across the site.</p></div><div class="catalog-count" aria-live="polite"><strong data-catalog-count>54</strong><span>records visible</span></div></div>
+        <div class="catalog-toolbar reveal">
+          <label class="catalog-search"><span>Search archive</span><input type="search" data-catalog-search placeholder="Try Keytar, boss, radial..." autocomplete="off"></label>
+          <div class="catalog-filters" data-catalog-filters aria-label="Filter catalog by category"></div>
+        </div>
+        <div class="catalog-groups" data-catalog-groups></div>
+        <p class="catalog-empty" data-catalog-empty hidden>No signal matches that search. Try another name, role, or category.</p>
+      </section>
+
+      <section class="catalog-download" aria-labelledby="catalog-download-title">
+        <video id="catalog-download-video" class="ambient-video" muted loop playsinline preload="none" poster="assets/title-background.png"><source src="assets/video/main-menu.mp4" type="video/mp4"></video>
+        <div class="media-scrim media-scrim--center" aria-hidden="true"></div>
+        <div class="catalog-download__content reveal"><img src="assets/groove-bound-title.png" alt="Groove Bound" width="700" height="389"><h2 id="catalog-download-title">Meet the archive in motion.</h2><p>Public build v0.6.0 is ready for Mac. Windows support is coming soon.</p><div class="cta-pair"><a class="button button--gold button--large" href="https://github.com/raoniai/groovebound-2026/releases/latest/download/Groove-Bound-macOS.dmg" target="_blank" rel="noreferrer"><span class="apple-mark" aria-hidden="true">&#63743;</span><span>Download for Mac</span></a><a class="button button--gold button--large" href="https://github.com/raoniai/groovebound-2026" target="_blank" rel="noreferrer"><img class="button__icon" src="assets/icons/github.svg" alt="" width="22" height="22"><span>View repository</span></a></div></div>
+        <button class="media-control" type="button" data-video-sound="#catalog-download-video" aria-pressed="false" aria-label="Unmute scene" title="Unmute scene"><span class="sound-icon is-muted" data-sound-icon aria-hidden="true"><img data-sound-glyph src="assets/icons/sound-off.png" alt="" width="96" height="96"></span></button>
+      </section>
+    </main>
+
+    <footer class="site-footer"><div class="footer-main"><div class="footer-intro"><a class="footer-brand" href="index.html"><img src="assets/gb-icon.png" alt="" width="512" height="512"><span>Groove Bound</span></a><p>A music-powered survival roguelike built in LÖVE 11.5.</p><a class="footer-version" href="https://github.com/raoniai/groovebound-2026/releases/tag/v0.6.0" target="_blank" rel="noreferrer">Public build v0.6.0</a></div><nav class="footer-map" aria-label="Website map"><div><h2>Explore</h2><a href="index.html">Home</a><a href="index.html#story">Story</a><a href="catalog.html">Catalog</a><a href="index.html#arsenal">Arsenal</a></div><div><h2>Play and build</h2><a href="https://github.com/raoniai/groovebound-2026/releases/latest/download/Groove-Bound-macOS.dmg" target="_blank" rel="noreferrer">Download for Mac</a><a href="https://github.com/raoniai/groovebound-2026" target="_blank" rel="noreferrer">GitHub repository</a><a href="https://github.com/raoniai/groovebound-2026/releases/tag/v0.6.0" target="_blank" rel="noreferrer">Release notes</a></div><div><h2>Creator</h2><a href="builder.html">Meet Raoni</a><a href="https://www.linkedin.com/in/raonilima" target="_blank" rel="noreferrer">LinkedIn</a><a href="https://github.com/raoniai" target="_blank" rel="noreferrer">GitHub profile</a></div></nav></div><div class="footer-bottom"><p>© 2026 Raoni Lima. Mac only. Windows coming soon.</p><div class="social-links" aria-label="Raoni Lima social profiles"><a href="https://github.com/raoniai" target="_blank" rel="noreferrer" data-name="GitHub" aria-label="Raoni Lima on GitHub"><img src="assets/icons/github.svg" alt="" width="24" height="24"></a><a href="https://www.linkedin.com/in/raonilima" target="_blank" rel="noreferrer" data-name="LinkedIn" aria-label="Raoni Lima on LinkedIn"><img src="assets/icons/linkedin.svg" alt="" width="24" height="24"></a><a href="https://x.com/raonilima" target="_blank" rel="noreferrer" data-name="X" aria-label="Raoni Lima on X"><img src="assets/icons/x.svg" alt="" width="24" height="24"></a></div></div></footer>
+    <script src="script.js?v=20260810-14" defer></script>
+  </body>
+</html>

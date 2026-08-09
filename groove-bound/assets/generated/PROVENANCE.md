@@ -352,3 +352,45 @@ near-black navy mineral dust with sparse cyan and amethyst micro-crystals. Both
 requested four orthographic, text-free, grid-free, evenly lit variations with
 no large props or dramatic effects so combat remains readable. The opaque
 atlases and their cell dimensions were validated before runtime integration.
+
+## Interface chrome and defeat presentation
+
+**Generated:** 2026-08-10 with OpenAI image generation in Codex built-in mode
+
+| Runtime file | Role |
+|---|---|
+| `campaign/aim-reticle.png` (512×512 RGBA) | Transparent mouse/gamepad aim marker |
+| `campaign/hud-slot-frame.png` (512×512 RGBA) | Transparent inventory frame decomposed into fixed corners and repeatable edge strips at runtime |
+| `campaign/game-over-v2.png` (1672×941 RGB) | Full-screen defeat illustration |
+| `campaign/joe-logo.png` | First-party Joe logo copied from the separate landing-page asset set |
+| `campaign/lyra-vex-logo.png` | First-party Lyra Vex logo copied from the separate landing-page asset set |
+
+Source candidates preserve the original generated outputs and remain excluded
+from packages. The first 6×4 UI atlas is retained as
+`source-candidates/ui-chrome-atlas-opaque-reference.png`; screenshot review
+showed its cell backgrounds and non-uniform scaling were unsuitable for runtime.
+The game no longer loads that atlas.
+
+The UI prompt requested 24 isolated, text-free pixel-art sprites: weapon and
+support slots; health and XP bars; number and timer holders; health, guard,
+warning, critical, level, chest, damage, cooldown, projectile count, speed,
+reroll, skip, score, combo, stage, clock, aim, and boss symbols. The palette is
+the established dark navy, cyan, magenta, and restrained gold interface family.
+
+The refinement prompts used that atlas only as a style reference. One prompt
+requested a square cyan/violet pixel-art reticle with four cardinal ticks and a
+central dot. The other requested a thin gold square inventory outline with
+restrained cyan/violet corner accents and an empty interior. Both were generated
+on uniform green chroma, converted to alpha with the bundled soft-matte/despill
+helper, center-cropped, resized to 512×512, and visually inspected. Their chroma
+and transparent high-resolution sources are stored under `source-candidates/`.
+Runtime draws the slot frame as four fixed corners plus tiled top, bottom, left,
+and right strips, so rectangular blocks extend without stretching the art.
+Semantic stat and CTA icons are now transparent code-drawn glyphs; HUD panel
+shades are separate 50%-alpha elements.
+
+The game-over prompt used only project-owned Joe/Lyra portraits, the current
+title background, and the obsolete first-party game-over panel as references.
+It requested a 16:9 neon Backbeat defeat scene with both heroes visibly tired
+but defiant, clean upper title space, lower statistics space, no embedded text,
+no logos, no gore, and no watermark.

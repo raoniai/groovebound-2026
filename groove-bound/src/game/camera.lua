@@ -27,10 +27,18 @@ function Camera:init(opts)
   self.trauma = 0
   self.shake_x, self.shake_y = 0, 0
   self.shake_enabled = opts.shake_enabled ~= false
+  self.zoom = math.max(0.75, math.min(1.5, opts.zoom or 1))
 end
 
 function Camera:set_bounds(w, h)
   self.bounds = { w = w, h = h }
+  self:_clamp()
+end
+
+function Camera:set_zoom(value)
+  self.zoom = math.max(0.75, math.min(1.5, value or 1))
+  self:_clamp()
+  return self.zoom
 end
 
 function Camera:add_trauma(amount)
@@ -40,17 +48,20 @@ end
 function Camera:_clamp()
   if not self.bounds then return end
   local sw, sh = self.get_dimensions()
+  local view_w, view_h = sw / self.zoom, sh / self.zoom
 
-  if self.bounds.w <= sw then
+  if self.bounds.w <= view_w then
     self.x = self.bounds.w / 2
   else
-    self.x = math.max(sw / 2, math.min(self.x, self.bounds.w - sw / 2))
+    self.x = math.max(view_w / 2,
+      math.min(self.x, self.bounds.w - view_w / 2))
   end
 
-  if self.bounds.h <= sh then
+  if self.bounds.h <= view_h then
     self.y = self.bounds.h / 2
   else
-    self.y = math.max(sh / 2, math.min(self.y, self.bounds.h - sh / 2))
+    self.y = math.max(view_h / 2,
+      math.min(self.y, self.bounds.h - view_h / 2))
   end
 end
 
@@ -87,8 +98,10 @@ function Camera:apply()
   local sw, sh = self.get_dimensions()
   love.graphics.push()
   love.graphics.translate(
-    math.floor(sw / 2 - self.x + self.shake_x),
-    math.floor(sh / 2 - self.y + self.shake_y))
+    math.floor(sw / 2 + self.shake_x),
+    math.floor(sh / 2 + self.shake_y))
+  love.graphics.scale(self.zoom, self.zoom)
+  love.graphics.translate(-self.x, -self.y)
 end
 
 function Camera:detach()
@@ -97,12 +110,14 @@ end
 
 function Camera:screen_to_world(sx, sy)
   local sw, sh = self.get_dimensions()
-  return sx - sw / 2 + self.x, sy - sh / 2 + self.y
+  return (sx - sw / 2) / self.zoom + self.x,
+    (sy - sh / 2) / self.zoom + self.y
 end
 
 function Camera:world_to_screen(wx, wy)
   local sw, sh = self.get_dimensions()
-  return wx - self.x + sw / 2, wy - self.y + sh / 2
+  return (wx - self.x) * self.zoom + sw / 2,
+    (wy - self.y) * self.zoom + sh / 2
 end
 
 return Camera

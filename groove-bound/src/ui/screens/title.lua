@@ -3,6 +3,7 @@ local Fonts = require("src.ui.fonts")
 local Hints = require("src.ui.controller_hints")
 local settings = require("src.config.settings")
 local widgets = require("src.ui.widgets.button")
+local UIScale = require("src.ui.scale")
 
 local TitleScreen = class()
 TitleScreen.kind = "title"
@@ -71,7 +72,8 @@ function TitleScreen:_settings()
 end
 
 function TitleScreen:_layout()
-  local w, h = love.graphics.getDimensions()
+  local w, h, scale = UIScale.dimensions()
+  self.ui_scale = scale
   local bw = math.min(360, w * 0.40)
   local bh, gap = 50, 10
   local x = (w - bw) / 2
@@ -119,20 +121,20 @@ local function draw_cover(image, w, h)
 end
 
 function TitleScreen:draw()
-  local w, h = love.graphics.getDimensions()
+  local screen_w, screen_h = love.graphics.getDimensions()
   love.graphics.setColor(settings.ui.background_color)
-  love.graphics.rectangle("fill", 0, 0, w, h)
+  love.graphics.rectangle("fill", 0, 0, screen_w, screen_h)
 
   local campaign = self.app.assets and self.app.assets.campaign
   if self.menu_video then
-    draw_cover(self.menu_video, w, h)
+    draw_cover(self.menu_video, screen_w, screen_h)
   elseif campaign and campaign.title_background then
-    draw_cover(campaign.title_background, w, h)
+    draw_cover(campaign.title_background, screen_w, screen_h)
   end
   love.graphics.setColor(0.01, 0.005, 0.035, 0.34)
-  love.graphics.rectangle("fill", 0, 0, w, h)
-  love.graphics.setColor(0.01, 0.005, 0.035, 0.28)
-  love.graphics.rectangle("fill", w * 0.29, 0, w * 0.42, h)
+  love.graphics.rectangle("fill", 0, 0, screen_w, screen_h)
+
+  local w, h = UIScale.begin()
 
   if campaign and campaign.logo then
     local logo = campaign.logo
@@ -158,6 +160,7 @@ function TitleScreen:draw()
     { symbol = "cross", label = "Select" },
     { symbol = "options", label = "Pause in game" },
   }, h - 34, w)
+  UIScale.finish()
 end
 
 function TitleScreen:keypressed(key)
@@ -176,8 +179,12 @@ function TitleScreen:gamepadpressed(_, button)
   return false
 end
 
-function TitleScreen:mousemoved(x, y) self.button_list:mousemoved(x, y) end
+function TitleScreen:mousemoved(x, y)
+  x, y = UIScale.point(x, y, self.ui_scale)
+  self.button_list:mousemoved(x, y)
+end
 function TitleScreen:mousepressed(x, y, button)
+  x, y = UIScale.point(x, y, self.ui_scale)
   return self.button_list:mousepressed(x, y, button)
 end
 

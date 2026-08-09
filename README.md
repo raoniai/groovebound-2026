@@ -15,7 +15,7 @@
     <img src="https://img.shields.io/github/actions/workflow/status/raoniai/groovebound-2026/ci.yml?branch=main&style=for-the-badge&label=BUILD" alt="Build status">
   </a>
   <img src="https://img.shields.io/badge/L%C3%96VE-11.5-EA316E?style=for-the-badge&logo=love&logoColor=white" alt="LÖVE 11.5">
-  <img src="https://img.shields.io/badge/TESTS-253%20PASSING-19D3C5?style=for-the-badge" alt="253 tests passing">
+  <img src="https://img.shields.io/badge/TESTS-269%20PASSING-19D3C5?style=for-the-badge" alt="269 tests passing">
 </p>
 
 <p align="center">

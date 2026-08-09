@@ -86,6 +86,43 @@ T["run animation cycles through four distinct locomotion poses"] = function()
   H.eq(player.anim_frame, 4)
 end
 
+T["idle remains on one still frame regardless of elapsed time"] = function()
+  local tuning = Tuning(definitions)
+  local player = Player({ x = 0, y = 0, tuning = tuning })
+  local input = {
+    move_vector = function() return 0, 0 end,
+    aim_vector = function() return 1, 0 end,
+  }
+  local arena = { clamp = function(_, x, y) return x, y end }
+
+  player:update(0.1, input, nil, arena)
+  H.eq(player.anim_frame, 1)
+  player:update(4.7, input, nil, arena)
+  H.eq(player.anim_frame, 1)
+end
+
+T["health concern and critical states use strict twenty and five percent boundaries"] = function()
+  local player = Player({ x = 0, y = 0, tuning = Tuning(definitions) })
+  player.hp = player.max_hp * 0.20
+  H.eq(player:health_state(), "normal")
+  player.hp = player.max_hp * 0.199
+  H.eq(player:health_state(), "concern")
+  player.hp = player.max_hp * 0.05
+  H.eq(player:health_state(), "concern")
+  player.hp = player.max_hp * 0.049
+  H.eq(player:health_state(), "critical")
+end
+
+T["taking damage records a visible hit pulse and exact health loss"] = function()
+  local player = Player({ x = 0, y = 0, tuning = Tuning(definitions) })
+  local before = player.hp
+  H.is_true(player:take_damage(13, -1, 0, 180))
+  H.near(player.hp, before - 13)
+  H.near(player.last_damage, 13)
+  H.is_true(player.hit_pulse > 0)
+  H.is_true(player.knockback_x < 0)
+end
+
 T["health regenerates at 0.02 percent per second only after five hit-free seconds"] = function()
   local tuning = Tuning(definitions)
   local player = Player({ x = 0, y = 0, tuning = tuning })

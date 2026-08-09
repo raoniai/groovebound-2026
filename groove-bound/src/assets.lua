@@ -75,6 +75,12 @@ function Assets.load()
     logo = image("assets/generated/campaign/groove-bound-title-v2.png"),
     title_background = image("assets/generated/campaign/title-background-v3.png"),
     portraits = image("assets/generated/campaign/character-portraits-atlas.png"),
+    character_logos = {
+      joe = image("assets/generated/campaign/joe-logo.png"),
+      lyra = image("assets/generated/campaign/lyra-vex-logo.png"),
+    },
+    aim_reticle = image("assets/generated/campaign/aim-reticle.png"),
+    hud_slot_frame = image("assets/generated/campaign/hud-slot-frame.png"),
     talking = {
       joe = image("assets/generated/campaign/joe-talking-strip.png"),
       lyra = image("assets/generated/campaign/lyra-talking-strip.png"),
@@ -87,6 +93,29 @@ function Assets.load()
   self.campaign.portrait_quads,
     self.campaign.portrait_cell_w,
     self.campaign.portrait_cell_h = grid_quads(self.campaign.portraits, 2, 1)
+  local frame = self.campaign.hud_slot_frame
+  local frame_w, frame_h = frame:getDimensions()
+  local corner, frame_strip = 96, 64
+  self.campaign.hud_frame_parts = {
+    top_left = love.graphics.newQuad(0, 0, corner, corner, frame_w, frame_h),
+    top_right = love.graphics.newQuad(
+      frame_w - corner, 0, corner, corner, frame_w, frame_h),
+    bottom_left = love.graphics.newQuad(
+      0, frame_h - corner, corner, corner, frame_w, frame_h),
+    bottom_right = love.graphics.newQuad(
+      frame_w - corner, frame_h - corner,
+      corner, corner, frame_w, frame_h),
+    top = love.graphics.newQuad(
+      160, 0, frame_strip, corner, frame_w, frame_h),
+    bottom = love.graphics.newQuad(
+      160, frame_h - corner, frame_strip, corner, frame_w, frame_h),
+    left = love.graphics.newQuad(
+      0, 160, corner, frame_strip, frame_w, frame_h),
+    right = love.graphics.newQuad(
+      frame_w - corner, 160, corner, frame_strip, frame_w, frame_h),
+  }
+  self.campaign.hud_frame_corner = corner
+  self.campaign.hud_frame_strip = frame_strip
   self.campaign.cutscene_quads = {}
   for id, atlas in pairs(self.campaign.cutscenes) do
     self.campaign.cutscene_quads[id] = grid_quads(atlas, 2, 2)
@@ -184,7 +213,7 @@ function Assets.load()
       self.floor_surface_cell_w[id],
       self.floor_surface_cell_h[id] = grid_quads(atlas, 2, 2)
   end
-  self.gameover = image("assets/legacy/images/ui/gameover.png")
+  self.gameover = image("assets/generated/campaign/game-over-v2.png")
   self.icon = image("assets/generated/campaign/app-icon.png")
   self.weapon_icons = image("assets/generated/weapon-icons-atlas.png")
   self.weapon_icons_2 = image("assets/generated/weapon-icons-atlas-2.png")
@@ -236,6 +265,7 @@ function Assets.load()
     self.environment_orbit_expansion_cell_w,
     self.environment_orbit_expansion_cell_h = grid_quads(
       self.environment_orbit_expansion, 4, 2)
+  self.environment_upper_quads = {}
 
   self.sfx = {
     projectile = source("assets/legacy/sfx/projectile.ogg", 0.08),
@@ -252,6 +282,85 @@ function Assets.load()
   self.last_sound = {}
 
   return self
+end
+
+function Assets:draw_character_logo(id, x, y, w, h, opts)
+  opts = opts or {}
+  local logo = self.campaign.character_logos[id]
+  if not logo then return false end
+  local scale = math.min(w / logo:getWidth(), h / logo:getHeight())
+  love.graphics.setColor(opts.color or { 1, 1, 1, 1 })
+  love.graphics.draw(
+    logo, x + w / 2, y + h / 2, opts.rotation or 0,
+    scale, scale, logo:getWidth() / 2, logo:getHeight() / 2)
+  return true
+end
+
+local function draw_centered_fit(value, x, y, w, h, opts)
+  opts = opts or {}
+  local image_w, image_h = value:getDimensions()
+  local scale = math.min(w / image_w, h / image_h)
+  love.graphics.setColor(opts.color or { 1, 1, 1, 1 })
+  love.graphics.draw(
+    value, x + w / 2, y + h / 2, opts.rotation or 0,
+    scale, scale, image_w / 2, image_h / 2)
+end
+
+function Assets:draw_hud_frame(x, y, w, h, opts)
+  opts = opts or {}
+  local image_value = self.campaign.hud_slot_frame
+  local parts = self.campaign.hud_frame_parts
+  local source_corner = self.campaign.hud_frame_corner
+  local source_strip = self.campaign.hud_frame_strip
+  local corner = math.min(opts.corner or 11, w / 3, h / 3)
+  local scale = corner / source_corner
+  local tile = source_strip * scale
+  love.graphics.setColor(opts.color or { 1, 1, 1, 1 })
+
+  local inner_w, inner_h = math.max(0, w - corner * 2),
+    math.max(0, h - corner * 2)
+  local horizontal_count = math.max(1, math.ceil(inner_w / tile))
+  local vertical_count = math.max(1, math.ceil(inner_h / tile))
+  local horizontal_start = x + corner
+    - (horizontal_count * tile - inner_w) / 2
+  local vertical_start = y + corner
+    - (vertical_count * tile - inner_h) / 2
+
+  for index = 0, horizontal_count - 1 do
+    local piece_x = horizontal_start + index * tile
+    love.graphics.draw(image_value, parts.top,
+      piece_x, y, 0, scale, scale)
+    love.graphics.draw(image_value, parts.bottom,
+      piece_x, y + h - corner, 0, scale, scale)
+  end
+  for index = 0, vertical_count - 1 do
+    local piece_y = vertical_start + index * tile
+    love.graphics.draw(image_value, parts.left,
+      x, piece_y, 0, scale, scale)
+    love.graphics.draw(image_value, parts.right,
+      x + w - corner, piece_y, 0, scale, scale)
+  end
+
+  love.graphics.draw(image_value, parts.top_left, x, y, 0, scale, scale)
+  love.graphics.draw(image_value, parts.top_right,
+    x + w - corner, y, 0, scale, scale)
+  love.graphics.draw(image_value, parts.bottom_left,
+    x, y + h - corner, 0, scale, scale)
+  love.graphics.draw(image_value, parts.bottom_right,
+    x + w - corner, y + h - corner, 0, scale, scale)
+  return true
+end
+
+function Assets:draw_hud_slot(x, y, w, h, opts)
+  self:draw_hud_frame(x, y, w, h, opts)
+  return true
+end
+
+function Assets:draw_aim_cursor(x, y, size, opts)
+  draw_centered_fit(
+    self.campaign.aim_reticle,
+    x - size / 2, y - size / 2, size, size, opts)
+  return true
 end
 
 function Assets:draw_weapon_icon(icon, x, y, size, opts)
@@ -304,38 +413,60 @@ function Assets:draw_enemy_variant(icon, x, y, size, opts)
     icon.atlas == "stage2" and self.enemy.stage2_cell_h / 2 or 128)
 end
 
-function Assets:draw_environment(icon, x, y, size, opts)
-  opts = opts or {}
+local function environment_source(self, icon, atlas_id)
   local atlas = self.environment
   local quad = self.environment_quads[icon.row][icon.col]
-  local origin_x, origin_y, cell_size = 128, 128, 256
-  if opts.atlas == "stage2" then
+  local cell_w, cell_h = 256, 256
+  if atlas_id == "stage2" then
     atlas = self.environment_stage2
     quad = self.environment_stage2_quads[icon.row][icon.col]
-    origin_x = self.environment_stage2_cell_w / 2
-    origin_y = self.environment_stage2_cell_h / 2
-    cell_size = math.max(
-      self.environment_stage2_cell_w, self.environment_stage2_cell_h)
-  elseif opts.atlas == "backbeat_expansion" then
+    cell_w, cell_h = self.environment_stage2_cell_w,
+      self.environment_stage2_cell_h
+  elseif atlas_id == "backbeat_expansion" then
     atlas = self.environment_backbeat_expansion
     quad = self.environment_backbeat_expansion_quads[icon.row][icon.col]
-    origin_x = self.environment_backbeat_expansion_cell_w / 2
-    origin_y = self.environment_backbeat_expansion_cell_h / 2
-    cell_size = math.max(
-      self.environment_backbeat_expansion_cell_w,
-      self.environment_backbeat_expansion_cell_h)
-  elseif opts.atlas == "orbit_expansion" then
+    cell_w, cell_h = self.environment_backbeat_expansion_cell_w,
+      self.environment_backbeat_expansion_cell_h
+  elseif atlas_id == "orbit_expansion" then
     atlas = self.environment_orbit_expansion
     quad = self.environment_orbit_expansion_quads[icon.row][icon.col]
-    origin_x = self.environment_orbit_expansion_cell_w / 2
-    origin_y = self.environment_orbit_expansion_cell_h / 2
-    cell_size = math.max(
-      self.environment_orbit_expansion_cell_w,
-      self.environment_orbit_expansion_cell_h)
+    cell_w, cell_h = self.environment_orbit_expansion_cell_w,
+      self.environment_orbit_expansion_cell_h
   end
+  return atlas, quad, cell_w, cell_h
+end
+
+function Assets:draw_environment(icon, x, y, size, opts)
+  opts = opts or {}
+  local atlas, quad, cell_w, cell_h = environment_source(
+    self, icon, opts.atlas)
+  local origin_x, origin_y = cell_w / 2, cell_h / 2
+  local cell_size = math.max(cell_w, cell_h)
   local scale = size / cell_size
   love.graphics.setColor(opts.color or { 1, 1, 1, 1 })
   love.graphics.draw(atlas, quad, x, y, 0, scale, scale, origin_x, origin_y)
+end
+
+function Assets:draw_environment_upper(icon, x, y, size, opts)
+  opts = opts or {}
+  local atlas, quad, cell_w, cell_h = environment_source(
+    self, icon, opts.atlas)
+  local viewport_x, viewport_y = quad:getViewport()
+  local fraction = opts.fraction or 0.56
+  local upper_h = math.max(1, math.floor(cell_h * fraction))
+  local cache_key = table.concat({
+    opts.atlas or "stage1", icon.row, icon.col, upper_h,
+  }, ":")
+  local upper = self.environment_upper_quads[cache_key]
+  if not upper then
+    upper = love.graphics.newQuad(
+      viewport_x, viewport_y, cell_w, upper_h, atlas:getDimensions())
+    self.environment_upper_quads[cache_key] = upper
+  end
+  local scale = size / math.max(cell_w, cell_h)
+  love.graphics.setColor(opts.color or { 1, 1, 1, 1 })
+  love.graphics.draw(
+    atlas, upper, x, y, 0, scale, scale, cell_w / 2, cell_h / 2)
 end
 
 function Assets:draw_projectile(
@@ -371,7 +502,14 @@ function Assets:draw_portrait(icon, x, y, w, h, opts)
   local draw_w = self.campaign.portrait_cell_w * scale
   local draw_h = self.campaign.portrait_cell_h * scale
   local previous_scissor = { love.graphics.getScissor() }
-  love.graphics.setScissor(x, y, w, h)
+  local scissor_x, scissor_y = love.graphics.transformPoint(x, y)
+  local scissor_right, scissor_bottom = love.graphics.transformPoint(
+    x + w, y + h)
+  love.graphics.setScissor(
+    math.min(scissor_x, scissor_right),
+    math.min(scissor_y, scissor_bottom),
+    math.abs(scissor_right - scissor_x),
+    math.abs(scissor_bottom - scissor_y))
   love.graphics.setColor(opts.color or { 1, 1, 1, 1 })
   love.graphics.draw(
     self.campaign.portraits, quad,

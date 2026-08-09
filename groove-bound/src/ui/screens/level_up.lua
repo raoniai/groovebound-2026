@@ -3,9 +3,11 @@
 
 local class = require("src.core.class")
 local Fonts = require("src.ui.fonts")
+local Icons = require("src.ui.icons")
 local settings = require("src.config.settings")
 local widgets = require("src.ui.widgets.button")
 local Hints = require("src.ui.controller_hints")
+local UIScale = require("src.ui.scale")
 
 local LevelUpScreen = class()
 LevelUpScreen.kind = "level_up"
@@ -53,7 +55,8 @@ function LevelUpScreen:_reroll()
 end
 
 function LevelUpScreen:_layout()
-  local w, h = love.graphics.getDimensions()
+  local w, h, scale = UIScale.dimensions()
+  self.ui_scale = scale
   local margin, gap = math.max(28, w * 0.05), 18
   local card_w = math.min(320, (w - margin * 2 - gap * 2) / 3)
   local total_w = card_w * 3 + gap * 2
@@ -101,9 +104,10 @@ function LevelUpScreen:resize()
 end
 
 function LevelUpScreen:draw()
-  local w, h = love.graphics.getDimensions()
+  local screen_w, screen_h = love.graphics.getDimensions()
   love.graphics.setColor(0.02, 0.015, 0.05, 0.90)
-  love.graphics.rectangle("fill", 0, 0, w, h)
+  love.graphics.rectangle("fill", 0, 0, screen_w, screen_h)
+  local w, h = UIScale.begin()
 
   love.graphics.setColor(settings.ui.accent_color)
   love.graphics.setFont(Fonts.get(36))
@@ -120,6 +124,16 @@ function LevelUpScreen:draw()
     0, h * 0.21, w, "center")
 
   self.buttons:draw()
+  local reroll_button = self.buttons.buttons[#self.offer + 1]
+  local skip_button = self.buttons.buttons[#self.offer + 2]
+  if reroll_button then
+    Icons.draw("reroll", reroll_button.x + 28, reroll_button.y + 25, 25,
+      { 0.30, 0.92, 1.0, 0.94 })
+  end
+  if skip_button then
+    Icons.draw("skip", skip_button.x + 28, skip_button.y + 25, 25,
+      { 0.96, 0.38, 0.72, 0.94 })
+  end
   for index, choice in ipairs(self.offer) do
     local button = self.buttons.buttons[index]
     local color = kind_colors[choice.kind] or settings.ui.accent_color
@@ -182,9 +196,8 @@ function LevelUpScreen:draw()
       love.graphics.setColor(color)
       love.graphics.rectangle("line",
         button.x + 12, button.y + 260, button.w - 24, 48, 6, 6)
-      love.graphics.setFont(Fonts.get(14))
-      love.graphics.printf(stats,
-        button.x + 20, button.y + 268, button.w - 40, "center")
+      self:_draw_choice_stat_icons(
+        choice, button.x + 18, button.y + 264, button.w - 36, color)
       if improvements then
         love.graphics.setColor(0.34, 1.0, 0.68, 1)
         love.graphics.setFont(Fonts.get(13))
@@ -205,6 +218,59 @@ function LevelUpScreen:draw()
     { symbol = "square", label = "Reroll" },
     { symbol = "circle", label = "Skip" },
   }, h - 30, w, { font_size = 13, glyph_size = 18, gap = 18 })
+  UIScale.finish()
+end
+
+function LevelUpScreen:_choice_stat_items(choice)
+  local weapon = self:_weapon_for_choice(choice)
+  if weapon then
+    local level = 1
+    if choice.kind == "weapon_level" then
+      local owned = self.combat.inventory:get(choice.id)
+      level = math.min(weapon.max_level, owned.level + 1)
+    end
+    local stats = weapon.levels[level]
+    return {
+      { icon = "damage", value = tostring(stats.damage) },
+      { icon = "cooldown", value = string.format("%.2fs", stats.cooldown) },
+      { icon = "count", value = "×" .. tostring(stats.count or 1) },
+      { icon = "speed", value = tostring(stats.speed or 0) },
+    }
+  end
+  if choice.kind == "passive_add" or choice.kind == "passive_level" then
+    local passive = self.app.content.passives[choice.id]
+    local icon_by_stat = {
+      move_speed = "speed", max_hp = "health", defense = "guard",
+      cooldown = "cooldown", damage = "damage", projectile_count = "count",
+    }
+    local owned = self.combat.progression.passives:get(choice.id)
+    local level = math.min(passive.max_level, (owned and owned.level or 0) + 1)
+    return { {
+      icon = icon_by_stat[passive.stat] or "level",
+      value = string.format("R%d  %+d%%", level,
+        math.floor(passive.per_level * level * 100 + 0.5)),
+    } }
+  end
+  local simple = {
+    heal = { icon = "health", value = "+30%" },
+    guard = { icon = "guard", value = "+25" },
+    coins = { icon = "score", value = "+25" },
+  }
+  return simple[choice.kind] and { simple[choice.kind] } or {}
+end
+
+function LevelUpScreen:_draw_choice_stat_icons(choice, x, y, width, color)
+  local items = self:_choice_stat_items(choice)
+  if #items == 0 then return end
+  local item_w = width / #items
+  for index, item in ipairs(items) do
+    local item_x = x + (index - 1) * item_w
+    Icons.draw(item.icon, item_x + 11, y + 11, 18,
+      { 0.34, 0.92, 1.0, 0.92 })
+    love.graphics.setColor(color)
+    love.graphics.setFont(Fonts.get(13))
+    love.graphics.print(item.value, item_x + 27, y + 5)
+  end
 end
 
 function LevelUpScreen:_requirements_visible()
@@ -472,10 +538,12 @@ function LevelUpScreen:gamepadpressed(_, button)
 end
 
 function LevelUpScreen:mousemoved(x, y)
+  x, y = UIScale.point(x, y, self.ui_scale)
   self.buttons:mousemoved(x, y)
 end
 
 function LevelUpScreen:mousepressed(x, y, button)
+  x, y = UIScale.point(x, y, self.ui_scale)
   return self.buttons:mousepressed(x, y, button)
 end
 

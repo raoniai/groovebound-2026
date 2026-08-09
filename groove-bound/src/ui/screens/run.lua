@@ -38,6 +38,7 @@ function RunScreen:enter()
 
   self.camera = Camera({
     random = function() return self.ctx.rng.vfx:random() end,
+    zoom = self.app.profile.options.camera_zoom,
   })
   self.camera:set_bounds(self.arena.width, self.arena.height)
 
@@ -154,7 +155,18 @@ end
 function RunScreen:copy_seed()
   love.system.setClipboardText(tostring(self.ctx.seed))
   self.seed_notice = 1.8
+  self.status_notice_text = "SEED COPIED"
   return self.ctx.seed
+end
+
+function RunScreen:adjust_camera_zoom(direction)
+  local zoom = self.camera:set_zoom(
+    (self.app.profile.options.camera_zoom or 1) + direction * 0.25)
+  self.app.profile.options.camera_zoom = zoom
+  self.app.save:save(self.app.profile)
+  self.seed_notice = 1.4
+  self.status_notice_text = string.format("ZOOM %d%%", math.floor(zoom * 100 + 0.5))
+  return zoom
 end
 
 function RunScreen:resume(result)
@@ -184,20 +196,52 @@ function RunScreen:draw()
   self.ctx.world:each("projectile", function(projectile) projectile:draw() end)
   self.ctx.world:each(
     "enemy_projectile", function(projectile) projectile:draw() end)
+  self.player.show_aim = self.app.states:top() == self
   self.player:draw()
+  self.arena:draw_overlays()
   self.combat.vfx:draw()
   Hitboxes.draw(self.ctx.world)
   self.camera:detach()
 
+  self:_draw_player_feedback()
   self.hud:draw()
   self:_draw_reward_chest_pointers()
   if self.seed_notice > 0 then
     local Fonts = require("src.ui.fonts")
     love.graphics.setFont(Fonts.get(14))
     love.graphics.setColor(0.96, 0.78, 0.22, math.min(1, self.seed_notice))
-    love.graphics.printf("SEED COPIED", 0, love.graphics.getHeight() - 42,
+    love.graphics.printf(self.status_notice_text or "SEED COPIED",
+      0, love.graphics.getHeight() - 42,
       love.graphics.getWidth(), "center")
   end
+end
+
+function RunScreen:_draw_player_feedback()
+  local w, h = love.graphics.getDimensions()
+  local hit_alpha = self.player.hit_pulse > 0
+    and self.player.hit_pulse / 0.26 or 0
+  if hit_alpha > 0 then
+    love.graphics.setColor(1.0, 0.16, 0.24, 0.10 + hit_alpha * 0.17)
+    love.graphics.rectangle("fill", 0, 0, w, h)
+    love.graphics.setColor(1.0, 0.72, 0.78, hit_alpha * 0.38)
+    love.graphics.setLineWidth(4 + hit_alpha * 7)
+    love.graphics.rectangle("line", 4, 4, w - 8, h - 8, 12, 12)
+    love.graphics.setLineWidth(1)
+  end
+
+  local state = self.player:health_state()
+  if state == "normal" then return end
+  local effects = self.app.profile.options.hit_flash ~= false
+  local speed = state == "critical" and 10 or 3.5
+  local pulse = effects and (0.5 + 0.5 * math.sin(self.ctx.time * speed)) or 0.45
+  local strength = state == "critical" and 0.18 or 0.075
+  love.graphics.setColor(1.0, state == "critical" and 0.04 or 0.24,
+    0.16, strength * pulse)
+  local edge = state == "critical" and 26 or 15
+  love.graphics.rectangle("fill", 0, 0, w, edge)
+  love.graphics.rectangle("fill", 0, h - edge, w, edge)
+  love.graphics.rectangle("fill", 0, 0, edge, h)
+  love.graphics.rectangle("fill", w - edge, 0, edge, h)
 end
 
 function RunScreen:reward_chest_pointer(chest, w, h)
@@ -272,6 +316,13 @@ function RunScreen:keypressed(key)
   if settings.debug.admin.enabled and key == settings.debug.admin.toggle_key then
     local AdminScreen = require("src.ui.screens.admin")
     self.app.states:push(AdminScreen(self.app))
+    return true
+  end
+  if key == "=" or key == "+" or key == "kp+" then
+    self:adjust_camera_zoom(1)
+    return true
+  elseif key == "-" or key == "kp-" then
+    self:adjust_camera_zoom(-1)
     return true
   end
   if Input.is_action(key, "pause") then
