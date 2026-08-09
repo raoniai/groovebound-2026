@@ -226,17 +226,33 @@ their illustrated backgrounds.
 
 ## Application icon
 
-**Files:** `source-candidates/app-icon-source.png` (1254×1254 RGB generator
-output), `campaign/app-icon.png` (512×512 RGBA runtime icon)
+**Current files:** `source-candidates/app-icon-character-source.png`
+(1254×1254 RGB generator output), `campaign/app-icon.png` (512×512 RGBA
+runtime icon), `source-candidates/app-icon-gb-source.png` (1254×1254 RGB
+generator output), and `docs/assets/app-icons/app-icon-gb.png` (512×512 RGBA
+documentation-only alternate)
 
-The icon uses a single gold vinyl-record and speaker artifact crossed by a cyan
-waveform and wrapped in magenta/cyan cosmic energy. The circular silhouette is
-deliberately text-free and remains recognizable at 64×64. The project-owned
-menu logo and Stage 2 enemy atlas were used only as palette and visual-language
-references. Deep-indigo outer pixels were removed with the bundled chroma-key
-helper before the runtime icon was downsampled.
+**Superseded source retained:** `source-candidates/app-icon-source.png`
 
-The complete normalized prompt is recorded in
+The current runtime icon blends Joe and Lyra Vex into one circular adventure
+emblem. Joe retains his teal-and-gold street-funk identity and sonic blaster;
+Lyra retains her purple, magenta, and cyan live-wire identity and keytar. A
+rising cyan waveform divides and reconnects the two heroes inside the original
+gold vinyl/cosmic-talisman language. The characters and outer silhouette remain
+recognizable at 64×64 and distinct at 32×32.
+
+The alternate mark uses an interlocking gold `GB` monogram. Its `G` contains a
+vinyl groove and stylus, while its `B` contains waveform and speaker forms;
+cyan and magenta character silhouettes keep Joe and Lyra present without
+competing with the letters. The alternate is documentation art and is excluded
+from the runtime package.
+
+Both images were created with the built-in OpenAI image-generation workflow
+using project-owned Joe and Lyra portraits plus the superseded app icon as
+identity, palette, and visual-language references. The generated sources were
+preserved separately and downsampled with Lanczos filtering into RGBA outputs.
+
+The complete normalized prompts are recorded in
 [`../../docs/STAGE2_VISUAL_PROMPTS.md`](../../docs/STAGE2_VISUAL_PROMPTS.md).
 
 ## Five-times-area environment expansions

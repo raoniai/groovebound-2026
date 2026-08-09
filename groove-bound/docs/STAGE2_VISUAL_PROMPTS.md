@@ -14,14 +14,32 @@ chroma backgrounds, cross-cell overlap, or shadows crossing cells.
 
 ## Application icon
 
-Square desktop game application icon with one centered, front-facing emblem:
-a gold vinyl record and compact speaker core crossed by a cyan musical
-waveform/lightning slash, wrapped by one magenta-and-cyan cosmic orbit. Detailed
-illustrated 16-bit pixel art with chunky dark outlines, balanced negative space,
-10% safe padding, a strong circular silhouette, and high contrast against deep
-indigo. It must remain readable at 16, 32, 64, 128, 256, and 512 pixels. No
-typography, letters, numbers, characters, faces, multiple focal points,
-franchise references, border frame, mockup, or watermark.
+### Character adventure emblem — runtime
+
+Square desktop game application icon blending Joe and Lyra Vex into one
+adventurous emblem. Preserve their recognizable skin tone, hair silhouettes,
+clothing colors, and signature music weapons while simplifying them for icon
+readability. Joe stands on the left in teal and gold with his sonic blaster;
+Lyra stands on the right in purple, magenta, and cyan with her keytar. Arrange
+them back-to-back but leaning forward and upward like companions crossing
+successive challenges. A rising luminous waveform/path passes between them
+through a circular vinyl-record/cosmic-talisman frame. Premium video-game logo
+illustration with deliberate pixel-art texture, chunky outlines, heroic cosmic
+energy, clean outer silhouette, safe margins, and strong readability at 32px.
+Opaque black/navy background. No words, letters, extra characters, tiny
+enemies, full environmental scene, device mockup, or watermark.
+
+### GB musical monogram — documentation alternate
+
+Square alternate icon built around a large interlocking uppercase `GB` forged
+from Groove Bound gold with cyan and magenta neon edge lighting. Shape the
+inner groove of the `G` like a vinyl record and stylus; integrate a rising audio
+waveform and speaker cone into the `B`, with a subtle keytar-key rhythm as a
+secondary detail. Use simplified mirrored silhouette accents for Joe in teal
+and Lyra Vex in purple/magenta behind the letters. Premium pixel-textured arcade
+logo with a compact circular silhouette, generous safe margin, and unmistakable
+letterforms at 32px. Exactly `GB`; no other words, extra letters, generic
+esports styling, device mockup, or watermark.
 
 ## Repository campaign banner
 
