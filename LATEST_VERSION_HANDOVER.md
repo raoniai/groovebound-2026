@@ -14,15 +14,15 @@ This document answers four questions: what is authoritative, what the latest ver
 
 <!-- LIVE-SNAPSHOT:START -->
 
-_Generated from live repository evidence: 2026-08-10 01:16 AEST_
+_Generated from live repository evidence: 2026-08-10 01:51 AEST_
 
 | Field | Live value |
 |---|---|
 | Branch | `GPT/stage-2-cutscenes` |
-| HEAD | `26c8910` — Publish v0.6.0 game and landing update |
+| HEAD | `f96acf9` — Restyle GitHub README from landing page |
 | Upstream | `origin/GPT/stage-2-cutscenes` |
-| Compared with `origin/main` | 15 ahead, 0 behind |
-| Working changes | 1 files: 0 game, 0 site, 0 skills/package |
+| Compared with `origin/main` | 17 ahead, 0 behind |
+| Working changes | 0 files: 0 game, 0 site, 0 skills/package |
 | Lua source/test files | 80 source, 41 test |
 | Game tree excluding `dist/` | 387.6 MiB |
 | Current `.love` artifact | 129.6 MiB |
@@ -90,14 +90,14 @@ The public landing site is a separate static presentation under `landing-page/`.
 | Combat readability and HUD | Published in v0.6.0, tests passed, and visually sampled | Hit slide/pulse, camera shake, damage flash, HP-loss callout, concern below 20%, stronger critical state below 5%, transparent enlarged aim reticle, gameplay-only OS cursor hiding, compact right-side power-up notices, separate 50% panel shades, and tiled nine-slice slot frames with fixed corners | Full combat-feel pass with flash/reduced-flash options and physical controller |
 | Character, upgrade, and results interface | Published in v0.6.0, tests passed, and visually sampled | Larger Joe/Lyra selection art and logos; weapon/stat icons; icon-led level-up CTAs; new generated game-over art and rebuilt results layout | Manual defeat/victory results pass and final small-screen readability review |
 | Save system | Version 1 envelope | Save tests and injectable backend | Atomic target-engine import and cross-platform clean-machine fixtures |
-| Landing page | v0.6.0 three-page source committed and pushed; integrated Home campaign locally browser-verified | Home, Catalog, Builder, 54 category-specific records, fusion cross-links, draggable First Press route, authentic ending video, simplified Resonant selector, desktop and 390x844 QA; DMG buttons use the verified stable GitHub Latest Download URL | Physical-phone refresh check; deployment destination and public-live verification |
+| Landing page and repository README | v0.6.0 three-page source and matching GitHub README committed and pushed; integrated Home campaign locally browser-verified | Home, Catalog, Builder, and the root README share authentic campaign art, title treatment, Resonants, stages, arsenal imagery, current captures, release links, and verified claims; README rendered through GitHub's Markdown API | Physical-phone refresh check; landing deployment destination and public-live verification; merge the feature branch before claiming the redesigned README on GitHub's default page |
 | Desktop distribution | v0.6.0 `.love`, universal macOS ZIP, and icon-bearing DMG published as GitHub Latest | Valid `.love`; ad-hoc signed macOS app; verified app boot, signature, icon resource, DMG checksum, GitHub asset digests, and public Latest Download redirect | Native Windows/Linux artifacts and test matrix; Apple notarization if required |
 | Engine migration | Planned | Engine migration research and parity roadmap | Clean baseline and bounded target-engine spike |
 | Groove Bound skills | Installed, committed, and pushed | Eleven installed packages match repository source; structural, package, and representative helper validation passed | Fresh-agent forward tests |
 
 ## Active working state
 
-The v0.6.0 gameplay, media, documentation, landing-page, icon, and macOS packaging batch is committed and pushed on `GPT/stage-2-cutscenes`. Release tag `v0.6.0` points to source commit `26c8910`, and its three verified artifacts are published as GitHub Latest. The only expected local change while this record is being refreshed is this handover file.
+The v0.6.0 gameplay, media, documentation, landing-page, icon, macOS packaging, and landing-styled repository README are committed and pushed on `GPT/stage-2-cutscenes`. Release tag `v0.6.0` points to source commit `26c8910`, and its three verified artifacts are published as GitHub Latest. The redesigned README is at `f96acf9`; it will not replace the default GitHub page until the feature branch is merged. The only expected local change while this record is being refreshed is this handover file.
 
 Current active themes include:
 
@@ -122,10 +122,11 @@ Do not infer `main` promotion or landing-page deployment from the feature-branch
 | Packaged boot | Verified on 2026-08-10 | v0.6.0 packaged app validated content and reached the title screen in LÖVE 11.5; app version, icon resource, ad-hoc signature, and DMG checksum verified |
 | Manual graphical QA | Partially verified for v0.6.0 source | Title shade removal, scaled title, character selection, level-up cards, transparent compact HUD, clean empty slots, tiled frames, enlarged aim, hidden gameplay cursor, zoomed view, compact right-side notices, and cutscene skip/mute spacing were visually sampled; audio listening, chest timing, low-HP feel, results, full campaign, and physical controller remain open |
 | Source release commit | `26c8910` — Publish v0.6.0 game and landing update | Tag `v0.6.0` and the public release resolve to this source commit |
-| Feature-branch push | `origin/GPT/stage-2-cutscenes` contains `26c8910` | Recheck after the handover-only follow-up commit and future work |
+| Feature-branch push | `origin/GPT/stage-2-cutscenes` contains README redesign commit `f96acf9` | Release tag `v0.6.0` remains fixed to source commit `26c8910`; recheck after the handover-only follow-up commit and future work |
 | Main promotion | Not current | Verify `origin/main` independently |
 | Public release/download | v0.6.0 is published as GitHub Latest with DMG, ZIP, and `.love` assets | Release and tag verified public-live; GitHub digests match local SHA-256 values; stable `/releases/latest/download/` DMG and `.love` URLs returned HTTP 206 |
 | Landing download link | Committed and pushed on the feature branch | Home, Catalog, and Builder DMG buttons use `https://github.com/raoniai/groovebound-2026/releases/latest/download/Groove-Bound-macOS.dmg`, verified against v0.6.0 |
+| GitHub README presentation | Landing-styled rewrite committed and pushed at `f96acf9` | GitHub Markdown API rendered 21,124 bytes with 28 images, 50 links, and 3 tables; all 29 local references and 7 navigation anchors resolve; default-page visibility still depends on merging to `main` |
 | Landing deployment | Not performed or proven | GitHub reports no configured repository homepage; source publication is not a public-site deployment |
 
 ## Desktop and engine portability
@@ -164,6 +165,21 @@ For an engine migration, keep LÖVE as the golden reference. The leading researc
    explicitly approved.
 
 ## Continuation history
+
+### 2026-08-10 — GitHub README aligned with the landing-page identity
+
+- Rebuilt the root README around the current landing-page visual and narrative
+  system: campaign banner, gold title identity, cyan/magenta/gold palette,
+  Resonant logos and portraits, Backbeat-to-Orbit story, arsenal atlases, current
+  gameplay captures, stable download path, and v0.6.0 release state.
+- Removed stale preview claims and corrected the validation total, current video
+  flow, camera zoom, controls, native-package status, and remaining manual QA.
+- Verified all 29 local references, all 7 section-navigation anchors, whitespace,
+  and landing JavaScript syntax. GitHub's Markdown API rendered 28 images, 50
+  links, and 3 tables successfully.
+- Delivery state: README committed as `f96acf9` and pushed to
+  `origin/GPT/stage-2-cutscenes`. The default GitHub README on `main` is unchanged
+  until the existing draft PR is reviewed and merged.
 
 ### 2026-08-10 — v0.6.0 GitHub release and stable landing download
 
