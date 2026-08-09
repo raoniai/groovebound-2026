@@ -8,6 +8,8 @@ end
 
 function EnemyProjectile:reset(opts)
   self.kind = "enemy_projectile"
+  self.assets = opts.assets
+  self.projectile_kind = opts.projectile_kind or "note_bolt"
   self.x, self.y = opts.x, opts.y
   self.dx, self.dy = opts.dx, opts.dy
   self.speed = opts.speed or 260
@@ -37,6 +39,14 @@ function EnemyProjectile:draw()
   local y = self.y + self.dx * sideways
   local scale_x = 1 + math.sin(cycle) * 0.08
   local scale_y = 1 + math.cos(cycle * 0.78) * 0.07
+  local rotation = math.atan2(self.dy, self.dx)
+  if self.assets and self.assets.draw_enemy_projectile
+    and self.assets:draw_enemy_projectile(
+      self.projectile_kind, x, y, self.radius * 2,
+      rotation, self.color, scale_x, scale_y)
+  then
+    return
+  end
   love.graphics.push()
   love.graphics.translate(x, y)
   love.graphics.scale(scale_x, scale_y)

@@ -353,6 +353,15 @@ function Assets:draw_projectile(
   return true
 end
 
+function Assets:draw_enemy_projectile(
+  projectile_kind, x, y, size, rotation, color, scale_x, scale_y)
+  local sprite = projectile_kind == "note_bolt"
+    and "brass_barrage" or "neon_crescendo"
+  return self:draw_projectile(
+    sprite, x, y, math.max(size, 10), rotation,
+    color, scale_x * 1.18, scale_y * 1.18)
+end
+
 function Assets:draw_portrait(icon, x, y, w, h, opts)
   opts = opts or {}
   local quad = self.campaign.portrait_quads[icon.row][icon.col]

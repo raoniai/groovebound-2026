@@ -7,23 +7,24 @@ prototypes remain GitHub references; they are not part of this runtime tree.
 
 This is a development build with a complete first-draft two-stage narrative
 campaign. Both stages now default to three minutes and remain independently
-adjustable from 60 to 1,200 seconds in the Admin dashboard. It is not yet a
-public release.
+adjustable from 60 to 1,200 seconds in the Admin dashboard. The GitHub release
+is a public development preview, not a final production build.
 
 ## Playable slice
 
 The current build now includes:
 
-- supplied filename-mapped prologue and Joe-intro videos with click-to-pause,
-  Skip, final-frame hold, Next and Replay; every scene retains its illustrated
-  fallback;
+- a supplied looping main-menu video behind the separate logo and controls;
+  filename-mapped prologue, Joe-intro and Lyra-intro videos with click-to-pause,
+  Skip, fade-in, and an automatic two-second final-frame fade to black; every
+  scene retains its illustrated fallback;
 - an illustrated prologue, character intros, inter-stage scene, and ending with
   word-by-word dialogue that waits for confirmation, plus large left-side
   Joe/Lyra portraits whose heads break above the dialogue panel while their
   bodies remain cropped inside it;
 - a full-screen title flow with a separate transparent logo, readable central
-  menu lane, and a world panorama that frames Joe, Lyra, both stages, enemies,
-  bosses, and music-powered landmarks around the interface;
+  menu lane, and a looping world panorama that frames Joe, Lyra, both stages,
+  enemies, bosses, and music-powered landmarks around the interface;
 - Joe and Lyra Vex with distinct stats, passive traits, starting weapons, and
   directional idle, walk, high-speed run, and hurt animations;
 - two stage-specific environments and sixteen enemy variants;
@@ -44,8 +45,9 @@ The current build now includes:
 - one reroll and a bounded skip reward;
 - four support slots and eight live stat-enhancing support items;
 - eight rank-10 weapon + support fusion recipes that can only resolve through chests;
-- automatic one-, three-, or five-reward chest rolls that prioritize every
-  currently eligible evolution before rechecking legal weapon/passive rewards;
+- animated one-, three-, or five-reward chest luck rolls that prioritize every
+  currently eligible evolution, visibly settle each reel, and show the exact
+  rewards before returning to combat;
 - a visible chest-ready evolution notification and high-contrast pause guide;
 - optional on-card evolution recipes and a missing-requirements guide,
   controlled from Admin → Rewards;
@@ -111,7 +113,14 @@ two arenas use separate low-contrast four-variation floor atlases:
 
 ![Orbit Line cosmic dust and crystal floor variations](assets/generated/campaign/orbit-floor-atlas.png)
 
-## Requirements
+## Download
+
+The latest macOS build is a self-contained universal app with the Groove Bound
+icon: [download the DMG](https://github.com/raoniai/groovebound-2026/releases/latest/download/Groove-Bound-macOS.dmg).
+The platform-neutral [`groove-bound.love`](https://github.com/raoniai/groovebound-2026/releases/latest/download/groove-bound.love)
+remains available for Windows and Linux.
+
+## Development requirements
 
 - [LÖVE 11.5](https://love2d.org/) to play
 - LuaJIT to run the headless test suite (`apt install luajit` / `brew install luajit`)
@@ -121,6 +130,8 @@ two arenas use separate low-contrast four-variation floor atlases:
 ```sh
 cd groove-bound
 make run        # or: love .
+make package    # platform-neutral .love archive
+make package-macos VERSION=0.2.0  # universal .app ZIP and DMG
 ```
 
 ## Test / lint

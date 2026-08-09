@@ -275,7 +275,7 @@ function ProgressionSystem:_random_chest_card()
   local pool = {}
   self:_weapon_cards(pool)
   self:_passive_cards(pool)
-  if #pool == 0 then return nil end
+  if #pool == 0 then self:_fallback_cards(pool) end
   table.sort(pool, function(a, b) return card_key(a) < card_key(b) end)
   return pool[self.rng:range(1, #pool)]
 end
@@ -299,11 +299,13 @@ function ProgressionSystem:claim_chest(reward_count)
       choice = self:_random_chest_card()
     end
     if not choice then break end
-    self:apply(choice)
+    local result = self:apply(choice)
     rewards[#rewards + 1] = {
       kind = choice.kind,
       id = choice.id,
       title = choice.title,
+      description = choice.description,
+      result = result,
     }
   end
   self.chests_opened = self.chests_opened + 1

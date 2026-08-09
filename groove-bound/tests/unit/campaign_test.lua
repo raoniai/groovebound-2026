@@ -115,6 +115,15 @@ T["later waves are dense and add shootable ranged pressure"] = function()
   H.is_true(authored_count(Content.stages[1].waves) >= 340)
   H.is_true(authored_count(Content.stages[2].waves) >= 360)
   H.eq(Content.enemies.noise_turret.attack_kind, "note_bolt")
+  H.is_true(Content.enemies.noise_turret.attack_interval >= 3)
+  for _, wave in ipairs(Content.stages[1].waves) do
+    for _, stream in ipairs(wave.enemies) do
+      if stream.id == "noise_turret" then
+        H.is_true(stream.count <= 4)
+        H.is_true(stream.cadence >= 3.8)
+      end
+    end
+  end
   H.eq(Content.enemies.keyboard_centipede.attack_kind, "note_bolt")
   H.is_true(Content.enemies.keyboard_centipede.projectile_speed > 0)
 end
@@ -129,6 +138,17 @@ T["stage transition carries the complete build and restores some health"] = func
   H.eq(combat.inventory:get("kazoo_pistol").level, 2)
   H.is_true(player.hp > 20)
   H.eq(combat:stage_snapshot(combat.ctx.time).name, "THE ORBIT LINE")
+end
+
+T["collected chests queue complete reveal payloads in pickup order"] = function()
+  local combat = fresh("joe")
+  local first = combat:_open_reward_chest()
+  local second = combat:_open_reward_chest()
+  H.is_true(#first.rewards >= 1)
+  H.eq(first.roll, #first.rewards)
+  H.eq(combat:take_pending_chest_reveal(), first)
+  H.eq(combat:take_pending_chest_reveal(), second)
+  H.is_nil(combat:take_pending_chest_reveal())
 end
 
 T["rank-one evolution is impossible until its Admin-only toggle is enabled"] = function()

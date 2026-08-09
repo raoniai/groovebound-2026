@@ -7,13 +7,49 @@ local widgets = require("src.ui.widgets.button")
 local TitleScreen = class()
 TitleScreen.kind = "title"
 
+local MENU_VIDEO_PATH = "assets/video/runtime/cutscene-0-main_menu.ogv"
+
 function TitleScreen:init(app)
   self.app = app
+  self.menu_video = nil
+  self.menu_video_elapsed = 0
 end
 
 function TitleScreen:enter()
   self.app.log.info("state", "Title screen entered")
   self:_layout()
+  self:_load_menu_video()
+end
+
+function TitleScreen:pause()
+  if self.menu_video then self.menu_video:pause() end
+end
+
+function TitleScreen:resume()
+  self:_layout()
+  if self.menu_video then self.menu_video:play() end
+end
+
+function TitleScreen:exit()
+  if self.menu_video then self.menu_video:pause() end
+end
+
+function TitleScreen:_load_menu_video()
+  if self.menu_video or not love.graphics.newVideo then return false end
+  if not love.filesystem.getInfo(MENU_VIDEO_PATH, "file") then return false end
+
+  -- The exact title cue continues through MusicDirector. The generated video
+  -- is the visual layer only, which keeps mute and volume settings consistent.
+  local ok, video = pcall(love.graphics.newVideo, MENU_VIDEO_PATH, { audio = false })
+  if not ok or not video then
+    self.app.log.info("state", "Static title background fallback")
+    return false
+  end
+
+  self.menu_video = video
+  self.menu_video_elapsed = 0
+  self.menu_video:play()
+  return true
 end
 
 function TitleScreen:_start()
@@ -65,7 +101,15 @@ function TitleScreen:_layout()
 end
 
 function TitleScreen:resize() self:_layout() end
-function TitleScreen:update(_) end
+function TitleScreen:update(dt)
+  if not self.menu_video then return end
+  self.menu_video_elapsed = self.menu_video_elapsed + dt
+  if self.menu_video_elapsed > 0.35 and not self.menu_video:isPlaying() then
+    self.menu_video:rewind()
+    self.menu_video:play()
+    self.menu_video_elapsed = 0
+  end
+end
 
 local function draw_cover(image, w, h)
   local iw, ih = image:getDimensions()
@@ -80,7 +124,9 @@ function TitleScreen:draw()
   love.graphics.rectangle("fill", 0, 0, w, h)
 
   local campaign = self.app.assets and self.app.assets.campaign
-  if campaign and campaign.title_background then
+  if self.menu_video then
+    draw_cover(self.menu_video, w, h)
+  elseif campaign and campaign.title_background then
     draw_cover(campaign.title_background, w, h)
   end
   love.graphics.setColor(0.01, 0.005, 0.035, 0.34)

@@ -7,6 +7,8 @@ local CutsceneScreen = class()
 CutsceneScreen.kind = "cutscene"
 
 local VIDEO_DIRECTORY = "assets/video/runtime"
+local VIDEO_FADE_IN_DURATION = 0.75
+local VIDEO_FADE_OUT_DURATION = 2
 
 local speaker_characters = {
   JOE = "joe",
@@ -37,6 +39,8 @@ function CutsceneScreen:init(app, scene, opts)
   self.video_paused = false
   self.video_ended = false
   self.video_duration = 0
+  self.video_end_elapsed = nil
+  self.video_transition_complete = false
   self.video_rect = nil
   self.video_skip_rect = nil
   self.video_next_rect = nil
@@ -57,21 +61,32 @@ function CutsceneScreen:exit()
 end
 
 function CutsceneScreen:update(dt)
+  self.elapsed = self.elapsed + dt
   if self.video then
     if self.video_source then
       local options = self.app.profile and self.app.profile.options or {}
       self.video_source:setVolume(options.master_volume or 1)
     end
-    if not self.video_paused and not self.video_ended then
+    if self.video_end_elapsed then
+      self.video_end_elapsed = self.video_end_elapsed + dt
+      if self.video_end_elapsed >= VIDEO_FADE_OUT_DURATION
+        and not self.video_transition_complete
+      then
+        self.video_transition_complete = true
+        self:_finish()
+        return
+      end
+    elseif not self.video_paused and not self.video_ended then
       local at_end = self.video_duration > 0
         and self.video:tell() >= self.video_duration - 0.08
       if at_end or (self.elapsed > 0.35 and not self.video:isPlaying()) then
         self.video_ended = true
         self.video_paused = false
+        self.video_end_elapsed = 0
+        self.video:pause()
       end
     end
   end
-  self.elapsed = self.elapsed + dt
   self.fade = math.max(0, self.fade - dt * 2.8)
   self.skip_armed = math.max(0, self.skip_armed - dt)
 end
@@ -115,6 +130,15 @@ function CutsceneScreen:_load_video()
   return true
 end
 
+function CutsceneScreen:video_fade_alpha()
+  if not self.video then return 0 end
+  local fade_in = math.max(
+    0, 1 - self.elapsed / VIDEO_FADE_IN_DURATION)
+  local fade_out = self.video_end_elapsed
+    and math.min(1, self.video_end_elapsed / VIDEO_FADE_OUT_DURATION) or 0
+  return math.max(fade_in, fade_out)
+end
+
 function CutsceneScreen:_toggle_video()
   if not self.video or self.video_ended then return end
   if self.video_paused then
@@ -132,6 +156,8 @@ function CutsceneScreen:_replay_video()
   self.video:play()
   self.elapsed = 0
   self.video_ended = false
+  self.video_end_elapsed = nil
+  self.video_transition_complete = false
   self.video_paused = false
 end
 
@@ -240,38 +266,7 @@ function CutsceneScreen:_draw_video(w, h)
   love.graphics.draw(self.video, draw_x, draw_y, 0, scale, scale)
 
   love.graphics.setFont(Fonts.get(17))
-  if self.video_ended then
-    love.graphics.setColor(0.01, 0.005, 0.04, 0.78)
-    love.graphics.rectangle("fill", 0, h - 112, w, 112)
-    local button_w, button_h, gap = 190, 48, 16
-    local start_x = (w - button_w * 2 - gap) / 2
-    self.video_replay_rect = {
-      x = start_x, y = h - 82, w = button_w, h = button_h,
-    }
-    self.video_next_rect = {
-      x = start_x + button_w + gap, y = h - 82, w = button_w, h = button_h,
-    }
-    for _, entry in ipairs({
-      { rect = self.video_replay_rect, label = "REPLAY", color = { 0.30, 0.78, 1.0, 1 } },
-      { rect = self.video_next_rect, label = "NEXT", color = { 1.0, 0.72, 0.20, 1 } },
-    }) do
-      love.graphics.setColor(0.08, 0.04, 0.14, 0.96)
-      love.graphics.rectangle("fill", entry.rect.x, entry.rect.y,
-        entry.rect.w, entry.rect.h, 8, 8)
-      love.graphics.setColor(entry.color)
-      love.graphics.setLineWidth(2)
-      love.graphics.rectangle("line", entry.rect.x, entry.rect.y,
-        entry.rect.w, entry.rect.h, 8, 8)
-      love.graphics.printf(entry.label, entry.rect.x,
-        entry.rect.y + 14, entry.rect.w, "center")
-    end
-    love.graphics.setLineWidth(1)
-    love.graphics.setFont(Fonts.get(12))
-    love.graphics.setColor(0.72, 0.70, 0.82, 0.82)
-    love.graphics.printf(
-      "Click outside the buttons to continue",
-      0, h - 106, w, "center")
-  else
+  if not self.video_ended then
     self.video_replay_rect = nil
     self.video_next_rect = nil
     self.video_skip_rect = { x = w - 156, y = h - 66, w = 124, h = 42 }
@@ -293,6 +288,14 @@ function CutsceneScreen:_draw_video(w, h)
       and "PAUSED  •  Click video to continue"
       or "Click video to pause",
       24, h - 47, w - 210, "left")
+  else
+    self.video_skip_rect = nil
+  end
+
+  local fade_alpha = self:video_fade_alpha()
+  if fade_alpha > 0 then
+    love.graphics.setColor(0, 0, 0, fade_alpha)
+    love.graphics.rectangle("fill", 0, 0, w, h)
   end
 end
 
@@ -427,11 +430,7 @@ end
 function CutsceneScreen:keypressed(key)
   if self.video then
     if self.video_ended then
-      if key == "x" then self:_replay_video() return true end
-      if key == "return" or key == "space" or key == "right" then
-        self:_finish()
-        return true
-      end
+      return true
     elseif key == "return" or key == "space" then
       self:_toggle_video()
       return true
@@ -459,11 +458,6 @@ function CutsceneScreen:mousepressed(x, y, button)
   if button ~= 1 then return false end
   if self.video then
     if self.video_ended then
-      if contains(self.video_replay_rect, x, y) then
-        self:_replay_video()
-      else
-        self:_finish()
-      end
       return true
     end
     if contains(self.video_skip_rect, x, y) then
@@ -480,8 +474,7 @@ end
 function CutsceneScreen:gamepadpressed(_, button)
   if self.video then
     if self.video_ended then
-      if button == "x" then self:_replay_video() return true end
-      if button == "a" then self:_finish() return true end
+      return true
     elseif button == "a" then
       self:_toggle_video()
       return true

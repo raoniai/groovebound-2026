@@ -82,6 +82,7 @@ function MusicRouter.route(context)
   if screen == "level_up" then
     return modal(context.has_evolution and "evolution" or "level_up")
   end
+  if screen == "chest_reward" then return modal("level_up") end
   if screen == "pause" then return modal("pause") end
 
   if screen == "run" then

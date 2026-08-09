@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="Groove Bound is an urban-supernatural survival roguelike where music powers the city, the weapons, and the enemy orchestra.">
+    <meta name="theme-color" content="#090612">
+    <meta property="og:title" content="Groove Bound | Restore rhythm to the universe">
+    <meta property="og:description" content="Choose a Resonant, survive the Break, and fuse sixteen musical weapons into a city-saving set.">
+    <meta property="og:image" content="assets/campaign-banner.png">
+    <title>Groove Bound | Restore rhythm to the universe</title>
+    <link rel="preload" href="assets/groove-bound-title.png" as="image">
+    <link rel="preload" href="assets/video/main-menu.mp4" as="video" type="video/mp4">
+    <link rel="preload" href="assets/m6x11plus.ttf" as="font" type="font/ttf" crossorigin>
+    <link rel="stylesheet" href="styles.css?v=20260809-9">
+  </head>
+  <body data-page="home">
+    <div class="loader" data-loader role="status" aria-live="polite">
+      <div class="loader__meter" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+      <p>Syncing the Resonance</p>
+    </div>
+    <div class="noise" aria-hidden="true"></div>
+    <div class="page-progress" aria-hidden="true"></div>
+
+    <header class="site-header" data-header>
+      <a class="brand" href="index.html" aria-label="Groove Bound home">
+        <img src="assets/groove-bound-title.png" alt="Groove Bound" width="700" height="389">
+      </a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+      <nav class="site-nav" id="site-nav" aria-label="Primary navigation">
+        <a href="lore.html">Lore</a>
+        <a href="#resonants">Resonants</a>
+        <a href="#arsenal">Arsenal</a>
+        <a href="#status">Status</a>
+        <a href="builder.html">Builder</a>
+      </nav>
+      <span class="download-cta download-cta--header">
+        <a class="button button--gold header-download magnetic" href="https://github.com/raoniai/groovebound-2026/releases/latest/download/Groove-Bound-macOS.dmg" target="_blank" rel="noreferrer">
+          <span class="apple-mark" aria-hidden="true">&#63743;</span><span>Download for Mac</span>
+        </a>
+        <small>Windows coming soon</small>
+      </span>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="hero-title" data-parallax-zone>
+        <video id="hero-video" class="ambient-video hero__video" autoplay muted loop playsinline preload="metadata" poster="assets/title-background.png">
+          <source src="assets/video/main-menu.mp4" type="video/mp4">
+        </video>
+        <div class="media-scrim media-scrim--hero" aria-hidden="true"></div>
+        <div class="hero__content reveal is-visible">
+          <img class="hero__logo" src="assets/groove-bound-title.png" alt="Groove Bound" width="700" height="389">
+          <h1 id="hero-title">Restore rhythm.<br>Survive the Break.</h1>
+          <p>Build living instruments and fight the alien orchestra consuming Backbeat.</p>
+          <div class="hero__actions cta-pair">
+            <a class="button button--gold button--large magnetic" href="https://github.com/raoniai/groovebound-2026/releases/latest/download/Groove-Bound-macOS.dmg" target="_blank" rel="noreferrer"><span class="apple-mark" aria-hidden="true">&#63743;</span><span>Download for Mac</span></a>
+            <a class="button button--gold button--large magnetic" href="https://github.com/raoniai/groovebound-2026" target="_blank" rel="noreferrer"><img class="button__icon" src="assets/icons/github.svg" alt="" width="22" height="22"><span>View repository</span></a>
+            <small class="platform-note">Mac only / Windows coming soon</small>
+          </div>
+          <a class="hero__lore-link" href="lore.html"><img src="assets/sprites/gems/gem-4.png?v=site005" alt="" width="24" height="24"><span>Enter the lore</span></a>
+        </div>
+        <button class="media-control" type="button" data-video-sound="#hero-video" aria-pressed="false" aria-label="Unmute scene" title="Unmute scene">
+          <span class="sound-icon is-muted" data-sound-icon aria-hidden="true"><img src="assets/sprites/weapons/weapon-7.png" alt="" width="256" height="256"></span>
+        </button>
+
+        <button class="float-token float-token--joe draggable" type="button" data-drag data-inspect-key="character-joe" data-name="Joe, The Backbeat. Drag or inspect." data-depth="1.1" aria-label="Drag or inspect Joe, The Backbeat">
+          <img src="assets/sprites/talking/joe-1.png" alt="Joe, The Backbeat" width="887" height="887">
+        </button>
+        <button class="float-token float-token--lyra draggable" type="button" data-drag data-inspect-key="character-lyra" data-name="Lyra Vex, The Live Wire. Drag or inspect." data-depth="0.8" aria-label="Drag or inspect Lyra Vex, The Live Wire">
+          <img src="assets/sprites/talking/lyra-1.png" alt="Lyra Vex, The Live Wire" width="887" height="887">
+        </button>
+        <button class="float-token float-token--gem draggable" type="button" data-drag data-inspect-key="gem-4" data-name="Tier 4 Resonance gem. Drag or inspect." data-depth="1.4" aria-label="Drag or inspect a tier 4 Resonance gem">
+          <img src="assets/sprites/gems/gem-4.png?v=site005" alt="Rare Resonance XP crystal" width="627" height="627">
+        </button>
+      </section>
+
+      <section class="signal-strip" data-signal-strip tabindex="0" aria-label="Current game highlights. Drag or use arrow keys to explore.">
+        <div class="signal-strip__track" data-signal-track>
+          <div class="signal-strip__set">
+            <span class="signal-item"><img src="assets/sprites/talking/joe-1.png" alt=""><b>2</b><em>Playable Resonants</em></span>
+            <span class="signal-item"><img src="assets/sprites/gems/gem-2.png?v=site005" alt=""><b>2</b><em>Connected stages</em></span>
+            <span class="signal-item"><img src="assets/sprites/weapons/weapon-1.png" alt=""><b>16</b><em>Base weapons</em></span>
+            <span class="signal-item"><img src="assets/sprites/evolved/evolved-1.png" alt=""><b>8</b><em>Legendary fusions</em></span>
+            <span class="signal-item"><img src="assets/sprites/enemies/orbit-3.png?v=site005" alt=""><b>16</b><em>Enemy variants</em></span>
+          </div>
+          <div class="signal-strip__set" aria-hidden="true">
+            <span class="signal-item"><img src="assets/sprites/talking/joe-1.png" alt=""><b>2</b><em>Playable Resonants</em></span><span class="signal-item"><img src="assets/sprites/gems/gem-2.png?v=site005" alt=""><b>2</b><em>Connected stages</em></span><span class="signal-item"><img src="assets/sprites/weapons/weapon-1.png" alt=""><b>16</b><em>Base weapons</em></span><span class="signal-item"><img src="assets/sprites/evolved/evolved-1.png" alt=""><b>8</b><em>Legendary fusions</em></span><span class="signal-item"><img src="assets/sprites/enemies/orbit-3.png?v=site005" alt=""><b>16</b><em>Enemy variants</em></span>
+          </div>
+          <div class="signal-strip__set" aria-hidden="true">
+            <span class="signal-item"><img src="assets/sprites/talking/joe-1.png" alt=""><b>2</b><em>Playable Resonants</em></span><span class="signal-item"><img src="assets/sprites/gems/gem-2.png?v=site005" alt=""><b>2</b><em>Connected stages</em></span><span class="signal-item"><img src="assets/sprites/weapons/weapon-1.png" alt=""><b>16</b><em>Base weapons</em></span><span class="signal-item"><img src="assets/sprites/evolved/evolved-1.png" alt=""><b>8</b><em>Legendary fusions</em></span><span class="signal-item"><img src="assets/sprites/enemies/orbit-3.png?v=site005" alt=""><b>16</b><em>Enemy variants</em></span>
+          </div>
+        </div>
+      </section>
+
+      <section class="story-portal section-pad" aria-labelledby="story-title">
+        <div class="story-portal__copy reveal">
+          <h2 id="story-title">Music keeps the city alive.</h2>
+          <p>Then a cosmic chord plays backwards through every speaker. The Break turns familiar sound into hostile patterns.</p>
+          <a class="button button--glass" href="lore.html"><img class="button__icon button__icon--pixel" src="assets/sprites/gems/gem-4.png?v=site005" alt="" width="27" height="27"><span>Follow the story</span></a>
+        </div>
+        <div class="story-portal__media reveal">
+          <video id="prologue-video" class="ambient-video" muted loop playsinline preload="none" poster="assets/cutscene-dialogue.png">
+            <source src="assets/video/prologue.mp4" type="video/mp4">
+          </video>
+          <div class="media-scrim" aria-hidden="true"></div>
+          <div class="story-portal__caption">
+            <p>Backbeat emergency broadcast</p>
+            <button class="media-control media-control--inline" type="button" data-video-sound="#prologue-video" aria-pressed="false" aria-label="Unmute scene" title="Unmute scene"><span class="sound-icon is-muted" data-sound-icon aria-hidden="true"><img src="assets/sprites/weapons/weapon-7.png" alt="" width="256" height="256"></span></button>
+          </div>
+        </div>
+      </section>
+
+      <section id="resonants" class="resonant-lab section-pad" aria-labelledby="resonant-title">
+        <div class="resonant-lab__media reveal">
+          <video id="character-video" class="ambient-video" muted loop playsinline preload="none" poster="assets/sprites/portraits/joe.png" data-character-video>
+            <source src="assets/video/joe-intro.mp4" type="video/mp4">
+          </video>
+          <div class="media-scrim media-scrim--soft" aria-hidden="true"></div>
+          <button class="media-control media-control--corner" type="button" data-video-sound="#character-video" aria-pressed="false" aria-label="Unmute character intro" title="Unmute character intro"><span class="sound-icon is-muted" data-sound-icon aria-hidden="true"><img src="assets/sprites/weapons/weapon-7.png" alt="" width="256" height="256"></span></button>
+        </div>
+        <div class="resonant-lab__content reveal">
+          <h2 id="resonant-title">Choose your Resonant.</h2>
+          <div class="character-tabs" role="tablist" aria-label="Playable characters">
+            <button class="character-tab is-active" type="button" role="tab" aria-selected="true" aria-label="Select Joe" data-character="joe"><img class="character-tab__sprite" src="assets/sprites/characters/joe-1.png" alt="" width="627" height="627"><img class="character-tab__logo" src="assets/character-logos/joe-logo.png" alt="Joe" width="1350" height="600"></button>
+            <button class="character-tab" type="button" role="tab" aria-selected="false" aria-label="Select Lyra Vex" data-character="lyra"><img class="character-tab__sprite" src="assets/sprites/characters/lyra-1.png" alt="" width="627" height="627"><img class="character-tab__logo" src="assets/character-logos/lyra-vex-logo.png" alt="Lyra Vex" width="1700" height="500"></button>
+          </div>
+          <div class="character-profile">
+            <div class="character-profile__visual" aria-hidden="true"><img class="character-profile__sprite" data-character-portrait src="assets/sprites/talking/joe-1.png" alt="" width="887" height="887"></div>
+            <div class="character-profile__info">
+              <img class="character-profile__logo" data-character-logo src="assets/character-logos/joe-logo.png" alt="Joe" width="1350" height="600">
+              <div data-character-copy>
+                <p class="pixel-label">The Backbeat</p>
+                <h3>Hold the line.</h3>
+                <p>Joe turns pressure into power with Guard, stronger knockback, and the Kazoo Pistol.</p>
+                <dl class="stat-lines">
+                  <div><dt><img src="assets/sprites/characters/joe-4.png" alt="" width="627" height="627">Style</dt><dd>Durable control</dd></div>
+                  <div><dt><img src="assets/sprites/weapons/weapon-1.png" alt="" width="627" height="627">Starting weapon</dt><dd>Kazoo Pistol</dd></div>
+                  <div><dt><img src="assets/sprites/supports/support-8.png" alt="" width="627" height="627">Trait</dt><dd>Hold the Line</dd></div>
+                </dl>
+              </div>
+              <button class="character-inspect-button" type="button" data-character-profile-inspect data-inspect-key="character-joe">View full character details</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="remix section-pad" aria-labelledby="remix-title">
+        <div class="remix__intro reveal">
+          <h2 id="remix-title">Remix the battlefield.</h2>
+          <p>Drag every sprite. Rebuild the encounter. Hover, focus, or tap a piece to learn what it does.</p>
+          <button class="button button--glass" type="button" data-reset-drag>Reset the mix</button>
+        </div>
+        <div class="remix-stage reveal" data-drag-zone data-remix-stage aria-label="Draggable Groove Bound enemy, weapon, and gem sprites"></div>
+      </section>
+
+      <section id="arsenal" class="arsenal section-pad" aria-labelledby="arsenal-title">
+        <div class="arsenal__copy reveal">
+          <h2 id="arsenal-title">Sixteen ways to make noise.</h2>
+          <p>Each weapon is now a real independent image. Hover, focus, or tap to inspect its combat role.</p>
+        </div>
+        <div class="weapon-grid reveal" data-weapon-grid aria-label="Groove Bound weapon roster"></div>
+      </section>
+
+      <section class="fusion-lab section-pad" aria-labelledby="fusion-title">
+        <div class="fusion-lab__copy reveal">
+          <h2 id="fusion-title">Make a legendary instrument.</h2>
+          <p>A rank-10 weapon and its paired support collide, flash, and reveal the evolved form. Pick any recipe.</p>
+          <div class="fusion-picker" data-fusion-picker aria-label="Fusion recipes"></div>
+        </div>
+        <div class="fusion-stage reveal" data-fusion-stage aria-live="polite">
+          <div class="fusion-wave" aria-hidden="true"></div>
+          <button class="fusion-piece fusion-piece--weapon" type="button" data-fusion-inspect="weapon"><img data-fusion-weapon src="assets/sprites/weapons/weapon-1.png" alt="Kazoo Pistol"><b data-fusion-weapon-name>Kazoo Pistol R10</b></button>
+          <span class="fusion-plus" aria-hidden="true">+</span>
+          <button class="fusion-piece fusion-piece--support" type="button" data-fusion-inspect="support"><img data-fusion-support src="assets/sprites/supports/support-3.png" alt="Breath Control"><b data-fusion-support-name>Breath Control</b></button>
+          <div class="fusion-flash" aria-hidden="true"></div>
+          <button class="fusion-result" type="button" data-fusion-inspect="result"><img data-fusion-result src="assets/sprites/evolved/evolved-1.png" alt="Brass Barrage"><strong data-fusion-result-name>Brass Barrage</strong><em>Inspect evolution</em></button>
+        </div>
+      </section>
+
+      <section class="current-build section-pad" aria-labelledby="build-title">
+        <div class="current-build__head reveal">
+          <h2 id="build-title">Inside the current build.</h2>
+          <p>Current captures from the active development branch, presented without mock interface frames.</p>
+        </div>
+        <div class="screenshot-grid screenshot-grid--latest">
+          <button class="screenshot-shot reveal" type="button" data-shot="assets/screens/gameplay-combat.png" data-shot-alt="Current Groove Bound combat run with live enemies, projectiles, and HUD"><img src="assets/screens/gameplay-combat.png" alt="Current Groove Bound combat run with live enemies, projectiles, and HUD" width="1366" height="768" loading="lazy" decoding="async"><span>Live Backbeat combat</span></button>
+          <button class="screenshot-shot reveal" type="button" data-shot="assets/screens/gameplay-level-up.png" data-shot-alt="Current Groove Bound in-run level-up choice"><img src="assets/screens/gameplay-level-up.png" alt="Current Groove Bound in-run level-up choice" width="1366" height="768" loading="lazy" decoding="async"><span>Current in-run level-up</span></button>
+        </div>
+      </section>
+
+      <section id="status" class="build-status section-pad" aria-labelledby="status-title">
+        <div class="build-status__head reveal">
+          <div><h2 id="status-title">Current build status.</h2><p>A generated record of the active game branch, committed history, working changes, and landing-page passes.</p></div>
+          <span class="build-status__state" data-status-state>Reading repository</span>
+        </div>
+        <div class="build-status__summary reveal" aria-label="Current build summary">
+          <article><span>Branch</span><strong data-status-branch>Loading</strong></article>
+          <article><span>Commit</span><strong data-status-commit>Loading</strong></article>
+          <article><span>Game tree</span><strong data-status-tree>Loading</strong></article>
+          <article><span>Updated</span><strong data-status-updated>Loading</strong></article>
+        </div>
+        <div class="status-filter reveal" role="group" aria-label="Filter change log">
+          <button class="is-active" type="button" data-status-filter="all" aria-pressed="true">All changes</button>
+          <button type="button" data-status-filter="game" aria-pressed="false">Game</button>
+          <button type="button" data-status-filter="site" aria-pressed="false">Landing page</button>
+        </div>
+        <div class="status-ledger reveal" data-status-ledger aria-live="polite">
+          <p class="status-ledger__loading">Building the version ledger...</p>
+        </div>
+        <div class="build-status__note reveal"><p>This ledger is refreshed by running the included status updater after game or website changes. Local edits, committed history, and deployment state are kept separate.</p><a class="button button--gold" href="https://github.com/raoniai/groovebound-2026" target="_blank" rel="noreferrer"><img class="button__icon" src="assets/icons/github.svg" alt="" width="20" height="20"><span>Inspect on GitHub</span></a></div>
+      </section>
+
+      <section class="download-stage" aria-labelledby="download-title">
+        <img class="download-stage__backdrop" src="assets/title-background.png" alt="Groove Bound city skyline" width="1920" height="1080" loading="lazy" decoding="async">
+        <div class="media-scrim media-scrim--center" aria-hidden="true"></div>
+        <div class="download-stage__content reveal">
+          <img src="assets/groove-bound-title.png" alt="Groove Bound" width="700" height="389">
+          <h2 id="download-title">Take the first movement.</h2>
+          <p>Download the current <code>.love</code> build, open it with LÖVE 11.5, and send the bugs back through GitHub.</p>
+          <div class="download-stage__actions cta-pair">
+            <a class="button button--gold button--large magnetic" href="https://github.com/raoniai/groovebound-2026/releases/latest/download/Groove-Bound-macOS.dmg" target="_blank" rel="noreferrer"><span class="apple-mark" aria-hidden="true">&#63743;</span><span>Download for Mac</span></a>
+            <a class="button button--gold button--large magnetic" href="https://github.com/raoniai/groovebound-2026" target="_blank" rel="noreferrer"><img class="button__icon" src="assets/icons/github.svg" alt="" width="22" height="22"><span>View repository</span></a>
+            <small class="platform-note">Mac only / Windows coming soon</small>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <a class="footer-brand" href="index.html"><img src="assets/groove-bound-title.png" alt="Groove Bound" width="700" height="389"></a>
+      <nav aria-label="Footer navigation"><a href="lore.html">Lore</a><a href="builder.html">Builder</a><a href="https://love2d.org/" target="_blank" rel="noreferrer">LÖVE 11.5</a></nav>
+      <div class="social-links" aria-label="Raoni Lima social profiles">
+        <a href="https://github.com/raoniai" target="_blank" rel="noreferrer" data-name="GitHub" aria-label="Raoni Lima on GitHub"><img src="assets/icons/github.svg" alt="" width="24" height="24"></a>
+        <a href="https://www.linkedin.com/in/raonilima" target="_blank" rel="noreferrer" data-name="LinkedIn" aria-label="Raoni Lima on LinkedIn"><img src="assets/icons/linkedin.svg" alt="" width="24" height="24"></a>
+        <a href="https://x.com/raonilima" target="_blank" rel="noreferrer" data-name="X" aria-label="Raoni Lima on X"><img src="assets/icons/x.svg" alt="" width="24" height="24"></a>
+      </div>
+    </footer>
+
+    <dialog class="shot-dialog" data-shot-dialog>
+      <button type="button" data-dialog-close aria-label="Close screenshot">Close</button>
+      <img src="assets/screens/gameplay-combat.png" alt="" data-dialog-image>
+    </dialog>
+
+    <audio data-audio src="assets/title-theme.ogg" preload="none"></audio>
+    <script src="status-data.js?v=20260809-2" defer></script>
+    <script src="script.js?v=20260809-7" defer></script>
+  </body>
+</html>

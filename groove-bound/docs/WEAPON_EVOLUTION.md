@@ -30,11 +30,12 @@ reward chest.
 ## Chest resolution
 
 A chest rolls one reward 80% of the time, three rewards 17% of the time, and
-five rewards 3% of the time. Rewards apply automatically. Each reward slot
-rechecks the authoritative inventories: ready evolutions take priority, then a
-legal random weapon or support is granted or ranked up. Rebuilding the pool
-after every reward prevents duplicates, capped items, and stale full-inventory
-choices.
+five rewards 3% of the time. The chest opens a paused luck-machine screen whose
+reels cycle for a few seconds, settle one by one, and name every exact reward
+before Continue becomes available. Each reward slot rechecks the authoritative
+inventories: ready evolutions take priority, then a legal random weapon or
+support is granted or ranked up. Rebuilding the pool after every reward
+prevents duplicates, capped items, and stale full-inventory choices.
 
 ## Atomic transaction
 

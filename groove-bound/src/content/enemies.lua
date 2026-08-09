@@ -121,7 +121,7 @@ return {
     coins = 5,
     brain = "static",
     attack_kind = "note_bolt",
-    attack_interval = 1.85,
+    attack_interval = 3.2,
     attack_range = 560,
     windup = 0.42,
     projectile_speed = 310,

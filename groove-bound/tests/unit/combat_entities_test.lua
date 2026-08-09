@@ -1,5 +1,6 @@
 local H = require("tests.helpers")
 local Enemy = require("src.game.entities.enemy")
+local EnemyProjectile = require("src.game.entities.enemy_projectile")
 local Projectile = require("src.game.entities.projectile")
 local XPGem = require("src.game.entities.xp_gem")
 local Pickup = require("src.game.entities.pickup")
@@ -44,6 +45,23 @@ T["projectile render pose loops subtle scale and position motion"] = function()
   H.is_true(second.scale_y >= 0.90 and second.scale_y <= 1.10)
   H.is_true(math.abs(second.x - projectile.x) <= 4)
   H.is_true(math.abs(second.y - projectile.y) <= 4)
+end
+
+T["enemy projectiles render with the generated projectile sprite"] = function()
+  local drawn
+  local projectile = EnemyProjectile()
+  projectile:reset({
+    assets = {
+      draw_enemy_projectile = function(_, kind)
+        drawn = kind
+        return true
+      end,
+    },
+    projectile_kind = "note_bolt",
+    x = 20, y = 20, dx = 1, dy = 0,
+  })
+  projectile:draw()
+  H.eq(drawn, "note_bolt")
 end
 
 T["projectile pierce is consumed once per distinct enemy"] = function()
@@ -133,6 +151,27 @@ T["enemies chase, respect arena bounds, and die at zero HP"] = function()
   H.eq(enemy.hp, 1)
   H.is_true(enemy:take_damage(1))
   H.is_true(enemy.dead)
+end
+
+T["enemies follow navigation steering when scenery blocks the player"] = function()
+  local enemy = Enemy()
+  enemy:reset({
+    definition = {
+      id = "pathing", size = 10, hp = 20, speed = 50,
+      damage = 5, brain = "chase",
+    },
+    x = 30,
+    y = 50,
+  })
+  local pathing_arena = {
+    navigation_direction = function() return 0, -1, true end,
+    resolve_movement = function(_, _, _, next_x, next_y)
+      return next_x, next_y
+    end,
+  }
+  enemy:update(0.5, { x = 90, y = 50 }, 1, pathing_arena)
+  H.eq(enemy.x, 30)
+  H.eq(enemy.y, 25)
 end
 
 T["overtime enrages a boss exactly once with triple health and speed"] = function()

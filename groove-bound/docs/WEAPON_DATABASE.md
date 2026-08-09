@@ -84,7 +84,9 @@ weapon/support card names its pairing and the bottom guide reports:
 
 A musical chest is required. Once the base weapon is rank 10 and the paired
 support is owned, that fusion takes priority inside the chest's automatic
-one-, three-, or five-reward roll.
+one-, three-, or five-reward roll. The paused chest luck screen visibly settles
+each reel on its exact weapon, support, fusion, or utility result before combat
+resumes.
 
 Resolving it from the chest performs one atomic transaction:
 

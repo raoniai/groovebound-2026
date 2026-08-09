@@ -110,6 +110,7 @@ function CombatSystem:init(opts)
   self.wave_notice_time = 0
   self.pickup_notice = 0
   self.pickup_notice_text = nil
+  self.pending_chest_reveals = {}
   self.buffs = { damage = 0, defense = 0, speed = 0 }
   self.stages = self.content.stages
   self.stage_index = 0
@@ -466,7 +467,17 @@ function CombatSystem:_open_reward_chest()
   self.pickup_notice = 6
   self.pickup_notice_text = "CHEST ROLL ×" .. rolled
     .. "  •  " .. #rewards .. " REWARD" .. (#rewards == 1 and "" or "S")
+  self.pending_chest_reveals[#self.pending_chest_reveals + 1] = {
+    roll = rolled,
+    rewards = rewards,
+  }
   if self.assets then self.assets:play("level_up", 0.12) end
+  return self.pending_chest_reveals[#self.pending_chest_reveals]
+end
+
+function CombatSystem:take_pending_chest_reveal()
+  if #self.pending_chest_reveals == 0 then return nil end
+  return table.remove(self.pending_chest_reveals, 1)
 end
 
 function CombatSystem:_apply_pickup(kind)
@@ -668,6 +679,8 @@ end
 
 function CombatSystem:_spawn_enemy_projectile(enemy, action, damage_multiplier)
   local projectile = self.enemy_projectile_pool:acquire({
+    assets = self.assets,
+    projectile_kind = action.kind,
     x = enemy.x,
     y = enemy.y,
     dx = action.dx,

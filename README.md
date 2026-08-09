@@ -8,14 +8,14 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/raoniai/groovebound-2026/releases/latest/download/groove-bound.love">
+  <a href="https://github.com/raoniai/groovebound-2026/releases/latest/download/Groove-Bound-macOS.dmg">
     <img src="https://img.shields.io/badge/DOWNLOAD-LATEST%20BUILD-F2BF32?style=for-the-badge&logo=github&logoColor=111111" alt="Download the latest Groove Bound build">
   </a>
   <a href="https://github.com/raoniai/groovebound-2026/actions/workflows/ci.yml">
     <img src="https://img.shields.io/github/actions/workflow/status/raoniai/groovebound-2026/ci.yml?branch=main&style=for-the-badge&label=BUILD" alt="Build status">
   </a>
   <img src="https://img.shields.io/badge/L%C3%96VE-11.5-EA316E?style=for-the-badge&logo=love&logoColor=white" alt="LÖVE 11.5">
-  <img src="https://img.shields.io/badge/TESTS-241%20PASSING-19D3C5?style=for-the-badge" alt="241 tests passing">
+  <img src="https://img.shields.io/badge/TESTS-253%20PASSING-19D3C5?style=for-the-badge" alt="253 tests passing">
 </p>
 
 <p align="center">
@@ -30,8 +30,9 @@
 > [!IMPORTANT]
 > This README describes the current **two-stage narrative campaign development
 > preview**. The downloadable release may trail the source branch until the
-> preview is merged and released. The platform-neutral
-> `.love` package requires [LÖVE 11.5](https://love2d.org/).
+> preview is merged and released. The macOS download is a self-contained,
+> universal app; the platform-neutral `.love` package remains available for
+> Windows and Linux and requires [LÖVE 11.5](https://love2d.org/).
 
 ---
 
@@ -59,10 +60,12 @@ The playable flow is now:
 **Title → Prologue → Character Selection → Character Intro → Backbeat Streets
 → Inter-stage Cutscene → The Orbit Line → Campaign Ending**
 
-The supplied prologue and Joe-intro videos now play directly in the campaign,
-mapped by filename. Clicking a playing video pauses or resumes it; when it ends,
-its final frame holds behind Next and Replay actions. Every video scene retains
-its illustrated storyboard as an automatic fallback.
+The supplied main-menu video now loops behind the separate transparent logo and
+menu controls. The prologue, Joe-intro and Lyra-intro videos play directly in
+the campaign, mapped by filename. Each cutscene fades in from black, supports
+click-to-pause, then holds its final frame while fading to black and advances
+automatically after two seconds. Every video scene retains its illustrated
+storyboard as an automatic fallback.
 
 Read the complete [first-draft canon](groove-bound/docs/FIRST_DRAFT_CANON.md).
 
@@ -170,9 +173,10 @@ laser-harp beams span seven firing behaviours.
 
 Supports strengthen the live build and complete evolution recipes. Level-up
 cards cannot evolve weapons: a rare musical chest rolls one, three, or five
-automatic legal rewards and prioritizes any ready fusions. A fusion consumes
-both ingredients, replaces the exact firing emitter, and reopens support and
-weapon capacity.
+legal rewards through an animated luck-machine reveal and prioritizes any ready
+fusions. Each reel settles on the exact reward before the player continues. A
+fusion consumes both ingredients, replaces the exact firing emitter, and
+reopens support and weapon capacity.
 
 <p align="center">
   <img src="groove-bound/assets/generated/support-icons-atlas.png" alt="Eight Groove Bound support item icons" width="49%">
@@ -206,27 +210,30 @@ overlay at any time.
 
 ## Download and play
 
-### 1. Install LÖVE
-
-Download **LÖVE 11.5** for macOS, Windows, or Linux from
-[love2d.org](https://love2d.org/).
-
-### 2. Download Groove Bound
+### macOS
 
 <p>
-  <a href="https://github.com/raoniai/groovebound-2026/releases/latest/download/groove-bound.love">
-    <img src="https://img.shields.io/badge/Download-groove--bound.love-19D3C5?style=for-the-badge" alt="Download groove-bound.love">
+  <a href="https://github.com/raoniai/groovebound-2026/releases/latest/download/Groove-Bound-macOS.dmg">
+    <img src="https://img.shields.io/badge/Download-Groove%20Bound%20for%20Mac-19D3C5?style=for-the-badge&logo=apple" alt="Download Groove Bound for Mac">
   </a>
   <a href="https://github.com/raoniai/groovebound-2026/releases/latest">
     <img src="https://img.shields.io/badge/View-release%20notes-6F42C1?style=for-the-badge" alt="View the latest release notes">
   </a>
 </p>
 
-### 3. Launch it
+Open the DMG, drag **Groove Bound** into **Applications**, then launch the app.
+The app includes LÖVE 11.5 and runs natively on both Apple Silicon and Intel Macs.
+
+This preview is ad-hoc signed rather than Apple-notarized. On first launch,
+right-click **Groove Bound**, choose **Open**, then confirm **Open**.
+
+### Windows and Linux
+
+Install [LÖVE 11.5](https://love2d.org/), then download the
+[platform-neutral `groove-bound.love`](https://github.com/raoniai/groovebound-2026/releases/latest/download/groove-bound.love).
 
 | Platform | How to launch |
 |---|---|
-| macOS | Open LÖVE, then drag `groove-bound.love` onto the LÖVE application. |
 | Windows | Double-click `groove-bound.love`, or drag it onto `love.exe`. |
 | Linux | Run `love groove-bound.love` from a terminal. |
 

@@ -67,6 +67,7 @@ function RunScreen:enter()
   self.finished = false
   self.transitioning = false
   self.choice_open = false
+  self.pending_outcome = nil
   self.seed_notice = 0
   self.music_event_serial = 0
   self.music_event = nil
@@ -101,16 +102,25 @@ function RunScreen:update(dt)
   local time_scale = self.app.tuning:get("simulation.time_scale")
   local sim_dt = dt * time_scale
   self.seed_notice = math.max(0, self.seed_notice - dt)
-  self.ctx:update(sim_dt)
+  local outcome = self.pending_outcome
+  if not outcome then
+    self.ctx:update(sim_dt)
+    self.player:update(sim_dt, self.input, self.camera, self.arena)
+    self.ctx.world:moved(self.player)
+    outcome = self.combat:update(sim_dt)
+    self.camera:follow(self.player.x, self.player.y, sim_dt)
+    self.camera:update(sim_dt)
+  end
 
-  self.player:update(sim_dt, self.input, self.camera, self.arena)
-  self.ctx.world:moved(self.player)
-  local outcome = self.combat:update(sim_dt)
-
-  self.camera:follow(self.player.x, self.player.y, sim_dt)
-  self.camera:update(sim_dt)
-
-  if outcome == "stage_clear" and not self.transitioning then
+  local chest_reveal = self.combat:take_pending_chest_reveal()
+  if chest_reveal and not self.choice_open then
+    self.choice_open = true
+    self.pending_outcome = outcome
+    local ChestRewardScreen = require("src.ui.screens.chest_reward")
+    self.app.states:push(ChestRewardScreen(
+      self.app, chest_reveal))
+  elseif outcome == "stage_clear" and not self.transitioning then
+    self.pending_outcome = nil
     self.transitioning = true
     self.music_event_serial = self.music_event_serial + 1
     self.music_event = {
@@ -123,6 +133,7 @@ function RunScreen:update(dt)
       self.app.content.narrative.stage2_transition,
       { result = "stage2" }))
   elseif outcome == "victory" and not self.finished then
+    self.pending_outcome = nil
     self.finished = true
     local CutsceneScreen = require("src.ui.screens.cutscene")
     self.app.states:push(CutsceneScreen(
@@ -130,6 +141,7 @@ function RunScreen:update(dt)
       self.app.content.narrative.ending,
       { result = "campaign_complete" }))
   elseif outcome == "defeat" and not self.finished then
+    self.pending_outcome = nil
     self.finished = true
     self:_show_results("defeat")
   elseif self.combat.xp:has_pending_choice() and not self.choice_open then
@@ -178,7 +190,7 @@ function RunScreen:draw()
   self.camera:detach()
 
   self.hud:draw()
-  self:_draw_reward_chest_pointer()
+  self:_draw_reward_chest_pointers()
   if self.seed_notice > 0 then
     local Fonts = require("src.ui.fonts")
     love.graphics.setFont(Fonts.get(14))
@@ -188,41 +200,71 @@ function RunScreen:draw()
   end
 end
 
-function RunScreen:_draw_reward_chest_pointer()
-  local target, best_distance
-  self.ctx.world:each("reward_chest", function(chest)
-    local dx, dy = chest.x - self.player.x, chest.y - self.player.y
-    local distance = dx * dx + dy * dy
-    if not target or distance < best_distance then
-      target, best_distance = chest, distance
-    end
-  end)
-  if not target then return end
-
-  local w, h = love.graphics.getDimensions()
-  local target_x, target_y = self.camera:world_to_screen(target.x, target.y)
-  local vx, vy = target_x - w / 2, target_y - h / 2
-  if math.abs(vx) + math.abs(vy) < 0.01 then vx, vy = 0, -1 end
+function RunScreen:reward_chest_pointer(chest, w, h)
+  if not w or not h then w, h = love.graphics.getDimensions() end
+  local target_x, target_y = self.camera:world_to_screen(chest.x, chest.y)
   local margin = 56
-  local x_scale = (w / 2 - margin) / math.max(0.001, math.abs(vx))
-  local y_scale = (h / 2 - margin) / math.max(0.001, math.abs(vy))
-  local scale = math.min(x_scale, y_scale)
-  local x = w / 2 + vx * scale
-  local y = h / 2 + vy * scale
-  local angle = math.atan2(vy, vx)
-  local pulse = 1 + math.sin(self.ctx.time * 5) * 0.08
+  if target_x >= margin and target_x <= w - margin
+    and target_y >= margin + 36 and target_y <= h - margin
+  then
+    return {
+      x = target_x,
+      y = target_y - 50,
+      angle = math.pi / 2,
+      on_screen = true,
+    }
+  end
 
-  love.graphics.setColor(0.025, 0.012, 0.07, 0.90)
-  love.graphics.circle("fill", x, y, 24 * pulse)
-  love.graphics.setColor(1.0, 0.74, 0.20, 0.98)
-  love.graphics.setLineWidth(2)
-  love.graphics.circle("line", x, y, 24 * pulse)
-  love.graphics.push()
-  love.graphics.translate(x, y)
-  love.graphics.rotate(angle)
-  love.graphics.polygon("fill", 18, 0, -5, -10, -1, 0, -5, 10)
-  love.graphics.pop()
+  local source_x, source_y = self.camera:world_to_screen(
+    self.player.x, self.player.y)
+  local vx, vy = target_x - source_x, target_y - source_y
+  if math.abs(vx) + math.abs(vy) < 0.01 then vx, vy = 0, -1 end
+  local scale = math.huge
+  if vx > 0 then
+    scale = math.min(scale, (w - margin - source_x) / vx)
+  elseif vx < 0 then
+    scale = math.min(scale, (margin - source_x) / vx)
+  end
+  if vy > 0 then
+    scale = math.min(scale, (h - margin - source_y) / vy)
+  elseif vy < 0 then
+    scale = math.min(scale, (margin - source_y) / vy)
+  end
+  scale = math.max(0, math.min(1, scale))
+  return {
+    x = source_x + vx * scale,
+    y = source_y + vy * scale,
+    angle = math.atan2(vy, vx),
+    on_screen = false,
+  }
+end
+
+function RunScreen:_draw_reward_chest_pointers()
+  local w, h = love.graphics.getDimensions()
+  local pointers = self:reward_chest_pointers(w, h)
+  for index, pointer in ipairs(pointers) do
+    local pulse = 1 + math.sin(self.ctx.time * 5 + index * 0.8) * 0.08
+
+    love.graphics.setColor(0.025, 0.012, 0.07, 0.90)
+    love.graphics.circle("fill", pointer.x, pointer.y, 24 * pulse)
+    love.graphics.setColor(1.0, 0.74, 0.20, 0.98)
+    love.graphics.setLineWidth(2)
+    love.graphics.circle("line", pointer.x, pointer.y, 24 * pulse)
+    love.graphics.push()
+    love.graphics.translate(pointer.x, pointer.y)
+    love.graphics.rotate(pointer.angle)
+    love.graphics.polygon("fill", 18, 0, -5, -10, -1, 0, -5, 10)
+    love.graphics.pop()
+  end
   love.graphics.setLineWidth(1)
+end
+
+function RunScreen:reward_chest_pointers(w, h)
+  local pointers = {}
+  self.ctx.world:each("reward_chest", function(chest)
+    pointers[#pointers + 1] = self:reward_chest_pointer(chest, w, h)
+  end)
+  return pointers
 end
 
 function RunScreen:keypressed(key)

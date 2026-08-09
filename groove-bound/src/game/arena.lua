@@ -56,6 +56,32 @@ local function circle_hits_rect(x, y, radius, rect)
   return dx * dx + dy * dy < radius * radius
 end
 
+local function segment_hits_expanded_rect(x1, y1, x2, y2, rect, padding)
+  -- Shrinking by a hair makes a route that touches an expanded corner valid.
+  -- The real circle/rectangle collision remains authoritative during movement.
+  local epsilon = 0.01
+  local left = rect.x - padding + epsilon
+  local right = rect.x + rect.w + padding - epsilon
+  local top = rect.y - padding + epsilon
+  local bottom = rect.y + rect.h + padding - epsilon
+  local dx, dy = x2 - x1, y2 - y1
+  local t_min, t_max = 0, 1
+
+  local function clip(origin, delta, minimum, maximum)
+    if math.abs(delta) < 0.000001 then
+      return origin > minimum and origin < maximum
+    end
+    local a = (minimum - origin) / delta
+    local b = (maximum - origin) / delta
+    if a > b then a, b = b, a end
+    t_min = math.max(t_min, a)
+    t_max = math.min(t_max, b)
+    return t_max > t_min
+  end
+
+  return clip(x1, dx, left, right) and clip(y1, dy, top, bottom)
+end
+
 local function draw_floor_surface(arena, style, tint, veil)
   local atlas = arena.assets and arena.assets.floor_surfaces
     and arena.assets.floor_surfaces[style]
@@ -86,6 +112,102 @@ function Arena:blocked(x, y, radius)
     if circle_hits_rect(x, y, radius, obstacle) then return true end
   end
   return false
+end
+
+function Arena:segment_clear(x1, y1, x2, y2, radius)
+  radius = radius or 0
+  if not self:contains(x1, y1, radius)
+    or not self:contains(x2, y2, radius)
+  then
+    return false
+  end
+  for _, obstacle in ipairs(self.obstacles) do
+    if segment_hits_expanded_rect(
+      x1, y1, x2, y2, obstacle, radius + 2)
+    then
+      return false
+    end
+  end
+  return true
+end
+
+function Arena:navigation_direction(x, y, target_x, target_y, radius)
+  local direct_x, direct_y = target_x - x, target_y - y
+  local direct_length = math.sqrt(direct_x * direct_x + direct_y * direct_y)
+  if direct_length <= 0.001 then return 0, 0, false end
+  if self:segment_clear(x, y, target_x, target_y, radius) then
+    return direct_x / direct_length, direct_y / direct_length, false
+  end
+
+  -- Build a tiny visibility graph around the stage equipment. With only the
+  -- obstacle corners as candidates, enemies get a true shortest detour without
+  -- paying for a full navigation grid every frame.
+  local nodes = {
+    { x = x, y = y },
+    { x = target_x, y = target_y },
+  }
+  local clearance = (radius or 0) + 6
+  for _, obstacle in ipairs(self.obstacles) do
+    for _, point in ipairs({
+      { x = obstacle.x - clearance, y = obstacle.y - clearance },
+      { x = obstacle.x + obstacle.w + clearance,
+        y = obstacle.y - clearance },
+      { x = obstacle.x - clearance,
+        y = obstacle.y + obstacle.h + clearance },
+      { x = obstacle.x + obstacle.w + clearance,
+        y = obstacle.y + obstacle.h + clearance },
+    }) do
+      if self:contains(point.x, point.y, radius)
+        and not self:blocked(point.x, point.y, radius)
+      then
+        nodes[#nodes + 1] = point
+      end
+    end
+  end
+
+  local distance, previous, visited = { [1] = 0 }, {}, {}
+  while true do
+    local current, best
+    for index = 1, #nodes do
+      if not visited[index] and distance[index]
+        and (not best or distance[index] < best)
+      then
+        current, best = index, distance[index]
+      end
+    end
+    if not current or current == 2 then break end
+    visited[current] = true
+    for candidate = 1, #nodes do
+      if not visited[candidate] and candidate ~= current
+        and self:segment_clear(
+          nodes[current].x, nodes[current].y,
+          nodes[candidate].x, nodes[candidate].y, radius)
+      then
+        local edge_x = nodes[candidate].x - nodes[current].x
+        local edge_y = nodes[candidate].y - nodes[current].y
+        local alternative = best + math.sqrt(edge_x * edge_x + edge_y * edge_y)
+        if not distance[candidate] or alternative < distance[candidate] then
+          distance[candidate] = alternative
+          previous[candidate] = current
+        end
+      end
+    end
+  end
+
+  if not distance[2] then
+    return direct_x / direct_length, direct_y / direct_length, false
+  end
+  local waypoint = 2
+  while previous[waypoint] and previous[waypoint] ~= 1 do
+    waypoint = previous[waypoint]
+  end
+  local route_x = nodes[waypoint].x - x
+  local route_y = nodes[waypoint].y - y
+  local route_length = math.sqrt(route_x * route_x + route_y * route_y)
+  if route_length <= 0.001 then
+    return direct_x / direct_length, direct_y / direct_length, false
+  end
+  return route_x / route_length, route_y / route_length, true
 end
 
 function Arena:resolve_movement(old_x, old_y, x, y, radius)

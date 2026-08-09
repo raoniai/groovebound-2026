@@ -63,29 +63,47 @@ Create an exact 15-second, 16:9 Lyra Vex character-intro cutscene. Use @Image 2,
 ## 4. Stage 2 Transition — The First Press
 
 ```text
-Create an exact 15-second, 16:9 Stage 1-to-Stage 2 transition. Use @Image 8 as the authoritative storyboard. Use @Image 2, @Image 3 and @Image 5 for Joe and Lyra. Use @Image 9 for the defeated Stage 1 arena. Use @Image 11 and @Image 12 for the Orbit Line. Use @Image 14 for distant Stage 2 silhouettes. Render detailed cinematic 16-bit pixel art with crisp clusters, dark outlines, stable characters and readable action. Render no title, map label, station name, subtitle, caption, speech bubble, readable sign, logo, HUD or watermark.
+Create an exact 30-second, 16:9 Stage 1-to-Stage 2 transition with rapid cinematic cutting, escalating enemy pressure and a clear arrival at the Orbit Line. Use @Image 8 as the authoritative story and composition reference. Use @Image 2, @Image 3 and @Image 5 for Joe and Lyra's exact identity, costumes, proportions and movement. Use @Image 9 for the ruined Stage 1 arena. Use @Image 11 and @Image 12 for the abandoned rail system and cosmic destination. Use @Image 13 for surviving Stage 1 attackers and Static Baron wreckage. Use @Image 14 for Vinyl Drones, Trumpet Rays, Drum Wheels and Theremin Jellies inside the Orbit Line. Render detailed cinematic 16-bit pixel art with crisp clusters, dark outlines, stable characters, readable silhouettes and forceful action. Use hard impact cuts, fast lateral movement, low-angle hero shots, close inserts and wide location reveals without morphing characters or losing spatial continuity. Render no title, map label, station name, subtitle, caption, speech bubble, readable sign, logo, HUD or watermark.
 
 @@
-00:00-00:05 — Lyra pulls the glowing First Press record from the defeated Static Baron's cooling core. Its grooves project a cyan-violet route made only from light and constellation geometry. Lyra says: "The Baron's record is a map."
+00:00-00:05 — Open on three fast impact cuts: Joe and Lyra strike the Static Baron's core together; the giant machine collapses through speaker debris; both heroes dive away from the blast. Lyra slides beneath falling armour and catches the glowing First Press record before it hits the ground. Its grooves project a cyan-violet route around them. Lyra says: "The Baron's record is a map."
 
 @@
-00:05-00:10 — The camera follows the route beneath Backbeat and reveals a sealed orbital rail platform. Joe sweeps his Kazoo Pistol light across the dead station and says: "It leads below the city. Orbit Line."
+00:05-00:10 — Surviving Stage 1 robots burst from the smoke. Cut between Joe firing circular Kazoo blasts, Lyra blocking a mechanical strike with her keytar and the projected route diving beneath Backbeat. A Bass Brute throws Joe into a speaker stack; Lyra pulls him up while forcing the attackers back. Joe looks at the descending route and says: "It leads below the city. Orbit Line."
 
 @@
-00:10-00:15 — Lyra strikes the chained gate with one keytar chord. The rail powers on, an abandoned carriage opens and both heroes leap aboard as one last robot reaches the platform. Lyra says: "Then that's where we're going." End with the train entering the cyan-violet cosmic tunnel. Synchronise vinyl shimmer, relay clicks, chain break, rail ignition, robot servo, Kazoo pop and tunnel rush.
+00:10-00:15 — Launch into a fast pursuit through a collapsing maintenance stairwell. Alternate a side-tracking run, close shots of enemy claws striking the walls, Joe blasting open a blocked passage and Lyra sliding under a closing security gate. The heroes reach the bottom as robots swarm the stairs behind them. The old rail platform is dark, chained shut and visibly unstable.
+
+@@
+00:15-00:20 — The First Press activates the dead platform, but the power surge opens a violet breach. Vinyl Drones sweep overhead, Trumpet Rays fire across the tracks and a Drum Wheel crashes between the heroes and the train. Use rapid cuts between Joe shielding Lyra, Lyra rolling beneath a blast, shattered platform tiles and the carriage flickering on without enough power. Lyra points to the carriage and says: "We need that train."
+
+@@
+00:20-00:25 — Joe charges the Drum Wheel and knocks it off the track while Lyra plants the First Press into the console and breaks the gate chains with one keytar strike. Lights race down the rails. Cut between Joe holding back the converging robots, Lyra forcing the carriage doors open and both heroes narrowly avoiding a Trumpet Ray blast. Joe fires one final wide resonance ring and says: "Move. I'll cover the door." Lyra pulls him aboard at the last second.
+
+@@
+00:25-00:30 — The train accelerates as enemies chase along both sides of the carriage. Use a close cut of Lyra sealing the door, Joe firing through the narrowing gap, an exterior shot of the train dropping into a cyan-violet cosmic tunnel and a high-speed forward view as the Orbit Line unfolds across space. The train bursts onto the Stage 2 platform and brakes through sparks. Joe and Lyra step out together as Vinyl Drones, Trumpet Rays, Drum Wheels and Theremin Jellies gather in the distance. Lyra says: "Orbit Line. We're here." End on a wide gameplay-ready composition with the heroes in front and the new stage fully revealed. Synchronise boss collapse, debris impacts, robot servos, weapon blasts, running steps, gate chains, electrical relays, carriage doors, rail acceleration and tunnel rush.
 ```
 
 ## 5. Ending — An Encore in Orbit
 
 ```text
-Create an exact 15-second, 16:9 ending teaser. Use @Image 8 for the Orbit Line composition. Use @Image 2, @Image 3 and @Image 5 for Joe and Lyra. Use @Image 11 and @Image 12 for the location. Use @Image 14 for the defeated Grand Orchestrator. Keep the Grand Conductor separate and unrevealed, represented only by distant waveform geometry and shadowed instrument silhouettes beyond the stars. Render detailed cinematic 16-bit pixel art with crisp clusters, dark outlines and stable character identity. Render no title, subtitle, caption, speech bubble, readable sign, logo, HUD or watermark.
+Create an exact 30-second, 16:9 ending sequence that delivers a complete, epic resolution to Groove Bound while leaving one restrained future-threat signal. Use @Image 8 for the Orbit Line composition and final cosmic framing. Use @Image 2, @Image 3 and @Image 5 for Joe and Lyra's exact identity, costumes, proportions and movement. Use @Image 11 and @Image 12 for the Orbit Line machinery, rails and cosmic environment. Use @Image 14 for the Grand Orchestrator and defeated Stage 2 enemies. Use @Image 7 and @Image 9 for the restored Backbeat city. Keep the Grand Conductor separate and unrevealed, represented only by a distant waveform shadow beyond the stars. Render detailed cinematic 16-bit pixel art with crisp clusters, dark outlines, stable character identity, dramatic scale and readable action. Use hard impact cuts during the battle, slower wide shots during the restoration and a final locked heroic composition. Render no title, subtitle, caption, speech bubble, readable sign, logo, HUD or watermark.
 
 @@
-00:00-00:05 — The Grand Orchestrator collapses across the Orbit Line platform and its speaker core shuts down. The stars form a large equaliser wave. The off-screen Grand Conductor says: "First movement incomplete. The orchestra is assembling."
+00:00-00:05 — Open in the final battle at full force. Cut rapidly between the Grand Orchestrator charging its giant speaker core, Joe running through collapsing platform debris and Lyra sliding beneath mechanical arms. Joe fires a gold-cyan resonance ring into the exposed core; Lyra follows with a broad cyan-magenta keytar strike. Their attacks connect at the same instant and split the core with a white-violet shockwave.
 
 @@
-00:05-00:10 — Broken machine parts float toward distant instrument silhouettes in space. Joe reloads his Kazoo Pistol, watches the signal and says: "So this isn't over."
+00:05-00:10 — The Grand Orchestrator staggers across the Orbit Line in a series of huge impact cuts. Its speaker towers rupture, turntable armour breaks free and hostile machines lose power around the arena. One last arm crashes toward the heroes. Joe braces beneath it while Lyra pulls him clear. The boss collapses behind them and the entire station begins to fall apart.
 
 @@
-00:10-00:15 — Lyra steps onto the broken turntable core and strikes one cyan-magenta keytar chord toward Backbeat. She says: "Next time, the whole city fights." City lights answer the pulse as Joe and Lyra stand together. Synchronise machine collapse, speaker shutdown, cosmic sub pulse, floating debris, Kazoo reload, keytar chord and city response.
+00:10-00:15 — Joe and Lyra sprint across breaking rails as the defeated boss is drawn into the cosmic void. Lyra catches the First Press record from the wreckage and locks it into the central console. A distant waveform shadow appears beyond the stars. The off-screen Grand Conductor says: "First movement failed. The orchestra is assembling." The shadow recedes without revealing a body.
+
+@@
+00:15-00:20 — The First Press sends a bright cyan-violet pulse through the station. Broken rails reconnect, platform lights return and the cosmic breach closes behind the heroes. Cut from the restored Orbit Line to Pulse Tower receiving the signal above Backbeat. The tower powers on from bottom to top. Joe watches the city appear through the station window and says: "Backbeat is safe."
+
+@@
+00:20-00:25 — Show the victory spreading through rapid but readable wide shots: dark city blocks relight, stopped trains move again, rooftop crowds emerge, damaged speaker machines shut down and people look up as the sky clears. Joe and Lyra board the restored carriage. Lyra looks toward the city and says: "Next time, we stand together."
+
+@@
+00:25-00:30 — The carriage bursts from the cosmic rail into Backbeat as the first warm light reaches the skyline. Crowds gather below while Joe and Lyra step onto a high platform overlooking the restored city. Use a slow final pullback: Pulse Tower glowing, trains moving, rooftop lights returning and the two heroes standing side by side. Keep the distant waveform shadow as one small, almost hidden shape among the stars. End on a locked victorious frame that clearly closes the game. Synchronise final impacts, boss collapse, rail fractures, console activation, tower startup, city power return, carriage arrival and crowd reaction.
 ```

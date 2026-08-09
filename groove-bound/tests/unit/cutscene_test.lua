@@ -115,4 +115,24 @@ T["first confirmation reveals the full sentence before the next advances"] = fun
   H.eq(completed, 1)
 end
 
+T["video cutscenes fade in and auto-finish two seconds after ending"] = function()
+  local completed = 0
+  local screen = fresh("JOE", "Video transition")
+  screen.opts.on_complete = function() completed = completed + 1 end
+  screen.video = {
+    isPlaying = function() return false end,
+    pause = function() end,
+  }
+  screen:update(0.2)
+  H.is_true(screen:video_fade_alpha() > 0)
+  screen:update(0.2)
+  H.is_true(screen.video_ended)
+  H.eq(completed, 0)
+  screen:update(1.99)
+  H.eq(completed, 0)
+  H.is_true(screen:video_fade_alpha() > 0.9)
+  screen:update(0.01)
+  H.eq(completed, 1)
+end
+
 return T

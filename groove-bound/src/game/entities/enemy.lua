@@ -33,6 +33,10 @@ function Enemy:reset(opts)
   self.attack_windup = 0
   self.attack_just_fired = false
   self.brain_time = 0
+  self.navigation_timer = 0
+  self.navigation_dx, self.navigation_dy = nil, nil
+  self.navigation_routed = false
+  self.navigation_target_x, self.navigation_target_y = nil, nil
   self.flash = 0
   self.knockback_x, self.knockback_y = 0, 0
   self.overtime_multiplier = 1
@@ -91,6 +95,24 @@ function Enemy:update(dt, player, speed_multiplier, arena)
       speed = speed * 0.82
     elseif self.definition.brain == "pulse" and length < 145 then
       speed = speed * 0.28
+    end
+    if arena.navigation_direction then
+      self.navigation_timer = self.navigation_timer - dt
+      local target_moved = not self.navigation_target_x
+        or (player.x - self.navigation_target_x) ^ 2
+          + (player.y - self.navigation_target_y) ^ 2 > 80 ^ 2
+      if self.navigation_timer <= 0 or target_moved then
+        self.navigation_dx,
+          self.navigation_dy,
+          self.navigation_routed = arena:navigation_direction(
+            self.x, self.y, player.x, player.y, self.radius)
+        self.navigation_target_x, self.navigation_target_y = player.x, player.y
+        self.navigation_timer = 0.20
+          + math.abs(math.floor(self.x + self.y)) % 5 * 0.015
+      end
+      if self.navigation_routed then
+        dx, dy = self.navigation_dx, self.navigation_dy
+      end
     end
     local old_x, old_y = self.x, self.y
     local next_x = self.x + (dx * speed + self.knockback_x) * dt

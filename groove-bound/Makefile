@@ -2,7 +2,7 @@
 
 LUA ?= luajit
 
-.PHONY: run test lint package clean
+.PHONY: run test lint package package-macos clean
 
 run:
 	love .
@@ -26,5 +26,10 @@ package: clean
 		-x "music/*" \
 		-x "docs/screenshots/*"
 
+# Build a universal macOS app, ZIP, and DMG with the Groove Bound icon.
+# Requires the official LÖVE 11.5 app at /Applications/love.app.
+package-macos: package
+	VERSION="$(VERSION)" scripts/build_macos_release.sh
+
 clean:
-	rm -f dist/groove-bound.love
+	rm -f dist/groove-bound.love dist/Groove-Bound-macOS.zip dist/Groove-Bound-macOS.dmg

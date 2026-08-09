@@ -55,6 +55,23 @@ T["solid stage equipment blocks circle movement"] = function()
   H.eq(y, 350)
 end
 
+T["navigation routes enemies around solid stage equipment"] = function()
+  local a = Arena({
+    width = 1000,
+    height = 800,
+    wall = 20,
+    obstacles = {
+      { x = 400, y = 250, w = 120, h = 300,
+        icon = { col = 1, row = 1 } },
+    },
+  })
+  H.is_false(a:segment_clear(300, 400, 650, 400, 12))
+  local dx, dy, routed = a:navigation_direction(300, 400, 650, 400, 12)
+  H.is_true(routed)
+  H.is_true(dx > 0)
+  H.is_true(math.abs(dy) > 0.1)
+end
+
 T["stage-specific dimensions override the global arena fallback"] = function()
   local a = Arena({ stage = { width = 5000, height = 3200 } })
   H.eq(a.width, 5000)

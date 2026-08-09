@@ -206,6 +206,8 @@ T["chest rewards prioritize ready evolutions then rebuild legal item pools"] = f
   H.eq(#rewards, 3)
   H.eq(rewards[1].kind, "evolution")
   H.eq(rewards[1].id, "kazoo_studio")
+  H.is_true(#rewards[1].description > 0)
+  H.is_true(rewards[1].result ~= nil)
   H.eq(inventory:get_slot(1).id, "brass_barrage")
   H.is_true(rewards[2].kind == "weapon_add"
     or rewards[2].kind == "weapon_level"
@@ -213,6 +215,17 @@ T["chest rewards prioritize ready evolutions then rebuild legal item pools"] = f
     or rewards[2].kind == "passive_level")
   H.eq(progression.chests_opened, 1)
   H.eq(progression.chest_rewards_claimed, 3)
+end
+
+T["fully capped chest rolls fall back to concrete utility rewards"] = function()
+  local progression, inventory = fresh(10, 9090)
+  inventory.capacity = 1
+  progression.passives.capacity = 0
+  local rewards = progression:claim_chest(1)
+  H.eq(#rewards, 1)
+  H.is_true(rewards[1].kind == "heal"
+    or rewards[1].kind == "coins"
+    or rewards[1].kind == "guard")
 end
 
 T["evolution progress reports every missing ingredient explicitly"] = function()

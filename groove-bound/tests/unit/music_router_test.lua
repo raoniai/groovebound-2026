@@ -81,6 +81,7 @@ T["temporary modal cues preserve their exact underlay"] = function()
     "level_up")
   H.eq(MusicRouter.route({ screen = "level_up", has_evolution = true }).cue,
     "evolution")
+  H.eq(MusicRouter.route({ screen = "chest_reward" }).cue, "level_up")
 end
 
 T["nested options inherit the audible modal beneath them"] = function()
