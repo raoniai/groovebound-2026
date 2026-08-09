@@ -14,15 +14,15 @@ This document answers four questions: what is authoritative, what the latest ver
 
 <!-- LIVE-SNAPSHOT:START -->
 
-_Generated from live repository evidence: 2026-08-09 23:35 AEST_
+_Generated from live repository evidence: 2026-08-09 23:37 AEST_
 
 | Field | Live value |
 |---|---|
 | Branch | `GPT/stage-2-cutscenes` |
-| HEAD | `097c883` — Redesign Groove Bound app icon |
+| HEAD | `701ea77` — Add Groove Bound Studio skill package |
 | Upstream | `origin/GPT/stage-2-cutscenes` |
-| Compared with `origin/main` | 12 ahead, 0 behind |
-| Working changes | 65 files: 1 game, 22 site, 41 skills/package |
+| Compared with `origin/main` | 13 ahead, 0 behind |
+| Working changes | 26 files: 1 game, 23 site, 1 skills/package |
 | Lua source/test files | 78 source, 39 test |
 | Game tree excluding `dist/` | 320.5 MiB |
 | Current `.love` artifact | 90.1 MiB |
@@ -90,7 +90,7 @@ The public landing site is a separate static presentation under `landing-page/`.
 | Landing page | Committed/pushed baseline plus active uncommitted updates | Home, Lore, Builder, status updater, and current working changes | Review current update scope; deployment and public-live verification |
 | Desktop distribution | Local `.love`, universal macOS ZIP, and DMG built | Valid `.love`; ad-hoc signed macOS build script and local artifacts | Upload v0.5.0 draft assets; native Windows/Linux artifacts and test matrix; notarization if required |
 | Engine migration | Planned | Engine migration research and parity roadmap | Clean baseline and bounded target-engine spike |
-| Groove Bound skills | Locally validated | Eleven packages, official structural validation, package validation, and representative helper execution | Fresh-agent forward tests and optional Codex installation |
+| Groove Bound skills | Installed, committed, and pushed | Eleven installed packages match repository source; structural, package, and representative helper validation passed | Fresh-agent forward tests |
 
 ## Active working state
 
@@ -140,7 +140,7 @@ For an engine migration, keep LÖVE as the golden reference. The leading researc
 
 1. Manually verify navigation, projectile, cutscene, chest-reward, and current-HEAD campaign acceptance criteria.
 2. Decide whether the untracked Stage 2 transition MP4 belongs in the next cutscene-media change; do not absorb it into the skill-package commit accidentally.
-3. Forward-test the validated local skill package with fresh agents when delegation is explicitly requested; install it into Codex discovery only after choosing the installation method.
+3. Forward-test the installed skill package with fresh agents when delegation is explicitly requested.
 4. Decide whether to attach the verified local v0.5.0 artifacts to the existing draft release; publication remains an approval gate.
 5. Extend the desktop matrix with native Windows and Linux artifacts from the same verified `.love` candidate.
 6. Freeze a clean migration baseline before any Godot or MonoGame spike.
@@ -168,7 +168,7 @@ For an engine migration, keep LÖVE as the golden reference. The leading researc
 - Added deterministic project, media, release, portability, and handover helpers.
 - Added this canonical latest-version handover database.
 - Preserved all pre-existing game and landing-page changes.
-- Delivery state: locally validated; all eleven skills passed structural validation, package validation passed, and representative helper scripts executed successfully. Fresh-agent forward tests and global installation remain open.
+- Delivery state: installed in Codex, committed as `701ea77`, and pushed to `origin/GPT/stage-2-cutscenes`. All eleven installed copies match repository source and pass structural validation. Fresh-agent forward tests remain open.
 
 ## Handover protocol
 

@@ -16,11 +16,12 @@
     "groove-bound-site-sync",
     "groove-bound-latest-handover"
   ],
-  "installation_state": "repository-source-only",
+  "installation_state": "installed-in-codex",
   "validation": {
     "structural": "passed-11-of-11",
     "scripts": "passed-representative-execution",
     "trigger_cases": "defined-and-package-validated",
-    "forward_tests": "not-run"
+    "forward_tests": "not-run",
+    "installation": "passed-11-of-11-git-method"
   }
 }
