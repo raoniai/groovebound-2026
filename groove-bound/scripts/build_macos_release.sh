@@ -5,7 +5,7 @@ SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 GAME_DIR=$(CDPATH= cd -- "$SCRIPT_DIR/.." && pwd)
 DIST_DIR="$GAME_DIR/dist"
 LOVE_APP=${LOVE_APP:-/Applications/love.app}
-VERSION=${VERSION:-0.2.0}
+VERSION=${VERSION:-0.5.0}
 BUILD_NUMBER=${BUILD_NUMBER:-$(git -C "$GAME_DIR" rev-list --count HEAD 2>/dev/null || printf '1')}
 APP_NAME="Groove Bound"
 APP_PATH="$DIST_DIR/macos-build/$APP_NAME.app"
