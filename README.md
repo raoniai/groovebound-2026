@@ -1,71 +1,68 @@
 <p align="center">
-  <img src="docs/assets/groove-bound-campaign-banner.png" alt="Groove Bound — Joe and Lyra defend Backbeat Streets and the cosmic Orbit Line from music-powered robot invaders" width="100%">
+  <img src="landing-page/assets/campaign-banner.png" alt="Groove Bound — Joe and Lyra defend Backbeat and the Orbit Line from a cosmic machine orchestra" width="100%">
 </p>
 
 <p align="center">
-  <strong>Restore rhythm to the universe.</strong><br>
-  A bright urban-supernatural survival roguelike built with LÖVE.
+  <strong>Restore rhythm. Survive the Break.</strong><br>
+  A music-powered survival roguelike built with LÖVE 11.5.
 </p>
 
 <p align="center">
   <a href="https://github.com/raoniai/groovebound-2026/releases/latest/download/Groove-Bound-macOS.dmg">
-    <img src="https://img.shields.io/badge/DOWNLOAD-LATEST%20BUILD-F2BF32?style=for-the-badge&logo=github&logoColor=111111" alt="Download the latest Groove Bound build">
+    <img src="https://img.shields.io/badge/DOWNLOAD_FOR_MAC-F2BF32?style=for-the-badge&logo=apple&logoColor=111111" alt="Download Groove Bound for macOS">
+  </a>
+  <a href="https://github.com/raoniai/groovebound-2026/releases/tag/v0.6.0">
+    <img src="https://img.shields.io/badge/PUBLIC_BUILD-v0.6.0-EA316E?style=for-the-badge" alt="Public build v0.6.0">
   </a>
   <a href="https://github.com/raoniai/groovebound-2026/actions/workflows/ci.yml">
-    <img src="https://img.shields.io/github/actions/workflow/status/raoniai/groovebound-2026/ci.yml?branch=main&style=for-the-badge&label=BUILD" alt="Build status">
+    <img src="https://img.shields.io/github/actions/workflow/status/raoniai/groovebound-2026/ci.yml?branch=GPT%2Fstage-2-cutscenes&style=for-the-badge&label=CI&color=19D3C5" alt="Continuous integration status">
   </a>
-  <img src="https://img.shields.io/badge/L%C3%96VE-11.5-EA316E?style=for-the-badge&logo=love&logoColor=white" alt="LÖVE 11.5">
-  <img src="https://img.shields.io/badge/TESTS-269%20PASSING-19D3C5?style=for-the-badge" alt="269 tests passing">
 </p>
 
 <p align="center">
-  <a href="#the-campaign">Campaign</a> ·
-  <a href="#choose-your-resonant">Characters</a> ·
+  <a href="#when-the-sky-misses-a-beat">Story</a> ·
+  <a href="#choose-your-resonant">Resonants</a> ·
   <a href="#two-stages-one-build">Stages</a> ·
   <a href="#build-your-set">Arsenal</a> ·
-  <a href="#download-and-play">Play</a> ·
-  <a href="#development-reference">Development</a>
+  <a href="#see-the-current-build">Gallery</a> ·
+  <a href="#download-and-play">Download</a> ·
+  <a href="#build-from-source">Development</a>
 </p>
-
-> [!IMPORTANT]
-> This README describes the current **two-stage narrative campaign development
-> preview**. The downloadable release may trail the source branch until the
-> preview is merged and released. The macOS download is a self-contained,
-> universal app; the platform-neutral `.love` package remains available for
-> Windows and Linux and requires [LÖVE 11.5](https://love2d.org/).
 
 ---
 
-## The campaign
+## When the sky misses a beat
 
 Backbeat is a city where music is infrastructure. Rooftop venues, train lines,
 street lights, and the defensive Pulse Tower all share a living network called
 the Resonance.
 
-Then the sky misses a beat.
-
-A cosmic chord plays backwards through every connected speaker. Instrument
-machines descend into the city, sampling its music and assembling an alien
-orchestra. Joe and Lyra Vex answer the downbeat, break open the Static Baron,
-and recover a strange record called the **First Press**. Its song is also a
-map—one that leads beneath Backbeat to the abandoned Orbit Line.
+Then a cosmic chord plays backwards through every connected speaker.
+Instrument-machines descend, sampling the city and assembling an alien
+orchestra. Joe and Lyra Vex answer the downbeat, recover a strange record called
+the **First Press**, and follow its hidden route beneath Backbeat into the
+abandoned Orbit Line.
 
 <p align="center">
-  <img src="groove-bound/assets/generated/cutscenes/prologue-atlas.png" alt="Four illustrated panels showing Backbeat before and during the Break" width="49%">
-  <img src="groove-bound/assets/generated/cutscenes/campaign-atlas.png" alt="Four illustrated panels showing the First Press, Orbit Line, and Grand Conductor signal" width="49%">
+  <img src="landing-page/assets/cutscene-dialogue.png" alt="Joe and Lyra face the Break across the Groove Bound campaign" width="100%">
 </p>
 
-The playable flow is now:
+The current campaign flows through:
 
-**Title → Prologue → Character Selection → Character Intro → Backbeat Streets
-→ Inter-stage Cutscene → The Orbit Line → Campaign Ending**
+**Title → Prologue → Character Selection → Character Intro → Backbeat → Stage 2
+Transition → Orbit Line → Campaign Ending**
 
-The supplied main-menu video now loops behind the separate transparent logo and
-menu controls. The prologue, Joe-intro and Lyra-intro videos play directly in
-the campaign, mapped by filename. Each cutscene fades in from black, supports
-click-to-pause, then holds its final frame while fading to black and advances
-automatically after two seconds. Every video scene retains its illustrated
-storyboard as an automatic fallback.
+Six runtime cinematics carry the story, with illustrated storyboard fallbacks
+when video playback is unavailable. Your weapons, supports, health, and Guard
+carry between both playable stages.
+
+<p align="center">
+  <img src="https://img.shields.io/badge/PLAYABLE_RESONANTS-2-19D3C5?style=flat-square" alt="2 playable Resonants">
+  <img src="https://img.shields.io/badge/CONNECTED_STAGES-2-6F42C1?style=flat-square" alt="2 connected stages">
+  <img src="https://img.shields.io/badge/BASE_WEAPONS-16-F2BF32?style=flat-square" alt="16 base weapons">
+  <img src="https://img.shields.io/badge/LEGENDARY_FUSIONS-8-EA316E?style=flat-square" alt="8 legendary fusions">
+  <img src="https://img.shields.io/badge/ENEMY_VARIANTS-16-19D3C5?style=flat-square" alt="16 enemy variants">
+</p>
 
 Read the complete [first-draft canon](groove-bound/docs/FIRST_DRAFT_CANON.md).
 
@@ -74,137 +71,120 @@ Read the complete [first-draft canon](groove-bound/docs/FIRST_DRAFT_CANON.md).
 ## Choose your Resonant
 
 <p align="center">
-  <img src="groove-bound/assets/generated/campaign/character-portraits-atlas.png" alt="Joe and Lyra Vex character-selection portraits" width="82%">
+  <img src="landing-page/assets/character-logos/joe-logo.png" alt="Joe" width="38%">
+  &nbsp;&nbsp;&nbsp;
+  <img src="landing-page/assets/character-logos/lyra-vex-logo.png" alt="Lyra Vex" width="43%">
 </p>
-
-| | Joe — The Backbeat | Lyra Vex — The Live Wire |
-|---|---|---|
-| Style | Durable street guardian | Fast cosmic rock adventurer |
-| Starting weapon | Kazoo Pistol | Keytar Chord |
-| Signature trait | **Hold the Line** — starts with 18 Guard and stronger knockback | **Stage Dive** — moves and fires faster and earns more Resonance XP |
-| Strengths | Vitality, power, defense | Speed, tempo, resonance |
-| Trade-off | Slower firing tempo | Lower vitality and defense |
-
-Both characters have four-direction idle, walk, high-speed run, and hurt/action
-states. Walking now uses dedicated motion frames; sufficiently large speed
-upgrades visibly switch the selected hero into their faster run cycle.
 
 <p align="center">
-  <img src="groove-bound/assets/generated/campaign/joe-action-sheet.png" alt="Joe directional idle, walk, run, and hurt animation sheet" width="49%">
-  <img src="groove-bound/assets/generated/campaign/lyra-action-sheet.png" alt="Lyra directional idle, walk, run, and hurt animation sheet" width="49%">
+  <img src="landing-page/assets/sprites/talking/joe-1.png" alt="Joe, the durable Backbeat guardian" width="38%">
+  <img src="landing-page/assets/sprites/talking/lyra-1.png" alt="Lyra Vex, the fast cosmic rock adventurer" width="38%">
 </p>
+
+| | Joe | Lyra Vex |
+|---|---|---|
+| Play style | Durable control | Fast tempo and movement |
+| Starting weapon | Kazoo Pistol | Keytar Chord |
+| Signature trait | **Hold the Line** | **Stage Dive** |
+| Strengths | Vitality, power, defense | Speed, fire rate, Resonance XP |
+
+Both characters use movement-speed-driven animation, distinct stats, traits,
+weapons, portrait art, dialogue, and introduction cinematics.
 
 ---
 
 ## Two stages, one build
 
-Your complete weapon and support build carries forward between stages. Clearing
-Backbeat restores part of your health, grants temporary Guard, and moves
-directly into the illustrated Orbit Line transition.
+### Backbeat
 
-### Stage 1 — Backbeat Streets
-
-A supernatural concert district grounded by a subtle urban-grime floor, filled
-with speaker stacks, service equipment,
-road cases, light trusses, and the original invasion horde. Survive the
-Metronome Guardian and bring down the Static Baron to recover the First Press.
-
-### Stage 2 — The Orbit Line
-
-A distinct cosmic transit arena with cosmic dust and embedded crystal detail,
-energy rails,
-alien speaker pylons, sealed gates, turntable consoles, orbital structures,
-and an escalating instrument-machine orchestra.
+Protect Pulse Tower through a concert district filled with speaker stacks,
+service equipment, road cases, light trusses, and the first machine invasion.
+Survive the Metronome Guardian and bring down the Static Baron to recover the
+First Press.
 
 <p align="center">
-  <img src="groove-bound/assets/generated/environment-atlas.png" alt="Backbeat Streets environment props" width="49%">
-  <img src="groove-bound/assets/generated/campaign/stage2-environment-atlas.png" alt="Orbit Line alien transit environment props" width="49%">
+  <img src="landing-page/assets/backbeat-environment.png" alt="Backbeat city environment under the Break" width="100%">
 </p>
 
-### Face two enemy families
+### The First Press
+
+The record is a map pretending to be music. Its groove encodes a route from
+Backbeat to a dead transit system still broadcasting far below the city.
 
 <p align="center">
-  <img src="groove-bound/assets/generated/enemy-variants-atlas.png" alt="Backbeat Streets enemy roster including the Metronome Guardian and Static Baron" width="49%">
-  <img src="groove-bound/assets/generated/campaign/stage2-enemies-atlas.png" alt="Orbit Line enemy roster including the Turntable Sentinel and Grand Orchestrator" width="49%">
+  <img src="landing-page/assets/first-press-orbit.png" alt="The First Press route from Backbeat to the Orbit Line" width="100%">
 </p>
 
-The Orbit Line introduces four normal enemies, two elites, a midboss, and a
-megazord-scale final boss:
+### Orbit Line
 
-- Vinyl Drone, Trumpet Ray, Drum Wheel, and Theremin Jelly;
-- elite Amp Hound and Keyboard Centipede;
-- Turntable Sentinel midboss;
-- Grand Orchestrator final boss.
+Carry the same build into an alien transit arena of energy rails, crystal dust,
+sealed gates, turntable consoles, and an escalating instrument-machine
+orchestra. Face the Turntable Sentinel before the Grand Orchestrator assembles.
 
-Enemy behaviours now include chase, zigzag, charge, orbit, ranged note bolts,
-resonance pulses, attack windups, contact attacks, and boss pressure patterns.
-Difficulty increases naturally within each stage and rises again in Stage 2.
+<p align="center">
+  <img src="landing-page/assets/orbit-environment.png" alt="The alien Orbit Line platform" width="100%">
+</p>
 
-Both stages default to three minutes. Admin controls can independently set either
-stage from 60 to 1,200 seconds and scale the campaign difficulty ramp.
+Both stages default to three minutes. Admin controls can independently tune each
+stage from 60 to 1,200 seconds and adjust the campaign difficulty ramp.
 
 ---
 
 ## Build your set
 
-Movement is manual; equipped instruments auto-target and fire. Every run is a
-compact build-crafting puzzle:
+Movement is manual. Equipped instruments auto-target and fire, turning every run
+into a compact build-crafting puzzle:
 
 1. Move, dodge, and control space.
-2. Collect XP gems and trigger paused level-up choices.
-3. Add weapons, raise ranks, equip supports, or take recovery and currency.
-4. Build up to six active weapons and four supports.
-5. Find a rare musical chest to fuse a ready rank-10 weapon and support recipe.
-6. Carry the completed build into the Orbit Line and finish the campaign.
+2. Collect Resonance XP and choose from seeded three-card offers.
+3. Build up to six weapons and four supports.
+4. Open musical chests for one, three, or five concealed reward reels.
+5. Fuse a rank-10 weapon with its matching support.
+6. Carry the finished set into the Orbit Line and end the campaign.
 
 ### 16 base weapons
 
-Brass bursts, bass shockwaves, cymbal blades, feedback loops, drum pulses,
-trumpet cones, vinyl sparks, synth waves, triangle tracers, cello lances,
-orbiting maracas, tuning forks, keytar chords, bells, cassette echoes, and
-laser-harp beams span seven firing behaviours.
-
 <p align="center">
-  <img src="groove-bound/assets/generated/weapon-icons-atlas.png" alt="First eight Groove Bound base weapon icons" width="49%">
-  <img src="groove-bound/assets/generated/weapon-icons-atlas-2.png" alt="Second eight Groove Bound base weapon icons" width="49%">
+  <img src="landing-page/assets/weapon-icons-atlas.png" alt="Groove Bound base weapons one through eight" width="49%">
+  <img src="landing-page/assets/weapon-icons-atlas-2.png" alt="Groove Bound base weapons nine through sixteen" width="49%">
 </p>
+
+Brass bursts, bass shockwaves, cymbal blades, feedback loops, vinyl sparks,
+synth waves, keytar chords, bells, cassette echoes, and laser-harp beams span
+seven firing behaviours.
 
 ### 8 supports · 8 legendary fusions
 
-Supports strengthen the live build and complete evolution recipes. Level-up
-cards cannot evolve weapons: a rare musical chest rolls one, three, or five
-legal rewards through an animated luck-machine reveal and prioritizes any ready
-fusions. Each reel settles on the exact reward before the player continues. A
-fusion consumes both ingredients, replaces the exact firing emitter, and
-reopens support and weapon capacity.
-
 <p align="center">
-  <img src="groove-bound/assets/generated/support-icons-atlas.png" alt="Eight Groove Bound support item icons" width="49%">
-  <img src="groove-bound/assets/generated/evolved-weapon-icons-atlas.png" alt="Eight legendary fused weapon icons" width="49%">
+  <img src="landing-page/assets/support-icons-atlas.png" alt="Eight Groove Bound support items" width="49%">
+  <img src="landing-page/assets/evolved-weapon-icons-atlas.png" alt="Eight legendary fused weapons" width="49%">
 </p>
 
-See the complete [Weapon Database](groove-bound/docs/WEAPON_DATABASE.md) and
+A fusion consumes both ingredients, replaces the exact weapon emitter, and
+reopens weapon and support capacity. Level-up cards cannot bypass the recipe;
+normal evolution stays chest-only.
+
+Explore the [Weapon Database](groove-bound/docs/WEAPON_DATABASE.md) and
 [Evolution Guide](groove-bound/docs/WEAPON_EVOLUTION.md).
 
 ---
 
-## Combat now reads like combat
-
-Each base and evolved weapon now uses a related projectile silhouette rather
-than sharing one recoloured bullet. Enemies flash when hit, receive directional
-knockback, and burst into animated death effects. Contact attacks, note bolts,
-and resonance pulses trigger player hurt frames, damage flashes, recoil,
-screen shake, and optional controller vibration.
+## See the current build
 
 <p align="center">
-  <img src="groove-bound/assets/generated/campaign/projectile-atlas.png" alt="Twenty-four weapon-specific Groove Bound projectile designs" width="59%">
-  <img src="groove-bound/assets/generated/campaign/combat-fx-atlas.png" alt="Hit sparks, explosions, death flicker, and damage-response effects" width="39%">
+  <img src="landing-page/assets/screens/gameplay-combat.png" alt="Current Groove Bound combat in Backbeat" width="49%">
+  <img src="landing-page/assets/screens/gameplay-level-up.png" alt="Current in-run level-up choice" width="49%">
 </p>
 
-The active HUD presents health, Guard, XP, stage progress, countdown, complete
-weapon and support racks, boss health, score, combo, and campaign notices with a
-larger, clearer information hierarchy. `Tab` hides or restores the debug
-overlay at any time.
+<p align="center">
+  <img src="landing-page/assets/screens/stage2-arrival.png" alt="Joe and Lyra entering the Orbit Line" width="49%">
+  <img src="landing-page/assets/screens/stage2-escalation.png" alt="The Orbit Line threat escalating" width="49%">
+</p>
+
+The v0.6.0 preview includes camera zoom from 75% to 150%, keyboard/mouse and
+gamepad support, persistent options, aim assistance, rebindings, vibration,
+flash and shake controls, adaptive music, cutscene mute, a transparent campaign
+HUD, chest reward reels, and a complete Arsenal database.
 
 ---
 
@@ -214,84 +194,47 @@ overlay at any time.
 
 <p>
   <a href="https://github.com/raoniai/groovebound-2026/releases/latest/download/Groove-Bound-macOS.dmg">
-    <img src="https://img.shields.io/badge/Download-Groove%20Bound%20for%20Mac-19D3C5?style=for-the-badge&logo=apple" alt="Download Groove Bound for Mac">
+    <img src="https://img.shields.io/badge/DOWNLOAD-GROOVE_BOUND_FOR_MAC-F2BF32?style=for-the-badge&logo=apple&logoColor=111111" alt="Download Groove Bound for macOS">
   </a>
   <a href="https://github.com/raoniai/groovebound-2026/releases/latest">
-    <img src="https://img.shields.io/badge/View-release%20notes-6F42C1?style=for-the-badge" alt="View the latest release notes">
+    <img src="https://img.shields.io/badge/VIEW-RELEASE_NOTES-6F42C1?style=for-the-badge" alt="View the latest release notes">
   </a>
 </p>
 
-Open the DMG, drag **Groove Bound** into **Applications**, then launch the app.
-The app includes LÖVE 11.5 and runs natively on both Apple Silicon and Intel Macs.
+Open the DMG, drag **Groove Bound** into **Applications**, and launch the app.
+The universal build includes LÖVE 11.5 and supports Apple Silicon and Intel Macs.
 
-This preview is ad-hoc signed rather than Apple-notarized. On first launch,
-right-click **Groove Bound**, choose **Open**, then confirm **Open**.
+The preview is ad-hoc signed rather than Apple-notarized. If macOS blocks the
+first launch, Control-click **Groove Bound**, choose **Open**, then confirm.
 
 ### Windows and Linux
 
-Install [LÖVE 11.5](https://love2d.org/), then download the
-[platform-neutral `groove-bound.love`](https://github.com/raoniai/groovebound-2026/releases/latest/download/groove-bound.love).
+Native packages are not yet published. Install [LÖVE 11.5](https://love2d.org/)
+and download the
+[platform-neutral `.love` build](https://github.com/raoniai/groovebound-2026/releases/latest/download/groove-bound.love).
 
-| Platform | How to launch |
+| Platform | Launch |
 |---|---|
 | Windows | Double-click `groove-bound.love`, or drag it onto `love.exe`. |
-| Linux | Run `love groove-bound.love` from a terminal. |
+| Linux | Run `love groove-bound.love`. |
 
 ### Controls
 
 | Action | Keyboard | Gamepad |
 |---|---|---|
 | Move | `WASD` or arrow keys | Left stick |
-| Confirm / choose | `Enter` or `Space` | `A` |
-| Pause / resume | `Esc` or `P` | `Start` |
-| Back / cancel | `Esc` | `B` |
-| Navigate menus | Arrow keys | D-pad |
-| Open Admin Controls | `F1` | Available from title/pause menus |
-| Toggle debug overlay | `Tab` | — |
-
-The Options screen includes persistent volume, feedback, fullscreen, aim
-assist, deadzone, and conflict-checked keyboard rebinding controls.
-
----
-
-## Current preview
-
-<p align="center">
-  <img src="groove-bound/assets/generated/campaign/app-icon.png" alt="Groove Bound gold vinyl-speaker cosmic application icon" width="144">
-</p>
-
-| System | Current build |
-|---|---|
-| Campaign | Filename-mapped videos with illustrated fallbacks across the two-stage story |
-| Run structure | Two three-minute stages with build carryover and partial recovery |
-| Characters | Joe and Lyra Vex with different stats, traits, weapons, and animation states |
-| Arsenal | 16 base weapons, seven firing patterns, six weapon slots |
-| Build crafting | Eight supports, four support slots, eight rank-10 fusion recipes |
-| Stage 2 roster | Four normal enemies, two elites, one midboss, and one final boss |
-| Combat feedback | Unique projectiles, hit sparks, explosions, death flicker, knockback, hurt reactions |
-| Progression | Four XP-gem tiers, magnetized consumables, randomized level-up cards, and chest-only fusions |
-| Interface | Larger type, clearer hierarchy, campaign HUD, Arsenal Database, Admin dashboard |
-| Input | Keyboard, mouse, and gamepad menus with persistent options |
-| Validation | 241 headless tests, Luacheck, content validation, package checks, video playback smoke, and CI boot smoke |
-
-### Admin testing controls
-
-The segmented Admin dashboard includes:
-
-- independent Stage 1 and Stage 2 duration;
-- difficulty escalation, player speed, invincibility, damage, fire rate,
-  knockback, enemy speed/damage/density, XP, and pickup tuning;
-- Grant Level, Prepare Evolution, Spawn Boss, and Clear Stage tools;
-- an explicit toggle-gated rank-1 evolution shortcut for testing only.
-
-Normal progression still requires a rank-10 weapon and its matching support.
-See the [Admin Controls guide](groove-bound/docs/ADMIN_CONTROLS.md).
+| Aim | Mouse or right stick | Right stick |
+| Confirm | `Enter` or `Space` | `A` |
+| Back / cancel | `Esc` | `B` / Circle |
+| Skip cutscene | On-screen skip control | `B` / Circle |
+| Pause | `Esc` or `P` | Start |
+| Camera zoom | `-` / `+` | Settings slider |
+| Admin controls | `F1` | Title or pause menu |
+| Debug overlay | `Tab` | — |
 
 ---
 
-## Development reference
-
-Run from source:
+## Build from source
 
 ```sh
 git clone https://github.com/raoniai/groovebound-2026.git
@@ -299,7 +242,7 @@ cd groovebound-2026/groove-bound
 make run
 ```
 
-Verification:
+Verify the runtime:
 
 ```sh
 make test
@@ -307,26 +250,37 @@ make lint
 make package
 ```
 
-Project code lives in [`groove-bound/`](groove-bound/). The
-[gameplay README](groove-bound/README.md) documents runtime architecture,
-developer controls, and implementation ground rules.
+The canonical Lua/LÖVE runtime lives in [`groove-bound/`](groove-bound/). Its
+[developer README](groove-bound/README.md) explains the architecture, controls,
+packaging, and contribution ground rules.
 
-### Lore, systems, and visual provenance
+### Current verification
+
+- 269 automated tests passing.
+- 0 Luacheck warnings or errors across 123 files.
+- Package integrity and forbidden-source checks passing.
+- Universal macOS app, icon, signature, DMG checksum, and packaged boot verified.
+- GitHub CI passing on the release branch.
+
+Automated checks do not replace the remaining full campaign, physical
+controller, and final listening QA for this development preview.
+
+### Project reference
 
 - [First-Draft Canon](groove-bound/docs/FIRST_DRAFT_CANON.md)
 - [Weapon Database](groove-bound/docs/WEAPON_DATABASE.md)
 - [Weapon Evolution Guide](groove-bound/docs/WEAPON_EVOLUTION.md)
 - [Admin Controls](groove-bound/docs/ADMIN_CONTROLS.md)
-- [Generated Visual Asset Register](groove-bound/assets/generated/PROVENANCE.md)
-- [Stage 2 Visual Prompt Set](groove-bound/docs/STAGE2_VISUAL_PROMPTS.md)
-- [Legacy Asset Register](groove-bound/assets/legacy/PROVENANCE.md)
-- [Visual Research and Generation Plan](VISUAL_ASSET_RESEARCH_AND_GENERATION_PLAN.md)
-- [Remake Execution Plan](REMAKE_EXECUTION_PLAN.md)
+- [Generated Asset Provenance](groove-bound/assets/generated/PROVENANCE.md)
+- [Latest Version Handover](LATEST_VERSION_HANDOVER.md)
 
-The first-draft campaign is deliberately structured so supplied video and
-proper source audio can replace the current placeholders without rewriting the
-campaign state. The next planned layers are canon and balance refinement,
-cinematic video/audio, and the BeatClock groove system.
+---
 
-Bug reports and build feedback can be filed through
-[GitHub Issues](https://github.com/raoniai/groovebound-2026/issues).
+<p align="center">
+  <img src="landing-page/assets/gb-icon.png" alt="Groove Bound GB icon" width="112">
+</p>
+
+<p align="center">
+  Created by <a href="https://www.linkedin.com/in/raonilima">Raoni Lima</a> ·
+  <a href="https://github.com/raoniai/groovebound-2026/issues">Report an issue</a>
+</p>
