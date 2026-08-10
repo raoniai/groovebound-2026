@@ -4,8 +4,8 @@
 
 local EventBus = require("src.core.event_bus")
 local Log = require("src.core.log")
-local Save = require("src.core.save")
 local StateMachine = require("src.core.state_machine")
+local ProfileStore = require("src.meta.profile_store")
 local Assets = require("src.assets")
 local MusicCatalog = require("src.audio.music_catalog")
 local MusicContext = require("src.audio.music_context")
@@ -29,6 +29,7 @@ local app = {
   states = nil,
   log = Log,
   save = nil,
+  profile_store = nil,
   profile = nil,
   tuning = nil,
   assets = nil,
@@ -51,11 +52,16 @@ function love.load()
 
   app.bus = EventBus()
   app.states = StateMachine()
-  app.save = Save({
-    filename = settings.save.filename,
-    defaults = settings.save.defaults,
-  })
-  app.profile = app.save:load()
+  app.profile_store = ProfileStore()
+  local activation
+  app.profile, activation = app.profile_store:activate()
+  assert(app.profile, "World Tour V1 save activation failed: "
+    .. tostring(activation and activation.status))
+  -- Keep the established UI persistence seam while Device Settings and
+  -- progression Slots remain independently owned by ProfileStore.
+  app.save = app.profile_store.device_settings
+  Log.info("save", "Device Settings " .. activation.device.status
+    .. "; legacy migration " .. activation.migration.status)
   if app.profile.options.fullscreen then
     love.window.setFullscreen(true, "desktop")
   end

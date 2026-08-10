@@ -12,6 +12,19 @@ local function fake_fs(initial)
       files[name] = contents
       return true
     end,
+    remove = function(name)
+      files[name] = nil
+      return true
+    end,
+    exists = function(name)
+      return files[name] ~= nil
+    end,
+    replace = function(source, destination)
+      if files[source] == nil then return nil, "source missing" end
+      files[destination] = files[source]
+      files[source] = nil
+      return true
+    end,
     files = files,
   }
 end
@@ -98,6 +111,27 @@ T["migration path upgrades old save versions"] = function()
   Save.SCHEMA_VERSION = original_version
   Save.migrations = original_migrations
   if not ok then error(err) end
+end
+
+T["strict recoverable save restores the previous valid backup"] = function()
+  local fs = fake_fs()
+  local store = Save({
+    filename = "slot-1.json",
+    backend = fs,
+    defaults = defaults,
+    kind = "progression_slot",
+    schema_version = 2,
+    strict = true,
+  })
+
+  H.is_true(store:save({ coins = 10 }))
+  H.is_true(store:save({ coins = 20 }))
+  fs.write("slot-1.json", "corrupt active file")
+
+  local data, status = store:load()
+  H.eq(data.coins, 10)
+  H.eq(status.status, "recovered")
+  H.eq(status.source, "backup")
 end
 
 return T
