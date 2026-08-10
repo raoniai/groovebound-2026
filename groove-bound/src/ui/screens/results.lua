@@ -111,14 +111,19 @@ function ResultsScreen:draw()
   for index, item in ipairs(summary) do
     local x = start_x + (index - 1) * (chip_w + gap)
     draw_chip(x, chip_y, chip_w, 76)
-    Icons.draw(item.icon, x + 28, chip_y + 38, 28,
+    local compact_chip = chip_w < 130
+    local icon_x = x + (compact_chip and 18 or 28)
+    local text_x = x + (compact_chip and 34 or 52)
+    Icons.draw(item.icon, icon_x, chip_y + 38, compact_chip and 22 or 28,
       { 0.34, 0.92, 1.0, 0.92 })
     love.graphics.setColor(0.68, 0.72, 0.84, 1)
     love.graphics.setFont(Fonts.get(12))
-    love.graphics.print(item.label, x + 52, chip_y + 15)
+    love.graphics.printf(item.label, text_x, chip_y + 15,
+      x + chip_w - text_x - 6, "left")
     love.graphics.setColor(settings.ui.text_color)
     love.graphics.setFont(Fonts.get(19))
-    love.graphics.print(item.value, x + 52, chip_y + 35)
+    love.graphics.printf(item.value, text_x, chip_y + 35,
+      x + chip_w - text_x - 6, "left")
   end
 
   love.graphics.setColor(0.72, 0.78, 0.90, 1)

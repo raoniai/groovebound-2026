@@ -285,6 +285,117 @@ local function check_narrative(errors, narrative)
   end
 end
 
+local function check_world_tour(errors, content)
+  local catalog = content.world_tour
+  if type(catalog) ~= "table" then
+    errors[#errors + 1] = "content.world_tour: table is missing"
+    return
+  end
+  local orders = {}
+  local count = 0
+  for id, world in pairs(catalog) do
+    count = count + 1
+    local where = "world_tour." .. tostring(id)
+    if world.id ~= id then errors[#errors + 1] = where .. ".id: must match key" end
+    check_field(errors, where .. ".order", world.order, { type = "number", min = 1, max = 9 })
+    check_field(errors, where .. ".type", world.type, { type = "string", one_of = { "core", "secret" } })
+    check_field(errors, where .. ".name", world.name, { type = "string" })
+    check_field(errors, where .. ".genre", world.genre, { type = "string" })
+    check_field(errors, where .. ".duration_seconds", world.duration_seconds, { type = "number", min = 480, max = 720 })
+    check_field(errors, where .. ".grade_profile", world.grade_profile, { type = "string" })
+    check_field(errors, where .. ".mastery_id", world.mastery_id, { type = "string" })
+    if world.order then
+      if orders[world.order] then errors[#errors + 1] = where .. ".order: duplicate order" end
+      orders[world.order] = true
+    end
+    if content.grade_profiles and content.grade_profiles.profiles
+      and not content.grade_profiles.profiles[world.grade_profile]
+    then
+      errors[#errors + 1] = where .. ".grade_profile: unknown profile"
+    end
+    for _, grade in ipairs({ "C", "B", "A", "S" }) do
+      local claim = world.rewards and world.rewards[grade]
+      if not claim or not content.meta_rewards or not content.meta_rewards[claim] then
+        errors[#errors + 1] = where .. ".rewards." .. grade .. ": unknown claim"
+      end
+    end
+    if world.first_clear_unlock and not catalog[world.first_clear_unlock] then
+      errors[#errors + 1] = where .. ".first_clear_unlock: unknown world"
+    end
+    if world.type == "secret" then
+      if type(world.parents) ~= "table" or #world.parents ~= 2 then
+        errors[#errors + 1] = where .. ".parents: secret worlds require two parents"
+      else
+        for index, parent in ipairs(world.parents) do
+          if not catalog[parent] then
+            errors[#errors + 1] = string.format("%s.parents[%d]: unknown world", where, index)
+          end
+        end
+      end
+    end
+  end
+  if count ~= 9 then errors[#errors + 1] = "content.world_tour: expected exactly nine worlds" end
+
+  for id, waves in pairs(content.world_tour_waves or {}) do
+    if not catalog[id] then
+      errors[#errors + 1] = "world_tour_waves." .. tostring(id) .. ": unknown world"
+    else
+      check_waves(errors, waves, content)
+    end
+  end
+end
+
+local function check_grade_profiles(errors, grade_profiles)
+  if type(grade_profiles) ~= "table" or type(grade_profiles.profiles) ~= "table" then
+    errors[#errors + 1] = "content.grade_profiles: table is missing"
+    return
+  end
+  for id, profile in pairs(grade_profiles.profiles) do
+    local total = 0
+    for _, pillar in ipairs({ "groove", "impact", "control", "craft", "world_mastery" }) do
+      check_field(errors, "grade_profiles." .. id .. "." .. pillar,
+        profile[pillar], { type = "number", min = 0, max = 100 })
+      total = total + (tonumber(profile[pillar]) or 0)
+    end
+    if total ~= 100 then
+      errors[#errors + 1] = "grade_profiles." .. id .. ": weights must sum to 100"
+    end
+  end
+end
+
+local function check_meta_perks(errors, content)
+  local perks = content.meta_perks
+  if type(perks) ~= "table" then
+    errors[#errors + 1] = "content.meta_perks: table is missing"
+    return
+  end
+  local count = 0
+  for id, perk in pairs(perks) do
+    count = count + 1
+    local where = "meta_perks." .. tostring(id)
+    if perk.id ~= id then errors[#errors + 1] = where .. ".id: must match key" end
+    check_field(errors, where .. ".name", perk.name, { type = "string" })
+    check_field(errors, where .. ".max_rank", perk.max_rank, { type = "number", min = 1, max = 5 })
+    check_field(errors, where .. ".balance_revision", perk.balance_revision, { type = "number", min = 1 })
+    if type(perk.source) ~= "table" then
+      errors[#errors + 1] = where .. ".source: table is required"
+    elseif perk.source.type == "world_grade"
+      and (not content.world_tour or not content.world_tour[perk.source.world_id])
+    then
+      errors[#errors + 1] = where .. ".source.world_id: unknown world"
+    end
+    for rank = 2, perk.max_rank or 1 do
+      if not perk.prices or type(perk.prices[rank]) ~= "number" then
+        errors[#errors + 1] = string.format("%s.prices[%d]: price is required", where, rank)
+      end
+    end
+    if type(perk.modifiers) ~= "table" or #perk.modifiers == 0 then
+      errors[#errors + 1] = where .. ".modifiers: non-empty array is required"
+    end
+  end
+  if count ~= 19 then errors[#errors + 1] = "content.meta_perks: expected exactly nineteen perks" end
+end
+
 -- Check a full content bundle. Returns an array of error strings (empty = valid).
 function Validate.check(content)
   local errors = {}
@@ -300,6 +411,14 @@ function Validate.check(content)
   end
   if content.stages ~= nil then check_stages(errors, content.stages, content) end
   if content.narrative ~= nil then check_narrative(errors, content.narrative) end
+  local has_world_tour_catalog = content.world_tour ~= nil
+    or content.meta_perks ~= nil or content.meta_rewards ~= nil
+    or content.grade_profiles ~= nil or content.remix_tiers ~= nil
+  if has_world_tour_catalog then
+    check_grade_profiles(errors, content.grade_profiles)
+    check_world_tour(errors, content)
+    check_meta_perks(errors, content)
+  end
   return errors
 end
 

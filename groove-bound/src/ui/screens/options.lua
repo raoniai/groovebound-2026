@@ -161,12 +161,24 @@ function OptionsScreen:_layout()
         w = math.min(170, row.rect.w * 0.40),
         h = 28,
       }
+      row.label_rect = {
+        x = row.rect.x + 42,
+        y = row.rect.y,
+        w = math.max(70, row.control.x - row.rect.x - 52),
+        h = row.rect.h,
+      }
       self.rows[#self.rows + 1] = row
       cursor_y[column] = cursor_y[column] + row_step
     end
     section.bottom = cursor_y[column]
     cursor_y[column] = cursor_y[column] + section_gap
   end
+  self.guide_rect = {
+    x = sections[3].header.x,
+    y = sections[3].bottom + self.layout_metrics.guide_gap,
+    w = sections[3].header.w,
+    h = 118,
+  }
   self.selected = clamp(self.selected, 1, #self.rows)
 end
 
@@ -207,10 +219,14 @@ function OptionsScreen:_draw_row(row)
   love.graphics.rectangle("line", rect.x, rect.y, rect.w, rect.h, 6, 6)
   Icons.draw(row.icon, rect.x + 22, rect.y + 24, 20,
     selected and accent or { 0.68, 0.66, 0.78, 1 })
-  love.graphics.setFont(Fonts.get(15))
+  local label_font = Fonts.get(rect.w < 400 and 13 or 15)
+  love.graphics.setFont(label_font)
   love.graphics.setColor(settings.ui.text_color)
-  love.graphics.print(row.label, rect.x + 42,
-    rect.y + (rect.h - Fonts.get(15):getHeight()) / 2)
+  local _, wrapped = label_font:getWrap(row.label, row.label_rect.w)
+  local line_count = math.min(2, #wrapped)
+  local label_h = line_count * label_font:getHeight()
+  love.graphics.printf(row.label, row.label_rect.x,
+    rect.y + (rect.h - label_h) / 2, row.label_rect.w, "left")
 
   local options = self.app.profile.options
   local control = row.control
@@ -273,9 +289,9 @@ function OptionsScreen:draw()
   for _, row in ipairs(self.rows) do self:_draw_row(row) end
 
   love.graphics.setColor(0.08, 0.07, 0.13, 0.92)
-  local guide = sections[3].header
-  local guide_y = sections[3].bottom + self.layout_metrics.guide_gap
-  love.graphics.rectangle("fill", guide.x, guide_y, guide.w, 118, 7, 7)
+  local guide = self.guide_rect
+  local guide_y = guide.y
+  love.graphics.rectangle("fill", guide.x, guide_y, guide.w, guide.h, 7, 7)
   love.graphics.setColor(0.76, 0.74, 0.84, 1)
   love.graphics.setFont(Fonts.get(14))
   love.graphics.print("PLAYSTATION MENU GUIDE", guide.x + 16, guide_y + 12)

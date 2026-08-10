@@ -24,13 +24,19 @@ end
 
 T["luck reels conceal the count before revealing every exact reward"] = function()
   local screen = fresh()
-  H.eq(screen:phase(), "spinning")
-  H.eq(screen:visible_reel_count(), 5)
+  H.eq(screen:phase(), "count_roll")
+  H.eq(screen:visible_reel_count(), 0)
+  H.is_true(screen:rolling_multiplier() == 1
+    or screen:rolling_multiplier() == 3
+    or screen:rolling_multiplier() == 5)
+  screen:update(screen:count_roll_duration() + 0.01)
+  H.eq(screen:visible_reel_count(), 3)
+  H.eq(screen:displayed_roll(), 3)
   local _, settled = screen:visible_symbol(1)
   H.is_false(settled)
-  screen:update(2.41)
+  screen:update(screen:reel_spin_duration())
   local _, first_settled = screen:visible_symbol(1)
-  H.is_false(first_settled)
+  H.is_true(first_settled)
   H.eq(screen:phase(), "settling")
   screen:update(screen:animation_duration())
   H.eq(screen:phase(), "complete")
@@ -51,13 +57,12 @@ T["chest reveal cannot be skipped until the animation finishes"] = function()
   H.eq(popped(), 1)
 end
 
-T["luck multiplier remains concealed until every reel has finished"] = function()
+T["luck multiplier resolves before the reward reels finish"] = function()
   local screen = fresh()
   H.is_nil(screen:displayed_roll())
-  screen:update(2.5)
-  H.is_nil(screen:displayed_roll())
-  screen:update(screen:animation_duration())
+  screen:update(screen:count_roll_duration() + 0.01)
   H.eq(screen:displayed_roll(), 3)
+  H.is_false(screen.complete)
 end
 
 return T

@@ -105,6 +105,8 @@ function CombatSystem:init(opts)
   self.frame_time_ms = 0
   self.final_boss_dead = false
   self.final_boss_spawned = false
+  self.final_boss_spawned_at = nil
+  self.stage_clear_chest_opened = false
   self.music_final_phase_latched = false
   self.wave_notice = nil
   self.wave_notice_time = 0
@@ -165,6 +167,8 @@ function CombatSystem:begin_stage(index, arena, initial)
   self.stage_clear_reported = false
   self.final_boss_dead = false
   self.final_boss_spawned = false
+  self.final_boss_spawned_at = nil
+  self.stage_clear_chest_opened = false
   self.overtime_latched = false
   self.music_final_phase_latched = false
   self.arena = assert(arena)
@@ -246,6 +250,35 @@ function CombatSystem:_difficulty_multiplier()
   return 1 + ((self.stage_index - 1) * 0.28 + progress * 0.62) * ramp
 end
 
+function CombatSystem:boss_pressure_snapshot()
+  local elapsed = self.final_boss_spawned_at
+    and math.max(0, self.ctx.time - self.final_boss_spawned_at) or 0
+  return {
+    elapsed = elapsed,
+    spawn_rate = 1 + math.min(1.35, elapsed * 0.018),
+    enemy_health = 1 + math.min(1.0, elapsed * 0.012),
+    enemy_speed = 1 + math.min(0.70, elapsed * 0.008),
+    enemy_damage = 1 + math.min(0.80, elapsed * 0.009),
+  }
+end
+
+function CombatSystem:boss_threat_snapshot()
+  local selected
+  self.ctx.world:each("enemy", function(enemy)
+    if not enemy.dead and enemy.definition.boss_type == "final" then selected = enemy end
+  end)
+  if not selected then return { active = false } end
+  return {
+    active = true,
+    boss_id = selected.definition.id,
+    name = selected.definition.name,
+    player_in_range = selected.target_in_attack_range == true,
+    range = selected.definition.attack_range or 0,
+    distance = selected.target_distance,
+    windup = selected.attack_windup,
+  }
+end
+
 function CombatSystem:spawn_enemy(definition, x, y)
   if definition.boss_type == "final" and self.final_boss_spawned then
     return nil
@@ -257,11 +290,16 @@ function CombatSystem:spawn_enemy(definition, x, y)
   local enemy = self.enemy_pool:acquire({
     definition = definition,
     assets = self.assets,
+    options = self.options,
     x = x,
     y = y,
-    health_multiplier = self:_difficulty_multiplier(),
+    health_multiplier = self:_difficulty_multiplier()
+      * (definition.boss_type and 1 or self:boss_pressure_snapshot().enemy_health),
   })
-  if definition.boss_type == "final" then self.final_boss_spawned = true end
+  if definition.boss_type == "final" then
+    self.final_boss_spawned = true
+    self.final_boss_spawned_at = self.ctx.time
+  end
   return self.ctx.world:add("enemy", enemy)
 end
 
@@ -300,6 +338,7 @@ function CombatSystem:_spawn_projectile(snapshot, angle)
 end
 
 function CombatSystem:_update_weapons(dt)
+  if self.final_boss_dead then return end
   if self.last_tuning_revision ~= self.tuning.revision then
     self.weapon_runtime:sync(self.inventory)
     self.last_tuning_revision = self.tuning.revision
@@ -356,6 +395,47 @@ function CombatSystem:_update_weapons(dt)
   end
 end
 
+function CombatSystem:_spawn_static_wave(enemy, damage_multiplier)
+  local count = enemy.definition.projectile_count or 16
+  for index = 1, count do
+    local angle = (index - 1) / count * math.pi * 2
+    self:_spawn_enemy_projectile(enemy, {
+      kind = "static_wave",
+      dx = math.cos(angle),
+      dy = math.sin(angle),
+    }, damage_multiplier)
+  end
+end
+
+function CombatSystem:_spawn_stage_clear_chest(enemy)
+  local x, y = enemy.x, enemy.y
+  if self.arena.safe_drop_position then
+    x, y = self.arena:safe_drop_position(x, y, 32)
+  end
+  local chest = self.reward_chest_pool:acquire({
+    assets = self.assets,
+    x = x,
+    y = y,
+    phase = 0,
+    special = true,
+    unlock_delay = 1.15,
+  })
+  self.wave_notice = "STAGE MASTERED  •  COLLECT THE ENCORE CHEST"
+  self.wave_notice_time = 6
+  return self.ctx.world:add("reward_chest", chest)
+end
+
+function CombatSystem:_enter_stage_clear_gate(enemy)
+  self.ctx.world:each("enemy", function(value)
+    if value ~= enemy then value.dead = true end
+  end)
+  self.ctx.world:each("projectile", function(value) value.dead = true end)
+  self.ctx.world:each("enemy_projectile", function(value) value.dead = true end)
+  self.ctx.world:each("xp_gem", function(value) value.magnetized = true end)
+  self.ctx.world:each("pickup", function(value) value.magnetized = true end)
+  self:_spawn_stage_clear_chest(enemy)
+end
+
 function CombatSystem:_kill_enemy(enemy)
   if enemy.rewards_claimed then return false end
   enemy.rewards_claimed = true
@@ -401,8 +481,10 @@ function CombatSystem:_kill_enemy(enemy)
     })
     self.ctx.world:add("xp_gem", gem)
   end
-  self:_try_spawn_rare_pickup(enemy)
-  if not enemy.suppress_reward_chest then self:_try_spawn_reward_chest(enemy) end
+  if enemy.definition.boss_type ~= "final" then
+    self:_try_spawn_rare_pickup(enemy)
+    if not enemy.suppress_reward_chest then self:_try_spawn_reward_chest(enemy) end
+  end
   self.vfx:spawn(
     "explosion", enemy.x, enemy.y,
     {
@@ -410,6 +492,9 @@ function CombatSystem:_kill_enemy(enemy)
       duration = enemy.definition.boss_type and 0.72 or 0.44,
     })
   if self.assets then self.assets:play("enemy_death", 0.05) end
+  if enemy.definition.boss_type == "final" then
+    self:_enter_stage_clear_gate(enemy)
+  end
   return true
 end
 
@@ -523,7 +608,16 @@ end
 
 function CombatSystem:_update_reward_chests(dt)
   self.ctx.world:each("reward_chest", function(chest)
-    if chest:update(dt, self.player) then self:_open_reward_chest() end
+    if chest:update(dt, self.player) then
+      if chest.special then
+        self.stage_clear_chest_opened = true
+        self.wave_notice = "ENCORE CHEST OPEN  •  STAGE COMPLETE"
+        self.wave_notice_time = 4
+        if self.assets then self.assets:play("level_up", 0.12) end
+      else
+        self:_open_reward_chest()
+      end
+    end
   end)
 end
 
@@ -619,10 +713,11 @@ end
 
 function CombatSystem:_update_enemies(dt)
   local difficulty = self:_difficulty_multiplier()
+  local pressure = self:boss_pressure_snapshot()
   local speed = self.tuning:get("enemies.speed_multiplier")
-    * (0.82 + difficulty * 0.18)
+    * (0.82 + difficulty * 0.18) * pressure.enemy_speed
   local damage_multiplier = self.tuning:get("enemies.damage_multiplier")
-    * difficulty
+    * difficulty * pressure.enemy_damage
   local knockback = self.tuning:get("combat.knockback_multiplier")
   self.ctx.world:each("enemy", function(enemy)
     local action = enemy:update(dt, self.player, speed, self.arena)
@@ -644,22 +739,10 @@ function CombatSystem:_update_enemies(dt)
         })
       end
     end
-    if enemy.definition.brain == "static"
-      and enemy.attack_cooldown <= 0
-      and distance_sq(self.player.x, self.player.y, enemy.x, enemy.y)
-        <= (enemy.definition.attack_range or 0) ^ 2
-    then
-      enemy.attack_cooldown = enemy.definition.attack_interval
-      if self.player:take_damage(enemy.definition.damage * damage_multiplier
-        * enemy.overtime_multiplier) then
-        self:_player_hit_feedback(0.38)
-        self.vfx:spawn("player_hurt", self.player.x, self.player.y, {
-          scale = 0.30,
-        })
-      end
-    end
     if action and action.kind == "note_bolt" then
       self:_spawn_enemy_projectile(enemy, action, damage_multiplier)
+    elseif action and action.kind == "static_wave" then
+      self:_spawn_static_wave(enemy, damage_multiplier)
     elseif action and action.kind == "resonance_pulse" then
       local range = enemy.definition.attack_range or 160
       if distance_sq(self.player.x, self.player.y, enemy.x, enemy.y)
@@ -695,7 +778,8 @@ function CombatSystem:_spawn_enemy_projectile(enemy, action, damage_multiplier)
     dy = action.dy,
     speed = enemy.definition.projectile_speed or 270,
     damage = enemy.definition.damage * damage_multiplier * enemy.overtime_multiplier,
-    radius = enemy.definition.boss_type and 11 or 8,
+    radius = action.kind == "static_wave" and 15
+      or enemy.definition.boss_type and 11 or 8,
     color = enemy.definition.color,
   })
   self.ctx.world:add("enemy_projectile", projectile)
@@ -772,8 +856,11 @@ function CombatSystem:update(dt)
   self:_update_overtime()
   local stage_time = self.ctx.time - self.stage_started_at
   local difficulty = self:_difficulty_multiplier()
-  self.spawner:update(
-    dt, stage_time, self.content.enemies, 0.85 + difficulty * 0.15)
+  if not self.final_boss_dead then
+    self.spawner:update(
+      dt, stage_time, self.content.enemies,
+      (0.85 + difficulty * 0.15) * self:boss_pressure_snapshot().spawn_rate)
+  end
   self:_update_enemies(dt)
   self:_update_weapons(dt)
   self:_update_projectiles(dt)
@@ -796,7 +883,7 @@ function CombatSystem:update(dt)
 
   if self.player.dead then return "defeat" end
   if self.final_boss_dead
-    and self.ctx.world:count("reward_chest") == 0
+    and self.stage_clear_chest_opened
     and not self.stage_clear_reported
   then
     self.stage_clear_reported = true
@@ -863,6 +950,13 @@ function CombatSystem:admin_clear_stage()
   final_enemy.dead = true
   final_enemy.suppress_reward_chest = true
   self:_kill_enemy(final_enemy)
+  self.ctx.world:each("reward_chest", function(chest)
+    if chest.special then
+      chest.x, chest.y = self.player.x, self.player.y
+      chest.unlock_delay = 0
+      self.ctx.world:moved(chest)
+    end
+  end)
   return true
 end
 

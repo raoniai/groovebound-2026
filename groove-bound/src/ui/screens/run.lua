@@ -123,24 +123,25 @@ function RunScreen:update(dt)
   elseif outcome == "stage_clear" and not self.transitioning then
     self.pending_outcome = nil
     self.transitioning = true
-    self.music_event_serial = self.music_event_serial + 1
-    self.music_event = {
-      cue = "stage_clear_sting",
-      serial = self.music_event_serial,
-    }
-    local CutsceneScreen = require("src.ui.screens.cutscene")
-    self.app.states:push(CutsceneScreen(
-      self.app,
-      self.app.content.narrative.stage2_transition,
-      { result = "stage2" }))
+    local StageCompleteScreen = require("src.ui.screens.stage_complete")
+    local stage = self.app.content.stages[self.combat.stage_index]
+    self.app.states:push(StageCompleteScreen(self.app, {
+      outcome = "stage_clear",
+      stage_index = self.combat.stage_index,
+      stage_name = stage.name,
+      stats = self.combat.stats,
+    }))
   elseif outcome == "victory" and not self.finished then
     self.pending_outcome = nil
     self.finished = true
-    local CutsceneScreen = require("src.ui.screens.cutscene")
-    self.app.states:push(CutsceneScreen(
-      self.app,
-      self.app.content.narrative.ending,
-      { result = "campaign_complete" }))
+    local StageCompleteScreen = require("src.ui.screens.stage_complete")
+    local stage = self.app.content.stages[self.combat.stage_index]
+    self.app.states:push(StageCompleteScreen(self.app, {
+      outcome = "victory",
+      stage_index = self.combat.stage_index,
+      stage_name = stage.name,
+      stats = self.combat.stats,
+    }))
   elseif outcome == "defeat" and not self.finished then
     self.pending_outcome = nil
     self.finished = true
@@ -171,7 +172,25 @@ end
 
 function RunScreen:resume(result)
   self.choice_open = false
-  if result == "stage2" then
+  if result and result.kind == "stage_complete" then
+    self.music_event_serial = self.music_event_serial + 1
+    self.music_event = {
+      cue = "stage_clear_sting",
+      serial = self.music_event_serial,
+    }
+    local CutsceneScreen = require("src.ui.screens.cutscene")
+    if result.outcome == "stage_clear" then
+      self.app.states:push(CutsceneScreen(
+        self.app,
+        self.app.content.narrative.stage2_transition,
+        { result = "stage2" }))
+    else
+      self.app.states:push(CutsceneScreen(
+        self.app,
+        self.app.content.narrative.ending,
+        { result = "campaign_complete" }))
+    end
+  elseif result == "stage2" then
     self.music_event = nil
     self.arena = Arena({
       assets = self.app.assets,
@@ -204,7 +223,9 @@ function RunScreen:draw()
   self.camera:detach()
 
   self:_draw_player_feedback()
+  self:_draw_boss_warning()
   self.hud:draw()
+  self:_draw_boss_pointers()
   self:_draw_reward_chest_pointers()
   if self.seed_notice > 0 then
     local Fonts = require("src.ui.fonts")
@@ -214,6 +235,46 @@ function RunScreen:draw()
       0, love.graphics.getHeight() - 42,
       love.graphics.getWidth(), "center")
   end
+end
+
+function RunScreen:boss_warning_state()
+  local threat = self.combat:boss_threat_snapshot()
+  if not threat.active or not threat.player_in_range then return { active = false } end
+  return {
+    active = true,
+    title = threat.boss_id == "static_baron"
+      and "DANGER: STATIC WAVE RANGE"
+      or "DANGER: BOSS ATTACK RANGE",
+    detail = threat.windup and threat.windup > 0
+      and "ATTACK CHARGING" or "MOVE OUT OF RANGE",
+  }
+end
+
+function RunScreen:_draw_boss_warning()
+  local warning = self:boss_warning_state()
+  if not warning.active then return end
+  local Fonts = require("src.ui.fonts")
+  local w, h = love.graphics.getDimensions()
+  local reduced = self.app.profile.options.reduced_flash == true
+    or self.app.profile.options.hit_flash == false
+  local pulse = reduced and 0.72
+    or (0.55 + 0.45 * math.sin(self.ctx.time * 13))
+  love.graphics.setColor(1.0, 0.05, 0.24, 0.10 + pulse * 0.12)
+  love.graphics.rectangle("fill", 0, 0, w, h)
+  love.graphics.setColor(1.0, 0.22, 0.46, 0.72 + pulse * 0.24)
+  love.graphics.setLineWidth(6)
+  love.graphics.rectangle("line", 6, 6, w - 12, h - 12, 12, 12)
+  love.graphics.setLineWidth(1)
+
+  local panel_w = math.min(440, w - 48)
+  love.graphics.setColor(0.035, 0.008, 0.055, 0.94)
+  love.graphics.rectangle("fill", (w - panel_w) / 2, 22, panel_w, 64, 10, 10)
+  love.graphics.setColor(1.0, 0.30, 0.52, 1)
+  love.graphics.setFont(Fonts.get(20))
+  love.graphics.printf(warning.title, (w - panel_w) / 2, 31, panel_w, "center")
+  love.graphics.setColor(1.0, 0.88, 0.94, 1)
+  love.graphics.setFont(Fonts.get(13))
+  love.graphics.printf(warning.detail, (w - panel_w) / 2, 59, panel_w, "center")
 end
 
 function RunScreen:_draw_player_feedback()
@@ -303,10 +364,45 @@ function RunScreen:_draw_reward_chest_pointers()
   love.graphics.setLineWidth(1)
 end
 
+function RunScreen:_draw_boss_pointers()
+  local w, h = love.graphics.getDimensions()
+  local pointers = self:boss_pointers(w, h)
+  local Fonts = require("src.ui.fonts")
+  for index, pointer in ipairs(pointers) do
+    local pulse = 1 + math.sin(self.ctx.time * 4.5 + index) * 0.10
+    love.graphics.setColor(0.035, 0.008, 0.065, 0.94)
+    love.graphics.circle("fill", pointer.x, pointer.y, 29 * pulse)
+    love.graphics.setColor(1.0, 0.22, 0.62, 1)
+    love.graphics.setLineWidth(3)
+    love.graphics.circle("line", pointer.x, pointer.y, 29 * pulse)
+    love.graphics.push()
+    love.graphics.translate(pointer.x, pointer.y)
+    love.graphics.rotate(pointer.angle)
+    love.graphics.polygon("fill", 22, 0, -7, -12, -2, 0, -7, 12)
+    love.graphics.pop()
+    love.graphics.setFont(Fonts.get(11))
+    love.graphics.setColor(1.0, 0.86, 0.94, 1)
+    love.graphics.printf("BOSS", pointer.x - 32, pointer.y + 34, 64, "center")
+  end
+  love.graphics.setLineWidth(1)
+end
+
 function RunScreen:reward_chest_pointers(w, h)
   local pointers = {}
   self.ctx.world:each("reward_chest", function(chest)
     pointers[#pointers + 1] = self:reward_chest_pointer(chest, w, h)
+  end)
+  return pointers
+end
+
+function RunScreen:boss_pointers(w, h)
+  local pointers = {}
+  self.ctx.world:each("enemy", function(enemy)
+    if not enemy.dead and enemy.definition.boss_type == "final" then
+      local pointer = self:reward_chest_pointer(enemy, w, h)
+      pointer.label = string.upper(enemy.definition.name or "BOSS")
+      pointers[#pointers + 1] = pointer
+    end
   end)
   return pointers
 end

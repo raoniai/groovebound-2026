@@ -1,0 +1,83 @@
+local H = require("tests.helpers")
+local CharacterSelectScreen = require("src.ui.screens.character_select")
+local ResultsScreen = require("src.ui.screens.results")
+local OptionsScreen = require("src.ui.screens.options")
+local ControlsScreen = require("src.ui.screens.controls")
+
+local T = {}
+
+local function with_dimensions(w, h, fn)
+  local previous = _G.love
+  _G.love = {
+    graphics = {
+      getDimensions = function() return w, h end,
+      getWidth = function() return w end,
+      getHeight = function() return h end,
+    },
+  }
+  local ok, err = xpcall(fn, debug.traceback)
+  _G.love = previous
+  if not ok then error(err, 0) end
+end
+
+local function inside(rect, w, h)
+  return rect.x >= 0 and rect.y >= 0
+    and rect.x + rect.w <= w and rect.y + rect.h <= h
+end
+
+local function overlaps(a, b)
+  return a.x < b.x + b.w and b.x < a.x + a.w
+    and a.y < b.y + b.h and b.y < a.y + a.h
+end
+
+T["character cards and result actions stay aligned at both supported canvases"] = function()
+  for _, dimensions in ipairs({ { 800, 600 }, { 1280, 720 } }) do
+    with_dimensions(dimensions[1], dimensions[2], function()
+      local characters = CharacterSelectScreen({})
+      characters:_layout()
+      H.is_true(inside(characters.cards[1], dimensions[1], dimensions[2]))
+      H.is_true(inside(characters.cards[2], dimensions[1], dimensions[2]))
+      H.is_false(overlaps(characters.cards[1], characters.cards[2]))
+      H.is_true(characters.cards[1].y + characters.cards[1].h <= dimensions[2] - 40)
+
+      local results = ResultsScreen({}, {})
+      results:_layout()
+      local first, second = results.buttons.buttons[1], results.buttons.buttons[2]
+      H.is_true(inside(first, dimensions[1], dimensions[2]))
+      H.is_true(inside(second, dimensions[1], dimensions[2]))
+      H.is_false(overlaps(first, second))
+    end)
+  end
+end
+
+T["settings labels, controls, rows and guide remain disjoint at compact size"] = function()
+  with_dimensions(800, 600, function()
+    local screen = OptionsScreen({})
+    screen:_layout()
+    for _, row in ipairs(screen.rows) do
+      H.is_true(inside(row.rect, 800, 600))
+      H.is_false(overlaps(row.label_rect, row.control))
+    end
+    H.is_true(inside(screen.guide_rect, 800, 600))
+    for _, row in ipairs(screen.rows) do
+      if row.rect.x == screen.guide_rect.x then
+        H.is_false(overlaps(row.rect, screen.guide_rect))
+      end
+    end
+  end)
+end
+
+T["keyboard binding buttons fit without overlapping on compact screens"] = function()
+  with_dimensions(800, 600, function()
+    local screen = ControlsScreen({ states = { pop = function() end } })
+    screen:_layout()
+    for index, button in ipairs(screen.buttons.buttons) do
+      H.is_true(inside(button, 800, 600))
+      if index > 1 then
+        H.is_false(overlaps(screen.buttons.buttons[index - 1], button))
+      end
+    end
+  end)
+end
+
+return T

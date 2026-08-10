@@ -8,9 +8,10 @@ local ChestRewardScreen = class()
 ChestRewardScreen.kind = "chest_reward"
 ChestRewardScreen.opaque = false
 
-local SPIN_DURATION = 2.4
+local COUNT_ROLL_DURATION = 1.65
+local REEL_SPIN_DURATION = 2.25
 local REEL_STAGGER = 0.16
-local FINAL_HOLD = 0.55
+local FINAL_HOLD = 0.65
 
 local kind_colors = {
   weapon_add = { 0.28, 0.92, 1.0, 1 },
@@ -78,40 +79,66 @@ function ChestRewardScreen:_build_symbols()
 end
 
 function ChestRewardScreen:animation_duration()
-  return SPIN_DURATION
+  return COUNT_ROLL_DURATION + REEL_SPIN_DURATION
     + math.max(0, #self.rewards - 1) * REEL_STAGGER
     + FINAL_HOLD
 end
 
+function ChestRewardScreen:count_roll_duration()
+  return COUNT_ROLL_DURATION
+end
+
+function ChestRewardScreen:reel_spin_duration()
+  return REEL_SPIN_DURATION
+end
+
 function ChestRewardScreen:_settle_time(index)
-  return SPIN_DURATION + (index - 1) * REEL_STAGGER
+  return COUNT_ROLL_DURATION + REEL_SPIN_DURATION
+    + (index - 1) * REEL_STAGGER
 end
 
 function ChestRewardScreen:phase()
   if self.complete then return "complete" end
-  if self.elapsed >= SPIN_DURATION then return "settling" end
+  if self.elapsed < COUNT_ROLL_DURATION then return "count_roll" end
+  if self.elapsed >= COUNT_ROLL_DURATION + REEL_SPIN_DURATION then
+    return "settling"
+  end
   return "spinning"
 end
 
 function ChestRewardScreen:displayed_roll()
-  return self.complete and (self.reveal.roll or #self.rewards) or nil
+  return self.elapsed >= COUNT_ROLL_DURATION
+    and (self.reveal.roll or #self.rewards) or nil
 end
 
 function ChestRewardScreen:visible_reel_count()
-  return self.complete and math.max(1, #self.rewards) or 5
+  if self.elapsed < COUNT_ROLL_DURATION then return 0 end
+  return math.max(1, self.reveal.roll or #self.rewards)
+end
+
+function ChestRewardScreen:rolling_multiplier()
+  if self.elapsed >= COUNT_ROLL_DURATION then
+    return self.reveal.roll or #self.rewards
+  end
+  local sequence = { 1, 3, 5, 3, 1, 5 }
+  local progress = math.max(0, math.min(1, self.elapsed / COUNT_ROLL_DURATION))
+  local eased = 1 - (1 - progress) ^ 3
+  local step = math.floor(eased * 24)
+  return sequence[step % #sequence + 1]
 end
 
 function ChestRewardScreen:_cycle_symbol(index, offset)
   if #self.symbols == 0 then return self.rewards[index] end
-  local progress = math.min(1, self.elapsed / SPIN_DURATION)
-  local distance = self.elapsed * (18 + index * 0.85)
-    - self.elapsed * self.elapsed * 2.2 * progress
+  local reel_elapsed = math.max(0, self.elapsed - COUNT_ROLL_DURATION)
+  local progress = math.min(1, reel_elapsed / REEL_SPIN_DURATION)
+  local distance = reel_elapsed * (19 + index * 0.85)
+    - reel_elapsed * reel_elapsed * 2.1 * progress
   local step = math.floor(distance) + index * 5 + (offset or 0)
   return self.symbols[step % #self.symbols + 1]
 end
 
 function ChestRewardScreen:visible_symbol(index)
-  if self.complete and self.rewards[index] then
+  if index <= self.settled_count and self.rewards[index] then
     return self.rewards[index], true
   end
   return self:_cycle_symbol(index, 0), false
@@ -216,9 +243,10 @@ function ChestRewardScreen:_draw_reel(index, rect)
   else
     local previous_scissor = { love.graphics.getScissor() }
     love.graphics.setScissor(rect.x + 4, rect.y + 4, rect.w - 8, 174)
-    local progress = math.min(1, self.elapsed / SPIN_DURATION)
-    local distance = self.elapsed * (18 + index * 0.85)
-      - self.elapsed * self.elapsed * 2.2 * progress
+    local reel_elapsed = math.max(0, self.elapsed - COUNT_ROLL_DURATION)
+    local progress = math.min(1, reel_elapsed / REEL_SPIN_DURATION)
+    local distance = reel_elapsed * (19 + index * 0.85)
+      - reel_elapsed * reel_elapsed * 2.1 * progress
     local fraction = distance % 1
     local jitter = math.sin(self.elapsed * (24 + index))
       * math.max(0, 1 - progress) * 3
@@ -246,7 +274,7 @@ function ChestRewardScreen:_draw_reel(index, rect)
   love.graphics.setColor(settings.ui.text_color)
   love.graphics.setFont(Fonts.get(#self.rewards >= 5 and 16 or 19))
   love.graphics.printf(
-    settled and symbol.title or "? ? ?",
+    settled and symbol.title or "SPINNING",
     rect.x + 10, rect.y + 204, rect.w - 20, "center")
   if settled and symbol.description then
     love.graphics.setColor(0.72, 0.70, 0.82, 1)
@@ -266,32 +294,54 @@ function ChestRewardScreen:draw()
   local phase = self:phase()
   love.graphics.setColor(1.0, 0.76, 0.22, 1)
   love.graphics.setFont(Fonts.get(38))
-  love.graphics.printf("CHEST LUCK", 0, 42, w, "center")
+  love.graphics.printf("MYSTERY CHEST", 0, 42, w, "center")
   love.graphics.setColor(settings.ui.text_color)
   love.graphics.setFont(Fonts.get(18))
   local displayed_roll = self:displayed_roll()
   love.graphics.printf(
-    "LUCK " .. (displayed_roll and ("×" .. displayed_roll) or "× ?") .. "  •  "
-      .. (phase == "complete" and "YOUR REWARDS ARE LOCKED IN"
+    "LUCK " .. (displayed_roll and ("×" .. displayed_roll) or "ROLLING") .. "  •  "
+      .. (phase == "count_roll" and "WILL IT BE 1, 3, OR 5?"
+        or phase == "complete" and "YOUR REWARDS ARE LOCKED IN"
         or phase == "settling" and "THE REELS ARE DECELERATING..."
         or "THE GROOVE IS ROLLING..."),
     0, 94, w, "center")
 
   local count = self:visible_reel_count()
-  local gap = math.max(10, math.min(18, w * 0.012))
-  local available_w = math.min(1120, w - 48)
-  local reel_w = math.min(300, (available_w - gap * (count - 1)) / count)
-  local total_w = reel_w * count + gap * (count - 1)
-  local start_x = (w - total_w) / 2
-  local reel_y = 130
-  local reel_h = math.min(324, h - 270)
-  for index = 1, count do
-    self:_draw_reel(index, {
-      x = start_x + (index - 1) * (reel_w + gap),
-      y = reel_y,
-      w = reel_w,
-      h = reel_h,
-    })
+  if phase == "count_roll" then
+    local multiplier = self:rolling_multiplier()
+    local progress = math.min(1, self.elapsed / COUNT_ROLL_DURATION)
+    local shake = math.sin(self.elapsed * 34) * (1 - progress) * 9
+    local pulse = 1 + math.sin(self.elapsed * 13) * 0.06
+    love.graphics.setColor(0.10, 0.04, 0.19, 0.98)
+    love.graphics.circle("fill", w / 2 + shake, h / 2 - 4, 132 * pulse)
+    love.graphics.setColor(0.28, 0.92, 1.0, 0.22)
+    love.graphics.circle("fill", w / 2 + shake, h / 2 - 4, 104 * pulse)
+    love.graphics.setColor(1.0, 0.76, 0.22, 1)
+    love.graphics.setLineWidth(5)
+    love.graphics.circle("line", w / 2 + shake, h / 2 - 4, 132 * pulse)
+    love.graphics.setLineWidth(1)
+    love.graphics.setFont(Fonts.get(68))
+    love.graphics.printf("×" .. multiplier, w / 2 - 130 + shake,
+      h / 2 - 51, 260, "center")
+    love.graphics.setFont(Fonts.get(16))
+    love.graphics.setColor(0.82, 0.80, 0.90, 1)
+    love.graphics.printf("1  •  3  •  5", w / 2 - 150, h / 2 + 92, 300, "center")
+  else
+    local gap = math.max(10, math.min(18, w * 0.012))
+    local available_w = math.min(1120, w - 48)
+    local reel_w = math.min(300, (available_w - gap * (count - 1)) / count)
+    local total_w = reel_w * count + gap * (count - 1)
+    local start_x = (w - total_w) / 2
+    local reel_y = 130
+    local reel_h = math.min(324, h - 270)
+    for index = 1, count do
+      self:_draw_reel(index, {
+        x = start_x + (index - 1) * (reel_w + gap),
+        y = reel_y,
+        w = reel_w,
+        h = reel_h,
+      })
+    end
   end
 
   if self.complete then
@@ -314,7 +364,8 @@ function ChestRewardScreen:draw()
     { symbol = "cross", label = "Continue" },
     { symbol = "circle", label = "Close" },
   } or {
-    { symbol = "options", label = "Luck rolling" },
+    { symbol = "options", label = phase == "count_roll"
+      and "Rolling 1 / 3 / 5" or "Reward reels spinning" },
   }, h - 30, w, { font_size = 13, glyph_size = 18, gap = 18 })
   UIScale.finish()
 end

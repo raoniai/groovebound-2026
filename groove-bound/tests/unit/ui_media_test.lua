@@ -40,6 +40,12 @@ T["runtime UI artwork and character logos have stable production mappings"] = fu
     "assets/generated/campaign/joe-logo.png")) >= 1000)
   H.is_true(select(1, png_dimensions(
     "assets/generated/campaign/lyra-vex-logo.png")) >= 1000)
+  local encore_w, encore_h = png_dimensions(
+    "assets/generated/campaign/stage-clear-chest.png")
+  H.is_true(encore_w >= 1000)
+  H.is_true(encore_h >= 1000)
+  H.eq(png_color_type(
+    "assets/generated/campaign/stage-clear-chest.png"), 6)
 end
 
 T["new Stage 2 and ending videos are Ogg runtime media"] = function()

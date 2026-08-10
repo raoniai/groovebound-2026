@@ -53,6 +53,47 @@ T["every active chest receives its own pointer"] = function()
   H.eq(#pointers, 3)
 end
 
+T["every living final boss receives a pointer while ordinary enemies do not"] = function()
+  local screen = fresh()
+  local enemies = {
+    { x = 1520, y = 800, dead = false,
+      definition = { boss_type = "final", name = "Static Baron" } },
+    { x = 900, y = 1000, dead = false,
+      definition = { boss_type = nil, name = "Monotone" } },
+  }
+  screen.ctx = {
+    world = {
+      each = function(_, kind, callback)
+        H.eq(kind, "enemy")
+        for _, enemy in ipairs(enemies) do callback(enemy) end
+      end,
+    },
+  }
+  local pointers = screen:boss_pointers(1280, 720)
+  H.eq(#pointers, 1)
+  H.eq(pointers[1].label, "STATIC BARON")
+  H.is_true(pointers[1].on_screen)
+end
+
+T["boss danger warning names the attack when the player is in range"] = function()
+  local screen = fresh()
+  screen.combat = {
+    boss_threat_snapshot = function()
+      return {
+        active = true,
+        boss_id = "static_baron",
+        name = "Static Baron",
+        player_in_range = true,
+        windup = 0.4,
+      }
+    end,
+  }
+  local warning = screen:boss_warning_state()
+  H.is_true(warning.active)
+  H.eq(warning.title, "DANGER: STATIC WAVE RANGE")
+  H.eq(warning.detail, "ATTACK CHARGING")
+end
+
 T["plus and minus adjust and persist gameplay zoom presets"] = function()
   local saved = 0
   local screen = RunScreen({
@@ -70,7 +111,7 @@ T["plus and minus adjust and persist gameplay zoom presets"] = function()
   H.eq(saved, 2)
 end
 
-T["a final chest reveal completes before its pending stage transition"] = function()
+T["a final chest reveal and stage confirmation complete before the cutscene"] = function()
   local pushed = {}
   local queue = {
     { roll = 1, rewards = {
@@ -93,6 +134,8 @@ T["a final chest reveal completes before its pending stage transition"] = functi
   screen.pending_outcome = "stage_clear"
   screen.music_event_serial = 0
   screen.combat = {
+    stage_index = 1,
+    stats = { kills = 0, bosses = 1 },
     take_pending_chest_reveal = function()
       return table.remove(queue, 1)
     end,
@@ -104,8 +147,10 @@ T["a final chest reveal completes before its pending stage transition"] = functi
   H.eq(screen.pending_outcome, "stage_clear")
   screen:resume({ kind = "chest_reward" })
   screen:update(0.1)
-  H.eq(pushed[2], "cutscene")
+  H.eq(pushed[2], "stage_complete")
   H.is_nil(screen.pending_outcome)
+  screen:resume({ kind = "stage_complete", outcome = "stage_clear" })
+  H.eq(pushed[3], "cutscene")
 end
 
 return T

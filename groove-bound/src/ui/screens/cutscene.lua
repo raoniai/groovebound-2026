@@ -142,6 +142,14 @@ function CutsceneScreen:video_fade_alpha()
   return math.max(fade_in, fade_out)
 end
 
+function CutsceneScreen:video_zoom()
+  if not self.video_end_elapsed then return 1 end
+  local options = self.app.profile and self.app.profile.options or {}
+  if options.reduced_motion == true then return 1 end
+  local progress = math.min(1, self.video_end_elapsed / VIDEO_FADE_OUT_DURATION)
+  return 1 + progress * progress * 0.09
+end
+
 function CutsceneScreen:_toggle_video()
   if not self.video or self.video_ended then return end
   if self.video_paused then
@@ -261,7 +269,7 @@ function CutsceneScreen:_draw_video(w, h)
   love.graphics.setColor(0, 0, 0, 1)
   love.graphics.rectangle("fill", 0, 0, w, h)
   local video_w, video_h = self.video:getDimensions()
-  local scale = math.min(w / video_w, h / video_h)
+  local scale = math.min(w / video_w, h / video_h) * self:video_zoom()
   local draw_w, draw_h = video_w * scale, video_h * scale
   local draw_x, draw_y = (w - draw_w) / 2, (h - draw_h) / 2
   self.video_rect = { x = draw_x, y = draw_y, w = draw_w, h = draw_h }

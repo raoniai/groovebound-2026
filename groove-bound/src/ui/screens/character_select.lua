@@ -143,13 +143,14 @@ function CharacterSelectScreen:draw()
 
     local weapon = self.app.content.weapons[character.starting_weapon]
     local info_y = stats_y + 88
+    local info_h = math.min(98, card.y + card.h - info_y - 14)
     love.graphics.setColor(0.035, 0.025, 0.08, 0.90)
     love.graphics.rectangle("fill",
-      card.x + 20, info_y, card.w - 40, 82, 8, 8)
+      card.x + 20, info_y, card.w - 40, info_h, 8, 8)
     love.graphics.setColor(selected and settings.ui.accent_color
       or { 0.32, 0.28, 0.46, 1 })
     love.graphics.rectangle("line",
-      card.x + 20, info_y, card.w - 40, 82, 8, 8)
+      card.x + 20, info_y, card.w - 40, info_h, 8, 8)
     self.app.assets:draw_weapon_icon(
       weapon.icon, card.x + 61, info_y + 41, 70)
     love.graphics.setFont(Fonts.get(13))
@@ -164,8 +165,8 @@ function CharacterSelectScreen:draw()
     love.graphics.setFont(Fonts.get(12))
     love.graphics.setColor(0.76, 0.74, 0.84, 1)
     love.graphics.printf(
-      character.trait_text, card.x + 205, info_y + 52,
-      card.w - 237, "left")
+      character.trait_text, card.x + 105, info_y + 69,
+      card.w - 141, "left")
   end
 
   love.graphics.setFont(Fonts.get(17))

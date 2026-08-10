@@ -135,6 +135,15 @@ T["video cutscenes fade in and auto-finish two seconds after ending"] = function
   H.eq(completed, 1)
 end
 
+T["ended video zooms into the fade unless reduced motion is enabled"] = function()
+  local screen = fresh("JOE", "Video transition")
+  screen.video = { isPlaying = function() return false end }
+  screen.video_end_elapsed = 1
+  H.is_true(screen:video_zoom() > 1)
+  screen.app.profile = { options = { reduced_motion = true } }
+  H.eq(screen:video_zoom(), 1)
+end
+
 T["Circle skips both video and storyboard cutscenes immediately"] = function()
   local completed = 0
   local storyboard = fresh("JOE", "Skip me")

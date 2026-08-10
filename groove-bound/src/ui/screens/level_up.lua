@@ -265,11 +265,20 @@ function LevelUpScreen:_draw_choice_stat_icons(choice, x, y, width, color)
   local item_w = width / #items
   for index, item in ipairs(items) do
     local item_x = x + (index - 1) * item_w
-    Icons.draw(item.icon, item_x + 11, y + 11, 18,
-      { 0.34, 0.92, 1.0, 0.92 })
-    love.graphics.setColor(color)
-    love.graphics.setFont(Fonts.get(13))
-    love.graphics.print(item.value, item_x + 27, y + 5)
+    if item_w < 70 then
+      Icons.draw(item.icon, item_x + item_w / 2, y + 9, 16,
+        { 0.34, 0.92, 1.0, 0.92 })
+      love.graphics.setColor(color)
+      love.graphics.setFont(Fonts.get(11))
+      love.graphics.printf(item.value, item_x, y + 21, item_w, "center")
+    else
+      Icons.draw(item.icon, item_x + 11, y + 11, 18,
+        { 0.34, 0.92, 1.0, 0.92 })
+      love.graphics.setColor(color)
+      love.graphics.setFont(Fonts.get(13))
+      love.graphics.printf(item.value, item_x + 27, y + 5,
+        item_w - 29, "left")
+    end
   end
 end
 

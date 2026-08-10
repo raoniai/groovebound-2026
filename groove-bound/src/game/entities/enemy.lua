@@ -18,6 +18,7 @@ function Enemy:reset(opts)
   self.id = assert(opts.definition.id)
   self.definition = opts.definition
   self.assets = opts.assets
+  self.options = opts.options or {}
   self.x, self.y = opts.x, opts.y
   self.radius = opts.definition.size
   self.hp = opts.definition.hp * (opts.health_multiplier or 1)
@@ -41,6 +42,8 @@ function Enemy:reset(opts)
   self.knockback_x, self.knockback_y = 0, 0
   self.overtime_multiplier = 1
   self.overtime_enraged = false
+  self.target_in_attack_range = false
+  self.target_distance = math.huge
 end
 
 function Enemy:enrage_overtime(multiplier)
@@ -62,6 +65,9 @@ function Enemy:update(dt, player, speed_multiplier, arena)
   self.brain_time = self.brain_time + dt
   local dx, dy = player.x - self.x, player.y - self.y
   local length = math.sqrt(dx * dx + dy * dy)
+  self.target_distance = length
+  self.target_in_attack_range = (self.definition.attack_range or 0) > 0
+    and length <= self.definition.attack_range
   if self.attack_windup > 0 then
     self.attack_windup = math.max(0, self.attack_windup - dt)
     if self.attack_windup == 0 then
@@ -177,6 +183,19 @@ end
 function Enemy:draw()
   if self.dead then return end
   local color = self.definition.color or { 1, 1, 1, 1 }
+  if self.definition.attack_kind == "static_wave" and self.target_in_attack_range then
+    local reduced = self.options.reduced_flash == true
+      or self.options.hit_flash == false
+    local pulse = reduced and 0.55
+      or (0.5 + 0.5 * math.sin(self.brain_time * 12))
+    local range = self.definition.attack_range
+    love.graphics.setColor(1.0, 0.12, 0.38, 0.055 + pulse * 0.075)
+    love.graphics.circle("fill", self.x, self.y, range)
+    love.graphics.setColor(1.0, 0.32, 0.58, 0.48 + pulse * 0.38)
+    love.graphics.setLineWidth(5)
+    love.graphics.circle("line", self.x, self.y, range)
+    love.graphics.setLineWidth(1)
+  end
   if self.flash > 0 then
     color = math.floor(self.flash * 60) % 2 == 0
       and { 1, 1, 1, 1 }

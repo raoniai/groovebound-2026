@@ -198,6 +198,8 @@ function Assets.load()
     self.pickup_cell_h = grid_quads(self.pickups, 4, 2)
   self.reward_chest = image(
     "assets/generated/campaign/musical-chest-atlas.png")
+  self.stage_clear_chest = image(
+    "assets/generated/campaign/stage-clear-chest.png")
   self.reward_chest_quads,
     self.reward_chest_cell_w,
     self.reward_chest_cell_h = grid_quads(self.reward_chest, 4, 2)
@@ -596,6 +598,13 @@ function Assets:draw_reward_chest(frame, x, y, size, opts)
     self.reward_chest, self.reward_chest_quads[row][col], x, y,
     opts.rotation or 0, scale, scale,
     self.reward_chest_cell_w / 2, self.reward_chest_cell_h / 2)
+  return true
+end
+
+function Assets:draw_stage_clear_chest(x, y, size, opts)
+  draw_centered_fit(
+    self.stage_clear_chest,
+    x - size / 2, y - size / 2, size, size, opts)
   return true
 end
 

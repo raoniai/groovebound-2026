@@ -394,3 +394,24 @@ title background, and the obsolete first-party game-over panel as references.
 It requested a 16:9 neon Backbeat defeat scene with both heroes visibly tired
 but defiant, clean upper title space, lower statistics space, no embedded text,
 no logos, no gore, and no watermark.
+
+## Encore Gate stage-clear chest
+
+**Generated:** 2026-08-10 with OpenAI image generation in Codex built-in mode
+
+| Runtime file | Role |
+|---|---|
+| `campaign/stage-clear-chest.png` (1024x1024 RGBA) | Unique boss-clear objective chest |
+
+The project-owned musical chest atlas was used only as a visual-style
+reference. The prompt requested one new, closed, three-quarter-view chest with
+a crown silhouette, vinyl crest, cyan speaker-reactor, deep-purple cabinet,
+magenta waveform lighting and gold hardware. It explicitly excluded text, UI,
+characters, loose particles and a scene background, and required legibility at
+72-108 gameplay pixels. The flat green source is preserved as
+`source-candidates/stage-clear-chest-source.png`; the runtime image was
+converted locally with the bundled soft-matte and despill helper. Alpha bounds,
+dimensions and transparent RGBA colour type were inspected before integration.
+The runtime copy was then center-cropped around its alpha bounds and resized
+with nearest-neighbour sampling so its crown and speaker remain focal at play
+scale; the uncropped 1254x1254 source remains preserved.

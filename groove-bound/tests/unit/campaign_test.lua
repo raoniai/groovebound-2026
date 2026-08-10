@@ -128,6 +128,75 @@ T["later waves are dense and add shootable ranged pressure"] = function()
   H.is_true(Content.enemies.keyboard_centipede.projectile_speed > 0)
 end
 
+T["Static Baron telegraphs range and emits visible radial wave projectiles"] = function()
+  local combat, ctx, player = fresh("joe")
+  local boss = combat:admin_spawn_final_boss()
+  boss.x, boss.y = player.x + 160, player.y
+  boss.attack_cooldown = 0
+
+  combat:_update_enemies(0.01)
+  local threat = combat:boss_threat_snapshot()
+  H.eq(threat.boss_id, "static_baron")
+  H.is_true(threat.player_in_range)
+  H.is_true(threat.windup > 0)
+  H.eq(ctx.world:count("enemy_projectile"), 0)
+
+  combat:_update_enemies(Content.enemies.static_baron.windup)
+  H.is_true(ctx.world:count("enemy_projectile") >= 12)
+end
+
+T["boss pressure increases spawn rate health speed and damage over time"] = function()
+  local combat, ctx = fresh("joe")
+  combat:admin_spawn_final_boss()
+  local initial = combat:boss_pressure_snapshot()
+  ctx.time = ctx.time + 45
+  local later = combat:boss_pressure_snapshot()
+  H.is_true(later.spawn_rate > initial.spawn_rate)
+  H.is_true(later.enemy_health > initial.enemy_health)
+  H.is_true(later.enemy_speed > initial.enemy_speed)
+  H.is_true(later.enemy_damage > initial.enemy_damage)
+end
+
+T["final boss death clears combat magnetizes gems and gates progress behind a special chest"] = function()
+  local combat, ctx, player = fresh("joe")
+  local boss = combat:admin_spawn_final_boss()
+  local minion = combat:spawn_enemy(Content.enemies.monotone, player.x + 80, player.y)
+  local player_shot = Projectile()
+  player_shot:reset({
+    x = player.x, y = player.y, dx = 1, dy = 0, speed = 0,
+    damage = 1, lifetime = 2, source_weapon_id = "kazoo_pistol",
+  })
+  local enemy_shot = EnemyProjectile()
+  enemy_shot:reset({
+    x = player.x, y = player.y, dx = -1, dy = 0, speed = 0,
+    damage = 1, lifetime = 2,
+  })
+  ctx.world:add("projectile", player_shot)
+  ctx.world:add("enemy_projectile", enemy_shot)
+  boss.hp = 0
+  boss.dead = true
+  H.is_true(combat:_kill_enemy(boss))
+  H.is_true(minion.dead)
+  H.is_true(player_shot.dead)
+  H.is_true(enemy_shot.dead)
+  local gem
+  ctx.world:each("xp_gem", function(value) gem = value end)
+  H.is_true(gem ~= nil)
+  H.is_true(gem.magnetized)
+
+  local special
+  ctx.world:each("reward_chest", function(chest)
+    if chest.special then special = chest end
+  end)
+  H.is_true(special ~= nil)
+  H.is_false(combat.stage_clear_chest_opened)
+
+  special.unlock_delay = 0
+  player.x, player.y = special.x, special.y
+  H.eq(combat:update(0), "stage_clear")
+  H.is_true(combat.stage_clear_chest_opened)
+end
+
 T["stage transition carries the complete build and restores some health"] = function()
   local combat, _, player = fresh("joe")
   combat.inventory:level_up("kazoo_pistol")

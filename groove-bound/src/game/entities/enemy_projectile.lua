@@ -40,6 +40,15 @@ function EnemyProjectile:draw()
   local scale_x = 1 + math.sin(cycle) * 0.08
   local scale_y = 1 + math.cos(cycle * 0.78) * 0.07
   local rotation = math.atan2(self.dy, self.dx)
+  if self.projectile_kind == "static_wave" then
+    local pulse = 0.72 + math.sin(cycle * 3.1) * 0.18
+    love.graphics.setColor(1.0, 0.10, 0.52, 0.24)
+    love.graphics.circle("fill", x, y, (self.radius + 10) * pulse)
+    love.graphics.setColor(0.30, 0.94, 1.0, 0.94)
+    love.graphics.setLineWidth(3)
+    love.graphics.circle("line", x, y, self.radius + 7)
+    love.graphics.setLineWidth(1)
+  end
   if self.assets and self.assets.draw_enemy_projectile
     and self.assets:draw_enemy_projectile(
       self.projectile_kind, x, y, self.radius * 2,
