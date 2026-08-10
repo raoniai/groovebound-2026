@@ -156,6 +156,10 @@ function Assets.load()
   self.enemy.stage2_quads,
     self.enemy.stage2_cell_w,
     self.enemy.stage2_cell_h = grid_quads(self.enemy.stage2, 4, 2)
+  self.enemy.funk = image("assets/generated/campaign/funk-enemies-atlas.png")
+  self.enemy.funk_quads,
+    self.enemy.funk_cell_w,
+    self.enemy.funk_cell_h = grid_quads(self.enemy.funk, 4, 2, 2)
 
   self.floor = image("assets/legacy/images/floor-tiles1.jpg")
   self.floor_quads = {}
@@ -234,6 +238,7 @@ function Assets.load()
   self.floor_surfaces = {
     backbeat = image("assets/generated/campaign/backbeat-floor-atlas.png"),
     orbit = image("assets/generated/campaign/orbit-floor-atlas.png"),
+    funk = image("assets/generated/campaign/funk-floor-atlas.png"),
   }
   self.floor_surface_quads = {}
   self.floor_surface_cell_w = {}
@@ -295,6 +300,12 @@ function Assets.load()
     self.environment_orbit_expansion_cell_w,
     self.environment_orbit_expansion_cell_h = grid_quads(
       self.environment_orbit_expansion, 4, 2)
+  self.environment_funk = image(
+    "assets/generated/campaign/funk-environment-atlas.png")
+  self.environment_funk_quads,
+    self.environment_funk_cell_w,
+    self.environment_funk_cell_h = grid_quads(
+      self.environment_funk, 4, 2, 2)
   self.environment_upper_quads = {}
 
   self.sfx = {
@@ -433,14 +444,20 @@ function Assets:draw_enemy_variant(icon, x, y, size, opts)
     atlas = self.enemy.stage2
     quad = self.enemy.stage2_quads[icon.row][icon.col]
     cell_size = math.max(self.enemy.stage2_cell_w, self.enemy.stage2_cell_h)
+  elseif icon.atlas == "funk" then
+    atlas = self.enemy.funk
+    quad = self.enemy.funk_quads[icon.row][icon.col]
+    cell_size = math.max(self.enemy.funk_cell_w, self.enemy.funk_cell_h)
   end
   local scale = size / cell_size
   love.graphics.setColor(opts.color or { 1, 1, 1, 1 })
   love.graphics.draw(
     atlas, quad, x, y, 0,
     opts.flip_x and -scale or scale, scale,
-    icon.atlas == "stage2" and self.enemy.stage2_cell_w / 2 or 128,
-    icon.atlas == "stage2" and self.enemy.stage2_cell_h / 2 or 128)
+    icon.atlas == "stage2" and self.enemy.stage2_cell_w / 2
+      or icon.atlas == "funk" and self.enemy.funk_cell_w / 2 or 128,
+    icon.atlas == "stage2" and self.enemy.stage2_cell_h / 2
+      or icon.atlas == "funk" and self.enemy.funk_cell_h / 2 or 128)
 end
 
 local function environment_source(self, icon, atlas_id)
@@ -462,6 +479,11 @@ local function environment_source(self, icon, atlas_id)
     quad = self.environment_orbit_expansion_quads[icon.row][icon.col]
     cell_w, cell_h = self.environment_orbit_expansion_cell_w,
       self.environment_orbit_expansion_cell_h
+  elseif atlas_id == "funk" then
+    atlas = self.environment_funk
+    quad = self.environment_funk_quads[icon.row][icon.col]
+    cell_w, cell_h = self.environment_funk_cell_w,
+      self.environment_funk_cell_h
   end
   return atlas, quad, cell_w, cell_h
 end

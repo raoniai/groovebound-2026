@@ -15,10 +15,35 @@ T["World Tour catalog has nine stable worlds and first two wave sets"] = functio
   H.eq(content.world_tour.soul.implementation_status, "catalog_ready")
   H.is_true(#content.world_tour_waves.funk >= 5)
   H.is_true(#content.world_tour_waves.soul >= 5)
-  H.eq(content.world_stages.funk.world_id, "funk")
-  H.eq(content.world_stages.funk.final_boss, "breakbeat_bruiser")
-  H.eq(#content.world_stages.funk.mechanic.pads, 5)
-  H.eq(content.enemies.breakbeat_bruiser.boss_type, "final")
+  H.eq(#content.world_stages.funk, 2)
+  H.eq(content.world_stages.funk[1].world_id, "funk")
+  H.eq(content.world_stages.funk[1].final_boss, "boogie_tank")
+  H.eq(content.world_stages.funk[2].id,
+    "world_funk_golden_afterparty")
+  H.eq(content.world_stages.funk[2].final_boss,
+    "mothership_of_funk")
+  H.eq(#content.world_stages.funk[1].mechanic.pads, 5)
+  H.eq(#content.world_stages.funk[2].mechanic.pads, 5)
+  H.eq(content.enemies.mothership_of_funk.boss_type, "final")
+  H.eq(content.enemies.mothership_of_funk.sprite.atlas, "funk")
+end
+
+T["Funk world has an authored visual roster and escalating second stage"] = function()
+  local content = require("src.content.init")
+  local funk_enemy_count = 0
+  for _, enemy in pairs(content.enemies) do
+    if enemy.sprite and enemy.sprite.atlas == "funk" then
+      funk_enemy_count = funk_enemy_count + 1
+    end
+  end
+  H.eq(funk_enemy_count, 8)
+  local first = content.world_stages.funk[1]
+  local second = content.world_stages.funk[2]
+  H.eq(first.floor_style, "funk")
+  H.eq(second.environment_atlas, "funk")
+  H.is_true(second.width > first.width)
+  H.is_true(second.mechanic.cycle_seconds < first.mechanic.cycle_seconds)
+  H.is_true(#second.waves[#second.waves].enemies >= 4)
 end
 
 T["global meta catalog has nineteen perks and valid grade weights"] = function()

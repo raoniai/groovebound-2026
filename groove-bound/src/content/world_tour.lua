@@ -2,7 +2,7 @@
 -- remaining worlds stay catalog-visible but are not routed into gameplay yet.
 
 local worlds = {
-  { "funk", 1, "core", "The Pocket District", "Funk", "funk_v1", "funk_hold_the_pocket", "breakbeat_bruiser", "soul" },
+  { "funk", 1, "core", "The Pocket District", "Funk", "funk_v1", "funk_hold_the_pocket", "Mothership of Funk", "soul" },
   { "soul", 2, "core", "Velvet Chapel", "Soul", "soul_v1", "soul_resonance_reserve", "Velvet Titan", "disco" },
   { "disco", 3, "core", "Mirrorball Metro", "Disco", "disco_v1", "disco_spotlight_flow", "Prism Monarch", "house" },
   { "house", 4, "core", "Warehouse 909", "House", "house_v1", "house_floor_cycles", "Kickdrum Constructor", "electro" },

@@ -44,4 +44,11 @@ T["completion headers map to authored stage and campaign crests"] = function()
   H.eq(campaign:header_cell(), 4)
 end
 
+T["a cleared World Tour stage remains distinct from World mastery"] = function()
+  local screen = fresh("stage_clear")
+  screen.payload.mode = "world_tour"
+  H.eq(screen:header_cell(), 4)
+  H.eq(screen.payload.outcome, "stage_clear")
+end
+
 return T

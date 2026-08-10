@@ -262,6 +262,69 @@ local function check_stages(errors, stages, content)
   end
 end
 
+local function check_world_stages(errors, stage_catalog, content)
+  if type(stage_catalog) ~= "table" then
+    errors[#errors + 1] = "content.world_stages: table is missing"
+    return
+  end
+  local seen = {}
+  for world_id, stages in pairs(stage_catalog) do
+    local world_where = "world_stages." .. tostring(world_id)
+    if not content.world_tour or not content.world_tour[world_id] then
+      errors[#errors + 1] = world_where .. ": unknown World Tour id"
+    end
+    if type(stages) ~= "table" or #stages == 0 then
+      errors[#errors + 1] = world_where .. ": expected a non-empty stage array"
+    else
+      for index, stage in ipairs(stages) do
+        local where = string.format("%s[%d]", world_where, index)
+        check_field(errors, where .. ".id", stage.id, { type = "string" })
+        check_field(errors, where .. ".world_id", stage.world_id, {
+          type = "string",
+        })
+        check_field(errors, where .. ".name", stage.name, { type = "string" })
+        check_field(errors, where .. ".base_duration", stage.base_duration, {
+          type = "number", min = 10,
+        })
+        check_field(
+          errors, where .. ".wave_base_duration", stage.wave_base_duration,
+          { type = "number", min = 10 })
+        if stage.world_id and stage.world_id ~= world_id then
+          errors[#errors + 1] = where .. ".world_id: must match catalog key"
+        end
+        if stage.id then
+          if seen[stage.id] then
+            errors[#errors + 1] = where .. ".id: duplicate stage id"
+          end
+          seen[stage.id] = true
+        end
+        if not content.enemies[stage.final_boss] then
+          errors[#errors + 1] = where .. ".final_boss: unknown enemy id"
+        elseif content.enemies[stage.final_boss].boss_type ~= "final" then
+          errors[#errors + 1] = where .. ".final_boss: enemy must be final"
+        end
+        check_waves(errors, stage.waves or {}, content)
+        if type(stage.mechanic) ~= "table" then
+          errors[#errors + 1] = where .. ".mechanic: table is required"
+        else
+          check_field(errors, where .. ".mechanic.id", stage.mechanic.id, {
+            type = "string",
+          })
+          check_field(
+            errors, where .. ".mechanic.cycle_seconds",
+            stage.mechanic.cycle_seconds, { type = "number", min = 0.2 })
+          if type(stage.mechanic.pads) ~= "table"
+            or #stage.mechanic.pads < 3
+          then
+            errors[#errors + 1] = where
+              .. ".mechanic.pads: expected at least three pads"
+          end
+        end
+      end
+    end
+  end
+end
+
 local function check_narrative(errors, narrative)
   if type(narrative) ~= "table" then
     errors[#errors + 1] = "content.narrative: table is missing"
@@ -418,6 +481,7 @@ function Validate.check(content)
     check_grade_profiles(errors, content.grade_profiles)
     check_world_tour(errors, content)
     check_meta_perks(errors, content)
+    check_world_stages(errors, content.world_stages, content)
   end
   return errors
 end

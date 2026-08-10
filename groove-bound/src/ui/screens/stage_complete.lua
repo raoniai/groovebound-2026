@@ -97,9 +97,10 @@ function StageCompleteScreen:draw()
     crest_size, crest_size,
     { color = { 1, 1, 1, eased } })
 
-  local complete_title = self.payload.mode == "world_tour"
-    and "WORLD MASTERED" or self.payload.outcome == "victory"
-    and "CAMPAIGN COMPLETE" or ("STAGE " .. self.payload.stage_index .. " COMPLETE")
+  local complete_title = self.payload.outcome == "victory"
+    and (self.payload.mode == "world_tour"
+      and "WORLD MASTERED" or "CAMPAIGN COMPLETE")
+    or ("STAGE " .. self.payload.stage_index .. " COMPLETE")
   love.graphics.setFont(Fonts.get(34))
   love.graphics.setColor(1.0, 0.76, 0.22, 1)
   love.graphics.printf(complete_title,

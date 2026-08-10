@@ -153,4 +153,34 @@ T["a final chest reveal and stage confirmation complete before the cutscene"] = 
   H.eq(pushed[3], "cutscene")
 end
 
+T["World Tour stage confirmation advances into its second playable arena"] = function()
+  local began
+  local screen = RunScreen({ content = Content }, {
+    mode = "world_tour", world_id = "funk",
+  })
+  screen.mode = "world_tour"
+  screen.world_id = "funk"
+  screen.stages = Content.world_stages.funk
+  screen.app.assets = nil
+  screen.player = { x = 0, y = 0, max_hp = 100, hp = 100, guard = 0 }
+  screen.camera = {
+    set_bounds = function() end,
+    snap = function() end,
+  }
+  screen.combat = {
+    stage_index = 1,
+    begin_stage = function(_, index) began = index end,
+  }
+  screen.world_mechanic = nil
+  screen.world_mechanic_totals = {
+    activations = 0, opportunities = 0, best_chain = 0,
+  }
+  screen.music_event_serial = 0
+  screen:resume({ kind = "stage_complete", outcome = "stage_clear" })
+  H.eq(began, 2)
+  H.eq(screen.arena.stage.id, "world_funk_golden_afterparty")
+  H.eq(screen.world_mechanic.definition.id, "funk_hold_the_pocket")
+  H.is_false(screen.transitioning)
+end
+
 return T

@@ -266,6 +266,31 @@ with OpenAI image generation and converted from flat chroma green to RGBA using
 the project image-generation helper with a soft matte, despill and one-pixel
 edge contraction.
 
+## Funk World playable visual package
+
+Created 10 August 2026 with OpenAI image generation from text-only prompts;
+no third-party image or trademarked character was supplied.
+
+| Runtime file | Grid / role |
+|---|---|
+| `campaign/funk-enemies-atlas.png` (1600x800 RGBA) | 4x2 Funk-specific enemy and boss roster |
+| `campaign/funk-environment-atlas.png` (1600x800 RGBA) | 4x2 Funk obstacles and layered scenery |
+| `campaign/funk-floor-atlas.png` (1024x1024 RGB) | 2x2 low-contrast Funk floor surfaces |
+
+The enemy atlas maps Pocket Gremlin, Slapback Hound, Groove Guard, Talkbox
+Oracle, Boogie Tank, Funkadelic Wasp, Mothership of Funk and Pocket Phantom in
+stable row-major order. The environment atlas maps a boombox barricade, record
+kiosk, amp wall, turntable console, disco palm, talkbox streetlight, vinyl
+stack and hologram dancer. The floor atlas provides four orthographic dark
+street and club surfaces designed to preserve combat readability.
+
+Untouched generator outputs are retained under `source-candidates/`. Runtime
+enemy and environment atlases were normalized to exact 400x400 cells and
+converted from sampled chroma green to alpha with the bundled soft-matte,
+despill and one-pixel contraction helper. The floor atlas was normalized to
+four opaque 512x512 cells. Runtime dimensions, color types and cell mappings
+are regression-tested.
+
 ## Application icon
 
 **Current files:** `source-candidates/app-icon-character-source.png`

@@ -17,6 +17,11 @@ local JourneyProgress = require("src.meta.journey_progress")
 local RunScreen = class()
 RunScreen.kind = "run"
 
+local function world_stages(content, world_id)
+  local stages = assert(content.world_stages[world_id])
+  return stages[1] and stages or { stages }
+end
+
 function RunScreen:init(app, opts)
   self.app = app
   self.opts = opts or {}
@@ -24,7 +29,7 @@ function RunScreen:init(app, opts)
   self.world_id = self.opts.world_id
   if app.content then
     self.stages = self.mode == "world_tour"
-      and { assert(app.content.world_stages[self.world_id]) }
+      and world_stages(app.content, self.world_id)
       or app.content.stages
   end
 end
@@ -33,7 +38,7 @@ function RunScreen:enter()
   self.mode = self.opts.mode or "prologue"
   self.world_id = self.opts.world_id
   self.stages = self.mode == "world_tour"
-    and { assert(self.app.content.world_stages[self.world_id]) }
+    and world_stages(self.app.content, self.world_id)
     or self.app.content.stages
   self.character = self.app.content.characters[
     self.opts.character_id
@@ -86,6 +91,11 @@ function RunScreen:enter()
       definition = self.stages[1].mechanic,
       player = self.player,
     }) or nil
+  self.world_mechanic_totals = {
+    activations = 0,
+    opportunities = 0,
+    best_chain = 0,
+  }
   self.hud = HUD(self.ctx, self.player, self.combat)
   self.finished = false
   self.transitioning = false
@@ -95,6 +105,52 @@ function RunScreen:enter()
   self.music_event_serial = 0
   self.music_event = nil
   self.app.active_run = self
+end
+
+function RunScreen:_world_mechanic_snapshot()
+  if not self.world_mechanic then return nil end
+  local current = self.world_mechanic:snapshot()
+  return {
+    activations = self.world_mechanic_totals.activations
+      + current.activations,
+    opportunities = self.world_mechanic_totals.opportunities
+      + current.opportunities,
+    best_chain = math.max(
+      self.world_mechanic_totals.best_chain, current.best_chain),
+    chain = current.chain,
+    boost_remaining = current.boost_remaining,
+  }
+end
+
+function RunScreen:_capture_world_mechanic()
+  if not self.world_mechanic then return end
+  local current = self.world_mechanic:snapshot()
+  self.world_mechanic_totals.activations =
+    self.world_mechanic_totals.activations + current.activations
+  self.world_mechanic_totals.opportunities =
+    self.world_mechanic_totals.opportunities + current.opportunities
+  self.world_mechanic_totals.best_chain = math.max(
+    self.world_mechanic_totals.best_chain, current.best_chain)
+end
+
+function RunScreen:_begin_world_stage(index)
+  self:_capture_world_mechanic()
+  self.arena = Arena({
+    assets = self.app.assets,
+    stage = self.stages[index],
+  })
+  self.camera:set_bounds(self.arena.width, self.arena.height)
+  self.combat:begin_stage(index, self.arena)
+  self.camera:snap(self.player.x, self.player.y)
+  self.world_mechanic = self.stages[index].mechanic
+    and FunkPocketSystem({
+      definition = self.stages[index].mechanic,
+      player = self.player,
+    }) or nil
+  self.transitioning = false
+  self.finished = false
+  self.pending_outcome = nil
+  self.music_event = nil
 end
 
 function RunScreen:_results_payload(outcome)
@@ -112,9 +168,7 @@ function RunScreen:_results_payload(outcome)
     stage_count = #self.stages,
     health_fraction = self.player.hp / math.max(1, self.player.max_hp),
   }
-  if self.world_mechanic then
-    payload.world_mechanic = self.world_mechanic:snapshot()
-  end
+  payload.world_mechanic = self:_world_mechanic_snapshot()
   return payload
 end
 
@@ -216,6 +270,12 @@ function RunScreen:resume(result)
       serial = self.music_event_serial,
     }
     if self.mode == "world_tour" then
+      if result.outcome == "stage_clear"
+        and self.combat.stage_index < #self.stages
+      then
+        self:_begin_world_stage(self.combat.stage_index + 1)
+        return
+      end
       self:_show_results("victory")
       return
     end

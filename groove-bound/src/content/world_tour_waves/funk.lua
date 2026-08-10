@@ -1,20 +1,24 @@
--- Catalog-ready Funk pacing authored against a ten-minute run.
+-- Pocket District pacing authored against a ten-minute reference timeline.
 return {
-  { at = 1, enemies = { { id = "monotone", count = 24, cadence = 0.65 } } },
+  { at = 1, enemies = {
+    { id = "pocket_gremlin", count = 28, cadence = 0.58 },
+  } },
   { at = 120, enemies = {
-    { id = "tempo_leech", count = 18, cadence = 1.25 },
-    { id = "syncopation_skitter", count = 24, cadence = 0.90 },
+    { id = "slapback_hound", count = 20, cadence = 1.05 },
+    { id = "funkadelic_wasp", count = 28, cadence = 0.72 },
   } },
   { at = 240, enemies = {
-    { id = "bass_brute", count = 14, cadence = 1.80 },
-    { id = "noise_turret", count = 6, cadence = 4.0 },
+    { id = "groove_guard", count = 18, cadence = 1.55 },
+    { id = "talkbox_oracle", count = 8, cadence = 3.35 },
   } },
   { at = 360, enemies = {
-    { id = "feedback_phantom", count = 28, cadence = 0.88 },
-    { id = "bass_brute", count = 20, cadence = 1.45 },
+    { id = "pocket_gremlin", count = 38, cadence = 0.52 },
+    { id = "slapback_hound", count = 24, cadence = 0.82 },
+    { id = "groove_guard", count = 18, cadence = 1.25 },
   } },
   { at = 540, enemies = {
-    { id = "breakbeat_bruiser", count = 1, cadence = 1, continuous = false },
-    { id = "syncopation_skitter", count = 34, cadence = 0.62 },
+    { id = "boogie_tank", count = 1, cadence = 1, continuous = false },
+    { id = "funkadelic_wasp", count = 42, cadence = 0.48 },
+    { id = "pocket_gremlin", count = 36, cadence = 0.50 },
   } },
 }
