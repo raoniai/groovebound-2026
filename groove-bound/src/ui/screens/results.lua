@@ -33,13 +33,22 @@ function ResultsScreen:_layout()
   local bw, bh, gap = 280, 54, 14
   local x = (w - bw) / 2
   local y = h * 0.79
+  local next_label = self.result.outcome == "victory"
+    and (self.result.mode == "world_tour" and "WORLD TOUR CATALOG"
+      or "ENTER WORLD TOUR") or "CONTINUE CAMPAIGN"
   self.buttons = widgets.ButtonList({
     widgets.Button({
-      label = "Choose Character", x = x, y = y, w = bw, h = bh,
+      label = next_label, x = x, y = y, w = bw, h = bh,
       font_size = 21,
+      variant = "primary",
       on_press = function()
-        local CharacterSelectScreen = require("src.ui.screens.character_select")
-        self.app.states:switch(CharacterSelectScreen(self.app))
+        if self.result.outcome == "victory" then
+          local WorldTourScreen = require("src.ui.screens.world_tour")
+          self.app.states:switch(WorldTourScreen(self.app))
+        else
+          local CharacterSelectScreen = require("src.ui.screens.character_select")
+          self.app.states:switch(CharacterSelectScreen(self.app))
+        end
       end,
     }),
     widgets.Button({
@@ -94,7 +103,8 @@ function ResultsScreen:draw()
 
   local stats = self.result.stats
   local summary = {
-    { icon = "stage", label = "STAGES", value = (self.result.stages_cleared or 0) .. "/2" },
+    { icon = "stage", label = "STAGES", value = (self.result.stages_cleared or 0)
+      .. "/" .. (self.result.stage_count or 2) },
     { icon = "clock", label = "TIME", value = string.format("%02d:%02d",
       math.floor(self.result.time / 60), math.floor(self.result.time % 60)) },
     { icon = "score", label = "SCORE", value = tostring(stats.score) },

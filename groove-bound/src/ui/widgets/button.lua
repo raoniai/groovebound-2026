@@ -17,6 +17,10 @@ function Button:init(opts)
   self.focused = false
   self.hovered = false
   self.font_size = opts.font_size or 20
+  self.variant = opts.variant or "default"
+  self.icon = opts.icon
+  self.draw_icon = opts.draw_icon
+  self.icon_size = opts.icon_size
 end
 
 function Button:contains(px, py)
@@ -28,18 +32,47 @@ function Button:draw()
   local colors = settings.ui.button
   local fill = self.hovered and colors.hover or colors.fill
 
+  if self.variant == "primary" then
+    local pulse = 0.82 + math.sin((love.timer and love.timer.getTime() or 0) * 4) * 0.08
+    fill = self.hovered and { 0.26, 0.16, 0.05, 0.98 }
+      or { 0.12, 0.055, 0.15, 0.98 }
+    love.graphics.setColor(1.0, 0.72, 0.18, 0.12 * pulse)
+    love.graphics.rectangle("fill", self.x - 6, self.y - 6,
+      self.w + 12, self.h + 12, 10, 10)
+  elseif self.variant == "danger" then
+    fill = self.hovered and { 0.28, 0.035, 0.075, 0.98 }
+      or { 0.15, 0.018, 0.045, 0.96 }
+  end
+
   love.graphics.setColor(fill)
   love.graphics.rectangle("fill", self.x, self.y, self.w, self.h, 6, 6)
 
-  love.graphics.setColor(self.focused and colors.focus or colors.border)
-  love.graphics.setLineWidth(self.focused and 3 or 1)
+  love.graphics.setColor(self.variant == "primary"
+    and { 1.0, 0.74, 0.20, 1 }
+    or self.variant == "danger" and { 1.0, 0.20, 0.30, 1 }
+    or (self.focused and colors.focus or colors.border))
+  love.graphics.setLineWidth(self.focused and 3 or self.variant == "primary" and 2 or 1)
   love.graphics.rectangle("line", self.x, self.y, self.w, self.h, 6, 6)
 
-  love.graphics.setColor(settings.ui.text_color)
+  local text_x, text_w = self.x, self.w
+  if self.icon and self.draw_icon then
+    local icon_size = self.icon_size or math.min(44, self.h - 8)
+    local icon_x = self.x + 8
+    local icon_y = self.y + (self.h - icon_size) / 2
+    self.draw_icon(self.icon, icon_x, icon_y, icon_size, icon_size, {
+      color = self.variant == "danger"
+        and { 1, 0.78, 0.82, 1 } or { 1, 1, 1, 1 },
+    })
+    text_x = icon_x + icon_size + 4
+    text_w = self.w - (text_x - self.x) - 8
+  end
+
+  love.graphics.setColor(self.variant == "danger"
+    and { 1, 0.78, 0.82, 1 } or settings.ui.text_color)
   local font = Fonts.get(self.font_size)
   love.graphics.setFont(font)
   local text_y = self.y + (self.h - font:getHeight()) / 2
-  love.graphics.printf(self.label, self.x, text_y, self.w, "center")
+  love.graphics.printf(self.label, text_x, text_y, text_w, "center")
 end
 
 -- Manages focus + input routing for a screen's buttons.

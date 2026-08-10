@@ -3,6 +3,8 @@ local CharacterSelectScreen = require("src.ui.screens.character_select")
 local ResultsScreen = require("src.ui.screens.results")
 local OptionsScreen = require("src.ui.screens.options")
 local ControlsScreen = require("src.ui.screens.controls")
+local WorldTourScreen = require("src.ui.screens.world_tour")
+local Content = require("src.content.init")
 
 local T = {}
 
@@ -28,6 +30,39 @@ end
 local function overlaps(a, b)
   return a.x < b.x + b.w and b.x < a.x + a.w
     and a.y < b.y + b.h and b.y < a.y + a.h
+end
+
+T["World Tour slots, records and campaign actions fit supported canvases"] = function()
+  for _, dimensions in ipairs({ { 800, 600 }, { 1280, 720 } }) do
+    with_dimensions(dimensions[1], dimensions[2], function()
+      local screen = WorldTourScreen({ content = Content })
+      screen:_layout()
+      H.is_true(inside(screen.catalog_rect, dimensions[1], dimensions[2]))
+      H.is_true(inside(screen.detail_rect, dimensions[1], dimensions[2]))
+      H.is_false(overlaps(screen.catalog_rect, screen.detail_rect))
+      for _, rect in ipairs(screen.slot_rects) do
+        H.is_true(inside(rect, dimensions[1], dimensions[2]))
+        H.is_false(overlaps(rect, screen.detail_rect))
+      end
+      for _, button in ipairs(screen.buttons.buttons) do
+        H.is_true(inside(button, dimensions[1], dimensions[2]))
+        H.is_false(overlaps(button, screen.detail_rect))
+      end
+    end)
+  end
+end
+
+T["World Tour catalog can be inspected before a campaign exists"] = function()
+  with_dimensions(800, 600, function()
+    local screen = WorldTourScreen(
+      { content = Content, slot = nil }, { catalog_only = true })
+    screen:_layout()
+    local saved, unlocked = screen:_world_state(Content.world_tour.funk)
+    H.is_false(unlocked)
+    H.is_nil(saved.best_score)
+    H.eq(#screen.buttons.buttons, 1)
+    H.eq(screen.buttons.buttons[1].label, "RETURN TO TITLE")
+  end)
 end
 
 T["character cards and result actions stay aligned at both supported canvases"] = function()

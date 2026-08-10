@@ -46,6 +46,18 @@ T["runtime UI artwork and character logos have stable production mappings"] = fu
   H.is_true(encore_h >= 1000)
   H.eq(png_color_type(
     "assets/generated/campaign/stage-clear-chest.png"), 6)
+  for _, expected in ipairs({
+    { "assets/generated/campaign/chest-luck-reveal-atlas.png", 2000, 800 },
+    { "assets/generated/campaign/funk-pocket-pad-atlas.png", 1600, 400 },
+    { "assets/generated/campaign/world-tour-ui-atlas.png", 2000, 1000 },
+    { "assets/generated/campaign/menu-button-icons-atlas.png", 2000, 800 },
+    { "assets/generated/campaign/completion-ui-atlas.png", 1600, 800 },
+  }) do
+    local width, height = png_dimensions(expected[1])
+    H.eq(width, expected[2])
+    H.eq(height, expected[3])
+    H.eq(png_color_type(expected[1]), 6)
+  end
 end
 
 T["new Stage 2 and ending videos are Ogg runtime media"] = function()

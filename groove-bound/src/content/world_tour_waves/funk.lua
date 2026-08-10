@@ -14,7 +14,7 @@ return {
     { id = "bass_brute", count = 20, cadence = 1.45 },
   } },
   { at = 540, enemies = {
-    { id = "static_baron", count = 1, cadence = 1, continuous = false },
+    { id = "breakbeat_bruiser", count = 1, cadence = 1, continuous = false },
     { id = "syncopation_skitter", count = 34, cadence = 0.62 },
   } },
 }

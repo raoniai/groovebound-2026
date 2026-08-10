@@ -69,6 +69,28 @@ return {
     sprite_size = 132,
   },
 
+  breakbeat_bruiser = {
+    id = "breakbeat_bruiser",
+    name = "Breakbeat Bruiser",
+    hp = 6200,
+    speed = 54,
+    size = 49,
+    damage = 30,
+    xp = 720,
+    coins = 360,
+    brain = "charger",
+    boss_type = "final",
+    attack_kind = "static_wave",
+    attack_interval = 1.55,
+    attack_range = 460,
+    windup = 0.72,
+    projectile_speed = 285,
+    projectile_count = 20,
+    color = { 1.0, 0.62, 0.16, 1 },
+    sprite = { atlas = "stage2", col = 3, row = 2 },
+    sprite_size = 172,
+  },
+
   syncopation_skitter = {
     id = "syncopation_skitter",
     name = "Syncopation Skitter",

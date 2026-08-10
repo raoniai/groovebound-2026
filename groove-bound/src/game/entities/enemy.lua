@@ -20,7 +20,14 @@ function Enemy:reset(opts)
   self.assets = opts.assets
   self.options = opts.options or {}
   self.x, self.y = opts.x, opts.y
-  self.radius = opts.definition.size
+  -- Physical crowd movement stays compact, while the projectile hurt area
+  -- follows the visible sprite. Keeping these separate prevents shots from
+  -- slipping through rendered limbs without turning enemies into huge walls.
+  self.body_radius = opts.definition.size
+  self.hurt_radius = opts.definition.hurtbox_radius or math.max(
+    self.body_radius,
+    (opts.definition.sprite_size or self.body_radius * 2) * 0.38)
+  self.radius = self.hurt_radius
   self.hp = opts.definition.hp * (opts.health_multiplier or 1)
   self.max_hp = self.hp
   self.dead = false
@@ -102,32 +109,17 @@ function Enemy:update(dt, player, speed_multiplier, arena)
     elseif self.definition.brain == "pulse" and length < 145 then
       speed = speed * 0.28
     end
-    if arena.navigation_direction then
-      self.navigation_timer = self.navigation_timer - dt
-      local target_moved = not self.navigation_target_x
-        or (player.x - self.navigation_target_x) ^ 2
-          + (player.y - self.navigation_target_y) ^ 2 > 80 ^ 2
-      if self.navigation_timer <= 0 or target_moved then
-        self.navigation_dx,
-          self.navigation_dy,
-          self.navigation_routed = arena:navigation_direction(
-            self.x, self.y, player.x, player.y, self.radius)
-        self.navigation_target_x, self.navigation_target_y = player.x, player.y
-        self.navigation_timer = 0.20
-          + math.abs(math.floor(self.x + self.y)) % 5 * 0.015
-      end
-      if self.navigation_routed then
-        dx, dy = self.navigation_dx, self.navigation_dy
-      end
-    end
+    -- Keep movement resolution local and constant-cost. The visibility-graph
+    -- route calculation became multiplicative with large crowds near stage
+    -- equipment; axis sliding below gives the original lightweight behavior.
     local old_x, old_y = self.x, self.y
     local next_x = self.x + (dx * speed + self.knockback_x) * dt
     local next_y = self.y + (dy * speed + self.knockback_y) * dt
     if arena.resolve_movement then
       self.x, self.y = arena:resolve_movement(
-        old_x, old_y, next_x, next_y, self.radius)
+        old_x, old_y, next_x, next_y, self.body_radius)
     else
-      self.x, self.y = arena:clamp(next_x, next_y, self.radius)
+      self.x, self.y = arena:clamp(next_x, next_y, self.body_radius)
     end
 
     if math.abs(dx) > math.abs(dy) then
@@ -223,7 +215,7 @@ function Enemy:draw()
       { scale = 0.82, color = color })
   else
     love.graphics.setColor(color)
-    love.graphics.circle("fill", self.x, self.y, self.radius)
+    love.graphics.circle("fill", self.x, self.y, self.body_radius)
   end
 
   if self.hp < self.max_hp then

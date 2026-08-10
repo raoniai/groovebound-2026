@@ -153,7 +153,30 @@ T["enemies chase, respect arena bounds, and die at zero HP"] = function()
   H.is_true(enemy.dead)
 end
 
-T["enemies follow navigation steering when scenery blocks the player"] = function()
+T["enemy projectile hurt areas follow visible sprite size without enlarging movement"] = function()
+  local enemy = Enemy()
+  enemy:reset({
+    definition = {
+      id = "visible", size = 12, sprite_size = 70,
+      hp = 20, speed = 50, damage = 5,
+    },
+    x = 30, y = 50,
+  })
+  H.eq(enemy.body_radius, 12)
+  H.is_true(enemy.hurt_radius >= 26)
+  H.eq(enemy.radius, enemy.hurt_radius)
+  local resolved_radius
+  local movement_arena = {
+    resolve_movement = function(_, _, _, next_x, next_y, radius)
+      resolved_radius = radius
+      return next_x, next_y
+    end,
+  }
+  enemy:update(0.1, { x = 90, y = 50 }, 1, movement_arena)
+  H.eq(resolved_radius, enemy.body_radius)
+end
+
+T["enemy movement avoids the expensive visibility graph hot path"] = function()
   local enemy = Enemy()
   enemy:reset({
     definition = {
@@ -163,15 +186,20 @@ T["enemies follow navigation steering when scenery blocks the player"] = functio
     x = 30,
     y = 50,
   })
+  local navigation_calls = 0
   local pathing_arena = {
-    navigation_direction = function() return 0, -1, true end,
+    navigation_direction = function()
+      navigation_calls = navigation_calls + 1
+      return 0, -1, true
+    end,
     resolve_movement = function(_, _, _, next_x, next_y)
       return next_x, next_y
     end,
   }
   enemy:update(0.5, { x = 90, y = 50 }, 1, pathing_arena)
-  H.eq(enemy.x, 30)
-  H.eq(enemy.y, 25)
+  H.eq(enemy.x, 55)
+  H.eq(enemy.y, 50)
+  H.eq(navigation_calls, 0)
 end
 
 T["overtime enrages a boss exactly once with triple health and speed"] = function()

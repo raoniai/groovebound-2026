@@ -101,6 +101,24 @@ T["player shots cancel enemy shots and both are consumed"] = function()
   H.eq(combat.stats.enemy_shots_cancelled, 1)
 end
 
+T["shots hit the visible enemy sprite outside its compact body radius"] = function()
+  local combat, ctx = fresh("joe")
+  local enemy = combat:spawn_enemy(Content.enemies.monotone, 150, 120)
+  enemy.x, enemy.y = 150, 120
+  ctx.world:moved(enemy)
+  local hp = enemy.hp
+  local shot = Projectile()
+  shot:reset({
+    x = 126, y = 120, dx = 1, dy = 0, speed = 0,
+    damage = 5, lifetime = 2, source_weapon_id = "kazoo_pistol",
+  })
+  H.is_true(24 > enemy.body_radius + shot.radius)
+  H.is_true(24 < enemy.hurt_radius + shot.radius)
+  ctx.world:add("projectile", shot)
+  combat:_update_projectiles(0)
+  H.is_true(enemy.hp < hp)
+end
+
 T["later waves are dense and add shootable ranged pressure"] = function()
   local function authored_count(waves)
     local total = 0

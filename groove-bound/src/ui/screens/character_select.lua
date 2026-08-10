@@ -3,6 +3,7 @@ local Fonts = require("src.ui.fonts")
 local Icons = require("src.ui.icons")
 local settings = require("src.config.settings")
 local UIScale = require("src.ui.scale")
+local JourneyProgress = require("src.meta.journey_progress")
 
 local CharacterSelectScreen = class()
 CharacterSelectScreen.kind = "character_select"
@@ -46,12 +47,14 @@ end
 
 function CharacterSelectScreen:_confirm()
   local id = self.ids[self.selected]
+  JourneyProgress.select_character(self.app, id)
   local character = self.app.content.characters[id]
   local scene = self.app.content.narrative[character.intro_scene]
   local CutsceneScreen = require("src.ui.screens.cutscene")
   self.app.states:switch(CutsceneScreen(self.app, scene, {
     on_complete = function(app)
       local RunScreen = require("src.ui.screens.run")
+      JourneyProgress.begin_run(app, "prologue")
       app.states:switch(RunScreen(app, { character_id = id }))
     end,
   }))

@@ -11,10 +11,14 @@ T["World Tour catalog has nine stable worlds and first two wave sets"] = functio
   H.eq(content.world_tour.funk.order, 1)
   H.eq(content.world_tour.funk.first_clear_unlock, "soul")
   H.eq(content.world_tour.soul.order, 2)
-  H.eq(content.world_tour.funk.implementation_status, "catalog_ready")
+  H.eq(content.world_tour.funk.implementation_status, "playable")
   H.eq(content.world_tour.soul.implementation_status, "catalog_ready")
   H.is_true(#content.world_tour_waves.funk >= 5)
   H.is_true(#content.world_tour_waves.soul >= 5)
+  H.eq(content.world_stages.funk.world_id, "funk")
+  H.eq(content.world_stages.funk.final_boss, "breakbeat_bruiser")
+  H.eq(#content.world_stages.funk.mechanic.pads, 5)
+  H.eq(content.enemies.breakbeat_bruiser.boss_type, "final")
 end
 
 T["global meta catalog has nineteen perks and valid grade weights"] = function()

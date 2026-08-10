@@ -20,19 +20,21 @@ local function source(path, volume)
   return value
 end
 
-local function grid_quads(value, columns, rows)
+local function grid_quads(value, columns, rows, inset)
   local width, height = value:getDimensions()
   local cell_w, cell_h = width / columns, height / rows
+  inset = inset or 0
+  local sample_w, sample_h = cell_w - inset * 2, cell_h - inset * 2
   local result = {}
   for row = 1, rows do
     result[row] = {}
     for col = 1, columns do
       result[row][col] = love.graphics.newQuad(
-        (col - 1) * cell_w, (row - 1) * cell_h,
-        cell_w, cell_h, width, height)
+        (col - 1) * cell_w + inset, (row - 1) * cell_h + inset,
+        sample_w, sample_h, width, height)
     end
   end
-  return result, cell_w, cell_h
+  return result, sample_w, sample_h
 end
 
 function Assets.load()
@@ -200,6 +202,32 @@ function Assets.load()
     "assets/generated/campaign/musical-chest-atlas.png")
   self.stage_clear_chest = image(
     "assets/generated/campaign/stage-clear-chest.png")
+  self.chest_luck_reveal = image(
+    "assets/generated/campaign/chest-luck-reveal-atlas.png")
+  self.chest_luck_reveal_quads,
+    self.chest_luck_reveal_cell_w,
+    self.chest_luck_reveal_cell_h = grid_quads(
+      self.chest_luck_reveal, 5, 2, 2)
+  self.completion_ui = image(
+    "assets/generated/campaign/completion-ui-atlas.png")
+  self.completion_ui_quads,
+    self.completion_ui_cell_w,
+    self.completion_ui_cell_h = grid_quads(self.completion_ui, 4, 2, 2)
+  self.funk_pocket_pads = image(
+    "assets/generated/campaign/funk-pocket-pad-atlas.png")
+  self.funk_pocket_pad_quads,
+    self.funk_pocket_pad_cell_w,
+    self.funk_pocket_pad_cell_h = grid_quads(self.funk_pocket_pads, 5, 1)
+  self.world_tour_ui = image(
+    "assets/generated/campaign/world-tour-ui-atlas.png")
+  self.world_tour_ui_quads,
+    self.world_tour_ui_cell_w,
+    self.world_tour_ui_cell_h = grid_quads(self.world_tour_ui, 5, 2)
+  self.menu_button_icons = image(
+    "assets/generated/campaign/menu-button-icons-atlas.png")
+  self.menu_button_icon_quads,
+    self.menu_button_icon_cell_w,
+    self.menu_button_icon_cell_h = grid_quads(self.menu_button_icons, 5, 2)
   self.reward_chest_quads,
     self.reward_chest_cell_w,
     self.reward_chest_cell_h = grid_quads(self.reward_chest, 4, 2)
@@ -606,6 +634,68 @@ function Assets:draw_stage_clear_chest(x, y, size, opts)
     self.stage_clear_chest,
     x - size / 2, y - size / 2, size, size, opts)
   return true
+end
+
+local function draw_atlas_cell(atlas, quads, cell_w, cell_h,
+    col, row, x, y, w, h, opts)
+  opts = opts or {}
+  local scale = math.min(w / cell_w, h / cell_h)
+  love.graphics.setColor(opts.color or { 1, 1, 1, 1 })
+  love.graphics.draw(
+    atlas, quads[row][col], x + w / 2, y + h / 2,
+    opts.rotation or 0, scale, scale, cell_w / 2, cell_h / 2)
+  return true
+end
+
+function Assets:draw_chest_luck(frame, x, y, w, h, opts)
+  frame = math.max(1, math.min(5, frame or 1))
+  return draw_atlas_cell(
+    self.chest_luck_reveal, self.chest_luck_reveal_quads,
+    self.chest_luck_reveal_cell_w, self.chest_luck_reveal_cell_h,
+    frame, 1, x, y, w, h, opts)
+end
+
+function Assets:draw_reward_stage(frame, x, y, w, h, opts)
+  frame = math.max(1, math.min(5, frame or 5))
+  return draw_atlas_cell(
+    self.chest_luck_reveal, self.chest_luck_reveal_quads,
+    self.chest_luck_reveal_cell_w, self.chest_luck_reveal_cell_h,
+    frame, 2, x, y, w, h, opts)
+end
+
+function Assets:draw_completion_ui(col, row, x, y, w, h, opts)
+  col = math.max(1, math.min(4, col or 1))
+  row = math.max(1, math.min(2, row or 1))
+  return draw_atlas_cell(
+    self.completion_ui, self.completion_ui_quads,
+    self.completion_ui_cell_w, self.completion_ui_cell_h,
+    col, row, x, y, w, h, opts)
+end
+
+function Assets:draw_funk_pad(frame, x, y, w, h, opts)
+  frame = math.max(1, math.min(5, frame or 1))
+  return draw_atlas_cell(
+    self.funk_pocket_pads, self.funk_pocket_pad_quads,
+    self.funk_pocket_pad_cell_w, self.funk_pocket_pad_cell_h,
+    frame, 1, x, y, w, h, opts)
+end
+
+function Assets:draw_world_tour_icon(col, row, x, y, w, h, opts)
+  col = math.max(1, math.min(5, col or 1))
+  row = math.max(1, math.min(2, row or 1))
+  return draw_atlas_cell(
+    self.world_tour_ui, self.world_tour_ui_quads,
+    self.world_tour_ui_cell_w, self.world_tour_ui_cell_h,
+    col, row, x, y, w, h, opts)
+end
+
+function Assets:draw_menu_button_icon(col, row, x, y, w, h, opts)
+  col = math.max(1, math.min(5, col or 1))
+  row = math.max(1, math.min(2, row or 1))
+  return draw_atlas_cell(
+    self.menu_button_icons, self.menu_button_icon_quads,
+    self.menu_button_icon_cell_w, self.menu_button_icon_cell_h,
+    col, row, x, y, w, h, opts)
 end
 
 function Assets:set_sfx_volume(value)

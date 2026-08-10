@@ -11,6 +11,8 @@ local Input = require("src.game.input")
 local Player = require("src.game.entities.player")
 local RunContext = require("src.game.run_context")
 local CombatSystem = require("src.game.systems.combat_system")
+local FunkPocketSystem = require("src.game.systems.funk_pocket_system")
+local JourneyProgress = require("src.meta.journey_progress")
 
 local RunScreen = class()
 RunScreen.kind = "run"
@@ -18,11 +20,25 @@ RunScreen.kind = "run"
 function RunScreen:init(app, opts)
   self.app = app
   self.opts = opts or {}
+  self.mode = self.opts.mode or "prologue"
+  self.world_id = self.opts.world_id
+  if app.content then
+    self.stages = self.mode == "world_tour"
+      and { assert(app.content.world_stages[self.world_id]) }
+      or app.content.stages
+  end
 end
 
 function RunScreen:enter()
+  self.mode = self.opts.mode or "prologue"
+  self.world_id = self.opts.world_id
+  self.stages = self.mode == "world_tour"
+    and { assert(self.app.content.world_stages[self.world_id]) }
+    or self.app.content.stages
   self.character = self.app.content.characters[
-    self.opts.character_id or "joe"]
+    self.opts.character_id
+      or (self.app.slot and self.app.slot.journey.character_id ~= ""
+        and self.app.slot.journey.character_id) or "joe"]
   self.ctx = RunContext({
     seed = self.opts.seed,
     app_bus = self.app.bus,
@@ -32,7 +48,7 @@ function RunScreen:enter()
 
   self.arena = Arena({
     assets = self.app.assets,
-    stage = self.app.content.stages[1],
+    stage = self.stages[1],
   })
   self.input = Input({ deadzone = self.app.profile.options.deadzone })
 
@@ -63,7 +79,13 @@ function RunScreen:enter()
     camera = self.camera,
     options = self.app.profile.options,
     character = self.character,
+    stages = self.stages,
   })
+  self.world_mechanic = self.stages[1].mechanic
+    and FunkPocketSystem({
+      definition = self.stages[1].mechanic,
+      player = self.player,
+    }) or nil
   self.hud = HUD(self.ctx, self.player, self.combat)
   self.finished = false
   self.transitioning = false
@@ -76,21 +98,31 @@ function RunScreen:enter()
 end
 
 function RunScreen:_results_payload(outcome)
-  return {
+  local payload = {
     outcome = outcome,
+    mode = self.mode,
+    world_id = self.world_id,
     stats = self.combat.stats,
     level = self.combat.xp.level,
     progression = self.combat.progression:snapshot(),
     time = self.ctx.time,
     character = self.character,
-    stages_cleared = outcome == "victory" and 2 or self.combat.stage_index - 1,
+    stages_cleared = outcome == "victory" and #self.stages
+      or self.combat.stage_index - 1,
+    stage_count = #self.stages,
+    health_fraction = self.player.hp / math.max(1, self.player.max_hp),
   }
+  if self.world_mechanic then
+    payload.world_mechanic = self.world_mechanic:snapshot()
+  end
+  return payload
 end
 
 function RunScreen:_show_results(outcome)
+  local payload = self:_results_payload(outcome)
+  JourneyProgress.record_result(self.app, payload)
   local ResultsScreen = require("src.ui.screens.results")
-  self.app.states:push(ResultsScreen(
-    self.app, self:_results_payload(outcome)))
+  self.app.states:push(ResultsScreen(self.app, payload))
 end
 
 function RunScreen:exit()
@@ -108,6 +140,9 @@ function RunScreen:update(dt)
     self.ctx:update(sim_dt)
     self.player:update(sim_dt, self.input, self.camera, self.arena)
     self.ctx.world:moved(self.player)
+    if self.world_mechanic then
+      self.world_mechanic:update(sim_dt, self.ctx.time)
+    end
     outcome = self.combat:update(sim_dt)
     self.camera:follow(self.player.x, self.player.y, sim_dt)
     self.camera:update(sim_dt)
@@ -124,23 +159,25 @@ function RunScreen:update(dt)
     self.pending_outcome = nil
     self.transitioning = true
     local StageCompleteScreen = require("src.ui.screens.stage_complete")
-    local stage = self.app.content.stages[self.combat.stage_index]
+    local stage = self.stages[self.combat.stage_index]
     self.app.states:push(StageCompleteScreen(self.app, {
       outcome = "stage_clear",
       stage_index = self.combat.stage_index,
       stage_name = stage.name,
       stats = self.combat.stats,
+      mode = self.mode,
     }))
   elseif outcome == "victory" and not self.finished then
     self.pending_outcome = nil
     self.finished = true
     local StageCompleteScreen = require("src.ui.screens.stage_complete")
-    local stage = self.app.content.stages[self.combat.stage_index]
+    local stage = self.stages[self.combat.stage_index]
     self.app.states:push(StageCompleteScreen(self.app, {
       outcome = "victory",
       stage_index = self.combat.stage_index,
       stage_name = stage.name,
       stats = self.combat.stats,
+      mode = self.mode,
     }))
   elseif outcome == "defeat" and not self.finished then
     self.pending_outcome = nil
@@ -178,6 +215,10 @@ function RunScreen:resume(result)
       cue = "stage_clear_sting",
       serial = self.music_event_serial,
     }
+    if self.mode == "world_tour" then
+      self:_show_results("victory")
+      return
+    end
     local CutsceneScreen = require("src.ui.screens.cutscene")
     if result.outcome == "stage_clear" then
       self.app.states:push(CutsceneScreen(
@@ -194,7 +235,7 @@ function RunScreen:resume(result)
     self.music_event = nil
     self.arena = Arena({
       assets = self.app.assets,
-      stage = self.app.content.stages[2],
+      stage = self.stages[2],
     })
     self.camera:set_bounds(self.arena.width, self.arena.height)
     self.combat:begin_stage(2, self.arena)
@@ -208,6 +249,7 @@ end
 function RunScreen:draw()
   self.camera:apply()
   self.arena:draw()
+  self:_draw_world_mechanic()
   self.ctx.world:each("xp_gem", function(gem) gem:draw() end)
   self.ctx.world:each("pickup", function(pickup) pickup:draw() end)
   self.ctx.world:each("reward_chest", function(chest) chest:draw() end)
@@ -227,6 +269,7 @@ function RunScreen:draw()
   self.hud:draw()
   self:_draw_boss_pointers()
   self:_draw_reward_chest_pointers()
+  self:_draw_world_mechanic_hud()
   if self.seed_notice > 0 then
     local Fonts = require("src.ui.fonts")
     love.graphics.setFont(Fonts.get(14))
@@ -235,6 +278,43 @@ function RunScreen:draw()
       0, love.graphics.getHeight() - 42,
       love.graphics.getWidth(), "center")
   end
+end
+
+function RunScreen:_draw_world_mechanic()
+  if not self.world_mechanic then return end
+  local snapshot = self.world_mechanic:snapshot()
+  local definition = self.world_mechanic.definition
+  for index, pad in ipairs(definition.pads) do
+    local active = index == snapshot.active_index
+    local frame = active and snapshot.frame or 1
+    local size = active and 230 or 185
+    self.app.assets:draw_funk_pad(frame,
+      pad.x - size / 2, pad.y - size / 2, size, size,
+      { color = active and { 1, 1, 1, 0.96 } or { 0.52, 0.44, 0.68, 0.38 } })
+  end
+end
+
+function RunScreen:_draw_world_mechanic_hud()
+  if not self.world_mechanic then return end
+  local Fonts = require("src.ui.fonts")
+  local snapshot = self.world_mechanic:snapshot()
+  local w = love.graphics.getWidth()
+  local panel_w = math.min(440, w - 50)
+  local x = (w - panel_w) / 2
+  local boosted = snapshot.boost_remaining > 0
+  love.graphics.setColor(0.018, 0.008, 0.05, 0.94)
+  love.graphics.rectangle("fill", x, 92, panel_w, 58, 10, 10)
+  self.app.assets:draw_world_tour_icon(2, 1, x + 8, 96, 50, 50)
+  love.graphics.setColor(boosted and { 1.0, 0.76, 0.20, 1 }
+    or { 0.30, 0.94, 1.0, 1 })
+  love.graphics.setFont(Fonts.get(16))
+  love.graphics.printf(boosted and ("POCKET BOOST  •  CHAIN ×" .. snapshot.chain)
+      or "MOVE TO THE LIT BASS PAD",
+    x + 58, 101, panel_w - 68, "center")
+  love.graphics.setColor(0.80, 0.78, 0.90, 1)
+  love.graphics.setFont(Fonts.get(12))
+  love.graphics.printf("Catch the gold downbeat for a speed burst",
+    x + 58, 127, panel_w - 68, "center")
 end
 
 function RunScreen:boss_warning_state()

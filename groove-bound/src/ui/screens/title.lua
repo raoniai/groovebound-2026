@@ -4,6 +4,7 @@ local Hints = require("src.ui.controller_hints")
 local settings = require("src.config.settings")
 local widgets = require("src.ui.widgets.button")
 local UIScale = require("src.ui.scale")
+local JourneyProgress = require("src.meta.journey_progress")
 
 local TitleScreen = class()
 TitleScreen.kind = "title"
@@ -54,6 +55,7 @@ function TitleScreen:_load_menu_video()
 end
 
 function TitleScreen:_start()
+  JourneyProgress.begin_prologue(self.app)
   local CutsceneScreen = require("src.ui.screens.cutscene")
   self.app.states:switch(CutsceneScreen(
     self.app,
@@ -66,39 +68,123 @@ function TitleScreen:_start()
     }))
 end
 
+function TitleScreen:_continue_campaign()
+  if self.app.slot and self.app.slot.prologue.completed then
+    local WorldTourScreen = require("src.ui.screens.world_tour")
+    self.app.states:switch(WorldTourScreen(self.app))
+  else
+    local CharacterSelectScreen = require("src.ui.screens.character_select")
+    self.app.states:switch(CharacterSelectScreen(self.app))
+  end
+end
+
 function TitleScreen:_settings()
   local OptionsScreen = require("src.ui.screens.options")
   self.app.states:push(OptionsScreen(self.app))
 end
 
+function TitleScreen:_catalog()
+  local WorldTourScreen = require("src.ui.screens.world_tour")
+  self.app.states:switch(WorldTourScreen(self.app, {
+    catalog_only = not JourneyProgress.has_campaign(self.app),
+  }))
+end
+
+function TitleScreen:_confirm_campaign_reset(start_after_reset)
+  local CampaignResetConfirm = require("src.ui.screens.campaign_reset_confirm")
+  self.app.states:push(CampaignResetConfirm(self.app, {
+    start_after_reset = start_after_reset == true,
+    on_reset = start_after_reset and function() self:_start() end or nil,
+  }))
+end
+
+function TitleScreen:_new_game()
+  if JourneyProgress.has_campaign(self.app) then
+    self:_confirm_campaign_reset(true)
+  else
+    self:_start()
+  end
+end
+
 function TitleScreen:_layout()
   local w, h, scale = UIScale.dimensions()
   self.ui_scale = scale
-  local bw = math.min(360, w * 0.40)
-  local bh, gap = 50, 10
+  local bw = math.min(560, w * 0.70)
+  local gap = 10
   local x = (w - bw) / 2
-  local y = math.max(350, h * 0.53)
-  local buttons = {
-    widgets.Button({
-      label = "START NEW GAME",
-      x = x, y = y, w = bw, h = 62,
-      font_size = 24,
-      on_press = function() self:_start() end,
-    }),
-    widgets.Button({
+  local has_campaign = JourneyProgress.has_campaign(self.app)
+  local y = has_campaign
+    and math.max(326, math.min(h - 270, h * 0.50))
+    or math.max(344, math.min(h - 220, h * 0.53))
+  local half = (bw - gap) / 2
+  local draw_icon = self.app.assets and function(icon, ix, iy, iw, ih, opts)
+    self.app.assets:draw_menu_button_icon(
+      icon.col, icon.row, ix, iy, iw, ih, opts)
+  end or nil
+  local function button(opts)
+    opts.draw_icon = draw_icon
+    return widgets.Button(opts)
+  end
+  local buttons = {}
+  self.dividers = {}
+  if has_campaign then
+    buttons[#buttons + 1] = button({
+      label = "CONTINUE CAMPAIGN",
+      x = x, y = y, w = bw, h = 54,
+      font_size = 22, icon = { col = 1, row = 1 },
+      variant = "primary",
+      on_press = function() self:_continue_campaign() end,
+    })
+    y = y + 54 + gap
+  end
+  buttons[#buttons + 1] = button({
+      label = has_campaign and "NEW GAME" or "START NEW GAME",
+      x = x, y = y, w = has_campaign and half or bw,
+      h = has_campaign and 46 or 54,
+      font_size = has_campaign and 18 or 22,
+      icon = { col = 2, row = 1 },
+      variant = has_campaign and "default" or "primary",
+      on_press = function() self:_new_game() end,
+    })
+  buttons[#buttons + 1] = button({
+      label = "WORLD TOUR CATALOG",
+      x = has_campaign and x + half + gap or x,
+      y = has_campaign and y or y + 54 + gap,
+      w = has_campaign and half or bw,
+      h = has_campaign and 46 or 48,
+      font_size = has_campaign and 16 or 18,
+      icon = { col = 3, row = 1 },
+      on_press = function() self:_catalog() end,
+    })
+  y = has_campaign and y + 46 + 7 or y + 54 + gap + 48 + 7
+  self.dividers[#self.dividers + 1] = { x = x + 16, y = y, w = bw - 32, h = 14 }
+  y = y + 17
+  buttons[#buttons + 1] = button({
       label = "SETTINGS",
-      x = x, y = y + 62 + gap, w = bw, h = bh,
-      font_size = 19,
+      x = x, y = y, w = half, h = 40,
+      font_size = 16, icon = { col = 4, row = 1 },
       on_press = function() self:_settings() end,
-    }),
-    widgets.Button({
+    })
+  buttons[#buttons + 1] = button({
       label = "QUIT",
-      x = x + bw * 0.18, y = y + 62 + gap + bh + gap,
-      w = bw * 0.64, h = 40,
-      font_size = 16,
+      x = x + half + gap, y = y,
+      w = half, h = 40,
+      font_size = 16, icon = { col = 5, row = 1 },
       on_press = function() love.event.quit() end,
-    }),
-  }
+    })
+  if has_campaign then
+    y = y + 43
+    self.dividers[#self.dividers + 1] = { x = x + 90, y = y, w = bw - 180, h = 11 }
+    y = y + 13
+    buttons[#buttons + 1] = button({
+      label = "RESET CAMPAIGN",
+      x = x + (bw - 220) / 2, y = y,
+      w = 220, h = 30,
+      font_size = 13, icon_size = 24,
+      icon = { col = 1, row = 2 }, variant = "danger",
+      on_press = function() self:_confirm_campaign_reset(false) end,
+    })
+  end
   self.button_list = widgets.ButtonList(buttons)
 end
 
@@ -152,6 +238,14 @@ function TitleScreen:draw()
     0, math.max(320, h * 0.465), w, "center")
 
   self.button_list:draw()
+
+  if self.app.assets and self.app.assets.draw_menu_button_icon then
+    for _, divider in ipairs(self.dividers or {}) do
+      self.app.assets:draw_menu_button_icon(
+        2, 2, divider.x, divider.y, divider.w, divider.h,
+        { color = { 0.78, 0.50, 1.0, 0.84 } })
+    end
+  end
 
   love.graphics.setColor(0.01, 0.005, 0.035, 0.78)
   love.graphics.rectangle("fill", 0, h - 48, w, 48)

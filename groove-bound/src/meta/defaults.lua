@@ -37,6 +37,12 @@ function Defaults.new_slot(slot_id, timestamp)
       completed = false,
       clears = 0,
     },
+    journey = {
+      state = "empty",
+      character_id = "",
+      current_route = "prologue",
+      active_world_id = "",
+    },
     wallet = {
       coins = 0,
       lifetime_earned = 0,

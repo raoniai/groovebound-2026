@@ -114,7 +114,7 @@ function CombatSystem:init(opts)
   self.pickup_notice_text = nil
   self.pending_chest_reveals = {}
   self.buffs = { damage = 0, defense = 0, speed = 0 }
-  self.stages = self.content.stages
+  self.stages = opts.stages or self.content.stages
   self.stage_index = 0
   self.stage_started_at = 0
   self.stage_notice = 0
@@ -722,7 +722,7 @@ function CombatSystem:_update_enemies(dt)
   self.ctx.world:each("enemy", function(enemy)
     local action = enemy:update(dt, self.player, speed, self.arena)
     self.ctx.world:moved(enemy)
-    local contact = self.player.radius + enemy.radius
+    local contact = self.player.radius + enemy.body_radius
     if enemy.contact_cooldown <= 0
       and distance_sq(self.player.x, self.player.y, enemy.x, enemy.y) <= contact * contact
     then

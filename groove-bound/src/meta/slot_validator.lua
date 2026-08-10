@@ -26,6 +26,20 @@ function SlotValidator.validate(slot, expected_slot_id)
     return nil, "invalid Prologue record"
   end
 
+  -- Older Slot V2 files predate campaign routing. Missing journey data is
+  -- accepted on decode so Save can fill current defaults without a reset.
+  local journey = slot.journey
+  if journey ~= nil then
+    local valid_states = { empty = true, in_progress = true, complete = true }
+    local valid_routes = { prologue = true, world_tour = true, funk = true }
+    if type(journey) ~= "table" or not valid_states[journey.state]
+        or type(journey.character_id) ~= "string"
+        or not valid_routes[journey.current_route]
+        or type(journey.active_world_id) ~= "string" then
+      return nil, "invalid campaign journey"
+    end
+  end
+
   local wallet = slot.wallet
   if type(wallet) ~= "table" or not non_negative_integer(wallet.coins)
       or not non_negative_integer(wallet.lifetime_earned)

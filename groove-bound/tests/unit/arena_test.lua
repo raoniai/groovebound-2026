@@ -81,7 +81,7 @@ T["stage-specific dimensions override the global arena fallback"] = function()
   H.eq(cy, 1600)
 end
 
-T["tall scenery blocks only at its base so players can pass behind the top"] = function()
+T["tall scenery trims only its top ten percent for passing behind"] = function()
   local a = Arena({
     width = 1000,
     height = 800,
@@ -91,8 +91,27 @@ T["tall scenery blocks only at its base so players can pass behind the top"] = f
         icon = { col = 1, row = 1 }, pass_behind = true },
     },
   })
-  H.is_false(a:blocked(460, 250, 12))
+  H.is_false(a:blocked(460, 215, 12))
+  H.is_true(a:blocked(460, 245, 12))
   H.is_true(a:blocked(460, 470, 12))
+end
+
+T["tree decorations block their base while the canopy remains pass-behind"] = function()
+  local a = Arena({
+    width = 1000,
+    height = 800,
+    wall = 20,
+    obstacles = {},
+    decorations = {
+      { x = 500, y = 400, size = 160, blocks_base = true,
+        icon = { col = 1, row = 2 } },
+    },
+  })
+  H.is_false(a:blocked(500, 390, 12), "canopy must not become a wall")
+  H.is_true(a:blocked(500, 448, 12), "planter and trunk base must block")
+  local x, y = a:resolve_movement(430, 448, 500, 448, 12)
+  H.eq(x, 430)
+  H.eq(y, 448)
 end
 
 T["safe drop placement moves a chest out of blocked geometry deterministically"] = function()

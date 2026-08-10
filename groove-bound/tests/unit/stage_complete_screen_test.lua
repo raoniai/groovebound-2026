@@ -35,4 +35,13 @@ T["campaign completion uses the same confirmation gate"] = function()
   H.eq(result().outcome, "victory")
 end
 
+T["completion headers map to authored stage and campaign crests"] = function()
+  local stage_one = fresh("stage_clear")
+  H.eq(stage_one:header_cell(), 1)
+  local campaign = fresh("victory")
+  H.eq(campaign:header_cell(), 3)
+  campaign.payload.mode = "world_tour"
+  H.eq(campaign:header_cell(), 4)
+end
+
 return T

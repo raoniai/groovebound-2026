@@ -2,7 +2,7 @@
 -- remaining worlds stay catalog-visible but are not routed into gameplay yet.
 
 local worlds = {
-  { "funk", 1, "core", "The Pocket District", "Funk", "funk_v1", "funk_hold_the_pocket", "Breakbeat Bruiser", "soul" },
+  { "funk", 1, "core", "The Pocket District", "Funk", "funk_v1", "funk_hold_the_pocket", "breakbeat_bruiser", "soul" },
   { "soul", 2, "core", "Velvet Chapel", "Soul", "soul_v1", "soul_resonance_reserve", "Velvet Titan", "disco" },
   { "disco", 3, "core", "Mirrorball Metro", "Disco", "disco_v1", "disco_spotlight_flow", "Prism Monarch", "house" },
   { "house", 4, "core", "Warehouse 909", "House", "house_v1", "house_floor_cycles", "Kickdrum Constructor", "electro" },
@@ -26,7 +26,8 @@ for _, row in ipairs(worlds) do
     grade_profile = grade_profile, mastery_id = mastery_id,
     music_route = "world_" .. id, environment_atlas = "world_" .. id,
     floor_atlas = "world_" .. id .. "_floor", first_clear_unlock = next_world,
-    implementation_status = (id == "funk" or id == "soul") and "catalog_ready" or "planned",
+    implementation_status = id == "funk" and "playable"
+      or id == "soul" and "catalog_ready" or "planned",
     rewards = {
       C = "world_" .. id .. "_grade_c", B = "world_" .. id .. "_grade_b",
       A = "world_" .. id .. "_grade_a", S = "world_" .. id .. "_grade_s",

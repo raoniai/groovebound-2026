@@ -31,6 +31,8 @@ local app = {
   save = nil,
   profile_store = nil,
   profile = nil,
+  slot = nil,
+  active_slot_id = nil,
   tuning = nil,
   assets = nil,
   active_run = nil,
@@ -60,6 +62,8 @@ function love.load()
   -- Keep the established UI persistence seam while Device Settings and
   -- progression Slots remain independently owned by ProfileStore.
   app.save = app.profile_store.device_settings
+  app.active_slot_id = app.profile.active_slot
+  app.slot = app.profile_store:load_slot(app.active_slot_id)
   Log.info("save", "Device Settings " .. activation.device.status
     .. "; legacy migration " .. activation.migration.status)
   if app.profile.options.fullscreen then

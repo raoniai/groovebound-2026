@@ -27,6 +27,7 @@ function Arena:init(opts)
     { x = 1700, y = 820, size = 135, icon = { col = 3, row = 2 } },
     { x = 980, y = 1330, size = 100, icon = { col = 4, row = 2 } },
   }
+  self.collision_rects = nil
 end
 
 function Arena:center()
@@ -63,7 +64,9 @@ end
 
 local function collision_rect(obstacle)
   if not passes_behind(obstacle) then return obstacle end
-  local ratio = obstacle.hitbox_ratio or 0.38
+  -- Only trim the upper edge. This keeps equipment solid while leaving a
+  -- small visual lane for the player to pass behind tall scenery.
+  local ratio = obstacle.hitbox_ratio or 0.90
   local height = obstacle.h * ratio
   return {
     x = obstacle.x,
@@ -71,6 +74,35 @@ local function collision_rect(obstacle)
     w = obstacle.w,
     h = height,
   }
+end
+
+local function decoration_collision_rect(decoration)
+  local size = decoration.size or 0
+  local width = decoration.hitbox_w or size * 0.58
+  local height = decoration.hitbox_h or size * 0.24
+  local offset_x = decoration.hitbox_offset_x or 0
+  local offset_y = decoration.hitbox_offset_y or size * 0.30
+  return {
+    x = decoration.x + offset_x - width / 2,
+    y = decoration.y + offset_y - height / 2,
+    w = width,
+    h = height,
+  }
+end
+
+function Arena:_collision_rects()
+  if self.collision_rects then return self.collision_rects end
+  local result = {}
+  for _, obstacle in ipairs(self.obstacles) do
+    result[#result + 1] = collision_rect(obstacle)
+  end
+  for _, decoration in ipairs(self.decorations) do
+    if decoration.blocks_base then
+      result[#result + 1] = decoration_collision_rect(decoration)
+    end
+  end
+  self.collision_rects = result
+  return result
 end
 
 local function segment_hits_expanded_rect(x1, y1, x2, y2, rect, padding)
@@ -125,8 +157,8 @@ local function draw_floor_surface(arena, style, tint, veil)
 end
 
 function Arena:blocked(x, y, radius)
-  for _, obstacle in ipairs(self.obstacles) do
-    if circle_hits_rect(x, y, radius, collision_rect(obstacle)) then
+  for _, collider in ipairs(self:_collision_rects()) do
+    if circle_hits_rect(x, y, radius, collider) then
       return true
     end
   end
@@ -140,8 +172,7 @@ function Arena:segment_clear(x1, y1, x2, y2, radius)
   then
     return false
   end
-  for _, obstacle in ipairs(self.obstacles) do
-    local collider = collision_rect(obstacle)
+  for _, collider in ipairs(self:_collision_rects()) do
     if segment_hits_expanded_rect(
       x1, y1, x2, y2, collider, radius + 2)
     then
@@ -167,8 +198,7 @@ function Arena:navigation_direction(x, y, target_x, target_y, radius)
     { x = target_x, y = target_y },
   }
   local clearance = (radius or 0) + 6
-  for _, obstacle in ipairs(self.obstacles) do
-    local collider = collision_rect(obstacle)
+  for _, collider in ipairs(self:_collision_rects()) do
     for _, point in ipairs({
       { x = collider.x - clearance, y = collider.y - clearance },
       { x = collider.x + collider.w + clearance,

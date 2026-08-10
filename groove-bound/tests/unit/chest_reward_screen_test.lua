@@ -22,7 +22,7 @@ local function fresh()
     function() return popped end
 end
 
-T["luck reels conceal the count before revealing every exact reward"] = function()
+T["luck spin converges, locks the count, then reveals every exact reward"] = function()
   local screen = fresh()
   H.eq(screen:phase(), "count_roll")
   H.eq(screen:visible_reel_count(), 0)
@@ -30,14 +30,18 @@ T["luck reels conceal the count before revealing every exact reward"] = function
     or screen:rolling_multiplier() == 3
     or screen:rolling_multiplier() == 5)
   screen:update(screen:count_roll_duration() + 0.01)
-  H.eq(screen:visible_reel_count(), 3)
+  H.eq(screen:phase(), "count_lock")
+  H.eq(screen:visible_reel_count(), 0)
   H.eq(screen:displayed_roll(), 3)
-  local _, settled = screen:visible_symbol(1)
-  H.is_false(settled)
-  screen:update(screen:reel_spin_duration())
+  screen:update(screen:count_lock_duration())
+  H.eq(screen:visible_reel_count(), 3)
+  local first, settled = screen:visible_symbol(1)
+  H.is_true(settled)
+  H.eq(first.id, screen.rewards[1].id)
+  H.eq(screen:reel_spin_duration(), 0)
   local _, first_settled = screen:visible_symbol(1)
   H.is_true(first_settled)
-  H.eq(screen:phase(), "settling")
+  H.eq(screen:phase(), "rewards")
   screen:update(screen:animation_duration())
   H.eq(screen:phase(), "complete")
   H.eq(screen:visible_reel_count(), 3)
@@ -57,12 +61,17 @@ T["chest reveal cannot be skipped until the animation finishes"] = function()
   H.eq(popped(), 1)
 end
 
-T["luck multiplier resolves before the reward reels finish"] = function()
+T["luck multiplier resolves directly into the reward cards"] = function()
   local screen = fresh()
   H.is_nil(screen:displayed_roll())
   screen:update(screen:count_roll_duration() + 0.01)
   H.eq(screen:displayed_roll(), 3)
   H.is_false(screen.complete)
+  H.eq(screen:phase(), "count_lock")
+  H.is_nil(screen:visible_symbol(3))
+  screen:update(screen:count_lock_duration())
+  H.eq(screen:phase(), "rewards")
+  H.eq(screen:visible_symbol(3).id, screen.rewards[3].id)
 end
 
 return T

@@ -224,6 +224,48 @@ All character and keyed gameplay sheets use a transparent RGBA production
 output. Cinematic atlases and the extracted menu logo intentionally retain
 their illustrated backgrounds.
 
+## World Tour V1 interface and mechanic atlases
+
+Created 10 August 2026 with OpenAI image generation from text-only prompts;
+no third-party image was supplied. The untouched RGB generator outputs remain
+in `source-candidates/`. Runtime atlases were normalized with nearest-neighbour
+scaling and keyed from chroma green to RGBA with FFmpeg.
+
+| Runtime file | Grid / role |
+|---|---|
+| `campaign/chest-luck-reveal-atlas.png` | 5×2 vinyl luck-spinner and reward-stage frames |
+| `campaign/funk-pocket-pad-atlas.png` | 5×1 Funk pocket timing-pad animation |
+| `campaign/world-tour-ui-atlas.png` | 5×2 campaign/world emblems and rank medallions |
+| `campaign/menu-button-icons-atlas.png` | 5×2 main-menu actions, divider and reset-warning symbols |
+| `campaign/completion-ui-atlas.png` | 4×2 campaign/Funk completion crests and pictorial result badges |
+
+The chest atlas depicts a single increasingly energized vinyl selector in its
+top row and a transforming arcade reward-card stage in its bottom row. The
+Funk strip moves from dormant speaker pad through cyan/magenta warning states
+to a gold downbeat lock. The World Tour atlas contains campaign, Funk, Soul,
+locked-world and portal emblems plus five empty rank medallions. All grids use
+isolated, centered pixel-art silhouettes with no generated typography.
+
+The menu atlas gives Continue, New Game, World Tour Catalog, Settings, Quit and
+Reset Campaign their own musical-machine icons. Its second row also supplies the
+authored equalizer divider and both stages of the protected campaign-reset flow.
+The untouched generator output is retained at
+`source-candidates/menu-button-icons-atlas-source.png`.
+
+The chest runtime atlas was regenerated from
+`source-candidates/chest-luck-reveal-atlas-v2-source.png` after the first
+fullscreen playtest exposed cross-cell edge bleed and a visually overloaded
+reward-card row. The replacement retains the vinyl luck chest, adds safe cell
+padding, and uses five restrained speaker-texture card backplates. The runtime
+consumer also samples each cell with a two-pixel UV inset.
+
+`source-candidates/completion-ui-atlas-source.png` supplies the asset-driven
+Backbeat Streets, Orbit Line, campaign victory and Funk mastery crests plus
+encore chest, resonance, enemy and boss badges. Both new sources were generated
+with OpenAI image generation and converted from flat chroma green to RGBA using
+the project image-generation helper with a soft matte, despill and one-pixel
+edge contraction.
+
 ## Application icon
 
 **Current files:** `source-candidates/app-icon-character-source.png`

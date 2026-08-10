@@ -54,6 +54,9 @@ function PauseScreen:_layout()
   buttons[#buttons + 1] = widgets.Button({
       label = "Quit to Title", x = x, y = y + (#buttons * (bh + gap)), w = bw, h = bh,
       on_press = function()
+        if self.app.active_run and not self.app.active_run.finished then
+          require("src.meta.journey_progress").abandon_active_run(self.app)
+        end
         local TitleScreen = require("src.ui.screens.title")
         self.app.states:switch(TitleScreen(self.app))
       end,

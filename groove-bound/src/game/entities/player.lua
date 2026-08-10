@@ -50,6 +50,7 @@ function Player:init(opts)
   self.defense_multiplier = stats.defense or 1
   self.passive_speed_multiplier = 1
   self.temporary_speed_multiplier = 1
+  self.world_speed_multiplier = 1
   self.temporary_defense_multiplier = 1
   self.time_since_hit = 5
   self.aim_x, self.aim_y = 1, 0
@@ -85,7 +86,7 @@ function Player:update(dt, input, camera, arena)
       self.hp + self.max_hp * 0.0002 * regeneration_dt)
   end
   self.speed = self.base_speed * speed_multiplier * self.passive_speed_multiplier
-    * self.temporary_speed_multiplier
+    * self.temporary_speed_multiplier * self.world_speed_multiplier
   local old_x, old_y = self.x, self.y
   local next_x = self.x + (mx * self.speed + self.knockback_x) * dt
   local next_y = self.y + (my * self.speed + self.knockback_y) * dt
