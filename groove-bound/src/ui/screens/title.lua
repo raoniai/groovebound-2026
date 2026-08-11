@@ -297,10 +297,7 @@ function TitleScreen:keypressed(key)
 end
 
 function TitleScreen:gamepadpressed(_, button)
-  if button == "a" then self.button_list:confirm() return true end
-  if button == "dpup" then self.button_list:move_focus(-1) return true end
-  if button == "dpdown" then self.button_list:move_focus(1) return true end
-  return false
+  return self.button_list:gamepadpressed(button)
 end
 
 function TitleScreen:mousemoved(x, y)

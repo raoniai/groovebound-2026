@@ -174,6 +174,26 @@ T["auto-selected capped chest rewards stay in play without opening a modal"] = f
   H.is_false(screen.choice_open)
 end
 
+T["an evolution chest always opens its reveal even if marked automatic"] = function()
+  local pushed = {}
+  local queue = { { roll = 1, auto_selected = true, has_evolution = true,
+    rewards = { { kind = "evolution", id = "kazoo_studio" } } } }
+  local screen = RunScreen({
+    states = { push = function(_, state) pushed[#pushed + 1] = state.kind end },
+  }, {})
+  screen.seed_notice = 0
+  screen.choice_open = false
+  screen.transitioning = false
+  screen.finished = false
+  screen.combat = {
+    take_pending_chest_reveal = function() return table.remove(queue, 1) end,
+    xp = { has_pending_choice = function() return false end },
+  }
+  screen:update(0.1)
+  H.eq(pushed[1], "chest_reward")
+  H.is_true(screen.choice_open)
+end
+
 T["World Tour stage confirmation advances into its second playable arena"] = function()
   local began
   local screen = RunScreen({ content = Content }, {

@@ -269,6 +269,44 @@ function Assets.load()
     "assets/generated/campaign/ui/reward-backplate.png")
   self.ui_new_tag = image(
     "assets/generated/campaign/ui/new-tag.png")
+  local upgrade_frame_root =
+    "assets/generated/campaign/ui/upgrade-card-frame-v2/"
+  self.upgrade_card_frame = {
+    top_left = image(upgrade_frame_root .. "top-left.png"),
+    top = image(upgrade_frame_root .. "top.png"),
+    top_right = image(upgrade_frame_root .. "top-right.png"),
+    left = image(upgrade_frame_root .. "left.png"),
+    center = image(upgrade_frame_root .. "center.png"),
+    right = image(upgrade_frame_root .. "right.png"),
+    bottom_left = image(upgrade_frame_root .. "bottom-left.png"),
+    bottom = image(upgrade_frame_root .. "bottom.png"),
+    bottom_right = image(upgrade_frame_root .. "bottom-right.png"),
+  }
+  self.upgrade_attribute_icons = image(
+    "assets/generated/campaign/ui/upgrade-attribute-icons-atlas.png")
+  self.upgrade_attribute_icon_quads,
+    self.upgrade_attribute_icon_cell_w,
+    self.upgrade_attribute_icon_cell_h = grid_quads(
+      self.upgrade_attribute_icons, 4, 2, 12)
+  self.menu_category_icons = image(
+    "assets/generated/campaign/ui/menu-category-icons-atlas-v2.png")
+  self.menu_category_icon_quads,
+    self.menu_category_icon_cell_w,
+    self.menu_category_icon_cell_h = grid_quads(
+      self.menu_category_icons, 4, 3, 12)
+  local focus_frame_root =
+    "assets/generated/campaign/ui/menu-focus-frame-v2/"
+  self.menu_focus_frame = {
+    top_left = image(focus_frame_root .. "top-left.png"),
+    top = image(focus_frame_root .. "top.png"),
+    top_right = image(focus_frame_root .. "top-right.png"),
+    left = image(focus_frame_root .. "left.png"),
+    center = image(focus_frame_root .. "center.png"),
+    right = image(focus_frame_root .. "right.png"),
+    bottom_left = image(focus_frame_root .. "bottom-left.png"),
+    bottom = image(focus_frame_root .. "bottom.png"),
+    bottom_right = image(focus_frame_root .. "bottom-right.png"),
+  }
   self.reward_chest_quads,
     self.reward_chest_cell_w,
     self.reward_chest_cell_h = grid_quads(self.reward_chest, 4, 2)
@@ -768,6 +806,41 @@ function Assets:draw_ui_backplate(x, y, w, h, opts)
   return true
 end
 
+local function draw_scaled(value, x, y, w, h)
+  local iw, ih = value:getDimensions()
+  love.graphics.draw(value, x, y, 0, w / iw, h / ih)
+end
+
+local function draw_nine_slice(parts, x, y, w, h, opts)
+  opts = opts or {}
+  local corner = math.min(opts.corner or 54, w / 3, h / 3)
+  local inner_w = math.max(1, w - corner * 2)
+  local inner_h = math.max(1, h - corner * 2)
+  love.graphics.setColor(opts.color or { 1, 1, 1, 1 })
+
+  draw_scaled(parts.center, x + corner, y + corner, inner_w, inner_h)
+  draw_scaled(parts.top, x + corner, y, inner_w, corner)
+  draw_scaled(parts.bottom, x + corner, y + h - corner, inner_w, corner)
+  draw_scaled(parts.left, x, y + corner, corner, inner_h)
+  draw_scaled(parts.right, x + w - corner, y + corner, corner, inner_h)
+  draw_scaled(parts.top_left, x, y, corner, corner)
+  draw_scaled(parts.top_right, x + w - corner, y, corner, corner)
+  draw_scaled(parts.bottom_left, x, y + h - corner, corner, corner)
+  draw_scaled(parts.bottom_right,
+    x + w - corner, y + h - corner, corner, corner)
+  return true
+end
+
+function Assets:draw_upgrade_card_frame(x, y, w, h, opts)
+  return draw_nine_slice(self.upgrade_card_frame, x, y, w, h, opts)
+end
+
+function Assets:draw_menu_focus_frame(x, y, w, h, opts)
+  opts = opts or {}
+  opts.corner = opts.corner or math.min(26, h * 0.42)
+  return draw_nine_slice(self.menu_focus_frame, x, y, w, h, opts)
+end
+
 function Assets:draw_new_tag(x, y, w, h, opts)
   opts = opts or {}
   local iw, ih = self.ui_new_tag:getDimensions()
@@ -775,6 +848,27 @@ function Assets:draw_new_tag(x, y, w, h, opts)
   love.graphics.draw(self.ui_new_tag, x, y, opts.rotation or 0,
     w / iw, h / ih)
   return true
+end
+
+function Assets:draw_upgrade_attribute_icon(cell, x, y, size, opts)
+  cell = math.max(1, math.min(8, cell or 8))
+  local col = (cell - 1) % 4 + 1
+  local row = math.floor((cell - 1) / 4) + 1
+  return draw_atlas_cell(
+    self.upgrade_attribute_icons, self.upgrade_attribute_icon_quads,
+    self.upgrade_attribute_icon_cell_w,
+    self.upgrade_attribute_icon_cell_h,
+    col, row, x, y, size, size, opts)
+end
+
+function Assets:draw_menu_category_icon(cell, x, y, size, opts)
+  cell = math.max(1, math.min(12, cell or 1))
+  local col = (cell - 1) % 4 + 1
+  local row = math.floor((cell - 1) / 4) + 1
+  return draw_atlas_cell(
+    self.menu_category_icons, self.menu_category_icon_quads,
+    self.menu_category_icon_cell_w, self.menu_category_icon_cell_h,
+    col, row, x, y, size, size, opts)
 end
 
 function Assets:draw_completion_ui(col, row, x, y, w, h, opts)

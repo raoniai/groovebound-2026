@@ -38,6 +38,40 @@ T["runtime UI artwork and character logos have stable production mappings"] = fu
     "assets/generated/campaign/ui/new-tag.png")
   H.is_true(new_w > new_h * 2)
   H.eq(png_color_type("assets/generated/campaign/ui/new-tag.png"), 6)
+  local attribute_w, attribute_h = png_dimensions(
+    "assets/generated/campaign/ui/upgrade-attribute-icons-atlas.png")
+  H.eq(attribute_w, 1600)
+  H.eq(attribute_h, 800)
+  H.eq(png_color_type(
+    "assets/generated/campaign/ui/upgrade-attribute-icons-atlas.png"), 6)
+  for _, name in ipairs({
+    "top-left", "top", "top-right", "left", "center", "right",
+    "bottom-left", "bottom", "bottom-right",
+  }) do
+    local path = "assets/generated/campaign/ui/upgrade-card-frame-v2/"
+      .. name .. ".png"
+    local width, height = png_dimensions(path)
+    H.is_true(width > 0)
+    H.is_true(height > 0)
+    H.eq(png_color_type(path), 6)
+  end
+  local menu_w, menu_h = png_dimensions(
+    "assets/generated/campaign/ui/menu-category-icons-atlas-v2.png")
+  H.eq(menu_w, 1600)
+  H.eq(menu_h, 1200)
+  H.eq(png_color_type(
+    "assets/generated/campaign/ui/menu-category-icons-atlas-v2.png"), 6)
+  for _, name in ipairs({
+    "top-left", "top", "top-right", "left", "center", "right",
+    "bottom-left", "bottom", "bottom-right",
+  }) do
+    local path = "assets/generated/campaign/ui/menu-focus-frame-v2/"
+      .. name .. ".png"
+    local width, height = png_dimensions(path)
+    H.is_true(width > 0)
+    H.is_true(height > 0)
+    H.eq(png_color_type(path), 6)
+  end
   local aim_w, aim_h = png_dimensions(
     "assets/generated/campaign/aim-reticle.png")
   H.eq(aim_w, aim_h)

@@ -5,6 +5,7 @@ local widgets = require("src.ui.widgets.button")
 local UIScale = require("src.ui.scale")
 local JourneyProgress = require("src.meta.journey_progress")
 local WorldTourSession = require("src.meta.world_tour_session")
+local SpatialNavigation = require("src.ui.spatial_navigation")
 
 local WorldTourScreen = class()
 WorldTourScreen.kind = "world_tour"
@@ -30,6 +31,7 @@ function WorldTourScreen:init(app, opts)
   end
   table.sort(self.worlds, function(a, b) return a.order < b.order end)
   self.notice = 0
+  self.focus_area = "worlds"
 end
 
 function WorldTourScreen:enter()
@@ -60,11 +62,21 @@ function WorldTourScreen:_play_selected()
   end
   local character_id = self.app.slot.journey.character_id ~= ""
     and self.app.slot.journey.character_id or "joe"
+  local build = WorldTourSession.get(self.app, character_id)
+  local starter = world.starter_loadout or { weapons = 0, passives = 0 }
+  if not build and (starter.weapons > 0 or starter.passives > 0) then
+    local WorldLoadoutScreen = require("src.ui.screens.world_loadout")
+    self.app.states:switch(WorldLoadoutScreen(self.app, {
+      world = world,
+      character_id = character_id,
+    }))
+    return true
+  end
   JourneyProgress.begin_run(self.app, "world_tour", world.id)
   local RunScreen = require("src.ui.screens.run")
   self.app.states:switch(RunScreen(self.app, {
     mode = "world_tour", world_id = world.id, character_id = character_id,
-    build = WorldTourSession.get(self.app, character_id),
+    build = build,
   }))
   return true
 end
@@ -112,6 +124,15 @@ function WorldTourScreen:_layout()
       end,
     })
   self.buttons = widgets.ButtonList(buttons)
+  self:_apply_area_focus()
+end
+
+function WorldTourScreen:_apply_area_focus()
+  if not self.buttons then return end
+  for index, button in ipairs(self.buttons.buttons) do
+    button.focused = self.focus_area == "actions"
+      and index == self.buttons.focus_index
+  end
 end
 
 function WorldTourScreen:resize() self:_layout() end
@@ -243,6 +264,12 @@ function WorldTourScreen:draw()
 
   for index, world in ipairs(self.worlds) do
     self:_draw_world_slot(world, self.slot_rects[index], index == self.selected)
+    if self.focus_area == "worlds" and index == self.selected then
+      self.app.assets:draw_menu_focus_frame(
+        self.slot_rects[index].x - 4, self.slot_rects[index].y - 4,
+        self.slot_rects[index].w + 8, self.slot_rects[index].h + 8,
+        { corner = 28 })
+    end
   end
   self:_draw_record(self.worlds[self.selected], self.detail_rect)
   self.buttons:draw()
@@ -258,41 +285,76 @@ function WorldTourScreen:draw()
 end
 
 function WorldTourScreen:keypressed(key)
-  if key == "left" or key == "a" then
-    self.selected = ((self.selected - 2) % #self.worlds) + 1
-    return true
-  elseif key == "right" or key == "d" then
-    self.selected = self.selected % #self.worlds + 1
-    return true
-  elseif key == "escape" then
+  if key == "escape" then
     local TitleScreen = require("src.ui.screens.title")
     self.app.states:switch(TitleScreen(self.app))
     return true
   end
-  return self.buttons:keypressed(key)
+  local directions = {
+    left = "left", a = "left", right = "right", d = "right",
+    up = "up", w = "up", down = "down", s = "down",
+  }
+  local direction = directions[key]
+  if direction then
+    if self.focus_area == "worlds" then
+      local next_index = SpatialNavigation.find(
+        self.slot_rects, self.selected, direction)
+      if next_index == self.selected and direction == "down" then
+        self.focus_area = "actions"
+      else
+        self.selected = next_index
+      end
+    else
+      local moved = self.buttons:move_focus_direction(direction)
+      if not moved and direction == "up" then self.focus_area = "worlds" end
+    end
+    self:_apply_area_focus()
+    return true
+  elseif key == "return" or key == "space" then
+    if self.focus_area == "worlds" then self:_play_selected()
+    else self.buttons:confirm() end
+    return true
+  end
+  return false
 end
 
 function WorldTourScreen:gamepadpressed(_, button)
-  if button == "dpleft" then return self:keypressed("left") end
-  if button == "dpright" then return self:keypressed("right") end
-  if button == "a" then self.buttons:confirm() return true end
-  if button == "dpup" then self.buttons:move_focus(-1) return true end
-  if button == "dpdown" then self.buttons:move_focus(1) return true end
   if button == "b" then return self:keypressed("escape") end
+  if button == "a" then return self:keypressed("return") end
+  local mapping = {
+    dpleft = "left", dpright = "right", dpup = "up", dpdown = "down",
+  }
+  if mapping[button] then return self:keypressed(mapping[button]) end
   return false
 end
 
 function WorldTourScreen:mousemoved(x, y)
   x, y = UIScale.point(x, y, self.ui_scale)
   self.buttons:mousemoved(x, y)
+  for _, button in ipairs(self.buttons.buttons) do
+    if button.hovered then
+      self.focus_area = "actions"
+      self:_apply_area_focus()
+      return
+    end
+  end
 end
 
 function WorldTourScreen:mousepressed(x, y, button)
   if button ~= 1 then return false end
   x, y = UIScale.point(x, y, self.ui_scale)
-  if self.buttons:mousepressed(x, y, button) then return true end
+  if self.buttons:mousepressed(x, y, button) then
+    self.focus_area = "actions"
+    self:_apply_area_focus()
+    return true
+  end
   for index, rect in ipairs(self.slot_rects) do
-    if inside(rect, x, y) then self.selected = index return true end
+    if inside(rect, x, y) then
+      self.selected = index
+      self.focus_area = "worlds"
+      self:_apply_area_focus()
+      return true
+    end
   end
   return false
 end

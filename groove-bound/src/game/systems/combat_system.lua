@@ -604,6 +604,7 @@ function CombatSystem:_open_reward_chest()
     roll = rolled,
     rewards = rewards,
     auto_selected = rewards.auto_selected == true,
+    has_evolution = rewards.has_evolution == true,
   }
   if self.assets then self.assets:play("level_up", 0.12) end
   return self.pending_chest_reveals[#self.pending_chest_reveals]

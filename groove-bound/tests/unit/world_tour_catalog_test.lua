@@ -85,4 +85,17 @@ T["every unevolved weapon has exactly one authored evolution"] = function()
   end
 end
 
+T["core worlds grant a gradual fresh-entry starter loadout"] = function()
+  local Content = require("src.content.init")
+  local expected = {
+    funk = { 0, 0 }, soul = { 1, 0 }, disco = { 1, 1 },
+    house = { 1, 1 }, electro = { 2, 1 }, techno = { 2, 2 },
+  }
+  for id, counts in pairs(expected) do
+    local loadout = Content.world_tour[id].starter_loadout
+    H.eq(loadout.weapons, counts[1])
+    H.eq(loadout.passives, counts[2])
+  end
+end
+
 return T

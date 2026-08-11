@@ -2,6 +2,15 @@
 
 This file is the local implementation record. Add a new entry at the top after every material site pass.
 
+## 2026-08-11 | SITE-025 | v0.7.1 menu and controller release
+
+Updated the visible public-build links and version copy to v0.7.1 while keeping
+every Mac CTA on the stable GitHub Latest DMG route. The release adds clear
+sprite-backed menu focus, true four-direction controller navigation, complete
+controller access through Pause, Settings, Controls and Admin, the cleaner
+level-up/evolution presentation, evolution-aware capped-build chest handling,
+and gradual free starter loadouts for harder World Tour routes.
+
 ## 2026-08-11 | SITE-023 | v0.7.0 public World Tour release
 
 Updated Home, Catalog, Builder, the shared release badge, footer release-note

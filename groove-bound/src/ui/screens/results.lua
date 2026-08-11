@@ -191,17 +191,7 @@ function ResultsScreen:keypressed(key)
 end
 
 function ResultsScreen:gamepadpressed(_, button)
-  if button == "a" then
-    self.buttons:confirm()
-    return true
-  elseif button == "dpup" then
-    self.buttons:move_focus(-1)
-    return true
-  elseif button == "dpdown" then
-    self.buttons:move_focus(1)
-    return true
-  end
-  return false
+  return self.buttons:gamepadpressed(button)
 end
 
 function ResultsScreen:mousemoved(x, y)

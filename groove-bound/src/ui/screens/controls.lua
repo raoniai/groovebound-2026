@@ -3,6 +3,8 @@ local Controls = require("src.config.controls")
 local Fonts = require("src.ui.fonts")
 local settings = require("src.config.settings")
 local widgets = require("src.ui.widgets.button")
+local Hints = require("src.ui.controller_hints")
+local MenuChrome = require("src.ui.menu_chrome")
 
 local ControlsScreen = class()
 ControlsScreen.kind = "controls"
@@ -19,24 +21,38 @@ function ControlsScreen:enter() self:_layout() end
 
 function ControlsScreen:_layout()
   local w, h = love.graphics.getDimensions()
-  local bw, bh, gap = math.min(440, w - 80), 40, 8
-  local x, y = (w - bw) / 2, h * 0.20
+  local panel_w = math.min(590, w - 48)
+  self.panel = { x = (w - panel_w) / 2, y = 28, w = panel_w, h = h - 70 }
+  local bw, bh, gap = panel_w - 84, 44, 5
+  local x, y = (w - bw) / 2, self.panel.y + 88
+  local function renderer(button)
+    MenuChrome.action(self.app.assets, button, {
+      category_cell = button.is_back and nil or 12,
+      icon = button.is_back and { col = 5, row = 2 } or nil,
+      label = button.label,
+      font_size = 15,
+    })
+  end
   local buttons = {}
   for _, action in ipairs(actions) do
     local action_id = action
     buttons[#buttons + 1] = widgets.Button({
       label = string.upper(action_id) .. "  —  " .. Controls.keyboard[action_id][1],
       x = x, y = y + (#buttons * (bh + gap)), w = bw, h = bh, font_size = 15,
+      renderer = renderer,
       on_press = function()
         self.capture_action = action_id
         self.message = "Press a new key for " .. string.upper(action_id)
       end,
     })
   end
-  buttons[#buttons + 1] = widgets.Button({
+  local back = widgets.Button({
     label = "Back", x = x, y = y + (#buttons * (bh + gap)), w = bw, h = bh,
+    renderer = renderer,
     on_press = function() self.app.states:pop() end,
   })
+  back.is_back = true
+  buttons[#buttons + 1] = back
   self.buttons = widgets.ButtonList(buttons)
 end
 
@@ -46,15 +62,35 @@ function ControlsScreen:draw()
   local w, h = love.graphics.getDimensions()
   love.graphics.setColor(settings.ui.background_color)
   love.graphics.rectangle("fill", 0, 0, w, h)
+  MenuChrome.panel(self.app.assets, self.panel, { corner = 46, alpha = 0.98 })
   love.graphics.setColor(settings.ui.accent_color)
-  love.graphics.setFont(Fonts.get(32))
-  love.graphics.printf("KEYBOARD BINDINGS", 0, h * 0.08, w, "center")
+  love.graphics.setFont(Fonts.heading(30))
+  love.graphics.printf("KEYBOARD BINDINGS", 0, self.panel.y + 24, w, "center")
   self.buttons:draw()
   if self.message then
     love.graphics.setColor(settings.ui.text_color)
-    love.graphics.setFont(Fonts.get(14))
-    love.graphics.printf(self.message, 0, h - 55, w, "center")
+    love.graphics.setFont(Fonts.body(13))
+    love.graphics.printf(self.message, 0, h - 58, w, "center")
   end
+  Hints.draw({
+    { symbol = "dpad", label = "Move" },
+    { symbol = "cross", label = "Rebind" },
+    { symbol = "circle", label = self.capture_action and "Cancel" or "Back" },
+  }, h - 27, w, { font_size = 12, glyph_size = 17, gap = 16 })
+end
+
+function ControlsScreen:gamepadpressed(_, button)
+  if button == "b" then
+    if self.capture_action then
+      self.capture_action = nil
+      self.message = "REBIND CANCELLED"
+    else
+      self.app.states:pop()
+    end
+    return true
+  end
+  if self.capture_action then return true end
+  return self.buttons:gamepadpressed(button)
 end
 
 function ControlsScreen:keypressed(key)

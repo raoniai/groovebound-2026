@@ -4,6 +4,7 @@
 local class = require("src.core.class")
 local Fonts = require("src.ui.fonts")
 local settings = require("src.config.settings")
+local SpatialNavigation = require("src.ui.spatial_navigation")
 
 local Button = class()
 
@@ -21,6 +22,7 @@ function Button:init(opts)
   self.icon = opts.icon
   self.draw_icon = opts.draw_icon
   self.icon_size = opts.icon_size
+  self.renderer = opts.renderer
 end
 
 function Button:contains(px, py)
@@ -29,8 +31,12 @@ function Button:contains(px, py)
 end
 
 function Button:draw()
+  if self.renderer then
+    self.renderer(self)
+    return
+  end
   local colors = settings.ui.button
-  local fill = self.hovered and colors.hover or colors.fill
+  local fill = (self.focused or self.hovered) and colors.hover or colors.fill
 
   if self.variant == "primary" then
     local pulse = 0.82 + math.sin((love.timer and love.timer.getTime() or 0) * 4) * 0.08
@@ -51,7 +57,13 @@ function Button:draw()
     and { 1.0, 0.74, 0.20, 1 }
     or self.variant == "danger" and { 1.0, 0.20, 0.30, 1 }
     or (self.focused and colors.focus or colors.border))
-  love.graphics.setLineWidth(self.focused and 3 or self.variant == "primary" and 2 or 1)
+  if self.focused then
+    love.graphics.setColor(0.22, 0.92, 1.0, 0.18)
+    love.graphics.rectangle("fill", self.x - 7, self.y - 7,
+      self.w + 14, self.h + 14, 10, 10)
+    love.graphics.setColor(1.0, 0.78, 0.22, 1)
+  end
+  love.graphics.setLineWidth(self.focused and 4 or self.variant == "primary" and 2 or 1)
   love.graphics.rectangle("line", self.x, self.y, self.w, self.h, 6, 6)
 
   local text_x, text_w = self.x, self.w
@@ -97,6 +109,15 @@ function ButtonList:move_focus(delta)
   self:_apply_focus()
 end
 
+function ButtonList:move_focus_direction(direction)
+  local next_index = SpatialNavigation.find(
+    self.buttons, self.focus_index, direction)
+  if next_index == self.focus_index then return false end
+  self.focus_index = next_index
+  self:_apply_focus()
+  return true
+end
+
 function ButtonList:confirm()
   local b = self.buttons[self.focus_index]
   if b then b.on_press() end
@@ -104,12 +125,32 @@ end
 
 function ButtonList:keypressed(key)
   if key == "up" or key == "w" then
-    self:move_focus(-1)
+    self:move_focus_direction("up")
     return true
   elseif key == "down" or key == "s" then
-    self:move_focus(1)
+    self:move_focus_direction("down")
+    return true
+  elseif key == "left" or key == "a" then
+    self:move_focus_direction("left")
+    return true
+  elseif key == "right" or key == "d" then
+    self:move_focus_direction("right")
     return true
   elseif key == "return" or key == "space" then
+    self:confirm()
+    return true
+  end
+  return false
+end
+
+function ButtonList:gamepadpressed(button)
+  local directions = {
+    dpup = "up", dpdown = "down", dpleft = "left", dpright = "right",
+  }
+  if directions[button] then
+    self:move_focus_direction(directions[button])
+    return true
+  elseif button == "a" then
     self:confirm()
     return true
   end
