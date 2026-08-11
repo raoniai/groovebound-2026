@@ -6,6 +6,53 @@
   const loader = document.querySelector("[data-loader]");
   const header = document.querySelector("[data-header]");
   const allVideos = () => [...document.querySelectorAll("video")];
+  const fileSlug = (value) => String(value).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  document.querySelectorAll("[data-frame-sequence]").forEach((element) => {
+    const count = Math.max(1, Number(element.dataset.frameCount || 1));
+    for (let index = 1; index <= count; index += 1) {
+      const image = document.createElement("img");
+      image.src = `${element.dataset.frameSequence}-${String(index).padStart(2, "0")}.png`;
+      image.alt = "";
+      image.decoding = "async";
+      image.style.setProperty("--frame-index", String(index - 1));
+      element.append(image);
+    }
+  });
+  const numberedFiles = (prefix, count) => Array.from({ length: count }, (_, index) => `${prefix}-${String(index + 1).padStart(2, "0")}`);
+  const collection = (root, files) => ({ root: `assets/world-tour/sprites/${root}`, files });
+  const spriteCollections = {
+    "funk-environments": collection("environments/funk", ["boombox-barricade", "record-kiosk", "amp-wall", "turntable-console", "disco-palm", "talkbox-streetlight", "vinyl-stack", "hologram-dancer"]),
+    "soul-environments": collection("environments/soul", numberedFiles("prop", 8)),
+    "disco-environments": collection("environments/disco", numberedFiles("prop", 8)),
+    "funk-enemies": collection("enemies/funk", ["pocket-gremlin", "slapback-hound", "groove-guard", "talkbox-oracle", "boogie-tank", "funkadelic-wasp", "mothership-of-funk", "pocket-phantom"]),
+    "soul-enemies": collection("enemies/soul", ["choir-automaton", "string-sentinel", "organ-walker", "harmony-linker", "gospel-moth", "velvet-knight", "organ-colossus", "velvet-titan"]),
+    "disco-enemies": collection("enemies/disco", ["prism-roller", "mirror-drone", "laser-fan", "reflection-twin", "platform-pouncer", "glitter-guard", "laser-conductor", "prism-monarch"]),
+    "funk-floors": collection("floors/funk", numberedFiles("surface", 4)),
+    "soul-floors": collection("floors/soul", numberedFiles("surface", 4)),
+    "disco-floors": collection("floors/disco", numberedFiles("surface", 4)),
+    "world-mechanics": collection("mechanics", [...numberedFiles("funk-pocket", 5), ...numberedFiles("disco-spotlight", 5)]),
+    "world-tour-ui": collection("ui/world-tour", ["campaign", "funk", "soul", "locked-world", "portal", "grade-d", "grade-c", "grade-b", "grade-a", "grade-s"]),
+    "world-interface": collection("ui/interface", ["global-tour", "funk", "soul", "disco", "perk-database", "remix", "encore-gate", "world-route", "encore-coin", "mastery"]),
+    "menu-icons": collection("ui/menu", ["continue", "new-game", "world-tour", "settings", "quit", "equalizer-divider", "reset-campaign", "reset-warning", "reset-confirm", "reserved"]),
+    evolutions: collection("evolutions", ["prismatic-triangle", "velvet-impaler", "carnival-superorbit", "resonance-rupture", "stadium-keytar", "cathedral-overdrive", "infinite-mixtape", "aurora-harp"]),
+    perks: collection("perks", ["open-ears", "pocket-drive", "breakstep", "warm-current", "velvet-guard", "mirrorball-tips", "spotlight-spin", "four-count", "floor-control", "live-wire", "signal-boost", "precision-loop", "hard-reset", "orbital-balance", "encore-spark", "deep-reserve", "afterglow", "neon-dividend", "first-drop"]),
+    "musical-chest": collection("chests/musical", numberedFiles("frame", 8)),
+    "chest-luck": collection("chests/luck", [...numberedFiles("luck", 5), ...numberedFiles("reward-backplate", 5)]),
+    completion: collection("chests/completion", ["backbeat-complete", "orbit-complete", "campaign-victory", "funk-mastery", "encore-chest", "resonance", "enemy", "boss"]),
+    "funk-pocket": collection("mechanics/funk-pocket", numberedFiles("pad", 5))
+  };
+  document.querySelectorAll("[data-sprite-collection]").forEach((element) => {
+    const set = spriteCollections[element.dataset.spriteCollection];
+    if (!set) return;
+    set.files.forEach((file) => {
+      const image = document.createElement("img");
+      image.src = `${set.root}/${file}.png`;
+      image.alt = file.replace(/-/g, " ").replace(/\b\w/g, (letter) => letter.toUpperCase());
+      image.loading = "lazy";
+      image.decoding = "async";
+      element.append(image);
+    });
+  });
 
   body.classList.add("is-loading");
   const finishLoading = () => {
@@ -44,6 +91,37 @@
     if (element.matches(".reveal:not(.is-visible)")) revealObserver.observe(element);
   };
   document.querySelectorAll(".reveal:not(.is-visible)").forEach(observeReveal);
+
+  const worldShowcase = document.querySelector("[data-world-showcase]");
+  if (worldShowcase) {
+    const tabs = [...worldShowcase.querySelectorAll("[data-world-tab]")];
+    const panels = [...worldShowcase.querySelectorAll("[data-world-panel]")];
+    const selectWorld = (world, focus = false) => {
+      tabs.forEach((tab) => {
+        const active = tab.dataset.worldTab === world;
+        tab.classList.toggle("is-active", active);
+        tab.setAttribute("aria-selected", String(active));
+        tab.tabIndex = active ? 0 : -1;
+        if (active && focus) tab.focus();
+      });
+      panels.forEach((panel) => {
+        const active = panel.dataset.worldPanel === world;
+        panel.hidden = !active;
+        panel.classList.toggle("is-active", active);
+      });
+    };
+    tabs.forEach((tab, index) => {
+      tab.addEventListener("click", () => selectWorld(tab.dataset.worldTab));
+      tab.addEventListener("keydown", (event) => {
+        if (event.key !== "ArrowLeft" && event.key !== "ArrowRight" && event.key !== "Home" && event.key !== "End") return;
+        event.preventDefault();
+        const nextIndex = event.key === "Home" ? 0 : event.key === "End" ? tabs.length - 1 :
+          (index + (event.key === "ArrowRight" ? 1 : -1) + tabs.length) % tabs.length;
+        selectWorld(tabs[nextIndex].dataset.worldTab, true);
+      });
+    });
+    selectWorld(tabs.find((tab) => tab.classList.contains("is-active"))?.dataset.worldTab || "funk");
+  }
 
   const setMediaLabel = (video, playingSound) => {
     document.querySelectorAll(`[data-video-sound="#${video.id}"]`).forEach((control) => {
@@ -160,14 +238,14 @@
   ].map((weapon, index) => ({ ...weapon, key: `weapon-${index + 1}`, type: "Base weapon", image: `assets/sprites/weapons/weapon-${index + 1}.png`, facts: [`Rank 10 shown`, weapon.pattern, weapon.role] }));
 
   const supports = [
-    { name: "Quickstep", description: "Move faster.", strength: "Creates escape lanes and supports aggressive repositioning.", weakness: "Adds no direct damage or defense.", bonus: "+10% speed per level", max: 5, fusion: "Orbital Ovation" },
-    { name: "Encore", description: "Increase maximum health.", strength: "Raises survival margin during long boss patterns.", weakness: "Does not reduce incoming damage.", bonus: "+15% max HP per level", max: 5, fusion: "Thunderhead Ensemble" },
-    { name: "Breath Control", description: "Shorten cooldowns and tighten projectile spread.", strength: "Improves activation stability and focused accuracy.", weakness: "Offers no immediate health or pickup utility.", bonus: "+8% stability per level", max: 5, fusion: "Brass Barrage" },
-    { name: "Power Amplifier", description: "Increase all weapon damage.", strength: "Scales every active damage source at once.", weakness: "Does not add coverage or attack count.", bonus: "+12% damage per level", max: 5, fusion: "Subwoofer Supernova" },
-    { name: "Pickup Magnet", description: "Increase gem attraction range.", strength: "Collects progression safely while the arena is crowded.", weakness: "Offers no direct combat power.", bonus: "+20% attraction per level", max: 5, fusion: "Gravity Groove" },
-    { name: "Overdrive Pedal", description: "Increase weapon activation speed.", strength: "Raises total output across the whole active rack.", weakness: "More projectiles can make positioning harder to read.", bonus: "+9% fire rate per level", max: 5, fusion: "Improvised Solo" },
-    { name: "Echo Chamber", description: "Add another projectile to every activation.", strength: "Directly expands coverage for every weapon pattern.", weakness: "Only three ranks and no defensive value.", bonus: "+1 projectile per level", max: 3, fusion: "Neon Crescendo" },
-    { name: "Safety Vest", description: "Gain a reserve of temporary Guard.", strength: "Absorbs mistakes before vitality is lost.", weakness: "Guard is finite and must be managed.", bonus: "+12 Guard per level", max: 5, fusion: "Golden Fortissimo" }
+    { name: "Quickstep", description: "Move faster.", strength: "Creates escape lanes and supports aggressive repositioning.", weakness: "Adds no direct damage or defense.", bonus: "+10% speed per level", max: 5, fusion: "Orbital Ovation / Carnival Superorbit" },
+    { name: "Encore", description: "Increase maximum health.", strength: "Raises survival margin during long boss patterns.", weakness: "Does not reduce incoming damage.", bonus: "+15% max HP per level", max: 5, fusion: "Thunderhead Ensemble / Stadium Keytar" },
+    { name: "Breath Control", description: "Shorten cooldowns and tighten projectile spread.", strength: "Improves activation stability and focused accuracy.", weakness: "Offers no immediate health or pickup utility.", bonus: "+8% stability per level", max: 5, fusion: "Brass Barrage / Prismatic Triangle" },
+    { name: "Power Amplifier", description: "Increase all weapon damage.", strength: "Scales every active damage source at once.", weakness: "Does not add coverage or attack count.", bonus: "+12% damage per level", max: 5, fusion: "Subwoofer Supernova / Velvet Impaler" },
+    { name: "Pickup Magnet", description: "Increase gem attraction range.", strength: "Collects progression safely while the arena is crowded.", weakness: "Offers no direct combat power.", bonus: "+20% attraction per level", max: 5, fusion: "Gravity Groove / Infinite Mixtape" },
+    { name: "Overdrive Pedal", description: "Increase weapon activation speed.", strength: "Raises total output across the whole active rack.", weakness: "More projectiles can make positioning harder to read.", bonus: "+9% fire rate per level", max: 5, fusion: "Improvised Solo / Resonance Rupture" },
+    { name: "Echo Chamber", description: "Add another projectile to every activation.", strength: "Directly expands coverage for every weapon pattern.", weakness: "Only three ranks and no defensive value.", bonus: "+1 projectile per level", max: 3, fusion: "Neon Crescendo / Aurora Harp" },
+    { name: "Safety Vest", description: "Gain a reserve of temporary Guard.", strength: "Absorbs mistakes before vitality is lost.", weakness: "Guard is finite and must be managed.", bonus: "+12 Guard per level", max: 5, fusion: "Golden Fortissimo / Cathedral Overdrive" }
   ].map((support, index) => ({
     ...support,
     key: `support-${index + 1}`,
@@ -179,6 +257,10 @@
     stats: [stat("LVL", "Maximum rank", String(support.max), support.max / 5 * 100), stat("BON", "Per-rank effect", support.bonus, 78), stat("FUS", "Fusion readiness", "Rank 1+", 20)]
   }));
 
+  const expansionEvolutionFiles = ["prismatic-triangle", "velvet-impaler", "carnival-superorbit", "resonance-rupture", "stadium-keytar", "cathedral-overdrive", "infinite-mixtape", "aurora-harp"];
+  const evolvedImage = (number) => number <= 8
+    ? `assets/sprites/evolved/evolved-${number}.png`
+    : `assets/world-tour/sprites/evolutions/${expansionEvolutionFiles[number - 9]}.png`;
   const evolved = [
     { name: "Brass Barrage", description: "Kazoo Pistol and Breath Control fuse into a piercing three-note burst.", strength: "Fast, focused, and naturally piercing.", weakness: "Still aims in one primary direction.", recipe: "Kazoo Pistol R10 + Breath Control", role: "Kazoo fusion", pattern: "Aimed", stats: weaponStats(42,.36,3,560,3) },
     { name: "Subwoofer Supernova", description: "Bass Drop and Power Amplifier collapse into a piercing radial shockwave.", strength: "Huge radial coverage, damage, and knockback.", weakness: "A deliberate cooldown separates each nova.", recipe: "Bass Drop R10 + Power Amplifier", role: "Bass fusion", pattern: "Radial", stats: weaponStats(76,.58,12,410,5) },
@@ -187,8 +269,16 @@
     { name: "Thunderhead Ensemble", description: "Drum Circle and Encore merge into a restorative thunder nova.", strength: "Sixteen-projectile radial control with powerful knockback.", weakness: "Lower pierce than the most focused evolutions.", recipe: "Drum Circle R10 + Encore", role: "Drum fusion", pattern: "Radial", stats: weaponStats(48,.48,16,450,3) },
     { name: "Golden Fortissimo", description: "Trumpet Burst and Safety Vest form an armored brass barrage.", strength: "Ten fast notes with the strongest evolved knockback.", weakness: "Shorter projectile lifetime favors close combat.", recipe: "Trumpet Burst R10 + Safety Vest", role: "Trumpet fusion", pattern: "Aimed cone", stats: weaponStats(58,.30,10,650,3) },
     { name: "Gravity Groove", description: "Vinyl Scratch and Pickup Magnet cut four gravitational lanes.", strength: "Deepest evolved pierce and excellent lane control.", weakness: "Cross geometry still rewards deliberate positioning.", recipe: "Vinyl Scratch R10 + Pickup Magnet", role: "Vinyl fusion", pattern: "Cross", stats: weaponStats(62,.34,8,590,6) },
-    { name: "Neon Crescendo", description: "Synth Wave and Echo Chamber become a repeating iridescent wall.", strength: "Largest evolved projectiles and dominant crowd coverage.", weakness: "The slowest evolved projectile travel.", recipe: "Synth Wave R10 + Echo Chamber", role: "Synth fusion", pattern: "Wall", stats: weaponStats(68,.52,12,390,5) }
-  ].map((item, index) => ({ ...item, key: `evolved-${index + 1}`, type: "Evolved weapon", rarity: "Legendary fusion", image: `assets/sprites/evolved/evolved-${index + 1}.png`, facts: [item.recipe, item.pattern, "Consumes both ingredients"] }));
+    { name: "Neon Crescendo", description: "Synth Wave and Echo Chamber become a repeating iridescent wall.", strength: "Largest evolved projectiles and dominant crowd coverage.", weakness: "The slowest evolved projectile travel.", recipe: "Synth Wave R10 + Echo Chamber", role: "Synth fusion", pattern: "Wall", stats: weaponStats(68,.52,12,390,5) },
+    { name: "Prismatic Triangle", description: "Triangle Tracer and Breath Control refract into three piercing spectral lanes.", strength: "Nine fast projectiles carry deep pierce through crossing lanes.", weakness: "Cross geometry still rewards deliberate alignment.", recipe: "Triangle Tracer R10 + Breath Control", role: "Triangle fusion", pattern: "Cross", stats: weaponStats(64,.34,9,690,6) },
+    { name: "Velvet Impaler", description: "Cello Lance and Power Amplifier become a sustained armored spear line.", strength: "Extreme damage, travel speed, and the deepest fusion pierce.", weakness: "Three focused projectiles leave less lateral coverage.", recipe: "Cello Lance R10 + Power Amplifier", role: "Cello fusion", pattern: "Aimed", stats: weaponStats(92,.42,3,760,9) },
+    { name: "Carnival Superorbit", description: "Maraca Orbit and Quickstep expand into a relentless carnival halo.", strength: "Twelve projectiles cycle at an exceptionally fast rhythm.", weakness: "Its spiral pattern concentrates on nearby space.", recipe: "Maraca Orbit R10 + Quickstep", role: "Maraca fusion", pattern: "Spiral", stats: weaponStats(42,.19,12,600,5) },
+    { name: "Resonance Rupture", description: "Tuning Fork and Overdrive Pedal tear synchronized lanes through the arena.", strength: "Eight high-damage notes combine speed, pierce, and knockback.", weakness: "Front-back lanes demand directional positioning.", recipe: "Tuning Fork R10 + Overdrive Pedal", role: "Tuning fork fusion", pattern: "Front and back", stats: weaponStats(78,.30,8,720,8) },
+    { name: "Stadium Keytar", description: "Keytar Chord and Encore fill the stage with a championship wall of sound.", strength: "Fourteen large projectiles dominate wide formations.", weakness: "Its wall travels more deliberately than focused fusion shots.", recipe: "Keytar Chord R10 + Encore", role: "Keytar fusion", pattern: "Wall", stats: weaponStats(72,.50,14,430,6) },
+    { name: "Cathedral Overdrive", description: "Bell Tower and Safety Vest toll an arena-clearing overdrive nova.", strength: "The heaviest fusion damage and knockback across eighteen radial notes.", weakness: "A deliberate cooldown separates each nova.", recipe: "Bell Tower R10 + Safety Vest", role: "Bell fusion", pattern: "Radial", stats: weaponStats(105,.70,18,470,7) },
+    { name: "Infinite Mixtape", description: "Tape Repeater and Pickup Magnet loop luminous side lanes without an ending.", strength: "Ten fast, piercing notes maintain constant side-lane pressure.", weakness: "Sideways coverage depends on controlling the lane angle.", recipe: "Tape Repeater R10 + Pickup Magnet", role: "Tape fusion", pattern: "Sideways", stats: weaponStats(54,.20,10,680,6) },
+    { name: "Aurora Harp", description: "Laser Harp and Echo Chamber fan celestial strings across the whole front line.", strength: "The fastest activation and projectile travel in the fusion roster.", weakness: "Lower damage and pierce than the heaviest evolved forms.", recipe: "Laser Harp R10 + Echo Chamber", role: "Laser harp fusion", pattern: "Aimed fan", stats: weaponStats(48,.16,12,820,4) }
+  ].map((item, index) => ({ ...item, key: `evolved-${index + 1}`, type: "Evolved weapon", rarity: "Legendary fusion", image: evolvedImage(index + 1), facts: [item.recipe, item.pattern, "Consumes both ingredients"] }));
 
   const gems = [
     { name: "Pulse Shard", role: "Tier 1 Resonance gem", description: "A standard enemy condenses its exact XP reward into one collectible shard.", strength: "Simple, immediate progression from common threats.", weakness: "The lowest XP concentration in the current roster.", experience: "10-24 XP", source: "Standard enemies", radius: 8, dropCount: "1", dropRate: "100%" },
@@ -276,13 +366,121 @@
     stats: enemyStats(enemy.hp, enemy.damage, enemy.speed, enemy.xp)
   }));
   enemies.forEach((enemy) => inspectionCatalog.set(enemy.key, enemy));
+  const worldEnemyRows = {
+    funk: [
+      ["Pocket Gremlin", "Zigzags through close lanes", 52,104,14,18,2,"Standard"],
+      ["Slapback Hound", "Fast enemy that circles the player", 110,142,19,29,4,"Standard"],
+      ["Groove Guard", "Heavy charger", 260,66,28,52,7,"Heavy"],
+      ["Talkbox Oracle", "Keeps its distance and fires note bolts", 190,62,20,46,6,"Ranged"],
+      ["Boogie Tank", "Stage boss with a close Resonance pulse", 7200,46,32,780,390,"Final boss"],
+      ["Funkadelic Wasp", "Very fast zigzag attacker", 76,166,17,24,3,"Standard"],
+      ["Mothership of Funk", "World boss with a large ranged attack", 16800,28,40,1400,700,"Final boss"],
+      ["Pocket Phantom", "Circles the player and releases a Resonance pulse", 225,112,24,49,7,"Pulse"]
+    ],
+    soul: [
+      ["Choir Automaton", "Chases the player", 92,82,17,22,5,"Standard"],
+      ["String Sentinel", "Keeps its distance and fires note bolts", 145,70,19,34,5,"Ranged"],
+      ["Organ Walker", "Heavy charger", 290,55,27,69,5,"Heavy"],
+      ["Harmony Linker", "Circles the player and releases a Resonance pulse", 210,76,22,50,5,"Pulse"],
+      ["Gospel Moth", "Fast zigzag attacker", 78,156,16,18,5,"Standard"],
+      ["Velvet Knight", "Armoured charger", 430,64,31,103,5,"Heavy"],
+      ["Organ Colossus", "Stage boss with a close Resonance pulse", 8200,38,34,850,420,"Final boss"],
+      ["Velvet Titan", "World boss with a large ranged attack", 17800,32,42,1500,760,"Final boss"]
+    ],
+    disco: [
+      ["Prism Roller", "Fast enemy that circles the player", 108,132,18,25,5,"Standard"],
+      ["Mirror Drone", "Very fast zigzag attacker", 92,168,17,22,5,"Standard"],
+      ["Laser Fan", "Keeps its distance and fires note bolts", 175,62,21,42,5,"Ranged"],
+      ["Reflection Twin", "Chases the player", 275,96,25,66,5,"Standard"],
+      ["Platform Pouncer", "Fast charger", 135,150,20,32,5,"Heavy"],
+      ["Glitter Guard", "Armoured charger", 480,72,33,115,5,"Heavy"],
+      ["Laser Conductor", "Stage boss with a large ranged attack", 9000,42,36,920,460,"Final boss"],
+      ["Prism Monarch", "World boss with a large static wave", 19400,36,44,1650,820,"Final boss"]
+    ]
+  };
+  const worldEnemies = Object.entries(worldEnemyRows).flatMap(([world, rows]) => rows.map((row, index) => {
+    const [name, behavior, hp, speed, damage, xp, coins, rank] = row;
+    return {
+      key: `world-enemy-${world}-${index + 1}`,
+      name, behavior, hp, speed, damage, xp, coins, rank,
+      type: "Enemy",
+      rarity: rank,
+      role: `${world[0].toUpperCase() + world.slice(1)} World / ${behavior}`,
+      image: `assets/world-tour/sprites/enemies/${world}/${fileSlug(name)}.png`,
+      description: `${name} appears in the ${world[0].toUpperCase() + world.slice(1)} World.`,
+      strength: behavior,
+      weakness: speed < 60 ? "Slow movement leaves time to reposition." : hp < 100 ? "Low health makes focused attacks effective." : "Learn the attack pattern and keep a clear escape lane.",
+      facts: [`${xp} XP total`, `${coins} coin reward`, rank],
+      stats: enemyStats(hp, damage, speed, xp)
+    };
+  }));
+  worldEnemies.forEach((enemy) => inspectionCatalog.set(enemy.key, enemy));
+
+  const worlds = [
+    ["funk","Funk","The Pocket District","Mothership of Funk","Playable","Stand on the active downbeat pad to build a Pocket chain and gain a damage boost.","assets/world-tour/sprites/ui/interface/funk.png","Core world"],
+    ["soul","Soul","Velvet Chapel","Velvet Titan","Playable","Charge a shared reserve in combat, then spend it to recover health.","assets/world-tour/sprites/ui/interface/soul.png","Core world"],
+    ["disco","Disco","Mirrorball Metro","Prism Monarch","Playable","Follow the moving spotlight to gain a speed boost.","assets/world-tour/sprites/ui/interface/disco.png","Core world"],
+    ["house","House","Warehouse 909","Kickdrum Constructor","Planned","Arena floor cycles will change the safe lanes.","assets/world-tour/sprites/ui/world-tour/locked-world.png","Core world"],
+    ["electro","Electro","Neon Circuit","Voltage Vandal","Planned","Linked arena nodes will create chain effects.","assets/world-tour/sprites/ui/world-tour/locked-world.png","Core world"],
+    ["techno","Techno","The Iron Loop","Loop Architect","Planned","Recorded patterns will repeat through the arena.","assets/world-tour/sprites/ui/world-tour/locked-world.png","Core world"],
+    ["cosmic-boogie","Cosmic Boogie","Orbital Dance Deck","Celestial Selector","Planned","Secret world unlocked through Funk and Disco grades.","assets/world-tour/sprites/ui/world-tour/portal.png","Secret world"],
+    ["soulful-garage","Soulful Garage","Midnight Garage","Night Shift Conductor","Planned","Secret world unlocked through Soul and House grades.","assets/world-tour/sprites/ui/world-tour/portal.png","Secret world"],
+    ["future-funk","Future Funk","Tomorrow Mall","The Recompiler","Planned","Secret world unlocked through Electro and Techno grades.","assets/world-tour/sprites/ui/world-tour/portal.png","Secret world"]
+  ].map(([id,name,location,boss,status,mechanic,image,kind]) => ({
+    key: `world-${id}`, name, type: "World", rarity: kind, role: location, image,
+    description: status === "Playable" ? `${name} has two connected stages in the public v0.7.0 build.` : `${name} is defined for a future two-stage route.`,
+    strength: mechanic,
+    weakness: status === "Playable" ? "Available now in the public Mac download." : "Planned and not playable yet.",
+    facts: [status, location, boss]
+  }));
+  worlds.forEach((world) => inspectionCatalog.set(world.key, world));
+
+  const perkRows = [
+    ["open-ears","Open Ears",5,"Clear the Prologue","Increase pickup radius."],
+    ["pocket-drive","Pocket Drive",5,"Funk grade C","Increase base damage."],
+    ["breakstep","Breakstep",3,"Funk grade A","Increase movement speed."],
+    ["warm-current","Warm Current",5,"Soul grade C","Increase maximum health."],
+    ["velvet-guard","Velvet Guard",3,"Soul grade A","Reduce incoming damage."],
+    ["mirrorball-tips","Mirrorball Tips",5,"Disco grade C","Increase eligible in-run coin value."],
+    ["spotlight-spin","Spotlight Spin",1,"Disco grade A","Add one level-up reroll per run."],
+    ["four-count","Four Count",5,"House grade C","Extend the positive Groove timing window."],
+    ["floor-control","Floor Control",3,"House grade A","Reduce arena-hazard damage."],
+    ["live-wire","Live Wire",5,"Electro grade C","Reduce attack cooldowns."],
+    ["signal-boost","Signal Boost",3,"Electro grade A","Increase XP gain."],
+    ["precision-loop","Precision Loop",5,"Techno grade C","Extend combo grace time."],
+    ["hard-reset","Hard Reset",1,"Techno grade A","Reduce the first damaging hit of each run."],
+    ["orbital-balance","Orbital Balance",3,"Cosmic Boogie grade C","Improve knockback resistance and recovery."],
+    ["encore-spark","Encore Spark",1,"Cosmic Boogie grade A","Add one reward choice after the first boss."],
+    ["deep-reserve","Deep Reserve",5,"Soulful Garage grade C","Increase healing effectiveness."],
+    ["afterglow","Afterglow",3,"Soulful Garage grade A","Extend protection after taking damage."],
+    ["neon-dividend","Neon Dividend",5,"Future Funk grade C","Increase the capped Encore payout."],
+    ["first-drop","First Drop",1,"Future Funk grade A","Start each run with eight XP."]
+  ];
+  const perks = perkRows.map(([id,name,max,source,description], index) => ({
+    key: `perk-${id}`, name, type: "Permanent perk", rarity: max === 1 ? "Rare" : max === 3 ? "Uncommon" : "Common",
+    role: source, image: `assets/world-tour/sprites/perks/${id}.png`,
+    description, strength: "The bonus applies to future runs in the same save slot.",
+    weakness: `Maximum rank: ${max}.`, max, source,
+    facts: [source, `Maximum rank ${max}`, "Permanent progression"]
+  }));
+  perks.forEach((perk) => inspectionCatalog.set(perk.key, perk));
+
+  const chests = [
+    { key: "chest-musical", name: "Musical Chest", image: "assets/world-tour/sprites/chests/musical/frame-01.png", role: "Random run rewards", description: "Rolls five hidden reels and gives one, three, or five rewards.", strength: "Can add weapons, supports, upgrades, or eligible fusions during a run.", weakness: "The final reward count depends on the luck roll.", facts: ["Eight-frame animation", "Five hidden reels", "1 / 3 / 5 rewards"] },
+    { key: "chest-encore-gate", name: "Encore Gate", image: "assets/world-tour/sprites/chests/encore-gate.png", role: "World stage completion", description: "Drops after a World boss and completes the current stage when collected.", strength: "Closes the stage and carries the current build into the next step.", weakness: "Appears only after the stage boss is defeated.", facts: ["Mandatory collection", "Boss reward", "Stage transition"] }
+  ].map((chest) => ({ ...chest, type: "Chest", rarity: "World Tour" }));
+  chests.forEach((chest) => inspectionCatalog.set(chest.key, chest));
+
   const categoryMeta = {
     weapon: { label: "Weapon", icon: "assets/sprites/weapons/weapon-1.png" },
     support: { label: "Passive", icon: "assets/sprites/supports/support-3.png" },
     evolution: { label: "Evolution", icon: "assets/sprites/evolved/evolved-1.png" },
     character: { label: "Character", icon: "assets/sprites/talking/joe-1.png" },
     enemy: { label: "Enemy", icon: "assets/sprites/enemies/orbit-3.png?v=site005" },
-    gem: { label: "Gem", icon: "assets/sprites/gems/gem-2.png?v=site005" }
+    gem: { label: "Gem", icon: "assets/sprites/gems/gem-2.png?v=site005" },
+    world: { label: "World", icon: "assets/world-tour/sprites/ui/interface/global-tour.png" },
+    perk: { label: "Permanent perk", icon: "assets/world-tour/sprites/ui/interface/perk-database.png" },
+    chest: { label: "Chest", icon: "assets/world-tour/sprites/chests/encore-gate.png" }
   };
   const categoryFor = (item) => {
     if (item.type === "Base weapon") return "weapon";
@@ -290,6 +488,9 @@
     if (item.type === "Evolved weapon") return "evolution";
     if (item.type === "Playable Resonant") return "character";
     if (item.type === "Enemy") return "enemy";
+    if (item.type === "World") return "world";
+    if (item.type === "Permanent perk") return "perk";
+    if (item.type === "Chest") return "chest";
     return "gem";
   };
   inspectionCatalog.forEach((item) => { item.category = categoryFor(item); });
@@ -302,7 +503,15 @@
     { evolution: "evolved-5", weapon: "weapon-5", support: "support-2" },
     { evolution: "evolved-6", weapon: "weapon-6", support: "support-8" },
     { evolution: "evolved-7", weapon: "weapon-7", support: "support-5" },
-    { evolution: "evolved-8", weapon: "weapon-8", support: "support-7" }
+    { evolution: "evolved-8", weapon: "weapon-8", support: "support-7" },
+    { evolution: "evolved-9", weapon: "weapon-9", support: "support-3" },
+    { evolution: "evolved-10", weapon: "weapon-10", support: "support-4" },
+    { evolution: "evolved-11", weapon: "weapon-11", support: "support-1" },
+    { evolution: "evolved-12", weapon: "weapon-12", support: "support-6" },
+    { evolution: "evolved-13", weapon: "weapon-13", support: "support-2" },
+    { evolution: "evolved-14", weapon: "weapon-14", support: "support-8" },
+    { evolution: "evolved-15", weapon: "weapon-15", support: "support-5" },
+    { evolution: "evolved-16", weapon: "weapon-16", support: "support-7" }
   ];
   const connectRecord = (sourceKey, targetKey, label) => {
     const source = inspectionCatalog.get(sourceKey);
@@ -330,8 +539,8 @@
   const catalogCount = document.querySelector("[data-catalog-count]");
   const catalogEmpty = document.querySelector("[data-catalog-empty]");
   if (catalogGroups && catalogFilters) {
-    const catalogOrder = ["character", "weapon", "support", "evolution", "gem", "enemy"];
-    const pluralLabels = { character: "Resonants", weapon: "Weapons", support: "Passives", evolution: "Evolutions", gem: "Resonance gems", enemy: "Enemies" };
+    const catalogOrder = ["character", "weapon", "support", "evolution", "gem", "enemy", "world", "perk", "chest"];
+    const pluralLabels = { character: "Characters", weapon: "Weapons", support: "Supports", evolution: "Fusions", gem: "Resonance gems", enemy: "Enemies", world: "World Tour worlds", perk: "Permanent perks", chest: "Chests" };
     let activeCategory = "all";
     const allItems = Array.from(inspectionCatalog.values());
     const makeFilter = (category, label, icon, count) => {
@@ -389,14 +598,14 @@
         image.decoding = "async";
         const copy = document.createElement("span");
         copy.className = "catalog-card__copy";
-        const role = document.createElement("small");
-        role.textContent = item.role;
         const name = document.createElement("strong");
         name.textContent = item.name;
-        const action = document.createElement("em");
-        action.textContent = "Open full record";
-        copy.append(role, name, action);
-        card.append(image, copy);
+        const plus = document.createElement("span");
+        plus.className = "catalog-card__plus";
+        plus.textContent = "+";
+        plus.setAttribute("aria-hidden", "true");
+        copy.append(name);
+        card.append(image, copy, plus);
         if (item.category === "enemy" && (item.rank === "Miniboss" || item.rank === "Final boss")) {
           const bossTag = document.createElement("span");
           bossTag.className = `catalog-boss-tag${item.rank === "Final boss" ? " catalog-boss-tag--final" : ""}`;
@@ -458,7 +667,7 @@
       button.style.setProperty("--x", `${x}%`);
       button.style.setProperty("--y", `${y}%`);
       button.style.setProperty("--size", `${size}%`);
-      button.style.setProperty("--speed", `${4 + (index % 5) * 0.55}s`);
+      button.style.setProperty("--speed", `${18 + (index % 5) * 2.25}s`);
       button.style.setProperty("--delay", `${-index * 0.23}s`);
       const image = document.createElement("img");
       image.src = enemy.image;
@@ -479,7 +688,7 @@
       button.style.setProperty("--x", `${x}%`);
       button.style.setProperty("--y", `${y}%`);
       button.style.setProperty("--size", index < 2 ? "8%" : "10%");
-      button.style.setProperty("--speed", `${4.4 + index * 0.3}s`);
+      button.style.setProperty("--speed", `${20 + index * 2.5}s`);
       button.style.setProperty("--delay", `${-index * 0.4}s`);
       const image = document.createElement("img");
       image.src = String(src);
@@ -494,12 +703,12 @@
   const characterData = {
     joe: {
       portrait: "assets/sprites/talking/joe-1.png", logo: "assets/character-logos/joe-logo.png", inspect: "character-joe", video: "assets/video/joe-intro.mp4",
-      alt: "Joe, The Backbeat", copy: "Joe turns pressure into power with Guard, stronger knockback, and the Kazoo Pistol.",
+      alt: "Joe, The Backbeat", copy: "Joe starts with Guard, stronger knockback, and the Kazoo Pistol. He moves at the standard speed but attacks slightly slower.",
       stats: [["Style", "Durable control", "assets/sprites/characters/joe-4.png"], ["Starting weapon", "Kazoo Pistol", "assets/sprites/weapons/weapon-1.png"], ["Trait", "Hold the Line", "assets/sprites/supports/support-8.png"]]
     },
     lyra: {
       portrait: "assets/sprites/talking/lyra-1.png", logo: "assets/character-logos/lyra-vex-logo.png", inspect: "character-lyra", video: "assets/video/lyra-intro.mp4",
-      alt: "Lyra Vex, The Live Wire", copy: "Lyra trades defense for speed, fire rate, and extra Resonance XP with the Keytar Chord.",
+      alt: "Lyra Vex, The Live Wire", copy: "Lyra starts with the Keytar Chord. She moves and attacks faster, earns more Resonance XP, and has lower defence than Joe.",
       stats: [["Style", "Fast movement", "assets/sprites/characters/lyra-4.png"], ["Starting weapon", "Keytar Chord", "assets/sprites/weapons/weapon-13.png"], ["Trait", "Stage Dive", "assets/sprites/supports/support-1.png"]]
     }
   };
@@ -538,7 +747,11 @@
     ["Kazoo Pistol R10",1,"Breath Control",3,"Brass Barrage",1,"weapon-1","support-3","evolved-1"], ["Bass Drop R10",2,"Power Amplifier",4,"Subwoofer Supernova",2,"weapon-2","support-4","evolved-2"],
     ["Cymbal Slicer R10",3,"Quickstep",1,"Orbital Ovation",3,"weapon-3","support-1","evolved-3"], ["Feedback Loop R10",4,"Overdrive Pedal",6,"Improvised Solo",4,"weapon-4","support-6","evolved-4"],
     ["Drum Circle R10",5,"Encore",2,"Thunderhead Ensemble",5,"weapon-5","support-2","evolved-5"], ["Trumpet Burst R10",6,"Safety Vest",8,"Golden Fortissimo",6,"weapon-6","support-8","evolved-6"],
-    ["Vinyl Scratch R10",7,"Pickup Magnet",5,"Gravity Groove",7,"weapon-7","support-5","evolved-7"], ["Synth Wave R10",8,"Echo Chamber",7,"Neon Crescendo",8,"weapon-8","support-7","evolved-8"]
+    ["Vinyl Scratch R10",7,"Pickup Magnet",5,"Gravity Groove",7,"weapon-7","support-5","evolved-7"], ["Synth Wave R10",8,"Echo Chamber",7,"Neon Crescendo",8,"weapon-8","support-7","evolved-8"],
+    ["Triangle Tracer R10",9,"Breath Control",3,"Prismatic Triangle",9,"weapon-9","support-3","evolved-9"], ["Cello Lance R10",10,"Power Amplifier",4,"Velvet Impaler",10,"weapon-10","support-4","evolved-10"],
+    ["Maraca Orbit R10",11,"Quickstep",1,"Carnival Superorbit",11,"weapon-11","support-1","evolved-11"], ["Tuning Fork R10",12,"Overdrive Pedal",6,"Resonance Rupture",12,"weapon-12","support-6","evolved-12"],
+    ["Keytar Chord R10",13,"Encore",2,"Stadium Keytar",13,"weapon-13","support-2","evolved-13"], ["Bell Tower R10",14,"Safety Vest",8,"Cathedral Overdrive",14,"weapon-14","support-8","evolved-14"],
+    ["Tape Repeater R10",15,"Pickup Magnet",5,"Infinite Mixtape",15,"weapon-15","support-5","evolved-15"], ["Laser Harp R10",16,"Echo Chamber",7,"Aurora Harp",16,"weapon-16","support-7","evolved-16"]
   ];
   const fusionPicker = document.querySelector("[data-fusion-picker]");
   const fusionStage = document.querySelector("[data-fusion-stage]");
@@ -551,7 +764,7 @@
     const result = document.querySelector("[data-fusion-result]");
     if (weapon) { weapon.src = `assets/sprites/weapons/weapon-${weaponImage}.png`; weapon.alt = weaponName.replace(" R10", ""); }
     if (support) { support.src = `assets/sprites/supports/support-${supportImage}.png`; support.alt = supportName; }
-    if (result) { result.src = `assets/sprites/evolved/evolved-${resultImage}.png`; result.alt = resultName; }
+    if (result) { result.src = evolvedImage(resultImage); result.alt = resultName; }
     const inspectKeys = { weapon: weaponKey, support: supportKey, result: resultKey };
     fusionStage.querySelectorAll("[data-fusion-inspect]").forEach((element) => {
       element.dataset.inspectKey = inspectKeys[element.dataset.fusionInspect];
@@ -575,7 +788,7 @@
       const button = document.createElement("button");
       button.type = "button";
       const image = document.createElement("img");
-      image.src = `assets/sprites/evolved/evolved-${data[5]}.png`;
+      image.src = evolvedImage(data[5]);
       image.alt = "";
       image.width = 32;
       image.height = 32;
@@ -630,6 +843,15 @@
       const enemyMetrics = [stat("HP", "Vitality", String(item.hp), 0), stat("DMG", "Contact damage", String(item.damage), 0), stat("SPD", "Movement speed", `${item.speed} px/s`, 0), stat("XP", "Resonance reward", String(item.xp), 0), stat("COIN", "Coin reward", String(item.coins), 0)];
       return `${renderAnalysis(item, ["Threat profile", "Counterplay"])}${renderMetricGrid(enemyMetrics, "inspect-metrics--enemy")}`;
     }
+    if (item.category === "world") {
+      return `${renderAnalysis(item, ["World mechanic", "Availability"])}<div class="inspect-character-signals">${(item.facts || []).map((fact) => `<div><span aria-hidden="true">◆</span><strong>${escapeHTML(fact)}</strong></div>`).join("")}</div>`;
+    }
+    if (item.category === "perk") {
+      return `<div class="inspect-support-core"><div><strong>${escapeHTML(String(item.max))}</strong><span>Maximum rank</span></div><div><strong>${escapeHTML(item.source)}</strong><span>Unlock source</span></div></div>${renderAnalysis(item, ["Permanent effect", "Limit"])}`;
+    }
+    if (item.category === "chest") {
+      return `${renderAnalysis(item, ["Reward", "Condition"])}<div class="inspect-character-signals">${(item.facts || []).map((fact) => `<div><span aria-hidden="true">+</span><strong>${escapeHTML(fact)}</strong></div>`).join("")}</div>`;
+    }
     const labels = item.category === "evolution" ? ["Legendary strength", "Pattern limit"] : ["Combat strength", "Tradeoff"];
     return `${renderAnalysis(item, labels)}${renderMetricGrid(item.stats || [], item.category === "evolution" ? "inspect-metrics--evolution" : "inspect-metrics--weapon")}`;
   };
@@ -652,7 +874,10 @@
       evolution: [item.rarity, item.pattern],
       character: [item.rarity],
       enemy: [item.rank],
-      gem: [item.rarity]
+      gem: [item.rarity],
+      world: [item.rarity, item.facts?.[0]],
+      perk: [item.rarity],
+      chest: [item.rarity]
     };
     inspector.querySelector("[data-inspect-meta]").innerHTML = (metaByCategory[item.category] || []).filter(Boolean).map((value) => `<span>${escapeHTML(value)}</span>`).join("");
     const title = inspector.querySelector("[data-inspect-title]");
@@ -904,7 +1129,7 @@
             const elementRect = element.getBoundingClientRect();
             const complete = elementRect.left + elementRect.width / 2 > mapRect.left + mapRect.width * 0.66;
             map.classList.toggle("is-complete", complete);
-            if (status) status.textContent = complete ? "Signal locked: Orbit Line route revealed" : "Signal origin: Pulse Tower";
+            if (status) status.textContent = complete ? "Route found: Orbit Line" : "Starting point: Pulse Tower";
           }
         }
         dragState = null;

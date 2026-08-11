@@ -54,6 +54,8 @@ function CombatSystem:init(opts)
   self.camera = opts.camera
   self.options = opts.options or {}
   self.mode = opts.mode or "prologue"
+  self.fresh_world_entry = self.mode == "world_tour"
+    and opts.fresh_world_entry == true
 
   self.enemy_pool = Pool(function() return Enemy() end)
   self.enemy_projectile_pool = Pool(function() return EnemyProjectile() end)
@@ -246,11 +248,32 @@ function CombatSystem:music_snapshot()
   }
 end
 
-function CombatSystem:_difficulty_multiplier()
+function CombatSystem:fresh_entry_factors()
+  if not self.fresh_world_entry then
+    return { health = 1, damage = 1, speed = 1, spawn = 1 }
+  end
+  -- A fresh World Tour launch begins with a rank-one weapon. Blend the assist
+  -- away through early levels/time so the world reaches its authored curve.
+  local level_progress = math.min(1, math.max(0, (self.xp.level - 1) / 9))
+  local time_progress = math.min(1,
+    math.max(0, (self.ctx.time - self.stage_started_at) / 120))
+  local progress = math.max(level_progress, time_progress)
+  local function blend(start) return start + (1 - start) * progress end
+  return {
+    health = blend(0.58),
+    damage = blend(0.70),
+    speed = blend(0.88),
+    spawn = blend(0.72),
+  }
+end
+
+function CombatSystem:_difficulty_multiplier(kind)
   local snapshot = self:stage_snapshot(self.ctx.time)
   local progress = math.min(1, snapshot.elapsed / math.max(1, snapshot.duration))
   local ramp = self.tuning:get("run.difficulty_ramp")
-  return 1 + ((self.stage_index - 1) * 0.28 + progress * 0.62) * ramp
+  local authored = 1
+    + ((self.stage_index - 1) * 0.28 + progress * 0.62) * ramp
+  return authored * (self:fresh_entry_factors()[kind or "health"] or 1)
 end
 
 function CombatSystem:boss_pressure_snapshot()
@@ -296,7 +319,7 @@ function CombatSystem:spawn_enemy(definition, x, y)
     options = self.options,
     x = x,
     y = y,
-    health_multiplier = self:_difficulty_multiplier()
+    health_multiplier = self:_difficulty_multiplier("health")
       * (definition.boss_type and 1 or self:boss_pressure_snapshot().enemy_health),
   })
   if definition.boss_type == "final" then
@@ -580,6 +603,7 @@ function CombatSystem:_open_reward_chest()
   self.pending_chest_reveals[#self.pending_chest_reveals + 1] = {
     roll = rolled,
     rewards = rewards,
+    auto_selected = rewards.auto_selected == true,
   }
   if self.assets then self.assets:play("level_up", 0.12) end
   return self.pending_chest_reveals[#self.pending_chest_reveals]
@@ -729,12 +753,13 @@ function CombatSystem:_player_hit_feedback(trauma)
 end
 
 function CombatSystem:_update_enemies(dt)
-  local difficulty = self:_difficulty_multiplier()
+  local speed_difficulty = self:_difficulty_multiplier("speed")
+  local damage_difficulty = self:_difficulty_multiplier("damage")
   local pressure = self:boss_pressure_snapshot()
   local speed = self.tuning:get("enemies.speed_multiplier")
-    * (0.82 + difficulty * 0.18) * pressure.enemy_speed
+    * (0.82 + speed_difficulty * 0.18) * pressure.enemy_speed
   local damage_multiplier = self.tuning:get("enemies.damage_multiplier")
-    * difficulty * pressure.enemy_damage
+    * damage_difficulty * pressure.enemy_damage
   local knockback = self.tuning:get("combat.knockback_multiplier")
   self.ctx.world:each("enemy", function(enemy)
     local action = enemy:update(dt, self.player, speed, self.arena)
@@ -872,7 +897,7 @@ function CombatSystem:update(dt)
   self:_update_buffs(dt)
   self:_update_overtime()
   local stage_time = self.ctx.time - self.stage_started_at
-  local difficulty = self:_difficulty_multiplier()
+  local difficulty = self:_difficulty_multiplier("spawn")
   if not self.final_boss_dead then
     self.spawner:update(
       dt, stage_time, self.content.enemies,

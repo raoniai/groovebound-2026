@@ -57,7 +57,7 @@ function love.load()
   app.profile_store = ProfileStore()
   local activation
   app.profile, activation = app.profile_store:activate()
-  assert(app.profile, "World Tour V1 save activation failed: "
+  assert(app.profile, "World Tour save activation failed: "
     .. tostring(activation and activation.status))
   -- Keep the established UI persistence seam while Device Settings and
   -- progression Slots remain independently owned by ProfileStore.

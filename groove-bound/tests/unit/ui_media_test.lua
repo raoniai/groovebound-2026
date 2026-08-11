@@ -24,6 +24,20 @@ local function png_color_type(path)
 end
 
 T["runtime UI artwork and character logos have stable production mappings"] = function()
+  for _, font_path in ipairs({
+    "assets/fonts/Anton-Regular.ttf",
+    "assets/fonts/Oswald-Variable.ttf",
+    "assets/fonts/OFL-Anton.txt",
+    "assets/fonts/OFL-Oswald.txt",
+  }) do
+    local file = assert(io.open(font_path, "rb"))
+    H.is_true(#file:read(16) > 0)
+    file:close()
+  end
+  local new_w, new_h = png_dimensions(
+    "assets/generated/campaign/ui/new-tag.png")
+  H.is_true(new_w > new_h * 2)
+  H.eq(png_color_type("assets/generated/campaign/ui/new-tag.png"), 6)
   local aim_w, aim_h = png_dimensions(
     "assets/generated/campaign/aim-reticle.png")
   H.eq(aim_w, aim_h)
@@ -47,13 +61,21 @@ T["runtime UI artwork and character logos have stable production mappings"] = fu
   H.eq(png_color_type(
     "assets/generated/campaign/stage-clear-chest.png"), 6)
   for _, expected in ipairs({
+    { "assets/generated/campaign/musical-chest-atlas.png", 1600, 800 },
     { "assets/generated/campaign/chest-luck-reveal-atlas.png", 2000, 800 },
     { "assets/generated/campaign/funk-pocket-pad-atlas.png", 1600, 400 },
     { "assets/generated/campaign/world-tour-ui-atlas.png", 2000, 1000 },
+    { "assets/generated/campaign/world-interface-atlas.png", 2000, 1000 },
     { "assets/generated/campaign/menu-button-icons-atlas.png", 2000, 800 },
     { "assets/generated/campaign/completion-ui-atlas.png", 1600, 800 },
+    { "assets/generated/campaign/meta-perks-atlas.png", 2000, 1600 },
+    { "assets/generated/campaign/world-mechanics-atlas.png", 2000, 800 },
     { "assets/generated/campaign/funk-enemies-atlas.png", 1600, 800 },
+    { "assets/generated/campaign/soul-enemies-atlas.png", 1600, 800 },
+    { "assets/generated/campaign/disco-enemies-atlas.png", 1600, 800 },
     { "assets/generated/campaign/funk-environment-atlas.png", 1600, 800 },
+    { "assets/generated/campaign/soul-environment-atlas.png", 1600, 800 },
+    { "assets/generated/campaign/disco-environment-atlas.png", 1600, 800 },
     { "assets/generated/evolved-weapon-icons-atlas-2.png", 1600, 800 },
   }) do
     local width, height = png_dimensions(expected[1])
@@ -66,6 +88,26 @@ T["runtime UI artwork and character logos have stable production mappings"] = fu
   H.eq(floor_w, 1024)
   H.eq(floor_h, 1024)
   H.eq(png_color_type("assets/generated/campaign/funk-floor-atlas.png"), 2)
+end
+
+T["World Tour atlas repair keeps every isolated sprite auditable"] = function()
+  local json = require("lib.json")
+  local path = "assets/generated/campaign/world-tour-sprites/manifest.json"
+  local file = assert(io.open(path, "rb"))
+  local manifest = json.decode(file:read("*a"))
+  file:close()
+  H.eq(manifest.schema, 1)
+  H.eq(manifest.count, 147)
+  H.eq(#manifest.records, 147)
+  for _, record in ipairs(manifest.records) do
+    H.is_true(record.atlas_repair.grid_preserved)
+    H.is_true(record.atlas_repair.uniform_scale_only)
+    H.is_true(record.atlas_repair.safe_gutter >= 8)
+    H.eq(record.alpha_bounds[1], 0)
+    H.eq(record.alpha_bounds[2], 0)
+    H.eq(record.alpha_bounds[3], record.output_size[1])
+    H.eq(record.alpha_bounds[4], record.output_size[2])
+  end
 end
 
 T["new Stage 2 and ending videos are Ogg runtime media"] = function()

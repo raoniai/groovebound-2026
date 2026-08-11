@@ -22,6 +22,7 @@ package: clean
 		-x "scripts/*" \
 		-x ".DS_Store" -x "*/.DS_Store" -x "assets/generated/*-source.png" \
 		-x "assets/generated/source-candidates/*" \
+		-x "assets/generated/campaign/world-tour-sprites/*" \
 		-x "assets/video/*.mp4" \
 		-x "music/*" \
 		-x "docs/screenshots/*"

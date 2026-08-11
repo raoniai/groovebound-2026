@@ -1,0 +1,7684 @@
+{
+  "policy": "Assign atlas-wide connected alpha components to their nearest authored sprite, recover complete subjects across nominal cell lines, discard isolated pixel noise, and trim to visible alpha bounds without resizing. Opaque floor textures retain their exact authored cells.",
+  "source_root": "groove-bound/assets/generated/campaign",
+  "output_root": "landing-page/assets/world-tour/sprites",
+  "count": 160,
+  "records": [
+    {
+      "source": "groove-bound/assets/generated/campaign/funk-enemies-atlas.png",
+      "source_sha256": "0bcffe4f5d33a20c27f763769b6608ade6e8a75782ee9906b83b72ae36e54836",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 1,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        65,
+        53,
+        342,
+        341
+      ],
+      "authored_cell_bounds": [
+        0,
+        0,
+        400,
+        400
+      ],
+      "primary_component_id": 2,
+      "source_component_ids": [
+        2
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 22,
+      "alpha_bounds": [
+        0,
+        0,
+        277,
+        288
+      ],
+      "output": "landing-page/assets/world-tour/sprites/enemies/funk/pocket-gremlin.png",
+      "output_size": [
+        277,
+        288
+      ],
+      "output_sha256": "e6b25a8089b4b6f955b454c931de56970187ee984bf686205460af0fc5ccd9b0"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/funk-enemies-atlas.png",
+      "source_sha256": "0bcffe4f5d33a20c27f763769b6608ade6e8a75782ee9906b83b72ae36e54836",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 2,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        453,
+        67,
+        738,
+        349
+      ],
+      "authored_cell_bounds": [
+        400,
+        0,
+        800,
+        400
+      ],
+      "primary_component_id": 3,
+      "source_component_ids": [
+        3
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 22,
+      "alpha_bounds": [
+        0,
+        0,
+        285,
+        282
+      ],
+      "output": "landing-page/assets/world-tour/sprites/enemies/funk/slapback-hound.png",
+      "output_size": [
+        285,
+        282
+      ],
+      "output_sha256": "77e07489b1b47015b9cfb002b8725940350cb82d6a3bf7c234ba2c4abb56020b"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/funk-enemies-atlas.png",
+      "source_sha256": "0bcffe4f5d33a20c27f763769b6608ade6e8a75782ee9906b83b72ae36e54836",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 3,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        823,
+        45,
+        1131,
+        352
+      ],
+      "authored_cell_bounds": [
+        800,
+        0,
+        1200,
+        400
+      ],
+      "primary_component_id": 1,
+      "source_component_ids": [
+        1
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 22,
+      "alpha_bounds": [
+        0,
+        0,
+        308,
+        307
+      ],
+      "output": "landing-page/assets/world-tour/sprites/enemies/funk/groove-guard.png",
+      "output_size": [
+        308,
+        307
+      ],
+      "output_sha256": "2dce521167f20f98a76c726da8fe83dda8c60eef95a6a214ed1d128297f03dd4"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/funk-enemies-atlas.png",
+      "source_sha256": "0bcffe4f5d33a20c27f763769b6608ade6e8a75782ee9906b83b72ae36e54836",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 4,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        1230,
+        27,
+        1529,
+        373
+      ],
+      "authored_cell_bounds": [
+        1200,
+        0,
+        1600,
+        400
+      ],
+      "primary_component_id": 0,
+      "source_component_ids": [
+        0
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 22,
+      "alpha_bounds": [
+        0,
+        0,
+        299,
+        346
+      ],
+      "output": "landing-page/assets/world-tour/sprites/enemies/funk/talkbox-oracle.png",
+      "output_size": [
+        299,
+        346
+      ],
+      "output_sha256": "a9539a337c32cad8487b9446ac1a5b09eaf751cba1eb9ef0150f6534f04cb9ba"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/funk-enemies-atlas.png",
+      "source_sha256": "0bcffe4f5d33a20c27f763769b6608ade6e8a75782ee9906b83b72ae36e54836",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 5,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        19,
+        438,
+        375,
+        756
+      ],
+      "authored_cell_bounds": [
+        0,
+        400,
+        400,
+        800
+      ],
+      "primary_component_id": 8,
+      "source_component_ids": [
+        8
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 22,
+      "alpha_bounds": [
+        0,
+        0,
+        356,
+        318
+      ],
+      "output": "landing-page/assets/world-tour/sprites/enemies/funk/boogie-tank.png",
+      "output_size": [
+        356,
+        318
+      ],
+      "output_sha256": "3492213d7aa44b235d0cb20e7e5e9ad39238bc9465bd7e985cb01a375b5b5143"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/funk-enemies-atlas.png",
+      "source_sha256": "0bcffe4f5d33a20c27f763769b6608ade6e8a75782ee9906b83b72ae36e54836",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 6,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        434,
+        452,
+        705,
+        706
+      ],
+      "authored_cell_bounds": [
+        400,
+        400,
+        800,
+        800
+      ],
+      "primary_component_id": 11,
+      "source_component_ids": [
+        11,
+        15,
+        16,
+        17,
+        18,
+        19
+      ],
+      "assigned_components": 6,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 22,
+      "alpha_bounds": [
+        0,
+        0,
+        271,
+        254
+      ],
+      "output": "landing-page/assets/world-tour/sprites/enemies/funk/funkadelic-wasp.png",
+      "output_size": [
+        271,
+        254
+      ],
+      "output_sha256": "382ace106a4fc4f3310b5169c9e2d2f3482f5d1fb2e755db4c029d155f915539"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/funk-enemies-atlas.png",
+      "source_sha256": "0bcffe4f5d33a20c27f763769b6608ade6e8a75782ee9906b83b72ae36e54836",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 7,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        755,
+        378,
+        1183,
+        772
+      ],
+      "authored_cell_bounds": [
+        800,
+        400,
+        1200,
+        800
+      ],
+      "primary_component_id": 4,
+      "source_component_ids": [
+        4
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [
+        "left",
+        "top"
+      ],
+      "discarded_noise_pixels": 22,
+      "alpha_bounds": [
+        0,
+        0,
+        428,
+        394
+      ],
+      "output": "landing-page/assets/world-tour/sprites/enemies/funk/mothership-of-funk.png",
+      "output_size": [
+        428,
+        394
+      ],
+      "output_sha256": "180281ecfacab37b6705caa97ff71645cecfa4f2d528c8da6ed71d37d843d398"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/funk-enemies-atlas.png",
+      "source_sha256": "0bcffe4f5d33a20c27f763769b6608ade6e8a75782ee9906b83b72ae36e54836",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 8,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        1226,
+        412,
+        1558,
+        772
+      ],
+      "authored_cell_bounds": [
+        1200,
+        400,
+        1600,
+        800
+      ],
+      "primary_component_id": 5,
+      "source_component_ids": [
+        5,
+        6,
+        7,
+        9,
+        10,
+        12,
+        13,
+        14,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "assigned_components": 26,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 22,
+      "alpha_bounds": [
+        0,
+        0,
+        332,
+        360
+      ],
+      "output": "landing-page/assets/world-tour/sprites/enemies/funk/pocket-phantom.png",
+      "output_size": [
+        332,
+        360
+      ],
+      "output_sha256": "8231615f9d87e1a62bdfb1ef65238e641781a2ec68d47cb6dac9fb845d26a9ff"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/soul-enemies-atlas.png",
+      "source_sha256": "532ec1e94d8fee34011a5d9c0bf82c1859aa8d7c82315ff1b99d1d95a796716e",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 1,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        111,
+        90,
+        298,
+        343
+      ],
+      "authored_cell_bounds": [
+        0,
+        0,
+        400,
+        400
+      ],
+      "primary_component_id": 3,
+      "source_component_ids": [
+        3
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 1,
+      "alpha_bounds": [
+        0,
+        0,
+        187,
+        253
+      ],
+      "output": "landing-page/assets/world-tour/sprites/enemies/soul/choir-automaton.png",
+      "output_size": [
+        187,
+        253
+      ],
+      "output_sha256": "906cb39a97108e0ed8a1d1464d5163dcd3e9d95ecf0377070bd60ed4ee520c76"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/soul-enemies-atlas.png",
+      "source_sha256": "532ec1e94d8fee34011a5d9c0bf82c1859aa8d7c82315ff1b99d1d95a796716e",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 2,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        436,
+        30,
+        672,
+        380
+      ],
+      "authored_cell_bounds": [
+        400,
+        0,
+        800,
+        400
+      ],
+      "primary_component_id": 1,
+      "source_component_ids": [
+        1
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 1,
+      "alpha_bounds": [
+        0,
+        0,
+        236,
+        350
+      ],
+      "output": "landing-page/assets/world-tour/sprites/enemies/soul/string-sentinel.png",
+      "output_size": [
+        236,
+        350
+      ],
+      "output_sha256": "1caef819e32cad8c00a6b43ef65691ed3fa22ac646ecfe05565bceedd8257f51"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/soul-enemies-atlas.png",
+      "source_sha256": "532ec1e94d8fee34011a5d9c0bf82c1859aa8d7c82315ff1b99d1d95a796716e",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 3,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        757,
+        26,
+        1090,
+        379
+      ],
+      "authored_cell_bounds": [
+        800,
+        0,
+        1200,
+        400
+      ],
+      "primary_component_id": 0,
+      "source_component_ids": [
+        0
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [
+        "left"
+      ],
+      "discarded_noise_pixels": 1,
+      "alpha_bounds": [
+        0,
+        0,
+        333,
+        353
+      ],
+      "output": "landing-page/assets/world-tour/sprites/enemies/soul/organ-walker.png",
+      "output_size": [
+        333,
+        353
+      ],
+      "output_sha256": "4c4594758bfacbbd642addf2bd006600262782016cac01b7bf18b6afec10b0ac"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/soul-enemies-atlas.png",
+      "source_sha256": "532ec1e94d8fee34011a5d9c0bf82c1859aa8d7c82315ff1b99d1d95a796716e",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 4,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        1181,
+        59,
+        1488,
+        355
+      ],
+      "authored_cell_bounds": [
+        1200,
+        0,
+        1600,
+        400
+      ],
+      "primary_component_id": 2,
+      "source_component_ids": [
+        2
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [
+        "left"
+      ],
+      "discarded_noise_pixels": 1,
+      "alpha_bounds": [
+        0,
+        0,
+        307,
+        296
+      ],
+      "output": "landing-page/assets/world-tour/sprites/enemies/soul/harmony-linker.png",
+      "output_size": [
+        307,
+        296
+      ],
+      "output_sha256": "cb92a62a21673835434d49eaf2df4d83e839f61c8a67d95584cd68be5f0ba238"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/soul-enemies-atlas.png",
+      "source_sha256": "532ec1e94d8fee34011a5d9c0bf82c1859aa8d7c82315ff1b99d1d95a796716e",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 5,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        53,
+        472,
+        332,
+        675
+      ],
+      "authored_cell_bounds": [
+        0,
+        400,
+        400,
+        800
+      ],
+      "primary_component_id": 7,
+      "source_component_ids": [
+        7
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 1,
+      "alpha_bounds": [
+        0,
+        0,
+        279,
+        203
+      ],
+      "output": "landing-page/assets/world-tour/sprites/enemies/soul/gospel-moth.png",
+      "output_size": [
+        279,
+        203
+      ],
+      "output_sha256": "4014bbc89cd62f084e8c41c7290e506d3887944af2d793d9e67009730217fa10"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/soul-enemies-atlas.png",
+      "source_sha256": "532ec1e94d8fee34011a5d9c0bf82c1859aa8d7c82315ff1b99d1d95a796716e",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 6,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        380,
+        444,
+        632,
+        742
+      ],
+      "authored_cell_bounds": [
+        400,
+        400,
+        800,
+        800
+      ],
+      "primary_component_id": 6,
+      "source_component_ids": [
+        6
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [
+        "left"
+      ],
+      "discarded_noise_pixels": 1,
+      "alpha_bounds": [
+        0,
+        0,
+        252,
+        298
+      ],
+      "output": "landing-page/assets/world-tour/sprites/enemies/soul/velvet-knight.png",
+      "output_size": [
+        252,
+        298
+      ],
+      "output_sha256": "20fb72e610ff6c7be257a23bb8cdcdefa2fd09769695191390e7265d08557362"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/soul-enemies-atlas.png",
+      "source_sha256": "532ec1e94d8fee34011a5d9c0bf82c1859aa8d7c82315ff1b99d1d95a796716e",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 7,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        689,
+        390,
+        1079,
+        776
+      ],
+      "authored_cell_bounds": [
+        800,
+        400,
+        1200,
+        800
+      ],
+      "primary_component_id": 5,
+      "source_component_ids": [
+        5
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [
+        "left",
+        "top"
+      ],
+      "discarded_noise_pixels": 1,
+      "alpha_bounds": [
+        0,
+        0,
+        390,
+        386
+      ],
+      "output": "landing-page/assets/world-tour/sprites/enemies/soul/organ-colossus.png",
+      "output_size": [
+        390,
+        386
+      ],
+      "output_sha256": "fdad1842c02647fb915b1ecde522d00d3f152576bc9bd6a17730d3a5c970df78"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/soul-enemies-atlas.png",
+      "source_sha256": "532ec1e94d8fee34011a5d9c0bf82c1859aa8d7c82315ff1b99d1d95a796716e",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 8,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        1098,
+        388,
+        1562,
+        772
+      ],
+      "authored_cell_bounds": [
+        1200,
+        400,
+        1600,
+        800
+      ],
+      "primary_component_id": 4,
+      "source_component_ids": [
+        4
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [
+        "left",
+        "top"
+      ],
+      "discarded_noise_pixels": 1,
+      "alpha_bounds": [
+        0,
+        0,
+        464,
+        384
+      ],
+      "output": "landing-page/assets/world-tour/sprites/enemies/soul/velvet-titan.png",
+      "output_size": [
+        464,
+        384
+      ],
+      "output_sha256": "e74c74c53c184252011f29a09c6409e369943f66b8022f9d222f65031cf7e5f3"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/disco-enemies-atlas.png",
+      "source_sha256": "ca7626c2dfe254010da3dee112d8e5a3ec67e1173dfab50e787255b1a2ce9d59",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 1,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        86,
+        59,
+        297,
+        334
+      ],
+      "authored_cell_bounds": [
+        0,
+        0,
+        400,
+        400
+      ],
+      "primary_component_id": 0,
+      "source_component_ids": [
+        0
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 13,
+      "alpha_bounds": [
+        0,
+        0,
+        211,
+        275
+      ],
+      "output": "landing-page/assets/world-tour/sprites/enemies/disco/prism-roller.png",
+      "output_size": [
+        211,
+        275
+      ],
+      "output_sha256": "c9226ab4eb33ee94795613d75a3512a3a69f3ee58031a861d0293a65adb72e2a"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/disco-enemies-atlas.png",
+      "source_sha256": "ca7626c2dfe254010da3dee112d8e5a3ec67e1173dfab50e787255b1a2ce9d59",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 2,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        452,
+        59,
+        719,
+        342
+      ],
+      "authored_cell_bounds": [
+        400,
+        0,
+        800,
+        400
+      ],
+      "primary_component_id": 1,
+      "source_component_ids": [
+        1,
+        4,
+        5,
+        6
+      ],
+      "assigned_components": 4,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 13,
+      "alpha_bounds": [
+        0,
+        0,
+        267,
+        283
+      ],
+      "output": "landing-page/assets/world-tour/sprites/enemies/disco/mirror-drone.png",
+      "output_size": [
+        267,
+        283
+      ],
+      "output_sha256": "a5857570020ff43ec043e264ad481fe7ed44af98dfbb919dc206aedc78130dd9"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/disco-enemies-atlas.png",
+      "source_sha256": "ca7626c2dfe254010da3dee112d8e5a3ec67e1173dfab50e787255b1a2ce9d59",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 3,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        821,
+        65,
+        1141,
+        342
+      ],
+      "authored_cell_bounds": [
+        800,
+        0,
+        1200,
+        400
+      ],
+      "primary_component_id": 2,
+      "source_component_ids": [
+        2
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 13,
+      "alpha_bounds": [
+        0,
+        0,
+        320,
+        277
+      ],
+      "output": "landing-page/assets/world-tour/sprites/enemies/disco/laser-fan.png",
+      "output_size": [
+        320,
+        277
+      ],
+      "output_sha256": "0b70cfdd0369f5d68129529789c512c409029f9b06c7810ca7d0d06b24c84086"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/disco-enemies-atlas.png",
+      "source_sha256": "ca7626c2dfe254010da3dee112d8e5a3ec67e1173dfab50e787255b1a2ce9d59",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 4,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        1219,
+        70,
+        1515,
+        343
+      ],
+      "authored_cell_bounds": [
+        1200,
+        0,
+        1600,
+        400
+      ],
+      "primary_component_id": 3,
+      "source_component_ids": [
+        3
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 13,
+      "alpha_bounds": [
+        0,
+        0,
+        296,
+        273
+      ],
+      "output": "landing-page/assets/world-tour/sprites/enemies/disco/reflection-twin.png",
+      "output_size": [
+        296,
+        273
+      ],
+      "output_sha256": "febf7b9544b86b8559fd4ab7e255bd2961f96a51884f37ec81c9dcb913e6b689"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/disco-enemies-atlas.png",
+      "source_sha256": "ca7626c2dfe254010da3dee112d8e5a3ec67e1173dfab50e787255b1a2ce9d59",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 5,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        38,
+        451,
+        363,
+        741
+      ],
+      "authored_cell_bounds": [
+        0,
+        400,
+        400,
+        800
+      ],
+      "primary_component_id": 10,
+      "source_component_ids": [
+        10
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 13,
+      "alpha_bounds": [
+        0,
+        0,
+        325,
+        290
+      ],
+      "output": "landing-page/assets/world-tour/sprites/enemies/disco/platform-pouncer.png",
+      "output_size": [
+        325,
+        290
+      ],
+      "output_sha256": "1f83ad84e3c7bcf0ce407fd2af68c6b1e5f26d53922480fcb787701ee598b074"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/disco-enemies-atlas.png",
+      "source_sha256": "ca7626c2dfe254010da3dee112d8e5a3ec67e1173dfab50e787255b1a2ce9d59",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 6,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        384,
+        426,
+        665,
+        734
+      ],
+      "authored_cell_bounds": [
+        400,
+        400,
+        800,
+        800
+      ],
+      "primary_component_id": 9,
+      "source_component_ids": [
+        9
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [
+        "left"
+      ],
+      "discarded_noise_pixels": 13,
+      "alpha_bounds": [
+        0,
+        0,
+        281,
+        308
+      ],
+      "output": "landing-page/assets/world-tour/sprites/enemies/disco/glitter-guard.png",
+      "output_size": [
+        281,
+        308
+      ],
+      "output_sha256": "56ca5587cfa72a2ea979d01c10bb4df339e40402260683da9728df70117e1706"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/disco-enemies-atlas.png",
+      "source_sha256": "ca7626c2dfe254010da3dee112d8e5a3ec67e1173dfab50e787255b1a2ce9d59",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 7,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        740,
+        422,
+        1125,
+        737
+      ],
+      "authored_cell_bounds": [
+        800,
+        400,
+        1200,
+        800
+      ],
+      "primary_component_id": 8,
+      "source_component_ids": [
+        8
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [
+        "left"
+      ],
+      "discarded_noise_pixels": 13,
+      "alpha_bounds": [
+        0,
+        0,
+        385,
+        315
+      ],
+      "output": "landing-page/assets/world-tour/sprites/enemies/disco/laser-conductor.png",
+      "output_size": [
+        385,
+        315
+      ],
+      "output_sha256": "70eeb29f6538777144ff573f12b5028f1dbef5ac66cefee2c879aace47f43304"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/disco-enemies-atlas.png",
+      "source_sha256": "ca7626c2dfe254010da3dee112d8e5a3ec67e1173dfab50e787255b1a2ce9d59",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 8,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        1160,
+        395,
+        1549,
+        745
+      ],
+      "authored_cell_bounds": [
+        1200,
+        400,
+        1600,
+        800
+      ],
+      "primary_component_id": 7,
+      "source_component_ids": [
+        7,
+        11,
+        12
+      ],
+      "assigned_components": 3,
+      "extends_beyond_cell": [
+        "left",
+        "top"
+      ],
+      "discarded_noise_pixels": 13,
+      "alpha_bounds": [
+        0,
+        0,
+        389,
+        350
+      ],
+      "output": "landing-page/assets/world-tour/sprites/enemies/disco/prism-monarch.png",
+      "output_size": [
+        389,
+        350
+      ],
+      "output_sha256": "1b16a51d206497899978fe9615acac00c47838ed78ce7e9dd1c4c1b01c9e9d8f"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/funk-environment-atlas.png",
+      "source_sha256": "f4b9614ab7eba0f3f5655abd0a987ba4100f2626d38b743e777fb28baeae0b25",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 1,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        43,
+        33,
+        397,
+        372
+      ],
+      "authored_cell_bounds": [
+        0,
+        0,
+        400,
+        400
+      ],
+      "primary_component_id": 0,
+      "source_component_ids": [
+        0
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 27,
+      "alpha_bounds": [
+        0,
+        0,
+        354,
+        339
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/funk/boombox-barricade.png",
+      "output_size": [
+        354,
+        339
+      ],
+      "output_sha256": "7c74e76cd4758f574798aae50f7a45663076fb594ba19095bda0491f3b3eda8c"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/funk-environment-atlas.png",
+      "source_sha256": "f4b9614ab7eba0f3f5655abd0a987ba4100f2626d38b743e777fb28baeae0b25",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 2,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        453,
+        49,
+        748,
+        364
+      ],
+      "authored_cell_bounds": [
+        400,
+        0,
+        800,
+        400
+      ],
+      "primary_component_id": 2,
+      "source_component_ids": [
+        2
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 27,
+      "alpha_bounds": [
+        0,
+        0,
+        295,
+        315
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/funk/record-kiosk.png",
+      "output_size": [
+        295,
+        315
+      ],
+      "output_sha256": "c0e6890c592a95c93fc56bc5c52d2f5ac46823009156e3f4576fbdba576f64fd"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/funk-environment-atlas.png",
+      "source_sha256": "f4b9614ab7eba0f3f5655abd0a987ba4100f2626d38b743e777fb28baeae0b25",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 3,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        801,
+        33,
+        1147,
+        368
+      ],
+      "authored_cell_bounds": [
+        800,
+        0,
+        1200,
+        400
+      ],
+      "primary_component_id": 1,
+      "source_component_ids": [
+        1
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 27,
+      "alpha_bounds": [
+        0,
+        0,
+        346,
+        335
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/funk/amp-wall.png",
+      "output_size": [
+        346,
+        335
+      ],
+      "output_sha256": "baa62adb16277bfdc43864a3bb6077e4ca21dc5bec256cf742cdee509e1d9304"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/funk-environment-atlas.png",
+      "source_sha256": "f4b9614ab7eba0f3f5655abd0a987ba4100f2626d38b743e777fb28baeae0b25",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 4,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        1179,
+        85,
+        1560,
+        368
+      ],
+      "authored_cell_bounds": [
+        1200,
+        0,
+        1600,
+        400
+      ],
+      "primary_component_id": 3,
+      "source_component_ids": [
+        3
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [
+        "left"
+      ],
+      "discarded_noise_pixels": 27,
+      "alpha_bounds": [
+        0,
+        0,
+        381,
+        283
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/funk/turntable-console.png",
+      "output_size": [
+        381,
+        283
+      ],
+      "output_sha256": "42b8bb136ebfccb7aa5723d1b6acb33c5fc541b3d2b0a5cb1acd8f88aeaa9fde"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/funk-environment-atlas.png",
+      "source_sha256": "f4b9614ab7eba0f3f5655abd0a987ba4100f2626d38b743e777fb28baeae0b25",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 5,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        65,
+        410,
+        316,
+        767
+      ],
+      "authored_cell_bounds": [
+        0,
+        400,
+        400,
+        800
+      ],
+      "primary_component_id": 4,
+      "source_component_ids": [
+        4,
+        15
+      ],
+      "assigned_components": 2,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 27,
+      "alpha_bounds": [
+        0,
+        0,
+        251,
+        357
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/funk/disco-palm.png",
+      "output_size": [
+        251,
+        357
+      ],
+      "output_sha256": "68d09d1bccf8270413413512330d640b87c855603fc378fed2714e9c14f977e4"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/funk-environment-atlas.png",
+      "source_sha256": "f4b9614ab7eba0f3f5655abd0a987ba4100f2626d38b743e777fb28baeae0b25",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 6,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        497,
+        414,
+        663,
+        765
+      ],
+      "authored_cell_bounds": [
+        400,
+        400,
+        800,
+        800
+      ],
+      "primary_component_id": 5,
+      "source_component_ids": [
+        5
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 27,
+      "alpha_bounds": [
+        0,
+        0,
+        166,
+        351
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/funk/talkbox-streetlight.png",
+      "output_size": [
+        166,
+        351
+      ],
+      "output_sha256": "cb795a94051a08c4c8c1b7b7b645b331322965605d36e9bc5d9b311071aff237"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/funk-environment-atlas.png",
+      "source_sha256": "f4b9614ab7eba0f3f5655abd0a987ba4100f2626d38b743e777fb28baeae0b25",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 7,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        804,
+        445,
+        1103,
+        754
+      ],
+      "authored_cell_bounds": [
+        800,
+        400,
+        1200,
+        800
+      ],
+      "primary_component_id": 7,
+      "source_component_ids": [
+        7
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 27,
+      "alpha_bounds": [
+        0,
+        0,
+        299,
+        309
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/funk/vinyl-stack.png",
+      "output_size": [
+        299,
+        309
+      ],
+      "output_sha256": "2b8eeef1d05bf15b794edc7e786b2489e851c66d80cd1fa99d1cbc7075a60db9"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/funk-environment-atlas.png",
+      "source_sha256": "f4b9614ab7eba0f3f5655abd0a987ba4100f2626d38b743e777fb28baeae0b25",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 8,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        1232,
+        416,
+        1444,
+        768
+      ],
+      "authored_cell_bounds": [
+        1200,
+        400,
+        1600,
+        800
+      ],
+      "primary_component_id": 6,
+      "source_component_ids": [
+        6,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        16
+      ],
+      "assigned_components": 9,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 27,
+      "alpha_bounds": [
+        0,
+        0,
+        212,
+        352
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/funk/hologram-dancer.png",
+      "output_size": [
+        212,
+        352
+      ],
+      "output_sha256": "6297c115c0398756760cfae385732df3163425b87a1c265667f0c927382e14d2"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/soul-environment-atlas.png",
+      "source_sha256": "6f3e4f3c4c10ee85588349a749f7324de14b23954d727b7caa218e8eaa91c4ec",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 1,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        46,
+        27,
+        364,
+        360
+      ],
+      "authored_cell_bounds": [
+        0,
+        0,
+        400,
+        400
+      ],
+      "primary_component_id": 2,
+      "source_component_ids": [
+        2
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 3,
+      "alpha_bounds": [
+        0,
+        0,
+        318,
+        333
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/soul/prop-01.png",
+      "output_size": [
+        318,
+        333
+      ],
+      "output_sha256": "06e241e031fb1c983e5f5a03399b0ca194c08d95ffab10337ab105c03d6054f5"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/soul-environment-atlas.png",
+      "source_sha256": "6f3e4f3c4c10ee85588349a749f7324de14b23954d727b7caa218e8eaa91c4ec",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 2,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        452,
+        24,
+        769,
+        369
+      ],
+      "authored_cell_bounds": [
+        400,
+        0,
+        800,
+        400
+      ],
+      "primary_component_id": 0,
+      "source_component_ids": [
+        0
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 3,
+      "alpha_bounds": [
+        0,
+        0,
+        317,
+        345
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/soul/prop-02.png",
+      "output_size": [
+        317,
+        345
+      ],
+      "output_sha256": "5c7de63c50f3a82235726d4855227a516d23d34ff4404859ecc69c12de4c490d"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/soul-environment-atlas.png",
+      "source_sha256": "6f3e4f3c4c10ee85588349a749f7324de14b23954d727b7caa218e8eaa91c4ec",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 3,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        839,
+        24,
+        1163,
+        367
+      ],
+      "authored_cell_bounds": [
+        800,
+        0,
+        1200,
+        400
+      ],
+      "primary_component_id": 1,
+      "source_component_ids": [
+        1
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 3,
+      "alpha_bounds": [
+        0,
+        0,
+        324,
+        343
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/soul/prop-03.png",
+      "output_size": [
+        324,
+        343
+      ],
+      "output_sha256": "1ad1e6870b6532e17945d906d0e2a26088f432418d6b6c42b5a46930a3d0f468"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/soul-environment-atlas.png",
+      "source_sha256": "6f3e4f3c4c10ee85588349a749f7324de14b23954d727b7caa218e8eaa91c4ec",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 4,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        1220,
+        35,
+        1568,
+        369
+      ],
+      "authored_cell_bounds": [
+        1200,
+        0,
+        1600,
+        400
+      ],
+      "primary_component_id": 3,
+      "source_component_ids": [
+        3
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 3,
+      "alpha_bounds": [
+        0,
+        0,
+        348,
+        334
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/soul/prop-04.png",
+      "output_size": [
+        348,
+        334
+      ],
+      "output_sha256": "fc336b9797c3feaae62b2e9775413384ae973cd4230bcb2432cd1909464615f9"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/soul-environment-atlas.png",
+      "source_sha256": "6f3e4f3c4c10ee85588349a749f7324de14b23954d727b7caa218e8eaa91c4ec",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 5,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        56,
+        412,
+        355,
+        754
+      ],
+      "authored_cell_bounds": [
+        0,
+        400,
+        400,
+        800
+      ],
+      "primary_component_id": 5,
+      "source_component_ids": [
+        5
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 3,
+      "alpha_bounds": [
+        0,
+        0,
+        299,
+        342
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/soul/prop-05.png",
+      "output_size": [
+        299,
+        342
+      ],
+      "output_sha256": "ee347469952cefe910cd5e27a8c674d9ffa14eed946fb0e2007992891df77283"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/soul-environment-atlas.png",
+      "source_sha256": "6f3e4f3c4c10ee85588349a749f7324de14b23954d727b7caa218e8eaa91c4ec",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 6,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        500,
+        393,
+        652,
+        757
+      ],
+      "authored_cell_bounds": [
+        400,
+        400,
+        800,
+        800
+      ],
+      "primary_component_id": 4,
+      "source_component_ids": [
+        4
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [
+        "top"
+      ],
+      "discarded_noise_pixels": 3,
+      "alpha_bounds": [
+        0,
+        0,
+        152,
+        364
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/soul/prop-06.png",
+      "output_size": [
+        152,
+        364
+      ],
+      "output_sha256": "895f932f54acfe9695e595794eb0f7dac69206e42cc52b17b57464d470259243"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/soul-environment-atlas.png",
+      "source_sha256": "6f3e4f3c4c10ee85588349a749f7324de14b23954d727b7caa218e8eaa91c4ec",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 7,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        828,
+        428,
+        1152,
+        748
+      ],
+      "authored_cell_bounds": [
+        800,
+        400,
+        1200,
+        800
+      ],
+      "primary_component_id": 6,
+      "source_component_ids": [
+        6
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 3,
+      "alpha_bounds": [
+        0,
+        0,
+        324,
+        320
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/soul/prop-07.png",
+      "output_size": [
+        324,
+        320
+      ],
+      "output_sha256": "c0c88b94738351684c23e2d4787458aa2234f1720a6caa54a4bd7553f95988c3"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/soul-environment-atlas.png",
+      "source_sha256": "6f3e4f3c4c10ee85588349a749f7324de14b23954d727b7caa218e8eaa91c4ec",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 8,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        1260,
+        440,
+        1516,
+        752
+      ],
+      "authored_cell_bounds": [
+        1200,
+        400,
+        1600,
+        800
+      ],
+      "primary_component_id": 7,
+      "source_component_ids": [
+        7
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 3,
+      "alpha_bounds": [
+        0,
+        0,
+        256,
+        312
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/soul/prop-08.png",
+      "output_size": [
+        256,
+        312
+      ],
+      "output_sha256": "2537833300d883d7431793d6d26735988e4c0cfbc65fac712ec5cbdf8a84145b"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/disco-environment-atlas.png",
+      "source_sha256": "65b831bfd3f623fe98fbc952e826cf17f27c5fbefcec1dad896fd82cfa25cc08",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 1,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        30,
+        69,
+        435,
+        381
+      ],
+      "authored_cell_bounds": [
+        0,
+        0,
+        400,
+        400
+      ],
+      "primary_component_id": 7,
+      "source_component_ids": [
+        7
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [
+        "right"
+      ],
+      "discarded_noise_pixels": 10,
+      "alpha_bounds": [
+        0,
+        0,
+        405,
+        312
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/disco/prop-01.png",
+      "output_size": [
+        405,
+        312
+      ],
+      "output_sha256": "2d9a21f521fa90200e296732f2353430fa815756f2fcc39a6c7c590d2b7907ce"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/disco-environment-atlas.png",
+      "source_sha256": "65b831bfd3f623fe98fbc952e826cf17f27c5fbefcec1dad896fd82cfa25cc08",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 2,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        525,
+        21,
+        706,
+        374
+      ],
+      "authored_cell_bounds": [
+        400,
+        0,
+        800,
+        400
+      ],
+      "primary_component_id": 0,
+      "source_component_ids": [
+        0,
+        1,
+        2,
+        3,
+        5,
+        8,
+        9
+      ],
+      "assigned_components": 7,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 10,
+      "alpha_bounds": [
+        0,
+        0,
+        181,
+        353
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/disco/prop-02.png",
+      "output_size": [
+        181,
+        353
+      ],
+      "output_sha256": "ef1703931c4f0057eed74a1a989090dea643a4de920eb981fcda0f1df71e0f0d"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/disco-environment-atlas.png",
+      "source_sha256": "65b831bfd3f623fe98fbc952e826cf17f27c5fbefcec1dad896fd82cfa25cc08",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 3,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        814,
+        55,
+        1168,
+        378
+      ],
+      "authored_cell_bounds": [
+        800,
+        0,
+        1200,
+        400
+      ],
+      "primary_component_id": 4,
+      "source_component_ids": [
+        4
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 10,
+      "alpha_bounds": [
+        0,
+        0,
+        354,
+        323
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/disco/prop-03.png",
+      "output_size": [
+        354,
+        323
+      ],
+      "output_sha256": "918a454dcb2526e932e64a05c112596e29c5eb9052aeeb15cdd1ccddb11a2fce"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/disco-environment-atlas.png",
+      "source_sha256": "65b831bfd3f623fe98fbc952e826cf17f27c5fbefcec1dad896fd82cfa25cc08",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 4,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        1242,
+        60,
+        1540,
+        379
+      ],
+      "authored_cell_bounds": [
+        1200,
+        0,
+        1600,
+        400
+      ],
+      "primary_component_id": 6,
+      "source_component_ids": [
+        6
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 10,
+      "alpha_bounds": [
+        0,
+        0,
+        298,
+        319
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/disco/prop-04.png",
+      "output_size": [
+        298,
+        319
+      ],
+      "output_sha256": "9141ab2692bf547fa97feb73969283d94821a1cddcc74f99697c8e9d11a91f09"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/disco-environment-atlas.png",
+      "source_sha256": "65b831bfd3f623fe98fbc952e826cf17f27c5fbefcec1dad896fd82cfa25cc08",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 5,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        32,
+        432,
+        398,
+        741
+      ],
+      "authored_cell_bounds": [
+        0,
+        400,
+        400,
+        800
+      ],
+      "primary_component_id": 11,
+      "source_component_ids": [
+        11,
+        14,
+        16,
+        17
+      ],
+      "assigned_components": 4,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 10,
+      "alpha_bounds": [
+        0,
+        0,
+        366,
+        309
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/disco/prop-05.png",
+      "output_size": [
+        366,
+        309
+      ],
+      "output_sha256": "92aea52c31a7e151dd3a41c707ad5f9030e73cf6cd7155657aca7c9d1534a510"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/disco-environment-atlas.png",
+      "source_sha256": "65b831bfd3f623fe98fbc952e826cf17f27c5fbefcec1dad896fd82cfa25cc08",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 6,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        452,
+        428,
+        735,
+        741
+      ],
+      "authored_cell_bounds": [
+        400,
+        400,
+        800,
+        800
+      ],
+      "primary_component_id": 10,
+      "source_component_ids": [
+        10
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 10,
+      "alpha_bounds": [
+        0,
+        0,
+        283,
+        313
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/disco/prop-06.png",
+      "output_size": [
+        283,
+        313
+      ],
+      "output_sha256": "7898ec3ddfebfe446ab5942ad7b6a00010bb16620d03e85c71eb3896879ce20d"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/disco-environment-atlas.png",
+      "source_sha256": "65b831bfd3f623fe98fbc952e826cf17f27c5fbefcec1dad896fd82cfa25cc08",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 7,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        784,
+        482,
+        1169,
+        741
+      ],
+      "authored_cell_bounds": [
+        800,
+        400,
+        1200,
+        800
+      ],
+      "primary_component_id": 13,
+      "source_component_ids": [
+        13
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [
+        "left"
+      ],
+      "discarded_noise_pixels": 10,
+      "alpha_bounds": [
+        0,
+        0,
+        385,
+        259
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/disco/prop-07.png",
+      "output_size": [
+        385,
+        259
+      ],
+      "output_sha256": "1886ad829a02daf702ccd8238e6a6036146bf0a290f5160aaae5376e1bc0b07a"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/disco-environment-atlas.png",
+      "source_sha256": "65b831bfd3f623fe98fbc952e826cf17f27c5fbefcec1dad896fd82cfa25cc08",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 8,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        1229,
+        449,
+        1506,
+        742
+      ],
+      "authored_cell_bounds": [
+        1200,
+        400,
+        1600,
+        800
+      ],
+      "primary_component_id": 12,
+      "source_component_ids": [
+        12,
+        15
+      ],
+      "assigned_components": 2,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 10,
+      "alpha_bounds": [
+        0,
+        0,
+        277,
+        293
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/disco/prop-08.png",
+      "output_size": [
+        277,
+        293
+      ],
+      "output_sha256": "c44f2eb02cb54345a08b206d16627626b1fbdecdb9edc3ce1290f738b8e49810"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/funk-floor-atlas.png",
+      "source_sha256": "0992499576e260bdda64b15601ce058af5b02bb6c20c9eed573f7e4e24550a39",
+      "grid": [
+        2,
+        2
+      ],
+      "cell": 1,
+      "cell_size": [
+        512,
+        512
+      ],
+      "isolation": "opaque-grid-cell",
+      "source_bounds": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "authored_cell_bounds": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "primary_component_id": null,
+      "source_component_ids": null,
+      "assigned_components": null,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
+      "alpha_bounds": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "output": "landing-page/assets/world-tour/sprites/floors/funk/surface-01.png",
+      "output_size": [
+        512,
+        512
+      ],
+      "output_sha256": "fdcf31076d58d08830c59974da2e22b2bde34a491c2b48ebe0f90067a0e7d453"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/funk-floor-atlas.png",
+      "source_sha256": "0992499576e260bdda64b15601ce058af5b02bb6c20c9eed573f7e4e24550a39",
+      "grid": [
+        2,
+        2
+      ],
+      "cell": 2,
+      "cell_size": [
+        512,
+        512
+      ],
+      "isolation": "opaque-grid-cell",
+      "source_bounds": [
+        512,
+        0,
+        1024,
+        512
+      ],
+      "authored_cell_bounds": [
+        512,
+        0,
+        1024,
+        512
+      ],
+      "primary_component_id": null,
+      "source_component_ids": null,
+      "assigned_components": null,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
+      "alpha_bounds": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "output": "landing-page/assets/world-tour/sprites/floors/funk/surface-02.png",
+      "output_size": [
+        512,
+        512
+      ],
+      "output_sha256": "2128245658fcc635aa028c8a266086798a8ecf2d680dc8abfec02426677f7ebe"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/funk-floor-atlas.png",
+      "source_sha256": "0992499576e260bdda64b15601ce058af5b02bb6c20c9eed573f7e4e24550a39",
+      "grid": [
+        2,
+        2
+      ],
+      "cell": 3,
+      "cell_size": [
+        512,
+        512
+      ],
+      "isolation": "opaque-grid-cell",
+      "source_bounds": [
+        0,
+        512,
+        512,
+        1024
+      ],
+      "authored_cell_bounds": [
+        0,
+        512,
+        512,
+        1024
+      ],
+      "primary_component_id": null,
+      "source_component_ids": null,
+      "assigned_components": null,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
+      "alpha_bounds": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "output": "landing-page/assets/world-tour/sprites/floors/funk/surface-03.png",
+      "output_size": [
+        512,
+        512
+      ],
+      "output_sha256": "a505f0e19e92b35bf828a0a004e35d47d6c592f305abc7a2396eaf55efae9324"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/funk-floor-atlas.png",
+      "source_sha256": "0992499576e260bdda64b15601ce058af5b02bb6c20c9eed573f7e4e24550a39",
+      "grid": [
+        2,
+        2
+      ],
+      "cell": 4,
+      "cell_size": [
+        512,
+        512
+      ],
+      "isolation": "opaque-grid-cell",
+      "source_bounds": [
+        512,
+        512,
+        1024,
+        1024
+      ],
+      "authored_cell_bounds": [
+        512,
+        512,
+        1024,
+        1024
+      ],
+      "primary_component_id": null,
+      "source_component_ids": null,
+      "assigned_components": null,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
+      "alpha_bounds": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "output": "landing-page/assets/world-tour/sprites/floors/funk/surface-04.png",
+      "output_size": [
+        512,
+        512
+      ],
+      "output_sha256": "a6607d8b9b0c063be6c1f9f49995d1af904793498adfc5a6df94edd27916fce9"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/soul-floor-atlas.png",
+      "source_sha256": "1cdf186a618cb6a7d9f60fee206bfd71a4a4a255d11655297e421dcdd0701d4f",
+      "grid": [
+        2,
+        2
+      ],
+      "cell": 1,
+      "cell_size": [
+        512,
+        512
+      ],
+      "isolation": "opaque-grid-cell",
+      "source_bounds": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "authored_cell_bounds": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "primary_component_id": null,
+      "source_component_ids": null,
+      "assigned_components": null,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
+      "alpha_bounds": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "output": "landing-page/assets/world-tour/sprites/floors/soul/surface-01.png",
+      "output_size": [
+        512,
+        512
+      ],
+      "output_sha256": "607206fb8e856bb9ff34301f124edef303b0f9eb7346f97112168894fcb631b4"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/soul-floor-atlas.png",
+      "source_sha256": "1cdf186a618cb6a7d9f60fee206bfd71a4a4a255d11655297e421dcdd0701d4f",
+      "grid": [
+        2,
+        2
+      ],
+      "cell": 2,
+      "cell_size": [
+        512,
+        512
+      ],
+      "isolation": "opaque-grid-cell",
+      "source_bounds": [
+        512,
+        0,
+        1024,
+        512
+      ],
+      "authored_cell_bounds": [
+        512,
+        0,
+        1024,
+        512
+      ],
+      "primary_component_id": null,
+      "source_component_ids": null,
+      "assigned_components": null,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
+      "alpha_bounds": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "output": "landing-page/assets/world-tour/sprites/floors/soul/surface-02.png",
+      "output_size": [
+        512,
+        512
+      ],
+      "output_sha256": "07d0e7ecff8d66a712be9959562cde049e67176778986fcca68e73708faf8943"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/soul-floor-atlas.png",
+      "source_sha256": "1cdf186a618cb6a7d9f60fee206bfd71a4a4a255d11655297e421dcdd0701d4f",
+      "grid": [
+        2,
+        2
+      ],
+      "cell": 3,
+      "cell_size": [
+        512,
+        512
+      ],
+      "isolation": "opaque-grid-cell",
+      "source_bounds": [
+        0,
+        512,
+        512,
+        1024
+      ],
+      "authored_cell_bounds": [
+        0,
+        512,
+        512,
+        1024
+      ],
+      "primary_component_id": null,
+      "source_component_ids": null,
+      "assigned_components": null,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
+      "alpha_bounds": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "output": "landing-page/assets/world-tour/sprites/floors/soul/surface-03.png",
+      "output_size": [
+        512,
+        512
+      ],
+      "output_sha256": "51289256555f3fd3f89cba4a84c03c5cb6de5284458310a608f14aa696c153bd"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/soul-floor-atlas.png",
+      "source_sha256": "1cdf186a618cb6a7d9f60fee206bfd71a4a4a255d11655297e421dcdd0701d4f",
+      "grid": [
+        2,
+        2
+      ],
+      "cell": 4,
+      "cell_size": [
+        512,
+        512
+      ],
+      "isolation": "opaque-grid-cell",
+      "source_bounds": [
+        512,
+        512,
+        1024,
+        1024
+      ],
+      "authored_cell_bounds": [
+        512,
+        512,
+        1024,
+        1024
+      ],
+      "primary_component_id": null,
+      "source_component_ids": null,
+      "assigned_components": null,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
+      "alpha_bounds": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "output": "landing-page/assets/world-tour/sprites/floors/soul/surface-04.png",
+      "output_size": [
+        512,
+        512
+      ],
+      "output_sha256": "bdd4c9cea20346ae429899fa7d751b09b008b4398d591dd87a90bcc27fa9110e"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/disco-floor-atlas.png",
+      "source_sha256": "e79332d833a18b1fa4d10770f76bdc75ddf3c4fff1324aa1fff8ada16200cd8d",
+      "grid": [
+        2,
+        2
+      ],
+      "cell": 1,
+      "cell_size": [
+        512,
+        512
+      ],
+      "isolation": "opaque-grid-cell",
+      "source_bounds": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "authored_cell_bounds": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "primary_component_id": null,
+      "source_component_ids": null,
+      "assigned_components": null,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
+      "alpha_bounds": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "output": "landing-page/assets/world-tour/sprites/floors/disco/surface-01.png",
+      "output_size": [
+        512,
+        512
+      ],
+      "output_sha256": "f0c4111535a4463688faedc8360be8a14f75a224d894073309abbe4310ab07a0"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/disco-floor-atlas.png",
+      "source_sha256": "e79332d833a18b1fa4d10770f76bdc75ddf3c4fff1324aa1fff8ada16200cd8d",
+      "grid": [
+        2,
+        2
+      ],
+      "cell": 2,
+      "cell_size": [
+        512,
+        512
+      ],
+      "isolation": "opaque-grid-cell",
+      "source_bounds": [
+        512,
+        0,
+        1024,
+        512
+      ],
+      "authored_cell_bounds": [
+        512,
+        0,
+        1024,
+        512
+      ],
+      "primary_component_id": null,
+      "source_component_ids": null,
+      "assigned_components": null,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
+      "alpha_bounds": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "output": "landing-page/assets/world-tour/sprites/floors/disco/surface-02.png",
+      "output_size": [
+        512,
+        512
+      ],
+      "output_sha256": "0d187979024788ddf5cea9f08db20fb03e0e3cac5e84f237c3c239450812137b"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/disco-floor-atlas.png",
+      "source_sha256": "e79332d833a18b1fa4d10770f76bdc75ddf3c4fff1324aa1fff8ada16200cd8d",
+      "grid": [
+        2,
+        2
+      ],
+      "cell": 3,
+      "cell_size": [
+        512,
+        512
+      ],
+      "isolation": "opaque-grid-cell",
+      "source_bounds": [
+        0,
+        512,
+        512,
+        1024
+      ],
+      "authored_cell_bounds": [
+        0,
+        512,
+        512,
+        1024
+      ],
+      "primary_component_id": null,
+      "source_component_ids": null,
+      "assigned_components": null,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
+      "alpha_bounds": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "output": "landing-page/assets/world-tour/sprites/floors/disco/surface-03.png",
+      "output_size": [
+        512,
+        512
+      ],
+      "output_sha256": "94e81ebd94a7e6bbfe8128b8d7e4e7966d487027b713cf9f74f58774e89c1246"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/disco-floor-atlas.png",
+      "source_sha256": "e79332d833a18b1fa4d10770f76bdc75ddf3c4fff1324aa1fff8ada16200cd8d",
+      "grid": [
+        2,
+        2
+      ],
+      "cell": 4,
+      "cell_size": [
+        512,
+        512
+      ],
+      "isolation": "opaque-grid-cell",
+      "source_bounds": [
+        512,
+        512,
+        1024,
+        1024
+      ],
+      "authored_cell_bounds": [
+        512,
+        512,
+        1024,
+        1024
+      ],
+      "primary_component_id": null,
+      "source_component_ids": null,
+      "assigned_components": null,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
+      "alpha_bounds": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "output": "landing-page/assets/world-tour/sprites/floors/disco/surface-04.png",
+      "output_size": [
+        512,
+        512
+      ],
+      "output_sha256": "58540a1f4ca780f68cc8b4f143672063856f7f5187b02eee17e3d7e1ba8b62bc"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/world-mechanics-atlas.png",
+      "source_sha256": "b7620efcbf045101bf240281046a33f4553aeb7d1a41ee884387ba35c6a56f72",
+      "grid": [
+        5,
+        2
+      ],
+      "cell": 1,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        44,
+        86,
+        369,
+        359
+      ],
+      "authored_cell_bounds": [
+        0,
+        0,
+        400,
+        400
+      ],
+      "primary_component_id": 2,
+      "source_component_ids": [
+        2,
+        9,
+        18,
+        19,
+        27,
+        28,
+        39
+      ],
+      "assigned_components": 7,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 35,
+      "alpha_bounds": [
+        0,
+        0,
+        325,
+        273
+      ],
+      "output": "landing-page/assets/world-tour/sprites/mechanics/funk-pocket-01.png",
+      "output_size": [
+        325,
+        273
+      ],
+      "output_sha256": "c18dcc84f77f6564b605fef5018bf42521e605f6a151b19c7138117396596fa5"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/world-mechanics-atlas.png",
+      "source_sha256": "b7620efcbf045101bf240281046a33f4553aeb7d1a41ee884387ba35c6a56f72",
+      "grid": [
+        5,
+        2
+      ],
+      "cell": 2,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        442,
+        86,
+        769,
+        359
+      ],
+      "authored_cell_bounds": [
+        400,
+        0,
+        800,
+        400
+      ],
+      "primary_component_id": 3,
+      "source_component_ids": [
+        3,
+        7,
+        15,
+        16,
+        20,
+        22,
+        25,
+        29,
+        30,
+        37
+      ],
+      "assigned_components": 10,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 35,
+      "alpha_bounds": [
+        0,
+        0,
+        327,
+        273
+      ],
+      "output": "landing-page/assets/world-tour/sprites/mechanics/funk-pocket-02.png",
+      "output_size": [
+        327,
+        273
+      ],
+      "output_sha256": "d5558225e06d053c3b8ea2b6f2c799ae3d0ff5b6a6f955526621ab1a2dfd0a9f"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/world-mechanics-atlas.png",
+      "source_sha256": "b7620efcbf045101bf240281046a33f4553aeb7d1a41ee884387ba35c6a56f72",
+      "grid": [
+        5,
+        2
+      ],
+      "cell": 3,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        840,
+        86,
+        1166,
+        358
+      ],
+      "authored_cell_bounds": [
+        800,
+        0,
+        1200,
+        400
+      ],
+      "primary_component_id": 4,
+      "source_component_ids": [
+        4,
+        10,
+        12,
+        14,
+        21,
+        23,
+        24,
+        26,
+        31,
+        34,
+        36
+      ],
+      "assigned_components": 11,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 35,
+      "alpha_bounds": [
+        0,
+        0,
+        326,
+        272
+      ],
+      "output": "landing-page/assets/world-tour/sprites/mechanics/funk-pocket-03.png",
+      "output_size": [
+        326,
+        272
+      ],
+      "output_sha256": "2904d42c29f23ca040d90c7b85930c0c914a66da7beecd6d4bd0c28972025516"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/world-mechanics-atlas.png",
+      "source_sha256": "b7620efcbf045101bf240281046a33f4553aeb7d1a41ee884387ba35c6a56f72",
+      "grid": [
+        5,
+        2
+      ],
+      "cell": 4,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        1237,
+        86,
+        1564,
+        361
+      ],
+      "authored_cell_bounds": [
+        1200,
+        0,
+        1600,
+        400
+      ],
+      "primary_component_id": 5,
+      "source_component_ids": [
+        5,
+        11,
+        13,
+        32,
+        35,
+        40
+      ],
+      "assigned_components": 6,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 35,
+      "alpha_bounds": [
+        0,
+        0,
+        327,
+        275
+      ],
+      "output": "landing-page/assets/world-tour/sprites/mechanics/funk-pocket-04.png",
+      "output_size": [
+        327,
+        275
+      ],
+      "output_sha256": "eb6b575e9eb0ea3a5b71a29a50823538decc2467ef3f0e1aac83d092e914f554"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/world-mechanics-atlas.png",
+      "source_sha256": "b7620efcbf045101bf240281046a33f4553aeb7d1a41ee884387ba35c6a56f72",
+      "grid": [
+        5,
+        2
+      ],
+      "cell": 5,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        1615,
+        67,
+        1972,
+        374
+      ],
+      "authored_cell_bounds": [
+        1600,
+        0,
+        2000,
+        400
+      ],
+      "primary_component_id": 0,
+      "source_component_ids": [
+        0,
+        1,
+        6,
+        8,
+        17,
+        33,
+        38,
+        41,
+        42
+      ],
+      "assigned_components": 9,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 35,
+      "alpha_bounds": [
+        0,
+        0,
+        357,
+        307
+      ],
+      "output": "landing-page/assets/world-tour/sprites/mechanics/funk-pocket-05.png",
+      "output_size": [
+        357,
+        307
+      ],
+      "output_sha256": "95dac7e55a4979256879c188a6ebdf667ce441e8e8949f0a116f1e4103ea7bcd"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/world-mechanics-atlas.png",
+      "source_sha256": "b7620efcbf045101bf240281046a33f4553aeb7d1a41ee884387ba35c6a56f72",
+      "grid": [
+        5,
+        2
+      ],
+      "cell": 6,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        46,
+        457,
+        367,
+        727
+      ],
+      "authored_cell_bounds": [
+        0,
+        400,
+        400,
+        800
+      ],
+      "primary_component_id": 43,
+      "source_component_ids": [
+        43
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 35,
+      "alpha_bounds": [
+        0,
+        0,
+        321,
+        270
+      ],
+      "output": "landing-page/assets/world-tour/sprites/mechanics/disco-spotlight-01.png",
+      "output_size": [
+        321,
+        270
+      ],
+      "output_sha256": "6f2ab26981d740c901bb28a9476ab895b5b033102f45dc95b8d28aa5397b96e7"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/world-mechanics-atlas.png",
+      "source_sha256": "b7620efcbf045101bf240281046a33f4553aeb7d1a41ee884387ba35c6a56f72",
+      "grid": [
+        5,
+        2
+      ],
+      "cell": 7,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        445,
+        457,
+        767,
+        727
+      ],
+      "authored_cell_bounds": [
+        400,
+        400,
+        800,
+        800
+      ],
+      "primary_component_id": 44,
+      "source_component_ids": [
+        44
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 35,
+      "alpha_bounds": [
+        0,
+        0,
+        322,
+        270
+      ],
+      "output": "landing-page/assets/world-tour/sprites/mechanics/disco-spotlight-02.png",
+      "output_size": [
+        322,
+        270
+      ],
+      "output_sha256": "38e470b0ed47630e4e91f4ec588603a47aee443569e0ec3c8ec5610756e9f8dd"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/world-mechanics-atlas.png",
+      "source_sha256": "b7620efcbf045101bf240281046a33f4553aeb7d1a41ee884387ba35c6a56f72",
+      "grid": [
+        5,
+        2
+      ],
+      "cell": 8,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        842,
+        457,
+        1164,
+        727
+      ],
+      "authored_cell_bounds": [
+        800,
+        400,
+        1200,
+        800
+      ],
+      "primary_component_id": 45,
+      "source_component_ids": [
+        45
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 35,
+      "alpha_bounds": [
+        0,
+        0,
+        322,
+        270
+      ],
+      "output": "landing-page/assets/world-tour/sprites/mechanics/disco-spotlight-03.png",
+      "output_size": [
+        322,
+        270
+      ],
+      "output_sha256": "92ba717e83034894f7d0d0bab80c0a68494281bd14cf088b141c067eb9700f05"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/world-mechanics-atlas.png",
+      "source_sha256": "b7620efcbf045101bf240281046a33f4553aeb7d1a41ee884387ba35c6a56f72",
+      "grid": [
+        5,
+        2
+      ],
+      "cell": 9,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        1239,
+        457,
+        1561,
+        727
+      ],
+      "authored_cell_bounds": [
+        1200,
+        400,
+        1600,
+        800
+      ],
+      "primary_component_id": 46,
+      "source_component_ids": [
+        46
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 35,
+      "alpha_bounds": [
+        0,
+        0,
+        322,
+        270
+      ],
+      "output": "landing-page/assets/world-tour/sprites/mechanics/disco-spotlight-04.png",
+      "output_size": [
+        322,
+        270
+      ],
+      "output_sha256": "55657f1de768cd0b850f0f1ecb555862a5c7863f7fe3172107e4c76fc2a5175d"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/world-mechanics-atlas.png",
+      "source_sha256": "b7620efcbf045101bf240281046a33f4553aeb7d1a41ee884387ba35c6a56f72",
+      "grid": [
+        5,
+        2
+      ],
+      "cell": 10,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        1634,
+        457,
+        1954,
+        727
+      ],
+      "authored_cell_bounds": [
+        1600,
+        400,
+        2000,
+        800
+      ],
+      "primary_component_id": 47,
+      "source_component_ids": [
+        47
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 35,
+      "alpha_bounds": [
+        0,
+        0,
+        320,
+        270
+      ],
+      "output": "landing-page/assets/world-tour/sprites/mechanics/disco-spotlight-05.png",
+      "output_size": [
+        320,
+        270
+      ],
+      "output_sha256": "5e60e8e71598aa8c33d8cb4e801d427c901f8f50d5d88d9e1bf1fded8db2d662"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/world-tour-ui-atlas.png",
+      "source_sha256": "bced163f20b5a581858617db5c67c4be6a0409004d6a56b6b6f5987076e483d3",
+      "grid": [
+        5,
+        2
+      ],
+      "cell": 1,
+      "cell_size": [
+        400,
+        500
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        30,
+        122,
+        398,
+        426
+      ],
+      "authored_cell_bounds": [
+        0,
+        0,
+        400,
+        500
+      ],
+      "primary_component_id": 15,
+      "source_component_ids": [
+        15,
+        19,
+        20,
+        21
+      ],
+      "assigned_components": 4,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 12,
+      "alpha_bounds": [
+        0,
+        0,
+        368,
+        304
+      ],
+      "output": "landing-page/assets/world-tour/sprites/ui/world-tour/campaign.png",
+      "output_size": [
+        368,
+        304
+      ],
+      "output_sha256": "ad897fe0bd7a13c501112a52b9dc9bccb2c154c0f4890d07870eada3fad232e1"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/world-tour-ui-atlas.png",
+      "source_sha256": "bced163f20b5a581858617db5c67c4be6a0409004d6a56b6b6f5987076e483d3",
+      "grid": [
+        5,
+        2
+      ],
+      "cell": 2,
+      "cell_size": [
+        400,
+        500
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        424,
+        51,
+        794,
+        451
+      ],
+      "authored_cell_bounds": [
+        400,
+        0,
+        800,
+        500
+      ],
+      "primary_component_id": 0,
+      "source_component_ids": [
+        0
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 12,
+      "alpha_bounds": [
+        0,
+        0,
+        370,
+        400
+      ],
+      "output": "landing-page/assets/world-tour/sprites/ui/world-tour/funk.png",
+      "output_size": [
+        370,
+        400
+      ],
+      "output_sha256": "a06b73a3877b3538bbf71f8a41f2afc5f718fc5c506e7a16b603ef0caa27edd0"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/world-tour-ui-atlas.png",
+      "source_sha256": "bced163f20b5a581858617db5c67c4be6a0409004d6a56b6b6f5987076e483d3",
+      "grid": [
+        5,
+        2
+      ],
+      "cell": 3,
+      "cell_size": [
+        400,
+        500
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        828,
+        65,
+        1180,
+        453
+      ],
+      "authored_cell_bounds": [
+        800,
+        0,
+        1200,
+        500
+      ],
+      "primary_component_id": 2,
+      "source_component_ids": [
+        2,
+        9,
+        14
+      ],
+      "assigned_components": 3,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 12,
+      "alpha_bounds": [
+        0,
+        0,
+        352,
+        388
+      ],
+      "output": "landing-page/assets/world-tour/sprites/ui/world-tour/soul.png",
+      "output_size": [
+        352,
+        388
+      ],
+      "output_sha256": "49a9e2878b54cdb7ac73b7c25c948481b12354ffa24ac2af281343d3d2f7c6c4"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/world-tour-ui-atlas.png",
+      "source_sha256": "bced163f20b5a581858617db5c67c4be6a0409004d6a56b6b6f5987076e483d3",
+      "grid": [
+        5,
+        2
+      ],
+      "cell": 4,
+      "cell_size": [
+        400,
+        500
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        1212,
+        92,
+        1558,
+        453
+      ],
+      "authored_cell_bounds": [
+        1200,
+        0,
+        1600,
+        500
+      ],
+      "primary_component_id": 5,
+      "source_component_ids": [
+        5
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 12,
+      "alpha_bounds": [
+        0,
+        0,
+        346,
+        361
+      ],
+      "output": "landing-page/assets/world-tour/sprites/ui/world-tour/locked-world.png",
+      "output_size": [
+        346,
+        361
+      ],
+      "output_sha256": "1e15f8f32308d48123ff468d8ea7448b79bd84d04239f01feb0e7eae5561c8c9"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/world-tour-ui-atlas.png",
+      "source_sha256": "bced163f20b5a581858617db5c67c4be6a0409004d6a56b6b6f5987076e483d3",
+      "grid": [
+        5,
+        2
+      ],
+      "cell": 5,
+      "cell_size": [
+        400,
+        500
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        1600,
+        62,
+        1976,
+        466
+      ],
+      "authored_cell_bounds": [
+        1600,
+        0,
+        2000,
+        500
+      ],
+      "primary_component_id": 1,
+      "source_component_ids": [
+        1,
+        3,
+        4,
+        6,
+        7,
+        8,
+        10,
+        11,
+        12,
+        13,
+        16,
+        17,
+        18,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29
+      ],
+      "assigned_components": 21,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 12,
+      "alpha_bounds": [
+        0,
+        0,
+        376,
+        404
+      ],
+      "output": "landing-page/assets/world-tour/sprites/ui/world-tour/portal.png",
+      "output_size": [
+        376,
+        404
+      ],
+      "output_sha256": "a2694784ec6c4a75e749e0a74dbeb5083e4544266706147fbee0d2bbd81b4040"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/world-tour-ui-atlas.png",
+      "source_sha256": "bced163f20b5a581858617db5c67c4be6a0409004d6a56b6b6f5987076e483d3",
+      "grid": [
+        5,
+        2
+      ],
+      "cell": 6,
+      "cell_size": [
+        400,
+        500
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        30,
+        534,
+        387,
+        912
+      ],
+      "authored_cell_bounds": [
+        0,
+        500,
+        400,
+        1000
+      ],
+      "primary_component_id": 33,
+      "source_component_ids": [
+        33
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 12,
+      "alpha_bounds": [
+        0,
+        0,
+        357,
+        378
+      ],
+      "output": "landing-page/assets/world-tour/sprites/ui/world-tour/grade-d.png",
+      "output_size": [
+        357,
+        378
+      ],
+      "output_sha256": "2d48107864f9281832b22662e04b415aa34fd1b1d813d8784df8151529a969ab"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/world-tour-ui-atlas.png",
+      "source_sha256": "bced163f20b5a581858617db5c67c4be6a0409004d6a56b6b6f5987076e483d3",
+      "grid": [
+        5,
+        2
+      ],
+      "cell": 7,
+      "cell_size": [
+        400,
+        500
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        416,
+        530,
+        776,
+        917
+      ],
+      "authored_cell_bounds": [
+        400,
+        500,
+        800,
+        1000
+      ],
+      "primary_component_id": 32,
+      "source_component_ids": [
+        32
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 12,
+      "alpha_bounds": [
+        0,
+        0,
+        360,
+        387
+      ],
+      "output": "landing-page/assets/world-tour/sprites/ui/world-tour/grade-c.png",
+      "output_size": [
+        360,
+        387
+      ],
+      "output_sha256": "948f1f36c08a0cb1e91d7fb8f5ce078d1a5d0578156ccdea4fb6212e5c81f2cb"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/world-tour-ui-atlas.png",
+      "source_sha256": "bced163f20b5a581858617db5c67c4be6a0409004d6a56b6b6f5987076e483d3",
+      "grid": [
+        5,
+        2
+      ],
+      "cell": 8,
+      "cell_size": [
+        400,
+        500
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        803,
+        537,
+        1159,
+        917
+      ],
+      "authored_cell_bounds": [
+        800,
+        500,
+        1200,
+        1000
+      ],
+      "primary_component_id": 34,
+      "source_component_ids": [
+        34
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 12,
+      "alpha_bounds": [
+        0,
+        0,
+        356,
+        380
+      ],
+      "output": "landing-page/assets/world-tour/sprites/ui/world-tour/grade-b.png",
+      "output_size": [
+        356,
+        380
+      ],
+      "output_sha256": "2821ecd36b89f357ffa7b0a0336669425faaf66af2363072abc0fe16e09f75e0"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/world-tour-ui-atlas.png",
+      "source_sha256": "bced163f20b5a581858617db5c67c4be6a0409004d6a56b6b6f5987076e483d3",
+      "grid": [
+        5,
+        2
+      ],
+      "cell": 9,
+      "cell_size": [
+        400,
+        500
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        1186,
+        520,
+        1557,
+        924
+      ],
+      "authored_cell_bounds": [
+        1200,
+        500,
+        1600,
+        1000
+      ],
+      "primary_component_id": 31,
+      "source_component_ids": [
+        31
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [
+        "left"
+      ],
+      "discarded_noise_pixels": 12,
+      "alpha_bounds": [
+        0,
+        0,
+        371,
+        404
+      ],
+      "output": "landing-page/assets/world-tour/sprites/ui/world-tour/grade-a.png",
+      "output_size": [
+        371,
+        404
+      ],
+      "output_sha256": "137d58cb97bbe94066a0d7b1b25db62d6f8f6ed395d6d46844a226da0bee8b0a"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/world-tour-ui-atlas.png",
+      "source_sha256": "bced163f20b5a581858617db5c67c4be6a0409004d6a56b6b6f5987076e483d3",
+      "grid": [
+        5,
+        2
+      ],
+      "cell": 10,
+      "cell_size": [
+        400,
+        500
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        1572,
+        493,
+        1959,
+        943
+      ],
+      "authored_cell_bounds": [
+        1600,
+        500,
+        2000,
+        1000
+      ],
+      "primary_component_id": 30,
+      "source_component_ids": [
+        30
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [
+        "left",
+        "top"
+      ],
+      "discarded_noise_pixels": 12,
+      "alpha_bounds": [
+        0,
+        0,
+        387,
+        450
+      ],
+      "output": "landing-page/assets/world-tour/sprites/ui/world-tour/grade-s.png",
+      "output_size": [
+        387,
+        450
+      ],
+      "output_sha256": "47511ed8fa41948a6e5e6bbb3c6c0850fae6cdbbcc03883c3dccf05c8052e578"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/world-interface-atlas.png",
+      "source_sha256": "1d5f9e9e98ca7226ebb98525a42b34d880dc81f5dac8f1e9612f24aeaed195e4",
+      "grid": [
+        5,
+        2
+      ],
+      "cell": 1,
+      "cell_size": [
+        400,
+        500
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        24,
+        65,
+        397,
+        476
+      ],
+      "authored_cell_bounds": [
+        0,
+        0,
+        400,
+        500
+      ],
+      "primary_component_id": 1,
+      "source_component_ids": [
+        1
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 17,
+      "alpha_bounds": [
+        0,
+        0,
+        373,
+        411
+      ],
+      "output": "landing-page/assets/world-tour/sprites/ui/interface/global-tour.png",
+      "output_size": [
+        373,
+        411
+      ],
+      "output_sha256": "c71e29d2128dfc69a158a648a85a73c2eeb31794256035ab31d30749b8aee768"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/world-interface-atlas.png",
+      "source_sha256": "1d5f9e9e98ca7226ebb98525a42b34d880dc81f5dac8f1e9612f24aeaed195e4",
+      "grid": [
+        5,
+        2
+      ],
+      "cell": 2,
+      "cell_size": [
+        400,
+        500
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        451,
+        23,
+        801,
+        500
+      ],
+      "authored_cell_bounds": [
+        400,
+        0,
+        800,
+        500
+      ],
+      "primary_component_id": 0,
+      "source_component_ids": [
+        0
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [
+        "right"
+      ],
+      "discarded_noise_pixels": 17,
+      "alpha_bounds": [
+        0,
+        0,
+        350,
+        477
+      ],
+      "output": "landing-page/assets/world-tour/sprites/ui/interface/funk.png",
+      "output_size": [
+        350,
+        477
+      ],
+      "output_sha256": "4bc2648a06ac372e937368847313ff1977164960edbb751bfddb009e4f9ab576"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/world-interface-atlas.png",
+      "source_sha256": "1d5f9e9e98ca7226ebb98525a42b34d880dc81f5dac8f1e9612f24aeaed195e4",
+      "grid": [
+        5,
+        2
+      ],
+      "cell": 3,
+      "cell_size": [
+        400,
+        500
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        818,
+        69,
+        1181,
+        500
+      ],
+      "authored_cell_bounds": [
+        800,
+        0,
+        1200,
+        500
+      ],
+      "primary_component_id": 3,
+      "source_component_ids": [
+        3
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 17,
+      "alpha_bounds": [
+        0,
+        0,
+        363,
+        431
+      ],
+      "output": "landing-page/assets/world-tour/sprites/ui/interface/soul.png",
+      "output_size": [
+        363,
+        431
+      ],
+      "output_sha256": "3620985d973e88994c8b007cfc1277ce0dc3931290f249e29e51f31c7771cd78"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/world-interface-atlas.png",
+      "source_sha256": "1d5f9e9e98ca7226ebb98525a42b34d880dc81f5dac8f1e9612f24aeaed195e4",
+      "grid": [
+        5,
+        2
+      ],
+      "cell": 4,
+      "cell_size": [
+        400,
+        500
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        1205,
+        65,
+        1563,
+        506
+      ],
+      "authored_cell_bounds": [
+        1200,
+        0,
+        1600,
+        500
+      ],
+      "primary_component_id": 2,
+      "source_component_ids": [
+        2
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [
+        "bottom"
+      ],
+      "discarded_noise_pixels": 17,
+      "alpha_bounds": [
+        0,
+        0,
+        358,
+        441
+      ],
+      "output": "landing-page/assets/world-tour/sprites/ui/interface/disco.png",
+      "output_size": [
+        358,
+        441
+      ],
+      "output_sha256": "d43796447756b152395a41ff68b95a92e58808043412cb32d41e40076416caf8"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/world-interface-atlas.png",
+      "source_sha256": "1d5f9e9e98ca7226ebb98525a42b34d880dc81f5dac8f1e9612f24aeaed195e4",
+      "grid": [
+        5,
+        2
+      ],
+      "cell": 5,
+      "cell_size": [
+        400,
+        500
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        1601,
+        99,
+        1961,
+        466
+      ],
+      "authored_cell_bounds": [
+        1600,
+        0,
+        2000,
+        500
+      ],
+      "primary_component_id": 4,
+      "source_component_ids": [
+        4
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 17,
+      "alpha_bounds": [
+        0,
+        0,
+        360,
+        367
+      ],
+      "output": "landing-page/assets/world-tour/sprites/ui/interface/perk-database.png",
+      "output_size": [
+        360,
+        367
+      ],
+      "output_sha256": "1767c5cae2dcd0316e3d7d6bf06d5576eb96d47308bd38dc0b4a2b53bc592a7e"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/world-interface-atlas.png",
+      "source_sha256": "1d5f9e9e98ca7226ebb98525a42b34d880dc81f5dac8f1e9612f24aeaed195e4",
+      "grid": [
+        5,
+        2
+      ],
+      "cell": 6,
+      "cell_size": [
+        400,
+        500
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        34,
+        548,
+        407,
+        938
+      ],
+      "authored_cell_bounds": [
+        0,
+        500,
+        400,
+        1000
+      ],
+      "primary_component_id": 7,
+      "source_component_ids": [
+        7,
+        8,
+        9,
+        13,
+        14,
+        17,
+        18,
+        19,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        31,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        55,
+        57,
+        60,
+        61,
+        62
+      ],
+      "assigned_components": 42,
+      "extends_beyond_cell": [
+        "right"
+      ],
+      "discarded_noise_pixels": 17,
+      "alpha_bounds": [
+        0,
+        0,
+        373,
+        390
+      ],
+      "output": "landing-page/assets/world-tour/sprites/ui/interface/remix.png",
+      "output_size": [
+        373,
+        390
+      ],
+      "output_sha256": "0d7976426a6f116586233afacbda5b656731296f03b948e35e984c101b44d15f"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/world-interface-atlas.png",
+      "source_sha256": "1d5f9e9e98ca7226ebb98525a42b34d880dc81f5dac8f1e9612f24aeaed195e4",
+      "grid": [
+        5,
+        2
+      ],
+      "cell": 7,
+      "cell_size": [
+        400,
+        500
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        443,
+        536,
+        801,
+        948
+      ],
+      "authored_cell_bounds": [
+        400,
+        500,
+        800,
+        1000
+      ],
+      "primary_component_id": 5,
+      "source_component_ids": [
+        5,
+        10,
+        15,
+        20,
+        21,
+        30,
+        32,
+        54,
+        56,
+        58,
+        59,
+        63
+      ],
+      "assigned_components": 12,
+      "extends_beyond_cell": [
+        "right"
+      ],
+      "discarded_noise_pixels": 17,
+      "alpha_bounds": [
+        0,
+        0,
+        358,
+        412
+      ],
+      "output": "landing-page/assets/world-tour/sprites/ui/interface/encore-gate.png",
+      "output_size": [
+        358,
+        412
+      ],
+      "output_sha256": "494c3b4e2522a1afc9aae14024e2b75e080c486d7b610ec8e94d48cf89a0737d"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/world-interface-atlas.png",
+      "source_sha256": "1d5f9e9e98ca7226ebb98525a42b34d880dc81f5dac8f1e9612f24aeaed195e4",
+      "grid": [
+        5,
+        2
+      ],
+      "cell": 8,
+      "cell_size": [
+        400,
+        500
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        816,
+        536,
+        1184,
+        942
+      ],
+      "authored_cell_bounds": [
+        800,
+        500,
+        1200,
+        1000
+      ],
+      "primary_component_id": 6,
+      "source_component_ids": [
+        6
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 17,
+      "alpha_bounds": [
+        0,
+        0,
+        368,
+        406
+      ],
+      "output": "landing-page/assets/world-tour/sprites/ui/interface/world-route.png",
+      "output_size": [
+        368,
+        406
+      ],
+      "output_sha256": "24c5d000347b28e8023b1d40794681daa9af52721d105ecbb507a324ceac6d8b"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/world-interface-atlas.png",
+      "source_sha256": "1d5f9e9e98ca7226ebb98525a42b34d880dc81f5dac8f1e9612f24aeaed195e4",
+      "grid": [
+        5,
+        2
+      ],
+      "cell": 9,
+      "cell_size": [
+        400,
+        500
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        1228,
+        569,
+        1541,
+        917
+      ],
+      "authored_cell_bounds": [
+        1200,
+        500,
+        1600,
+        1000
+      ],
+      "primary_component_id": 12,
+      "source_component_ids": [
+        12,
+        16,
+        22
+      ],
+      "assigned_components": 3,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 17,
+      "alpha_bounds": [
+        0,
+        0,
+        313,
+        348
+      ],
+      "output": "landing-page/assets/world-tour/sprites/ui/interface/encore-coin.png",
+      "output_size": [
+        313,
+        348
+      ],
+      "output_sha256": "ce6e4fe123d42d036bc9a470dad9cbeaea6eca12fdafe2922ef28b177fa73360"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/world-interface-atlas.png",
+      "source_sha256": "1d5f9e9e98ca7226ebb98525a42b34d880dc81f5dac8f1e9612f24aeaed195e4",
+      "grid": [
+        5,
+        2
+      ],
+      "cell": 10,
+      "cell_size": [
+        400,
+        500
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        1574,
+        568,
+        1985,
+        943
+      ],
+      "authored_cell_bounds": [
+        1600,
+        500,
+        2000,
+        1000
+      ],
+      "primary_component_id": 11,
+      "source_component_ids": [
+        11
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [
+        "left"
+      ],
+      "discarded_noise_pixels": 17,
+      "alpha_bounds": [
+        0,
+        0,
+        411,
+        375
+      ],
+      "output": "landing-page/assets/world-tour/sprites/ui/interface/mastery.png",
+      "output_size": [
+        411,
+        375
+      ],
+      "output_sha256": "c5885947ef68f209b599e9cf96dc38a0f54ffba3544a6ccc4c4c859dc011c13c"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/menu-button-icons-atlas.png",
+      "source_sha256": "fbbf7ecc0836e253ccca6d352f6f7dfe082533232fefab3da45efb668fb30faa",
+      "grid": [
+        5,
+        2
+      ],
+      "cell": 1,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        61,
+        96,
+        385,
+        327
+      ],
+      "authored_cell_bounds": [
+        0,
+        0,
+        400,
+        400
+      ],
+      "primary_component_id": 4,
+      "source_component_ids": [
+        4
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
+      "alpha_bounds": [
+        0,
+        0,
+        324,
+        231
+      ],
+      "output": "landing-page/assets/world-tour/sprites/ui/menu/continue.png",
+      "output_size": [
+        324,
+        231
+      ],
+      "output_sha256": "80d0ac90135672df2038187960ac80b8f2aefdf3463454dd7ff10530ca1a41b8"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/menu-button-icons-atlas.png",
+      "source_sha256": "fbbf7ecc0836e253ccca6d352f6f7dfe082533232fefab3da45efb668fb30faa",
+      "grid": [
+        5,
+        2
+      ],
+      "cell": 2,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        474,
+        76,
+        762,
+        344
+      ],
+      "authored_cell_bounds": [
+        400,
+        0,
+        800,
+        400
+      ],
+      "primary_component_id": 3,
+      "source_component_ids": [
+        3
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
+      "alpha_bounds": [
+        0,
+        0,
+        288,
+        268
+      ],
+      "output": "landing-page/assets/world-tour/sprites/ui/menu/new-game.png",
+      "output_size": [
+        288,
+        268
+      ],
+      "output_sha256": "aa053ccd06a27f0a9b41142de0c5274b1b70ea7fac0d59b1f976fb647ea7b8c9"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/menu-button-icons-atlas.png",
+      "source_sha256": "fbbf7ecc0836e253ccca6d352f6f7dfe082533232fefab3da45efb668fb30faa",
+      "grid": [
+        5,
+        2
+      ],
+      "cell": 3,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        850,
+        52,
+        1148,
+        351
+      ],
+      "authored_cell_bounds": [
+        800,
+        0,
+        1200,
+        400
+      ],
+      "primary_component_id": 0,
+      "source_component_ids": [
+        0
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
+      "alpha_bounds": [
+        0,
+        0,
+        298,
+        299
+      ],
+      "output": "landing-page/assets/world-tour/sprites/ui/menu/world-tour.png",
+      "output_size": [
+        298,
+        299
+      ],
+      "output_sha256": "67b341a9fce4caf9627d76f8cde2808144e8b350b7e7edf3791abeaa936b7ed5"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/menu-button-icons-atlas.png",
+      "source_sha256": "fbbf7ecc0836e253ccca6d352f6f7dfe082533232fefab3da45efb668fb30faa",
+      "grid": [
+        5,
+        2
+      ],
+      "cell": 4,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        1249,
+        69,
+        1575,
+        349
+      ],
+      "authored_cell_bounds": [
+        1200,
+        0,
+        1600,
+        400
+      ],
+      "primary_component_id": 2,
+      "source_component_ids": [
+        2
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
+      "alpha_bounds": [
+        0,
+        0,
+        326,
+        280
+      ],
+      "output": "landing-page/assets/world-tour/sprites/ui/menu/settings.png",
+      "output_size": [
+        326,
+        280
+      ],
+      "output_sha256": "0b15977fad008be1d57a1d8f682102e6717457b8b1328af708f011a39682099b"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/menu-button-icons-atlas.png",
+      "source_sha256": "fbbf7ecc0836e253ccca6d352f6f7dfe082533232fefab3da45efb668fb30faa",
+      "grid": [
+        5,
+        2
+      ],
+      "cell": 5,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        1644,
+        61,
+        1927,
+        346
+      ],
+      "authored_cell_bounds": [
+        1600,
+        0,
+        2000,
+        400
+      ],
+      "primary_component_id": 1,
+      "source_component_ids": [
+        1
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
+      "alpha_bounds": [
+        0,
+        0,
+        283,
+        285
+      ],
+      "output": "landing-page/assets/world-tour/sprites/ui/menu/quit.png",
+      "output_size": [
+        283,
+        285
+      ],
+      "output_sha256": "75929b5252d6fe73cb6c800cbce54202b9d36c61847c4f52d6015b6bde7b1575"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/menu-button-icons-atlas.png",
+      "source_sha256": "fbbf7ecc0836e253ccca6d352f6f7dfe082533232fefab3da45efb668fb30faa",
+      "grid": [
+        5,
+        2
+      ],
+      "cell": 6,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        48,
+        447,
+        389,
+        696
+      ],
+      "authored_cell_bounds": [
+        0,
+        400,
+        400,
+        800
+      ],
+      "primary_component_id": 8,
+      "source_component_ids": [
+        8
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
+      "alpha_bounds": [
+        0,
+        0,
+        341,
+        249
+      ],
+      "output": "landing-page/assets/world-tour/sprites/ui/menu/equalizer-divider.png",
+      "output_size": [
+        341,
+        249
+      ],
+      "output_sha256": "89f157fd48d03bc0795035d19560b7013c6ed2f331bf9636ec61e9f797911f10"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/menu-button-icons-atlas.png",
+      "source_sha256": "fbbf7ecc0836e253ccca6d352f6f7dfe082533232fefab3da45efb668fb30faa",
+      "grid": [
+        5,
+        2
+      ],
+      "cell": 7,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        424,
+        517,
+        803,
+        630
+      ],
+      "authored_cell_bounds": [
+        400,
+        400,
+        800,
+        800
+      ],
+      "primary_component_id": 9,
+      "source_component_ids": [
+        9
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [
+        "right"
+      ],
+      "discarded_noise_pixels": 0,
+      "alpha_bounds": [
+        0,
+        0,
+        379,
+        113
+      ],
+      "output": "landing-page/assets/world-tour/sprites/ui/menu/reset-campaign.png",
+      "output_size": [
+        379,
+        113
+      ],
+      "output_sha256": "24fd9b080aaaf0d2e3a30f4918f44f34fd5e6ed23c19f3daa5506758265e1c6d"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/menu-button-icons-atlas.png",
+      "source_sha256": "fbbf7ecc0836e253ccca6d352f6f7dfe082533232fefab3da45efb668fb30faa",
+      "grid": [
+        5,
+        2
+      ],
+      "cell": 8,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        839,
+        422,
+        1160,
+        716
+      ],
+      "authored_cell_bounds": [
+        800,
+        400,
+        1200,
+        800
+      ],
+      "primary_component_id": 6,
+      "source_component_ids": [
+        6
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
+      "alpha_bounds": [
+        0,
+        0,
+        321,
+        294
+      ],
+      "output": "landing-page/assets/world-tour/sprites/ui/menu/reset-warning.png",
+      "output_size": [
+        321,
+        294
+      ],
+      "output_sha256": "0048a566953680fc6a6c7e66c55f63001a4786ed4b577c29104b3348824dda89"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/menu-button-icons-atlas.png",
+      "source_sha256": "fbbf7ecc0836e253ccca6d352f6f7dfe082533232fefab3da45efb668fb30faa",
+      "grid": [
+        5,
+        2
+      ],
+      "cell": 9,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        1242,
+        410,
+        1546,
+        734
+      ],
+      "authored_cell_bounds": [
+        1200,
+        400,
+        1600,
+        800
+      ],
+      "primary_component_id": 5,
+      "source_component_ids": [
+        5
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
+      "alpha_bounds": [
+        0,
+        0,
+        304,
+        324
+      ],
+      "output": "landing-page/assets/world-tour/sprites/ui/menu/reset-confirm.png",
+      "output_size": [
+        304,
+        324
+      ],
+      "output_sha256": "f56a5960f22dc5c33ce2e08e07d4ac1cc6c63f1921a6dae598233770ec4fc24d"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/menu-button-icons-atlas.png",
+      "source_sha256": "fbbf7ecc0836e253ccca6d352f6f7dfe082533232fefab3da45efb668fb30faa",
+      "grid": [
+        5,
+        2
+      ],
+      "cell": 10,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        1638,
+        426,
+        1928,
+        738
+      ],
+      "authored_cell_bounds": [
+        1600,
+        400,
+        2000,
+        800
+      ],
+      "primary_component_id": 7,
+      "source_component_ids": [
+        7
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
+      "alpha_bounds": [
+        0,
+        0,
+        290,
+        312
+      ],
+      "output": "landing-page/assets/world-tour/sprites/ui/menu/reserved.png",
+      "output_size": [
+        290,
+        312
+      ],
+      "output_sha256": "069f8e67363ec805ad003627328a75ac6831ba56953e8197942c87eded08fc09"
+    },
+    {
+      "source": "groove-bound/assets/generated/evolved-weapon-icons-atlas-2.png",
+      "source_sha256": "31f5abd62e4816c1808583adac79b92aaf7c47bcbe5f10f84b7d85898d62d661",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 1,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        62,
+        93,
+        376,
+        342
+      ],
+      "authored_cell_bounds": [
+        0,
+        0,
+        400,
+        400
+      ],
+      "primary_component_id": 12,
+      "source_component_ids": [
+        12,
+        37,
+        41,
+        45,
+        49,
+        50,
+        51,
+        53,
+        54,
+        55,
+        63,
+        66,
+        68,
+        71,
+        77,
+        78,
+        81,
+        84
+      ],
+      "assigned_components": 18,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 26,
+      "alpha_bounds": [
+        0,
+        0,
+        314,
+        249
+      ],
+      "output": "landing-page/assets/world-tour/sprites/evolutions/prismatic-triangle.png",
+      "output_size": [
+        314,
+        249
+      ],
+      "output_sha256": "aae4ce4f28b0d8a220c35213ecc299bdf5512014abf0576bce683833f1434f84"
+    },
+    {
+      "source": "groove-bound/assets/generated/evolved-weapon-icons-atlas-2.png",
+      "source_sha256": "31f5abd62e4816c1808583adac79b92aaf7c47bcbe5f10f84b7d85898d62d661",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 2,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        447,
+        22,
+        735,
+        401
+      ],
+      "authored_cell_bounds": [
+        400,
+        0,
+        800,
+        400
+      ],
+      "primary_component_id": 0,
+      "source_component_ids": [
+        0,
+        15,
+        31,
+        40,
+        56,
+        57,
+        61,
+        69,
+        86,
+        103
+      ],
+      "assigned_components": 10,
+      "extends_beyond_cell": [
+        "bottom"
+      ],
+      "discarded_noise_pixels": 26,
+      "alpha_bounds": [
+        0,
+        0,
+        288,
+        379
+      ],
+      "output": "landing-page/assets/world-tour/sprites/evolutions/velvet-impaler.png",
+      "output_size": [
+        288,
+        379
+      ],
+      "output_sha256": "f4a2385303d0bb25a58f85589437d8c222e56b928c7fb70da4c97ba75e73d682"
+    },
+    {
+      "source": "groove-bound/assets/generated/evolved-weapon-icons-atlas-2.png",
+      "source_sha256": "31f5abd62e4816c1808583adac79b92aaf7c47bcbe5f10f84b7d85898d62d661",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 3,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        825,
+        73,
+        1136,
+        374
+      ],
+      "authored_cell_bounds": [
+        800,
+        0,
+        1200,
+        400
+      ],
+      "primary_component_id": 4,
+      "source_component_ids": [
+        4,
+        7,
+        9,
+        13,
+        16,
+        20,
+        21,
+        22,
+        25,
+        28,
+        29,
+        32,
+        34,
+        35,
+        42,
+        46,
+        47,
+        48,
+        62,
+        64,
+        67,
+        70,
+        72,
+        74,
+        79,
+        82,
+        85,
+        87,
+        89,
+        91,
+        93,
+        96,
+        99,
+        100,
+        101,
+        102
+      ],
+      "assigned_components": 36,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 26,
+      "alpha_bounds": [
+        0,
+        0,
+        311,
+        301
+      ],
+      "output": "landing-page/assets/world-tour/sprites/evolutions/carnival-superorbit.png",
+      "output_size": [
+        311,
+        301
+      ],
+      "output_sha256": "f9e804fdcbe558986b426d83408f7125ed4e0cc65f685808ddc14be0dcab1b96"
+    },
+    {
+      "source": "groove-bound/assets/generated/evolved-weapon-icons-atlas-2.png",
+      "source_sha256": "31f5abd62e4816c1808583adac79b92aaf7c47bcbe5f10f84b7d85898d62d661",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 4,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        1211,
+        43,
+        1546,
+        387
+      ],
+      "authored_cell_bounds": [
+        1200,
+        0,
+        1600,
+        400
+      ],
+      "primary_component_id": 1,
+      "source_component_ids": [
+        1,
+        2,
+        3,
+        5,
+        6,
+        8,
+        10,
+        11,
+        14,
+        17,
+        18,
+        19,
+        23,
+        24,
+        26,
+        27,
+        30,
+        33,
+        36,
+        38,
+        39,
+        43,
+        44,
+        52,
+        58,
+        59,
+        60,
+        65,
+        73,
+        75,
+        76,
+        80,
+        83,
+        88,
+        90,
+        92,
+        94,
+        95,
+        97,
+        98
+      ],
+      "assigned_components": 40,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 26,
+      "alpha_bounds": [
+        0,
+        0,
+        335,
+        344
+      ],
+      "output": "landing-page/assets/world-tour/sprites/evolutions/resonance-rupture.png",
+      "output_size": [
+        335,
+        344
+      ],
+      "output_sha256": "5c01f3cfe4eea2ed748bf218d9035c4a549a0594e8e8dc4b14c004485271d8b0"
+    },
+    {
+      "source": "groove-bound/assets/generated/evolved-weapon-icons-atlas-2.png",
+      "source_sha256": "31f5abd62e4816c1808583adac79b92aaf7c47bcbe5f10f84b7d85898d62d661",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 5,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        33,
+        464,
+        347,
+        779
+      ],
+      "authored_cell_bounds": [
+        0,
+        400,
+        400,
+        800
+      ],
+      "primary_component_id": 106,
+      "source_component_ids": [
+        106,
+        107,
+        108,
+        109,
+        110,
+        111,
+        120,
+        122,
+        123,
+        130,
+        131,
+        139
+      ],
+      "assigned_components": 12,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 26,
+      "alpha_bounds": [
+        0,
+        0,
+        314,
+        315
+      ],
+      "output": "landing-page/assets/world-tour/sprites/evolutions/stadium-keytar.png",
+      "output_size": [
+        314,
+        315
+      ],
+      "output_sha256": "5905a03fe3f501db8f171d1a8f3bfab0fb099e96f634520031e9c4e48262e142"
+    },
+    {
+      "source": "groove-bound/assets/generated/evolved-weapon-icons-atlas-2.png",
+      "source_sha256": "31f5abd62e4816c1808583adac79b92aaf7c47bcbe5f10f84b7d85898d62d661",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 6,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        439,
+        434,
+        718,
+        793
+      ],
+      "authored_cell_bounds": [
+        400,
+        400,
+        800,
+        800
+      ],
+      "primary_component_id": 104,
+      "source_component_ids": [
+        104,
+        127,
+        129,
+        133,
+        134,
+        137,
+        140,
+        141,
+        144,
+        146,
+        147,
+        150,
+        151,
+        152,
+        153
+      ],
+      "assigned_components": 15,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 26,
+      "alpha_bounds": [
+        0,
+        0,
+        279,
+        359
+      ],
+      "output": "landing-page/assets/world-tour/sprites/evolutions/cathedral-overdrive.png",
+      "output_size": [
+        279,
+        359
+      ],
+      "output_sha256": "34ce76454ee52660e1d989c8ff18ebb64fb8f778096cc1aaa3eb4df4e409265b"
+    },
+    {
+      "source": "groove-bound/assets/generated/evolved-weapon-icons-atlas-2.png",
+      "source_sha256": "31f5abd62e4816c1808583adac79b92aaf7c47bcbe5f10f84b7d85898d62d661",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 7,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        799,
+        510,
+        1142,
+        753
+      ],
+      "authored_cell_bounds": [
+        800,
+        400,
+        1200,
+        800
+      ],
+      "primary_component_id": 113,
+      "source_component_ids": [
+        112,
+        113,
+        114,
+        115,
+        116,
+        117,
+        118,
+        119,
+        121,
+        124,
+        126,
+        132,
+        136,
+        138,
+        143,
+        145,
+        157,
+        159,
+        160,
+        161,
+        162,
+        163,
+        165,
+        167,
+        168,
+        169,
+        170,
+        171,
+        172
+      ],
+      "assigned_components": 29,
+      "extends_beyond_cell": [
+        "left"
+      ],
+      "discarded_noise_pixels": 26,
+      "alpha_bounds": [
+        0,
+        0,
+        343,
+        243
+      ],
+      "output": "landing-page/assets/world-tour/sprites/evolutions/infinite-mixtape.png",
+      "output_size": [
+        343,
+        243
+      ],
+      "output_sha256": "2adcedf2481412bb55d0b19e1376d71aa78e2d74cb96fbaba20119d2da2e40bd"
+    },
+    {
+      "source": "groove-bound/assets/generated/evolved-weapon-icons-atlas-2.png",
+      "source_sha256": "31f5abd62e4816c1808583adac79b92aaf7c47bcbe5f10f84b7d85898d62d661",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 8,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        1238,
+        450,
+        1531,
+        788
+      ],
+      "authored_cell_bounds": [
+        1200,
+        400,
+        1600,
+        800
+      ],
+      "primary_component_id": 105,
+      "source_component_ids": [
+        105,
+        125,
+        128,
+        135,
+        142,
+        148,
+        149,
+        154,
+        155,
+        156,
+        158,
+        164,
+        166
+      ],
+      "assigned_components": 13,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 26,
+      "alpha_bounds": [
+        0,
+        0,
+        293,
+        338
+      ],
+      "output": "landing-page/assets/world-tour/sprites/evolutions/aurora-harp.png",
+      "output_size": [
+        293,
+        338
+      ],
+      "output_sha256": "0dc5d2613bd844f7f3bcbd015612d834fbe67ac4d9177b536c53149e37063413"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/meta-perks-atlas.png",
+      "source_sha256": "278a7e837df0f6dedf44ce112e45c80ec59e28161e66c15343ce65a84acaef45",
+      "grid": [
+        5,
+        4
+      ],
+      "cell": 1,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        45,
+        38,
+        397,
+        400
+      ],
+      "authored_cell_bounds": [
+        0,
+        0,
+        400,
+        400
+      ],
+      "primary_component_id": 2,
+      "source_component_ids": [
+        2
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 75,
+      "alpha_bounds": [
+        0,
+        0,
+        352,
+        362
+      ],
+      "output": "landing-page/assets/world-tour/sprites/perks/open-ears.png",
+      "output_size": [
+        352,
+        362
+      ],
+      "output_sha256": "3d5ec4fc36f6cb4cb3a18deb8823f0f05a4812a88ebe2a8aabf385b206523274"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/meta-perks-atlas.png",
+      "source_sha256": "278a7e837df0f6dedf44ce112e45c80ec59e28161e66c15343ce65a84acaef45",
+      "grid": [
+        5,
+        4
+      ],
+      "cell": 2,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        463,
+        35,
+        776,
+        394
+      ],
+      "authored_cell_bounds": [
+        400,
+        0,
+        800,
+        400
+      ],
+      "primary_component_id": 0,
+      "source_component_ids": [
+        0
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 75,
+      "alpha_bounds": [
+        0,
+        0,
+        313,
+        359
+      ],
+      "output": "landing-page/assets/world-tour/sprites/perks/pocket-drive.png",
+      "output_size": [
+        313,
+        359
+      ],
+      "output_sha256": "b5d3e077e7359b0d7a99e5042b7f4299e3f97980088941e09edd96a10dd90ca2"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/meta-perks-atlas.png",
+      "source_sha256": "278a7e837df0f6dedf44ce112e45c80ec59e28161e66c15343ce65a84acaef45",
+      "grid": [
+        5,
+        4
+      ],
+      "cell": 3,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        862,
+        76,
+        1159,
+        383
+      ],
+      "authored_cell_bounds": [
+        800,
+        0,
+        1200,
+        400
+      ],
+      "primary_component_id": 4,
+      "source_component_ids": [
+        4
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 75,
+      "alpha_bounds": [
+        0,
+        0,
+        297,
+        307
+      ],
+      "output": "landing-page/assets/world-tour/sprites/perks/breakstep.png",
+      "output_size": [
+        297,
+        307
+      ],
+      "output_sha256": "c18632e68d557e7a427702e54655b8649d6267f1c7a2c959214440771dce1317"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/meta-perks-atlas.png",
+      "source_sha256": "278a7e837df0f6dedf44ce112e45c80ec59e28161e66c15343ce65a84acaef45",
+      "grid": [
+        5,
+        4
+      ],
+      "cell": 4,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        1224,
+        59,
+        1543,
+        377
+      ],
+      "authored_cell_bounds": [
+        1200,
+        0,
+        1600,
+        400
+      ],
+      "primary_component_id": 3,
+      "source_component_ids": [
+        3,
+        5,
+        6,
+        7
+      ],
+      "assigned_components": 4,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 75,
+      "alpha_bounds": [
+        0,
+        0,
+        319,
+        318
+      ],
+      "output": "landing-page/assets/world-tour/sprites/perks/warm-current.png",
+      "output_size": [
+        319,
+        318
+      ],
+      "output_sha256": "43b0e1f9842786cc865af9d4dce0b40bc1d7a6828fde1b3e1e567808450dc619"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/meta-perks-atlas.png",
+      "source_sha256": "278a7e837df0f6dedf44ce112e45c80ec59e28161e66c15343ce65a84acaef45",
+      "grid": [
+        5,
+        4
+      ],
+      "cell": 5,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        1587,
+        35,
+        1962,
+        400
+      ],
+      "authored_cell_bounds": [
+        1600,
+        0,
+        2000,
+        400
+      ],
+      "primary_component_id": 1,
+      "source_component_ids": [
+        1
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [
+        "left"
+      ],
+      "discarded_noise_pixels": 75,
+      "alpha_bounds": [
+        0,
+        0,
+        375,
+        365
+      ],
+      "output": "landing-page/assets/world-tour/sprites/perks/velvet-guard.png",
+      "output_size": [
+        375,
+        365
+      ],
+      "output_sha256": "4890a7ab3c39846548e3a8d296af435f3ef4b19e9aa80cf7c310cb6b71fb1518"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/meta-perks-atlas.png",
+      "source_sha256": "278a7e837df0f6dedf44ce112e45c80ec59e28161e66c15343ce65a84acaef45",
+      "grid": [
+        5,
+        4
+      ],
+      "cell": 6,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        51,
+        426,
+        390,
+        778
+      ],
+      "authored_cell_bounds": [
+        0,
+        400,
+        400,
+        800
+      ],
+      "primary_component_id": 9,
+      "source_component_ids": [
+        9
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 75,
+      "alpha_bounds": [
+        0,
+        0,
+        339,
+        352
+      ],
+      "output": "landing-page/assets/world-tour/sprites/perks/mirrorball-tips.png",
+      "output_size": [
+        339,
+        352
+      ],
+      "output_sha256": "653894d8df9a85e9cd491375937fa2ee242e6ae99985545b4b7d9726cb97a67e"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/meta-perks-atlas.png",
+      "source_sha256": "278a7e837df0f6dedf44ce112e45c80ec59e28161e66c15343ce65a84acaef45",
+      "grid": [
+        5,
+        4
+      ],
+      "cell": 7,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        450,
+        442,
+        778,
+        760
+      ],
+      "authored_cell_bounds": [
+        400,
+        400,
+        800,
+        800
+      ],
+      "primary_component_id": 10,
+      "source_component_ids": [
+        10,
+        14,
+        15,
+        27,
+        30
+      ],
+      "assigned_components": 5,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 75,
+      "alpha_bounds": [
+        0,
+        0,
+        328,
+        318
+      ],
+      "output": "landing-page/assets/world-tour/sprites/perks/spotlight-spin.png",
+      "output_size": [
+        328,
+        318
+      ],
+      "output_sha256": "93bad811f12f8af5f0244f1535040d74ac420e76daf7f10c7968b5dbbc010b89"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/meta-perks-atlas.png",
+      "source_sha256": "278a7e837df0f6dedf44ce112e45c80ec59e28161e66c15343ce65a84acaef45",
+      "grid": [
+        5,
+        4
+      ],
+      "cell": 8,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        846,
+        446,
+        1149,
+        764
+      ],
+      "authored_cell_bounds": [
+        800,
+        400,
+        1200,
+        800
+      ],
+      "primary_component_id": 11,
+      "source_component_ids": [
+        11,
+        13,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        28,
+        29,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55
+      ],
+      "assigned_components": 40,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 75,
+      "alpha_bounds": [
+        0,
+        0,
+        303,
+        318
+      ],
+      "output": "landing-page/assets/world-tour/sprites/perks/four-count.png",
+      "output_size": [
+        303,
+        318
+      ],
+      "output_sha256": "58e6a0cfa8becc88a458cfcd7b5a2f161194150d02803b2ab7ee39295230b8e8"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/meta-perks-atlas.png",
+      "source_sha256": "278a7e837df0f6dedf44ce112e45c80ec59e28161e66c15343ce65a84acaef45",
+      "grid": [
+        5,
+        4
+      ],
+      "cell": 9,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        1214,
+        423,
+        1532,
+        763
+      ],
+      "authored_cell_bounds": [
+        1200,
+        400,
+        1600,
+        800
+      ],
+      "primary_component_id": 8,
+      "source_component_ids": [
+        8
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 75,
+      "alpha_bounds": [
+        0,
+        0,
+        318,
+        340
+      ],
+      "output": "landing-page/assets/world-tour/sprites/perks/floor-control.png",
+      "output_size": [
+        318,
+        340
+      ],
+      "output_sha256": "c0d472e390758351812f88cd619fb592577efaacc353354632dda32270021b03"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/meta-perks-atlas.png",
+      "source_sha256": "278a7e837df0f6dedf44ce112e45c80ec59e28161e66c15343ce65a84acaef45",
+      "grid": [
+        5,
+        4
+      ],
+      "cell": 10,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        1620,
+        456,
+        1928,
+        764
+      ],
+      "authored_cell_bounds": [
+        1600,
+        400,
+        2000,
+        800
+      ],
+      "primary_component_id": 12,
+      "source_component_ids": [
+        12
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 75,
+      "alpha_bounds": [
+        0,
+        0,
+        308,
+        308
+      ],
+      "output": "landing-page/assets/world-tour/sprites/perks/live-wire.png",
+      "output_size": [
+        308,
+        308
+      ],
+      "output_sha256": "adc6222cbbcfc05b3a2e1a46dddf6ccf3374fb3d94b014455d2ef09abe6dc372"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/meta-perks-atlas.png",
+      "source_sha256": "278a7e837df0f6dedf44ce112e45c80ec59e28161e66c15343ce65a84acaef45",
+      "grid": [
+        5,
+        4
+      ],
+      "cell": 11,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        48,
+        816,
+        390,
+        1146
+      ],
+      "authored_cell_bounds": [
+        0,
+        800,
+        400,
+        1200
+      ],
+      "primary_component_id": 57,
+      "source_component_ids": [
+        57,
+        64,
+        65
+      ],
+      "assigned_components": 3,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 75,
+      "alpha_bounds": [
+        0,
+        0,
+        342,
+        330
+      ],
+      "output": "landing-page/assets/world-tour/sprites/perks/signal-boost.png",
+      "output_size": [
+        342,
+        330
+      ],
+      "output_sha256": "e52025d1e1d9d4dc6c8db3e3580ccceb4883bc7abf98fdd9f67a8b47695e4a81"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/meta-perks-atlas.png",
+      "source_sha256": "278a7e837df0f6dedf44ce112e45c80ec59e28161e66c15343ce65a84acaef45",
+      "grid": [
+        5,
+        4
+      ],
+      "cell": 12,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        463,
+        815,
+        764,
+        1151
+      ],
+      "authored_cell_bounds": [
+        400,
+        800,
+        800,
+        1200
+      ],
+      "primary_component_id": 56,
+      "source_component_ids": [
+        56,
+        61,
+        62,
+        63,
+        66,
+        67
+      ],
+      "assigned_components": 6,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 75,
+      "alpha_bounds": [
+        0,
+        0,
+        301,
+        336
+      ],
+      "output": "landing-page/assets/world-tour/sprites/perks/precision-loop.png",
+      "output_size": [
+        301,
+        336
+      ],
+      "output_sha256": "5845a1c47a2e6c8d66c8e5b9d308f251f5fb66e9a796cba05c1acce233d44aba"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/meta-perks-atlas.png",
+      "source_sha256": "278a7e837df0f6dedf44ce112e45c80ec59e28161e66c15343ce65a84acaef45",
+      "grid": [
+        5,
+        4
+      ],
+      "cell": 13,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        826,
+        816,
+        1143,
+        1164
+      ],
+      "authored_cell_bounds": [
+        800,
+        800,
+        1200,
+        1200
+      ],
+      "primary_component_id": 58,
+      "source_component_ids": [
+        58
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 75,
+      "alpha_bounds": [
+        0,
+        0,
+        317,
+        348
+      ],
+      "output": "landing-page/assets/world-tour/sprites/perks/hard-reset.png",
+      "output_size": [
+        317,
+        348
+      ],
+      "output_sha256": "14883949c8b96141092bfc4d508e48a4ec3181c2c4241237414fbb7776a38674"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/meta-perks-atlas.png",
+      "source_sha256": "278a7e837df0f6dedf44ce112e45c80ec59e28161e66c15343ce65a84acaef45",
+      "grid": [
+        5,
+        4
+      ],
+      "cell": 14,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        1198,
+        838,
+        1540,
+        1160
+      ],
+      "authored_cell_bounds": [
+        1200,
+        800,
+        1600,
+        1200
+      ],
+      "primary_component_id": 60,
+      "source_component_ids": [
+        60,
+        68
+      ],
+      "assigned_components": 2,
+      "extends_beyond_cell": [
+        "left"
+      ],
+      "discarded_noise_pixels": 75,
+      "alpha_bounds": [
+        0,
+        0,
+        342,
+        322
+      ],
+      "output": "landing-page/assets/world-tour/sprites/perks/orbital-balance.png",
+      "output_size": [
+        342,
+        322
+      ],
+      "output_sha256": "89584b8f30a21c51c25dddb1adc826280bf31d65d18d9db8efbe557752acc119"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/meta-perks-atlas.png",
+      "source_sha256": "278a7e837df0f6dedf44ce112e45c80ec59e28161e66c15343ce65a84acaef45",
+      "grid": [
+        5,
+        4
+      ],
+      "cell": 15,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        1594,
+        822,
+        1937,
+        1154
+      ],
+      "authored_cell_bounds": [
+        1600,
+        800,
+        2000,
+        1200
+      ],
+      "primary_component_id": 59,
+      "source_component_ids": [
+        59
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [
+        "left"
+      ],
+      "discarded_noise_pixels": 75,
+      "alpha_bounds": [
+        0,
+        0,
+        343,
+        332
+      ],
+      "output": "landing-page/assets/world-tour/sprites/perks/encore-spark.png",
+      "output_size": [
+        343,
+        332
+      ],
+      "output_sha256": "860b3efba556fc8e25e7b1d62d0cee8632da347d3eb9f55ef75e5278b6487e8b"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/meta-perks-atlas.png",
+      "source_sha256": "278a7e837df0f6dedf44ce112e45c80ec59e28161e66c15343ce65a84acaef45",
+      "grid": [
+        5,
+        4
+      ],
+      "cell": 16,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        47,
+        1199,
+        390,
+        1536
+      ],
+      "authored_cell_bounds": [
+        0,
+        1200,
+        400,
+        1600
+      ],
+      "primary_component_id": 71,
+      "source_component_ids": [
+        71
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [
+        "top"
+      ],
+      "discarded_noise_pixels": 75,
+      "alpha_bounds": [
+        0,
+        0,
+        343,
+        337
+      ],
+      "output": "landing-page/assets/world-tour/sprites/perks/deep-reserve.png",
+      "output_size": [
+        343,
+        337
+      ],
+      "output_sha256": "b6befe684372f34c21624e212ded54112ae4bc88ce9e90ec91c037c78e7cf561"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/meta-perks-atlas.png",
+      "source_sha256": "278a7e837df0f6dedf44ce112e45c80ec59e28161e66c15343ce65a84acaef45",
+      "grid": [
+        5,
+        4
+      ],
+      "cell": 17,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        445,
+        1210,
+        780,
+        1541
+      ],
+      "authored_cell_bounds": [
+        400,
+        1200,
+        800,
+        1600
+      ],
+      "primary_component_id": 72,
+      "source_component_ids": [
+        72
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 75,
+      "alpha_bounds": [
+        0,
+        0,
+        335,
+        331
+      ],
+      "output": "landing-page/assets/world-tour/sprites/perks/afterglow.png",
+      "output_size": [
+        335,
+        331
+      ],
+      "output_sha256": "eeef00704f4a7564948a99a592e3e5e08b588c351688d7d2202e08f152df1961"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/meta-perks-atlas.png",
+      "source_sha256": "278a7e837df0f6dedf44ce112e45c80ec59e28161e66c15343ce65a84acaef45",
+      "grid": [
+        5,
+        4
+      ],
+      "cell": 18,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        820,
+        1197,
+        1147,
+        1530
+      ],
+      "authored_cell_bounds": [
+        800,
+        1200,
+        1200,
+        1600
+      ],
+      "primary_component_id": 70,
+      "source_component_ids": [
+        70,
+        75
+      ],
+      "assigned_components": 2,
+      "extends_beyond_cell": [
+        "top"
+      ],
+      "discarded_noise_pixels": 75,
+      "alpha_bounds": [
+        0,
+        0,
+        327,
+        333
+      ],
+      "output": "landing-page/assets/world-tour/sprites/perks/neon-dividend.png",
+      "output_size": [
+        327,
+        333
+      ],
+      "output_sha256": "bbc3987a7cd867ef2d1f2ee7731b85f68300e20d51edcb789f62de871002f66e"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/meta-perks-atlas.png",
+      "source_sha256": "278a7e837df0f6dedf44ce112e45c80ec59e28161e66c15343ce65a84acaef45",
+      "grid": [
+        5,
+        4
+      ],
+      "cell": 19,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        1206,
+        1196,
+        1528,
+        1541
+      ],
+      "authored_cell_bounds": [
+        1200,
+        1200,
+        1600,
+        1600
+      ],
+      "primary_component_id": 69,
+      "source_component_ids": [
+        69,
+        74
+      ],
+      "assigned_components": 2,
+      "extends_beyond_cell": [
+        "top"
+      ],
+      "discarded_noise_pixels": 75,
+      "alpha_bounds": [
+        0,
+        0,
+        322,
+        345
+      ],
+      "output": "landing-page/assets/world-tour/sprites/perks/first-drop.png",
+      "output_size": [
+        322,
+        345
+      ],
+      "output_sha256": "0db1b17e128d2c0bad832365eebeb40c20480748af23f25b4a194402f1d926bc"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/meta-perks-atlas.png",
+      "source_sha256": "278a7e837df0f6dedf44ce112e45c80ec59e28161e66c15343ce65a84acaef45",
+      "grid": [
+        5,
+        4
+      ],
+      "cell": 20,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        1593,
+        1219,
+        1934,
+        1539
+      ],
+      "authored_cell_bounds": [
+        1600,
+        1200,
+        2000,
+        1600
+      ],
+      "primary_component_id": 73,
+      "source_component_ids": [
+        73
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [
+        "left"
+      ],
+      "discarded_noise_pixels": 75,
+      "alpha_bounds": [
+        0,
+        0,
+        341,
+        320
+      ],
+      "output": "landing-page/assets/world-tour/sprites/perks/reserved-perk.png",
+      "output_size": [
+        341,
+        320
+      ],
+      "output_sha256": "da1de4738e543f366a4647ed917cc51a300e68016d75533e4c012cce879947c2"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/musical-chest-atlas.png",
+      "source_sha256": "5c1a733932781047e3c8a9d67f6c71a7b553d2c933d91d7e4639925ec1fe2738",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 1,
+      "cell_size": [
+        314,
+        628
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        40,
+        266,
+        281,
+        523
+      ],
+      "authored_cell_bounds": [
+        0,
+        0,
+        314,
+        628
+      ],
+      "primary_component_id": 6,
+      "source_component_ids": [
+        6
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 29,
+      "alpha_bounds": [
+        0,
+        0,
+        241,
+        257
+      ],
+      "output": "landing-page/assets/world-tour/sprites/chests/musical/frame-01.png",
+      "output_size": [
+        241,
+        257
+      ],
+      "output_sha256": "a843fbd9c318b2a698af31d5805344ab8bf25aa0eeabe726fcbea1d16637d554"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/musical-chest-atlas.png",
+      "source_sha256": "5c1a733932781047e3c8a9d67f6c71a7b553d2c933d91d7e4639925ec1fe2738",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 2,
+      "cell_size": [
+        314,
+        628
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        349,
+        221,
+        591,
+        523
+      ],
+      "authored_cell_bounds": [
+        314,
+        0,
+        628,
+        628
+      ],
+      "primary_component_id": 7,
+      "source_component_ids": [
+        0,
+        1,
+        2,
+        3,
+        7
+      ],
+      "assigned_components": 5,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 29,
+      "alpha_bounds": [
+        0,
+        0,
+        242,
+        302
+      ],
+      "output": "landing-page/assets/world-tour/sprites/chests/musical/frame-02.png",
+      "output_size": [
+        242,
+        302
+      ],
+      "output_sha256": "80e6e7760e9debcaa46fec12af93698136e8cab8dcb3dcd5cfdb1a6a805629d5"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/musical-chest-atlas.png",
+      "source_sha256": "5c1a733932781047e3c8a9d67f6c71a7b553d2c933d91d7e4639925ec1fe2738",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 3,
+      "cell_size": [
+        314,
+        628
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        653,
+        264,
+        894,
+        523
+      ],
+      "authored_cell_bounds": [
+        628,
+        0,
+        942,
+        628
+      ],
+      "primary_component_id": 5,
+      "source_component_ids": [
+        5
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 29,
+      "alpha_bounds": [
+        0,
+        0,
+        241,
+        259
+      ],
+      "output": "landing-page/assets/world-tour/sprites/chests/musical/frame-03.png",
+      "output_size": [
+        241,
+        259
+      ],
+      "output_sha256": "576cfb9765d015d1057a1716096f64a82395a78363183034f043b2503faff1a9"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/musical-chest-atlas.png",
+      "source_sha256": "5c1a733932781047e3c8a9d67f6c71a7b553d2c933d91d7e4639925ec1fe2738",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 4,
+      "cell_size": [
+        314,
+        628
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        958,
+        243,
+        1203,
+        523
+      ],
+      "authored_cell_bounds": [
+        942,
+        0,
+        1256,
+        628
+      ],
+      "primary_component_id": 4,
+      "source_component_ids": [
+        4
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 29,
+      "alpha_bounds": [
+        0,
+        0,
+        245,
+        280
+      ],
+      "output": "landing-page/assets/world-tour/sprites/chests/musical/frame-04.png",
+      "output_size": [
+        245,
+        280
+      ],
+      "output_sha256": "359f54a3505c76e8b34b71d862ad55e888ccc1e2c2997c407be640b540e91e4b"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/musical-chest-atlas.png",
+      "source_sha256": "5c1a733932781047e3c8a9d67f6c71a7b553d2c933d91d7e4639925ec1fe2738",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 5,
+      "cell_size": [
+        314,
+        628
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        46,
+        643,
+        301,
+        989
+      ],
+      "authored_cell_bounds": [
+        0,
+        628,
+        314,
+        1256
+      ],
+      "primary_component_id": 10,
+      "source_component_ids": [
+        10,
+        20,
+        22,
+        26
+      ],
+      "assigned_components": 4,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 29,
+      "alpha_bounds": [
+        0,
+        0,
+        255,
+        346
+      ],
+      "output": "landing-page/assets/world-tour/sprites/chests/musical/frame-05.png",
+      "output_size": [
+        255,
+        346
+      ],
+      "output_sha256": "e49479afe2e0b25d26b294d1331c067fb830e6f49a3d2ae57a79634475a4512f"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/musical-chest-atlas.png",
+      "source_sha256": "5c1a733932781047e3c8a9d67f6c71a7b553d2c933d91d7e4639925ec1fe2738",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 6,
+      "cell_size": [
+        314,
+        628
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        320,
+        624,
+        623,
+        993
+      ],
+      "authored_cell_bounds": [
+        314,
+        628,
+        628,
+        1256
+      ],
+      "primary_component_id": 8,
+      "source_component_ids": [
+        8,
+        9,
+        11,
+        12,
+        13,
+        15,
+        17,
+        24,
+        25,
+        27,
+        28
+      ],
+      "assigned_components": 11,
+      "extends_beyond_cell": [
+        "top"
+      ],
+      "discarded_noise_pixels": 29,
+      "alpha_bounds": [
+        0,
+        0,
+        303,
+        369
+      ],
+      "output": "landing-page/assets/world-tour/sprites/chests/musical/frame-06.png",
+      "output_size": [
+        303,
+        369
+      ],
+      "output_sha256": "b8d6cc7fe5128129946dce88547267127fa8c7966aca06031e5cf548697f2e2b"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/musical-chest-atlas.png",
+      "source_sha256": "5c1a733932781047e3c8a9d67f6c71a7b553d2c933d91d7e4639925ec1fe2738",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 7,
+      "cell_size": [
+        314,
+        628
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        655,
+        702,
+        897,
+        996
+      ],
+      "authored_cell_bounds": [
+        628,
+        628,
+        942,
+        1256
+      ],
+      "primary_component_id": 21,
+      "source_component_ids": [
+        14,
+        16,
+        18,
+        19,
+        21
+      ],
+      "assigned_components": 5,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 29,
+      "alpha_bounds": [
+        0,
+        0,
+        242,
+        294
+      ],
+      "output": "landing-page/assets/world-tour/sprites/chests/musical/frame-07.png",
+      "output_size": [
+        242,
+        294
+      ],
+      "output_sha256": "56d3149ff47b6c1bbe29c1328437de1f8121d6d66478b211ae76db894e6112e0"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/musical-chest-atlas.png",
+      "source_sha256": "5c1a733932781047e3c8a9d67f6c71a7b553d2c933d91d7e4639925ec1fe2738",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 8,
+      "cell_size": [
+        314,
+        628
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        958,
+        747,
+        1200,
+        1002
+      ],
+      "authored_cell_bounds": [
+        942,
+        628,
+        1256,
+        1256
+      ],
+      "primary_component_id": 23,
+      "source_component_ids": [
+        23
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 29,
+      "alpha_bounds": [
+        0,
+        0,
+        242,
+        255
+      ],
+      "output": "landing-page/assets/world-tour/sprites/chests/musical/frame-08.png",
+      "output_size": [
+        242,
+        255
+      ],
+      "output_sha256": "a2c60d56f822f16673a9b51f3f50506c778524164217d9f1e729140faf9fc912"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/chest-luck-reveal-atlas.png",
+      "source_sha256": "e2e74c9eabc61da67058f4d1b32d2c1c81cc46e909902eaf28b3c037c66e2866",
+      "grid": [
+        5,
+        2
+      ],
+      "cell": 1,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        86,
+        87,
+        384,
+        367
+      ],
+      "authored_cell_bounds": [
+        0,
+        0,
+        400,
+        400
+      ],
+      "primary_component_id": 0,
+      "source_component_ids": [
+        0
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 3,
+      "alpha_bounds": [
+        0,
+        0,
+        298,
+        280
+      ],
+      "output": "landing-page/assets/world-tour/sprites/chests/luck/luck-01.png",
+      "output_size": [
+        298,
+        280
+      ],
+      "output_sha256": "fad1a4f10e048a1b88bdea8c52d01e581ce801ce45af9f10733a19f1c2401ae4"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/chest-luck-reveal-atlas.png",
+      "source_sha256": "e2e74c9eabc61da67058f4d1b32d2c1c81cc46e909902eaf28b3c037c66e2866",
+      "grid": [
+        5,
+        2
+      ],
+      "cell": 2,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        471,
+        88,
+        772,
+        367
+      ],
+      "authored_cell_bounds": [
+        400,
+        0,
+        800,
+        400
+      ],
+      "primary_component_id": 4,
+      "source_component_ids": [
+        4
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 3,
+      "alpha_bounds": [
+        0,
+        0,
+        301,
+        279
+      ],
+      "output": "landing-page/assets/world-tour/sprites/chests/luck/luck-02.png",
+      "output_size": [
+        301,
+        279
+      ],
+      "output_sha256": "923b81abb34f4702f27ca6c07fafe32535404a5141f66fc587a1751b3d76d682"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/chest-luck-reveal-atlas.png",
+      "source_sha256": "e2e74c9eabc61da67058f4d1b32d2c1c81cc46e909902eaf28b3c037c66e2866",
+      "grid": [
+        5,
+        2
+      ],
+      "cell": 3,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        849,
+        87,
+        1148,
+        367
+      ],
+      "authored_cell_bounds": [
+        800,
+        0,
+        1200,
+        400
+      ],
+      "primary_component_id": 1,
+      "source_component_ids": [
+        1
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 3,
+      "alpha_bounds": [
+        0,
+        0,
+        299,
+        280
+      ],
+      "output": "landing-page/assets/world-tour/sprites/chests/luck/luck-03.png",
+      "output_size": [
+        299,
+        280
+      ],
+      "output_sha256": "b3895f22230a3fcbaec53faf9f3b9c0b0549316f4e5ffdc2d0072f571b433c3c"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/chest-luck-reveal-atlas.png",
+      "source_sha256": "e2e74c9eabc61da67058f4d1b32d2c1c81cc46e909902eaf28b3c037c66e2866",
+      "grid": [
+        5,
+        2
+      ],
+      "cell": 4,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        1227,
+        87,
+        1523,
+        367
+      ],
+      "authored_cell_bounds": [
+        1200,
+        0,
+        1600,
+        400
+      ],
+      "primary_component_id": 2,
+      "source_component_ids": [
+        2
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 3,
+      "alpha_bounds": [
+        0,
+        0,
+        296,
+        280
+      ],
+      "output": "landing-page/assets/world-tour/sprites/chests/luck/luck-04.png",
+      "output_size": [
+        296,
+        280
+      ],
+      "output_sha256": "11e1d786001cac72709fcef4d1ef49c61e011ea0a7b1a9e083f2cfcd7f36feef"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/chest-luck-reveal-atlas.png",
+      "source_sha256": "e2e74c9eabc61da67058f4d1b32d2c1c81cc46e909902eaf28b3c037c66e2866",
+      "grid": [
+        5,
+        2
+      ],
+      "cell": 5,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        1604,
+        87,
+        1899,
+        367
+      ],
+      "authored_cell_bounds": [
+        1600,
+        0,
+        2000,
+        400
+      ],
+      "primary_component_id": 3,
+      "source_component_ids": [
+        3,
+        5,
+        6
+      ],
+      "assigned_components": 3,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 3,
+      "alpha_bounds": [
+        0,
+        0,
+        295,
+        280
+      ],
+      "output": "landing-page/assets/world-tour/sprites/chests/luck/luck-05.png",
+      "output_size": [
+        295,
+        280
+      ],
+      "output_sha256": "c20fb069777027984016d40d44f51a243d138e82bc4922e47129b12fb3884cba"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/chest-luck-reveal-atlas.png",
+      "source_sha256": "e2e74c9eabc61da67058f4d1b32d2c1c81cc46e909902eaf28b3c037c66e2866",
+      "grid": [
+        5,
+        2
+      ],
+      "cell": 6,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        108,
+        480,
+        354,
+        694
+      ],
+      "authored_cell_bounds": [
+        0,
+        400,
+        400,
+        800
+      ],
+      "primary_component_id": 7,
+      "source_component_ids": [
+        7
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 3,
+      "alpha_bounds": [
+        0,
+        0,
+        246,
+        214
+      ],
+      "output": "landing-page/assets/world-tour/sprites/chests/luck/reward-backplate-01.png",
+      "output_size": [
+        246,
+        214
+      ],
+      "output_sha256": "ff84e8cb8348ded112e14e8b73a63f68257ce9ec0c260f59cab8a2e0e915bbde"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/chest-luck-reveal-atlas.png",
+      "source_sha256": "e2e74c9eabc61da67058f4d1b32d2c1c81cc46e909902eaf28b3c037c66e2866",
+      "grid": [
+        5,
+        2
+      ],
+      "cell": 7,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        488,
+        480,
+        735,
+        694
+      ],
+      "authored_cell_bounds": [
+        400,
+        400,
+        800,
+        800
+      ],
+      "primary_component_id": 8,
+      "source_component_ids": [
+        8
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 3,
+      "alpha_bounds": [
+        0,
+        0,
+        247,
+        214
+      ],
+      "output": "landing-page/assets/world-tour/sprites/chests/luck/reward-backplate-02.png",
+      "output_size": [
+        247,
+        214
+      ],
+      "output_sha256": "4fab2c138fc579263c88dc60e6765f1ad167ef78110c27d346f7c8601a7d1633"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/chest-luck-reveal-atlas.png",
+      "source_sha256": "e2e74c9eabc61da67058f4d1b32d2c1c81cc46e909902eaf28b3c037c66e2866",
+      "grid": [
+        5,
+        2
+      ],
+      "cell": 8,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        868,
+        480,
+        1113,
+        694
+      ],
+      "authored_cell_bounds": [
+        800,
+        400,
+        1200,
+        800
+      ],
+      "primary_component_id": 9,
+      "source_component_ids": [
+        9
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 3,
+      "alpha_bounds": [
+        0,
+        0,
+        245,
+        214
+      ],
+      "output": "landing-page/assets/world-tour/sprites/chests/luck/reward-backplate-03.png",
+      "output_size": [
+        245,
+        214
+      ],
+      "output_sha256": "1ed0716e3a474b7a039145ac20addb7cf75af87740aeb3fee5bd47f9945534f8"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/chest-luck-reveal-atlas.png",
+      "source_sha256": "e2e74c9eabc61da67058f4d1b32d2c1c81cc46e909902eaf28b3c037c66e2866",
+      "grid": [
+        5,
+        2
+      ],
+      "cell": 9,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        1249,
+        480,
+        1492,
+        694
+      ],
+      "authored_cell_bounds": [
+        1200,
+        400,
+        1600,
+        800
+      ],
+      "primary_component_id": 10,
+      "source_component_ids": [
+        10
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 3,
+      "alpha_bounds": [
+        0,
+        0,
+        243,
+        214
+      ],
+      "output": "landing-page/assets/world-tour/sprites/chests/luck/reward-backplate-04.png",
+      "output_size": [
+        243,
+        214
+      ],
+      "output_sha256": "1bb471a2520cfe5341f4ae1e558b3d25f8c87a160bb18b13eefcf4a1f403ae1f"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/chest-luck-reveal-atlas.png",
+      "source_sha256": "e2e74c9eabc61da67058f4d1b32d2c1c81cc46e909902eaf28b3c037c66e2866",
+      "grid": [
+        5,
+        2
+      ],
+      "cell": 10,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        1630,
+        480,
+        1871,
+        694
+      ],
+      "authored_cell_bounds": [
+        1600,
+        400,
+        2000,
+        800
+      ],
+      "primary_component_id": 11,
+      "source_component_ids": [
+        11
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 3,
+      "alpha_bounds": [
+        0,
+        0,
+        241,
+        214
+      ],
+      "output": "landing-page/assets/world-tour/sprites/chests/luck/reward-backplate-05.png",
+      "output_size": [
+        241,
+        214
+      ],
+      "output_sha256": "4487b506c023b6c85c5fecefca86c381775e1cbe05eedf861eaf478f8ba1393a"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/completion-ui-atlas.png",
+      "source_sha256": "892af76d029efe4402423296b45278104eaa80125d8682f0e7b4dc19b828e40e",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 1,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        32,
+        51,
+        396,
+        420
+      ],
+      "authored_cell_bounds": [
+        0,
+        0,
+        400,
+        400
+      ],
+      "primary_component_id": 2,
+      "source_component_ids": [
+        2,
+        4
+      ],
+      "assigned_components": 2,
+      "extends_beyond_cell": [
+        "bottom"
+      ],
+      "discarded_noise_pixels": 0,
+      "alpha_bounds": [
+        0,
+        0,
+        364,
+        369
+      ],
+      "output": "landing-page/assets/world-tour/sprites/chests/completion/backbeat-complete.png",
+      "output_size": [
+        364,
+        369
+      ],
+      "output_sha256": "1eec73eaa4ec326374828ea875f6f13dc417da1276c4aa2e3f780b1df98af246"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/completion-ui-atlas.png",
+      "source_sha256": "892af76d029efe4402423296b45278104eaa80125d8682f0e7b4dc19b828e40e",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 2,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        432,
+        38,
+        782,
+        428
+      ],
+      "authored_cell_bounds": [
+        400,
+        0,
+        800,
+        400
+      ],
+      "primary_component_id": 0,
+      "source_component_ids": [
+        0
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [
+        "bottom"
+      ],
+      "discarded_noise_pixels": 0,
+      "alpha_bounds": [
+        0,
+        0,
+        350,
+        390
+      ],
+      "output": "landing-page/assets/world-tour/sprites/chests/completion/orbit-complete.png",
+      "output_size": [
+        350,
+        390
+      ],
+      "output_sha256": "e42c61e86a1876b49a4238348fb18cfbe750e24d1292f3fa6b9c86b7d210cb6b"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/completion-ui-atlas.png",
+      "source_sha256": "892af76d029efe4402423296b45278104eaa80125d8682f0e7b4dc19b828e40e",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 3,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        821,
+        80,
+        1173,
+        428
+      ],
+      "authored_cell_bounds": [
+        800,
+        0,
+        1200,
+        400
+      ],
+      "primary_component_id": 3,
+      "source_component_ids": [
+        3
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [
+        "bottom"
+      ],
+      "discarded_noise_pixels": 0,
+      "alpha_bounds": [
+        0,
+        0,
+        352,
+        348
+      ],
+      "output": "landing-page/assets/world-tour/sprites/chests/completion/campaign-victory.png",
+      "output_size": [
+        352,
+        348
+      ],
+      "output_sha256": "47d3a7a20349ad44c766aab85cc9bb3c1519c0ec8299019fbf0cb6c392cbe950"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/completion-ui-atlas.png",
+      "source_sha256": "892af76d029efe4402423296b45278104eaa80125d8682f0e7b4dc19b828e40e",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 4,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        1206,
+        45,
+        1558,
+        435
+      ],
+      "authored_cell_bounds": [
+        1200,
+        0,
+        1600,
+        400
+      ],
+      "primary_component_id": 1,
+      "source_component_ids": [
+        1
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [
+        "bottom"
+      ],
+      "discarded_noise_pixels": 0,
+      "alpha_bounds": [
+        0,
+        0,
+        352,
+        390
+      ],
+      "output": "landing-page/assets/world-tour/sprites/chests/completion/funk-mastery.png",
+      "output_size": [
+        352,
+        390
+      ],
+      "output_sha256": "f3c8de6d88c30973829798e544e2554d9b4d5a25ff61bde02d81464b7b95ff2b"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/completion-ui-atlas.png",
+      "source_sha256": "892af76d029efe4402423296b45278104eaa80125d8682f0e7b4dc19b828e40e",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 5,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        90,
+        483,
+        333,
+        727
+      ],
+      "authored_cell_bounds": [
+        0,
+        400,
+        400,
+        800
+      ],
+      "primary_component_id": 8,
+      "source_component_ids": [
+        8
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
+      "alpha_bounds": [
+        0,
+        0,
+        243,
+        244
+      ],
+      "output": "landing-page/assets/world-tour/sprites/chests/completion/encore-chest.png",
+      "output_size": [
+        243,
+        244
+      ],
+      "output_sha256": "fe75701d363b3a1cd9ede1f9f1adc5825b94eb07fa69569d10442f54b516bb68"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/completion-ui-atlas.png",
+      "source_sha256": "892af76d029efe4402423296b45278104eaa80125d8682f0e7b4dc19b828e40e",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 6,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        468,
+        462,
+        725,
+        745
+      ],
+      "authored_cell_bounds": [
+        400,
+        400,
+        800,
+        800
+      ],
+      "primary_component_id": 5,
+      "source_component_ids": [
+        5
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
+      "alpha_bounds": [
+        0,
+        0,
+        257,
+        283
+      ],
+      "output": "landing-page/assets/world-tour/sprites/chests/completion/resonance.png",
+      "output_size": [
+        257,
+        283
+      ],
+      "output_sha256": "4e07e67b6a83099104f881826bd7656053c60fc9c72c2c23bd60d4207a7e8189"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/completion-ui-atlas.png",
+      "source_sha256": "892af76d029efe4402423296b45278104eaa80125d8682f0e7b4dc19b828e40e",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 7,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        842,
+        466,
+        1126,
+        740
+      ],
+      "authored_cell_bounds": [
+        800,
+        400,
+        1200,
+        800
+      ],
+      "primary_component_id": 6,
+      "source_component_ids": [
+        6,
+        9,
+        12
+      ],
+      "assigned_components": 3,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
+      "alpha_bounds": [
+        0,
+        0,
+        284,
+        274
+      ],
+      "output": "landing-page/assets/world-tour/sprites/chests/completion/enemy.png",
+      "output_size": [
+        284,
+        274
+      ],
+      "output_sha256": "30b30d64123eda001af402a0bf160b5fe5449631c904d9c4f0b17fb68fb79be6"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/completion-ui-atlas.png",
+      "source_sha256": "892af76d029efe4402423296b45278104eaa80125d8682f0e7b4dc19b828e40e",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 8,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        1227,
+        469,
+        1536,
+        759
+      ],
+      "authored_cell_bounds": [
+        1200,
+        400,
+        1600,
+        800
+      ],
+      "primary_component_id": 7,
+      "source_component_ids": [
+        7,
+        10,
+        11,
+        13,
+        14,
+        15,
+        16,
+        17
+      ],
+      "assigned_components": 8,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
+      "alpha_bounds": [
+        0,
+        0,
+        309,
+        290
+      ],
+      "output": "landing-page/assets/world-tour/sprites/chests/completion/boss.png",
+      "output_size": [
+        309,
+        290
+      ],
+      "output_sha256": "a9e992e92733aa68b48275ef2937c9cf791f2300b45fac222204463e74c4c373"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/funk-pocket-pad-atlas.png",
+      "source_sha256": "8a183ad1e715dc9fdbbc4fde76dd7ab7d6e09a52c27341aa840a31fcfef3919a",
+      "grid": [
+        5,
+        1
+      ],
+      "cell": 1,
+      "cell_size": [
+        320,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        30,
+        40,
+        320,
+        372
+      ],
+      "authored_cell_bounds": [
+        0,
+        0,
+        320,
+        400
+      ],
+      "primary_component_id": 0,
+      "source_component_ids": [
+        0
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
+      "alpha_bounds": [
+        0,
+        0,
+        290,
+        332
+      ],
+      "output": "landing-page/assets/world-tour/sprites/mechanics/funk-pocket/pad-01.png",
+      "output_size": [
+        290,
+        332
+      ],
+      "output_sha256": "66561e0fb4a9327db45154640af64cca46613a2bc3e51a55c299d4886fb727f6"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/funk-pocket-pad-atlas.png",
+      "source_sha256": "8a183ad1e715dc9fdbbc4fde76dd7ab7d6e09a52c27341aa840a31fcfef3919a",
+      "grid": [
+        5,
+        1
+      ],
+      "cell": 2,
+      "cell_size": [
+        320,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        340,
+        41,
+        630,
+        372
+      ],
+      "authored_cell_bounds": [
+        320,
+        0,
+        640,
+        400
+      ],
+      "primary_component_id": 1,
+      "source_component_ids": [
+        1
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
+      "alpha_bounds": [
+        0,
+        0,
+        290,
+        331
+      ],
+      "output": "landing-page/assets/world-tour/sprites/mechanics/funk-pocket/pad-02.png",
+      "output_size": [
+        290,
+        331
+      ],
+      "output_sha256": "dde6f23893da07487b0d6e124af636d7a44ee6cfb7d0c0cf97a2fa12bb053865"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/funk-pocket-pad-atlas.png",
+      "source_sha256": "8a183ad1e715dc9fdbbc4fde76dd7ab7d6e09a52c27341aa840a31fcfef3919a",
+      "grid": [
+        5,
+        1
+      ],
+      "cell": 3,
+      "cell_size": [
+        320,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        649,
+        41,
+        939,
+        372
+      ],
+      "authored_cell_bounds": [
+        640,
+        0,
+        960,
+        400
+      ],
+      "primary_component_id": 2,
+      "source_component_ids": [
+        2
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
+      "alpha_bounds": [
+        0,
+        0,
+        290,
+        331
+      ],
+      "output": "landing-page/assets/world-tour/sprites/mechanics/funk-pocket/pad-03.png",
+      "output_size": [
+        290,
+        331
+      ],
+      "output_sha256": "843e558c5094075b215ece4199edac357d769b9b49c83a34542374da78ae97d6"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/funk-pocket-pad-atlas.png",
+      "source_sha256": "8a183ad1e715dc9fdbbc4fde76dd7ab7d6e09a52c27341aa840a31fcfef3919a",
+      "grid": [
+        5,
+        1
+      ],
+      "cell": 4,
+      "cell_size": [
+        320,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        960,
+        41,
+        1251,
+        372
+      ],
+      "authored_cell_bounds": [
+        960,
+        0,
+        1280,
+        400
+      ],
+      "primary_component_id": 3,
+      "source_component_ids": [
+        3
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
+      "alpha_bounds": [
+        0,
+        0,
+        291,
+        331
+      ],
+      "output": "landing-page/assets/world-tour/sprites/mechanics/funk-pocket/pad-04.png",
+      "output_size": [
+        291,
+        331
+      ],
+      "output_sha256": "0106a69a533ed226b5c7ee52e729530d02de537bc077f895ae2effd9ec7580d9"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/funk-pocket-pad-atlas.png",
+      "source_sha256": "8a183ad1e715dc9fdbbc4fde76dd7ab7d6e09a52c27341aa840a31fcfef3919a",
+      "grid": [
+        5,
+        1
+      ],
+      "cell": 5,
+      "cell_size": [
+        320,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        1271,
+        41,
+        1561,
+        372
+      ],
+      "authored_cell_bounds": [
+        1280,
+        0,
+        1600,
+        400
+      ],
+      "primary_component_id": 4,
+      "source_component_ids": [
+        4
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [
+        "left"
+      ],
+      "discarded_noise_pixels": 0,
+      "alpha_bounds": [
+        0,
+        0,
+        290,
+        331
+      ],
+      "output": "landing-page/assets/world-tour/sprites/mechanics/funk-pocket/pad-05.png",
+      "output_size": [
+        290,
+        331
+      ],
+      "output_sha256": "3e23e9cddcefbf366fda3e4374d95f2ebbb7cc40ad4b8ee668aff059db86ab98"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/stage-clear-chest.png",
+      "source_sha256": "ad469cdb24ae1acc201024a50c3ea29e3ddda846471005d2c908d643d62b918e",
+      "grid": [
+        1,
+        1
+      ],
+      "cell": 1,
+      "cell_size": [
+        1024,
+        1024
+      ],
+      "isolation": "single-image-alpha-trim",
+      "source_bounds": [
+        61,
+        49,
+        963,
+        975
+      ],
+      "authored_cell_bounds": [
+        0,
+        0,
+        1024,
+        1024
+      ],
+      "primary_component_id": null,
+      "source_component_ids": null,
+      "assigned_components": null,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
+      "alpha_bounds": [
+        0,
+        0,
+        902,
+        926
+      ],
+      "output": "landing-page/assets/world-tour/sprites/chests/encore-gate.png",
+      "output_size": [
+        902,
+        926
+      ],
+      "output_sha256": "3d2fbd9f64b7aebad6447fe7194497f035b23594e0828cdfb88c3c7debe0ceab"
+    }
+  ]
+}

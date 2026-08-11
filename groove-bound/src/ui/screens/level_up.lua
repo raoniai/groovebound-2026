@@ -3,7 +3,6 @@
 
 local class = require("src.core.class")
 local Fonts = require("src.ui.fonts")
-local Icons = require("src.ui.icons")
 local settings = require("src.config.settings")
 local widgets = require("src.ui.widgets.button")
 local Hints = require("src.ui.controller_hints")
@@ -35,6 +34,9 @@ function LevelUpScreen:enter()
 end
 
 function LevelUpScreen:_choose(choice)
+  if choice.kind == "heal" or choice.kind == "coins" or choice.kind == "guard" then
+    self.combat.progression:set_auto_fallback(choice.kind)
+  end
   self.combat.progression:apply(choice)
   self.combat.xp:consume_choice()
   self.app.states:pop(choice)
@@ -61,8 +63,9 @@ function LevelUpScreen:_layout()
   local card_w = math.min(320, (w - margin * 2 - gap * 2) / 3)
   local total_w = card_w * 3 + gap * 2
   local x = (w - total_w) / 2
-  local y = h * 0.24
-  local card_h = 320
+  local compact = h < 680
+  local y = compact and 82 or 112
+  local card_h = compact and 252 or 330
   local buttons = {}
 
   for index, choice in ipairs(self.offer) do
@@ -78,25 +81,25 @@ function LevelUpScreen:_layout()
   end
 
   buttons[#buttons + 1] = widgets.Button({
-    label = "Reroll (" .. self.combat.progression.rerolls .. ")",
-    x = w / 2 - 230,
-    y = y + card_h + 22,
-    w = 210,
-    h = 50,
+    label = "",
+    x = w / 2 - 154,
+    y = y + card_h + 10,
+    w = 132,
+    h = 58,
     font_size = 18,
     on_press = function() self:_reroll() end,
   })
   buttons[#buttons + 1] = widgets.Button({
-    label = "Skip (+5 coins)",
-    x = w / 2 + 20,
-    y = y + card_h + 22,
-    w = 210,
-    h = 50,
+    label = "",
+    x = w / 2 + 22,
+    y = y + card_h + 10,
+    w = 132,
+    h = 58,
     font_size = 18,
     on_press = function() self:_skip() end,
   })
   self.buttons = widgets.ButtonList(buttons)
-  self.guide_y = y + card_h + 84
+  self.guide_y = y + card_h + 76
 end
 
 function LevelUpScreen:resize()
@@ -110,101 +113,60 @@ function LevelUpScreen:draw()
   local w, h = UIScale.begin()
 
   love.graphics.setColor(settings.ui.accent_color)
-  love.graphics.setFont(Fonts.get(36))
-  love.graphics.printf("CHOOSE YOUR NEXT RIFF", 0, h * 0.13, w, "center")
-  love.graphics.setColor(settings.ui.text_color)
-  love.graphics.setFont(Fonts.get(18))
-  love.graphics.printf(
-    string.format(
-      "Level %d  •  %d weapon slots free  •  %d support slots free  •  %d fusions ready",
-      self.combat.xp.level,
-      self.combat.inventory.capacity - self.combat.inventory:count(),
-      self.combat.progression.passives.capacity - self.combat.progression.passives:count(),
-      #self.combat.progression:eligible_evolutions()),
-    0, h * 0.21, w, "center")
+  love.graphics.setFont(Fonts.heading(h < 680 and 29 or 36))
+  local auto_setup = self.combat.progression:is_auto_select_available()
+    and not self.combat.progression:can_auto_select()
+  love.graphics.printf(auto_setup and "CHOOSE AUTO PICK" or "CHOOSE YOUR NEXT RIFF",
+    0, h < 680 and 26 or 46, w, "center")
 
-  self.buttons:draw()
   local reroll_button = self.buttons.buttons[#self.offer + 1]
   local skip_button = self.buttons.buttons[#self.offer + 2]
   if reroll_button then
-    Icons.draw("reroll", reroll_button.x + 28, reroll_button.y + 25, 25,
-      { 0.30, 0.92, 1.0, 0.94 })
+    local alpha = reroll_button.focused and 1 or 0.72
+    self.app.assets:draw_menu_button_icon(5, 2,
+      reroll_button.x + 30, reroll_button.y, 72, 58,
+      { color = { 1, 1, 1, alpha } })
+    love.graphics.setColor(0.30, 0.92, 1.0, alpha)
+    love.graphics.setFont(Fonts.body(12))
+    love.graphics.printf("×" .. self.combat.progression.rerolls,
+      reroll_button.x + 92, reroll_button.y + 22, 35, "left")
   end
   if skip_button then
-    Icons.draw("skip", skip_button.x + 28, skip_button.y + 25, 25,
-      { 0.96, 0.38, 0.72, 0.94 })
+    local alpha = skip_button.focused and 1 or 0.72
+    self.app.assets:draw_menu_button_icon(5, 1,
+      skip_button.x + 28, skip_button.y, 72, 58,
+      { color = { 1, 1, 1, alpha } })
+    love.graphics.setColor(0.96, 0.38, 0.72, alpha)
+    love.graphics.setFont(Fonts.body(12))
+    love.graphics.printf("+5", skip_button.x + 90,
+      skip_button.y + 22, 35, "left")
   end
   for index, choice in ipairs(self.offer) do
     local button = self.buttons.buttons[index]
     local color = kind_colors[choice.kind] or settings.ui.accent_color
-    if choice.kind == "evolution" then
-      love.graphics.setColor(color)
-      love.graphics.setLineWidth(3)
-      love.graphics.rectangle(
-        "line", button.x + 2, button.y + 2, button.w - 4, button.h - 4, 8, 8)
-      love.graphics.setLineWidth(1)
-    end
+    local alpha = button.focused and 1 or 0.78
+    self.app.assets:draw_ui_backplate(button.x, button.y, button.w, button.h, {
+      color = { color[1], color[2], color[3], alpha },
+    })
     love.graphics.setColor(color)
-    love.graphics.setFont(Fonts.get(14))
-    love.graphics.printf(
-      tostring(index) .. "  " .. (choice.kind == "evolution"
-        and "FUSION READY"
-        or string.upper(choice.kind:gsub("_", " "))),
-      button.x + 12, button.y + 10, button.w - 24, "left")
+    love.graphics.setFont(Fonts.body(12))
+    love.graphics.printf(tostring(index) .. "  "
+      .. string.upper(choice.kind:gsub("_", " ")),
+      button.x + 18, button.y + 16, button.w - 36, "left")
     if choice.kind == "weapon_add" or choice.kind == "passive_add" then
-      local tag_w, tag_h = 58, 25
-      local tag_x, tag_y = button.x + button.w - tag_w - 8, button.y + 8
-      love.graphics.setColor(0.96, 0.24, 0.64, 1)
-      love.graphics.polygon("fill",
-        tag_x, tag_y, tag_x + tag_w, tag_y,
-        tag_x + tag_w, tag_y + tag_h,
-        tag_x + 8, tag_y + tag_h, tag_x, tag_y + tag_h - 8)
-      love.graphics.setColor(1, 1, 1, 1)
-      love.graphics.setFont(Fonts.get(13))
-      love.graphics.printf("NEW", tag_x, tag_y + 6, tag_w, "center")
+      self.app.assets:draw_new_tag(button.x + button.w - 78,
+        button.y + 10, 68, 29)
     end
-    self:_draw_choice_icon(choice, button.x + button.w / 2, button.y + 84, 98, color)
+    local icon_size = h < 680 and 82 or 104
+    self:_draw_choice_icon(choice, button.x + button.w / 2,
+      button.y + (h < 680 and 82 or 96), icon_size, color)
 
     love.graphics.setColor(settings.ui.text_color)
-    love.graphics.setFont(Fonts.get(20))
+    love.graphics.setFont(Fonts.body(h < 680 and 16 or 19))
     love.graphics.printf(choice.title,
-      button.x + 12, button.y + 140, button.w - 24, "center")
-    love.graphics.setColor(0.74, 0.72, 0.82, 1)
-    love.graphics.setFont(Fonts.get(15))
-    love.graphics.printf(
-      choice.description,
-      button.x + 14,
-      button.y + 178,
-      button.w - 28,
-      "center")
-    local fusion_hint = self:_fusion_hint(choice)
-    if fusion_hint then
-      love.graphics.setColor(1.0, 0.76, 0.24, 1)
-      love.graphics.setFont(Fonts.get(14))
-      love.graphics.printf(
-        fusion_hint,
-        button.x + 12,
-        button.y + 232,
-        button.w - 24,
-        "center")
-    end
-    local stats, improvements = self:_choice_stats(choice)
-    if stats then
-      love.graphics.setColor(0.035, 0.03, 0.075, 0.98)
-      love.graphics.rectangle("fill",
-        button.x + 12, button.y + 260, button.w - 24, 48, 6, 6)
-      love.graphics.setColor(color)
-      love.graphics.rectangle("line",
-        button.x + 12, button.y + 260, button.w - 24, 48, 6, 6)
-      self:_draw_choice_stat_icons(
-        choice, button.x + 18, button.y + 264, button.w - 36, color)
-      if improvements then
-        love.graphics.setColor(0.34, 1.0, 0.68, 1)
-        love.graphics.setFont(Fonts.get(13))
-        love.graphics.printf(improvements,
-          button.x + 20, button.y + 289, button.w - 40, "center")
-      end
-    end
+      button.x + 18, button.y + (h < 680 and 134 or 158),
+      button.w - 36, "center")
+    self:_draw_gain_strip(choice, button, color)
   end
 
   if self:_requirements_visible() then
@@ -225,60 +187,77 @@ function LevelUpScreen:_choice_stat_items(choice)
   local weapon = self:_weapon_for_choice(choice)
   if weapon then
     local level = 1
+    local previous
     if choice.kind == "weapon_level" then
       local owned = self.combat.inventory:get(choice.id)
       level = math.min(weapon.max_level, owned.level + 1)
+      previous = weapon.levels[owned.level]
     end
     local stats = weapon.levels[level]
-    return {
-      { icon = "damage", value = tostring(stats.damage) },
-      { icon = "cooldown", value = string.format("%.2fs", stats.cooldown) },
-      { icon = "count", value = "×" .. tostring(stats.count or 1) },
-      { icon = "speed", value = tostring(stats.speed or 0) },
-    }
+    local result = {}
+    local function add(label, total, gain, suffix)
+      if not previous or gain ~= 0 then
+        result[#result + 1] = {
+          label = label,
+          gain = (gain >= 0 and "+" or "") .. tostring(gain) .. (suffix or ""),
+          total = tostring(total) .. (suffix or ""),
+        }
+      end
+    end
+    add("DMG", stats.damage, previous and stats.damage - previous.damage
+      or stats.damage)
+    if not previous or stats.cooldown ~= previous.cooldown then
+      result[#result + 1] = {
+        label = "RATE",
+        gain = previous and string.format("-%.2fs", previous.cooldown - stats.cooldown)
+          or string.format("%.2fs", stats.cooldown),
+        total = string.format("%.2fs", stats.cooldown),
+      }
+    end
+    add("SHOT", stats.count or 1, previous
+      and (stats.count or 1) - (previous.count or 1) or (stats.count or 1))
+    add("SPD", stats.speed or 0, previous
+      and (stats.speed or 0) - (previous.speed or 0) or (stats.speed or 0))
+    return result
   end
   if choice.kind == "passive_add" or choice.kind == "passive_level" then
     local passive = self.app.content.passives[choice.id]
-    local icon_by_stat = {
-      move_speed = "speed", max_hp = "health", defense = "guard",
-      cooldown = "cooldown", damage = "damage", projectile_count = "count",
-    }
     local owned = self.combat.progression.passives:get(choice.id)
     local level = math.min(passive.max_level, (owned and owned.level or 0) + 1)
     return { {
-      icon = icon_by_stat[passive.stat] or "level",
-      value = string.format("R%d  %+d%%", level,
+      label = string.upper(passive.stat:gsub("_", " ")),
+      gain = string.format("+%d%%", math.floor(passive.per_level * 100 + 0.5)),
+      total = string.format("%d%%",
         math.floor(passive.per_level * level * 100 + 0.5)),
     } }
   end
   local simple = {
-    heal = { icon = "health", value = "+30%" },
-    guard = { icon = "guard", value = "+25" },
-    coins = { icon = "score", value = "+25" },
+    heal = { label = "HEALTH", gain = "+30%", total = "AUTO" },
+    guard = { label = "GUARD", gain = "+25", total = "AUTO" },
+    coins = { label = "COINS", gain = "+25", total = "AUTO" },
   }
   return simple[choice.kind] and { simple[choice.kind] } or {}
 end
 
-function LevelUpScreen:_draw_choice_stat_icons(choice, x, y, width, color)
+function LevelUpScreen:_draw_gain_strip(choice, button, color)
   local items = self:_choice_stat_items(choice)
   if #items == 0 then return end
+  while #items > 3 do table.remove(items) end
+  local y = button.y + button.h - 68
+  local icon_x = button.x + 32
+  self:_draw_choice_icon(choice, icon_x, y + 30, 40, color)
+  local x = button.x + 58
+  local width = button.w - 72
   local item_w = width / #items
   for index, item in ipairs(items) do
     local item_x = x + (index - 1) * item_w
-    if item_w < 70 then
-      Icons.draw(item.icon, item_x + item_w / 2, y + 9, 16,
-        { 0.34, 0.92, 1.0, 0.92 })
-      love.graphics.setColor(color)
-      love.graphics.setFont(Fonts.get(11))
-      love.graphics.printf(item.value, item_x, y + 21, item_w, "center")
-    else
-      Icons.draw(item.icon, item_x + 11, y + 11, 18,
-        { 0.34, 0.92, 1.0, 0.92 })
-      love.graphics.setColor(color)
-      love.graphics.setFont(Fonts.get(13))
-      love.graphics.printf(item.value, item_x + 27, y + 5,
-        item_w - 29, "left")
-    end
+    love.graphics.setColor(0.76, 0.73, 0.86, 1)
+    love.graphics.setFont(Fonts.body(10))
+    love.graphics.printf(item.label, item_x, y + 4, item_w, "center")
+    love.graphics.setColor(0.34, 1.0, 0.68, 1)
+    love.graphics.setFont(Fonts.body(13))
+    love.graphics.printf(item.gain .. "  →  " .. item.total,
+      item_x, y + 25, item_w, "center")
   end
 end
 
@@ -322,83 +301,40 @@ function LevelUpScreen:_fusion_hint(choice)
 end
 
 function LevelUpScreen:_draw_evolution_guide(w, h)
-  local progress = self.combat.progression:evolution_progress()
-  if #progress == 0 then return end
-
-  local shown = math.min(3, #progress)
-  local panel_w = math.min(1040, w - 48)
-  local panel_h = math.min(118, h - self.guide_y - 52)
-  if panel_h < 72 then return end
-  local panel_x = (w - panel_w) / 2
-  local column_w = (panel_w - 28) / shown
-
-  love.graphics.setColor(0.065, 0.055, 0.11, 0.98)
-  love.graphics.rectangle(
-    "fill", panel_x, self.guide_y, panel_w, panel_h, 8, 8)
-  love.graphics.setColor(1.0, 0.72, 0.18, 1)
-  love.graphics.rectangle(
-    "line", panel_x, self.guide_y, panel_w, panel_h, 8, 8)
-  love.graphics.setFont(Fonts.get(14))
-  love.graphics.print(
-    "EVOLUTION GUIDE  •  BASE WEAPON R10 + PAIRED SUPPORT"
-      .. "  •  MUSICAL CHEST REQUIRED",
-    panel_x + 14,
-    self.guide_y + 9)
-
-  for index = 1, shown do
-    local record = progress[index]
-    local x = panel_x + 14 + (index - 1) * column_w
-    local icon_y = self.guide_y + 70
-    self.app.assets:draw_weapon_icon(
-      record.base.icon, x + 18, icon_y, 34, { color = record.weapon_ready
-        and { 0.40, 1.0, 0.72, 1 } or { 1.0, 0.72, 0.24, 0.38 } })
-    love.graphics.setColor(1.0, 0.76, 0.24, 1)
-    love.graphics.setFont(Fonts.get(20))
-    love.graphics.print("+", x + 35, icon_y - 12)
-    self.app.assets:draw_support_icon(
-      record.support.icon, x + 58, icon_y, 34, { color = record.support_ready
-        and { 0.40, 1.0, 0.72, 1 } or { 0.62, 0.60, 0.72, 0.25 } })
-    love.graphics.setColor(1.0, 0.76, 0.24, 1)
-    love.graphics.print("=", x + 76, icon_y - 12)
-    self.app.assets:draw_weapon_icon(
-      record.result.icon, x + 104, icon_y, 38, { color = record.eligible
-        and { 1.0, 0.76, 0.24, 1 } or { 0.62, 0.58, 0.72, 0.25 } })
-
-    love.graphics.setColor(settings.ui.text_color)
-    love.graphics.setFont(Fonts.get(14))
-    love.graphics.print(record.result.name, x + 130, self.guide_y + 39)
-
-    local missing = {}
-    if not record.weapon_ready then
-      missing[#missing + 1] = record.base.name .. " R"
-        .. record.weapon_level .. "/" .. record.required_weapon_level
-    end
-    if not record.support_ready then
-      missing[#missing + 1] = record.support.name
-    end
-    love.graphics.setColor(record.eligible
-      and { 0.34, 1.0, 0.68, 1 }
-      or { 1.0, 0.56, 0.34, 1 })
-    love.graphics.setFont(Fonts.get(14))
-    love.graphics.printf(
-      record.eligible
-        and "READY: FIND A MUSICAL CHEST"
-        or ("MISSING: " .. table.concat(missing, " + ")),
-      x + 130,
-      self.guide_y + 61,
-      column_w - 140,
-      "left")
+  local records = {}
+  for id, recipe in pairs(self.app.content.evolutions) do
+    records[#records + 1] = {
+      id = id,
+      base = self.app.content.weapons[recipe.base_weapon],
+      support = self.app.content.passives[recipe.required_passives[1].id],
+      result = self.app.content.weapons[recipe.result_weapon],
+    }
   end
-
-  if #progress > shown then
-    love.graphics.setColor(0.65, 0.63, 0.74, 1)
-    love.graphics.setFont(Fonts.get(14))
-    love.graphics.printf(
-      "+" .. (#progress - shown) .. " more paths in Arsenal Database",
-      panel_x + panel_w - 230,
-      self.guide_y + 9,
-      216,
-      "right")
+  table.sort(records, function(a, b) return a.result.name < b.result.name end)
+  if #records == 0 then return end
+  local columns = w >= 1100 and math.min(8, #records) or math.min(5, #records)
+  local rows = math.ceil(#records / columns)
+  local cell_w = math.min(150, (w - 40) / columns)
+  local cell_h = math.min(70, (h - self.guide_y - 42) / rows)
+  if cell_h < 48 then return end
+  local total_w = cell_w * columns
+  local start_x = (w - total_w) / 2
+  for index, record in ipairs(records) do
+    local column = (index - 1) % columns
+    local row = math.floor((index - 1) / columns)
+    local x = start_x + column * cell_w
+    local y = self.guide_y + row * cell_h
+    local icon_y = y + 23
+    self.app.assets:draw_weapon_icon(record.base.icon, x + 27, icon_y, 34,
+      { color = { 1, 1, 1, 0.72 } })
+    self.app.assets:draw_support_icon(record.support.icon,
+      x + cell_w / 2, icon_y, 34, { color = { 1, 1, 1, 0.72 } })
+    self.app.assets:draw_weapon_icon(record.result.icon,
+      x + cell_w - 27, icon_y, 40, { color = { 1, 1, 1, 1 } })
+    love.graphics.setColor(settings.ui.text_color)
+    love.graphics.setFont(Fonts.body(11))
+    love.graphics.printf(record.result.name, x + 4, y + 45,
+      cell_w - 8, "center")
   end
 end
 
@@ -412,7 +348,7 @@ function LevelUpScreen:_weapon_for_choice(choice)
   return nil
 end
 
-function LevelUpScreen:_draw_choice_icon(choice, x, y, size, color)
+function LevelUpScreen:_draw_choice_icon(choice, x, y, size, _color)
   local weapon = self:_weapon_for_choice(choice)
   if weapon then
     self.app.assets:draw_weapon_icon(weapon.icon, x, y, size, { color = { 1, 1, 1, 1 } })
@@ -434,32 +370,16 @@ function LevelUpScreen:_draw_choice_icon(choice, x, y, size, color)
     end
   end
 
-  love.graphics.setColor(color[1], color[2], color[3], 0.16)
-  love.graphics.circle("fill", x, y, size * 0.48)
-  love.graphics.setColor(color)
-  love.graphics.setLineWidth(5)
   if choice.kind == "guard" then
-    love.graphics.polygon("line",
-      x, y - 32, x + 28, y - 18, x + 22, y + 18, x, y + 34, x - 22, y + 18, x - 28, y - 18)
+    self.app.assets:draw_pickup("defense", x, y, size)
   elseif choice.kind == "heal" then
-    love.graphics.line(x - 24, y, x + 24, y)
-    love.graphics.line(x, y - 24, x, y + 24)
+    self.app.assets:draw_pickup("heal", x, y, size)
   elseif choice.kind == "coins" then
-    love.graphics.circle("line", x, y, 28)
-    love.graphics.circle("line", x, y, 18)
-  elseif choice.id == "quickstep" then
-    love.graphics.line(x - 28, y + 18, x + 24, y - 18)
-    love.graphics.line(x - 28, y - 2, x + 4, y - 26)
-  elseif choice.id == "encore" then
-    love.graphics.circle("line", x - 14, y - 8, 18)
-    love.graphics.circle("line", x + 14, y - 8, 18)
-    love.graphics.line(x - 30, y, x, y + 30, x + 30, y)
+    self.app.assets:draw_xp_gem(4, x, y, size)
   else
-    love.graphics.circle("line", x - 13, y, 18)
-    love.graphics.circle("line", x + 13, y, 18)
-    love.graphics.line(x, y - 30, x, y + 30)
+    self.app.assets:draw_world_interface(5, 1,
+      x - size / 2, y - size / 2, size, size)
   end
-  love.graphics.setLineWidth(1)
 end
 
 function LevelUpScreen:_choice_stats(choice)

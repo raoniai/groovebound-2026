@@ -265,6 +265,10 @@ function Assets.load()
   self.menu_button_icon_quads,
     self.menu_button_icon_cell_w,
     self.menu_button_icon_cell_h = grid_quads(self.menu_button_icons, 5, 2)
+  self.ui_reward_backplate = image(
+    "assets/generated/campaign/ui/reward-backplate.png")
+  self.ui_new_tag = image(
+    "assets/generated/campaign/ui/new-tag.png")
   self.reward_chest_quads,
     self.reward_chest_cell_w,
     self.reward_chest_cell_h = grid_quads(self.reward_chest, 4, 2)
@@ -753,6 +757,24 @@ function Assets:draw_reward_stage(frame, x, y, w, h, opts)
     self.chest_luck_reveal, self.chest_luck_reveal_quads,
     self.chest_luck_reveal_cell_w, self.chest_luck_reveal_cell_h,
     frame, 2, x, y, w, h, opts)
+end
+
+function Assets:draw_ui_backplate(x, y, w, h, opts)
+  opts = opts or {}
+  local iw, ih = self.ui_reward_backplate:getDimensions()
+  love.graphics.setColor(opts.color or { 1, 1, 1, 1 })
+  love.graphics.draw(self.ui_reward_backplate, x, y, opts.rotation or 0,
+    w / iw, h / ih)
+  return true
+end
+
+function Assets:draw_new_tag(x, y, w, h, opts)
+  opts = opts or {}
+  local iw, ih = self.ui_new_tag:getDimensions()
+  love.graphics.setColor(opts.color or { 1, 1, 1, 1 })
+  love.graphics.draw(self.ui_new_tag, x, y, opts.rotation or 0,
+    w / iw, h / ih)
+  return true
 end
 
 function Assets:draw_completion_ui(col, row, x, y, w, h, opts)

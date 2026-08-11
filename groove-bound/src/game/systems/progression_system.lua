@@ -23,6 +23,18 @@ local function card_key(choice)
   return choice.kind .. ":" .. choice.id
 end
 
+local AUTO_FALLBACKS = {
+  heal = { "Second Wind", "Restore 30% maximum health.", 20 },
+  coins = { "Tip Jar", "Bank 25 coins for the results.", 21 },
+  guard = { "Sound Check", "Gain 25 temporary guard.", 22 },
+}
+
+local function fallback_card(kind)
+  local definition = AUTO_FALLBACKS[kind]
+  if not definition then return nil end
+  return card(kind, kind, definition[1], definition[2], definition[3])
+end
+
 function ProgressionSystem:init(opts)
   self.content = assert(opts.content)
   self.inventory = assert(opts.inventory)
@@ -43,6 +55,7 @@ function ProgressionSystem:init(opts)
   self.last_evolution_signature = ""
   self.chests_opened = 0
   self.chest_rewards_claimed = 0
+  self.auto_fallback_kind = nil
 end
 
 function ProgressionSystem:passive_bonus(stat)
@@ -183,9 +196,46 @@ function ProgressionSystem:_evolution_cards(out)
 end
 
 function ProgressionSystem:_fallback_cards(out)
-  out[#out + 1] = card("heal", "heal", "Second Wind", "Restore 30% maximum health.", 20)
-  out[#out + 1] = card("coins", "coins", "Tip Jar", "Bank 25 coins for the results.", 21)
-  out[#out + 1] = card("guard", "guard", "Sound Check", "Gain 25 temporary guard.", 22)
+  out[#out + 1] = fallback_card("heal")
+  out[#out + 1] = fallback_card("coins")
+  out[#out + 1] = fallback_card("guard")
+end
+
+function ProgressionSystem:is_auto_select_available()
+  local pool = {}
+  self:_evolution_cards(pool)
+  self:_weapon_cards(pool)
+  self:_passive_cards(pool)
+  return #pool == 0
+end
+
+function ProgressionSystem:set_auto_fallback(kind)
+  if not AUTO_FALLBACKS[kind] or not self:is_auto_select_available() then
+    return false
+  end
+  self.auto_fallback_kind = kind
+  return true
+end
+
+function ProgressionSystem:can_auto_select()
+  return AUTO_FALLBACKS[self.auto_fallback_kind] ~= nil
+    and self:is_auto_select_available()
+end
+
+function ProgressionSystem:auto_select()
+  if not self:can_auto_select() then return nil end
+  local choice = fallback_card(self.auto_fallback_kind)
+  local result = self:apply(choice)
+  self.upgrade_notice = 2.8
+  self.upgrade_notice_text = "AUTO PICK  •  " .. choice.title
+  return {
+    kind = choice.kind,
+    id = choice.id,
+    title = choice.title,
+    description = choice.description,
+    result = result,
+    auto_selected = true,
+  }
 end
 
 local function sorted_candidates(source, predicate, selected, previous)
@@ -288,15 +338,21 @@ function ProgressionSystem:claim_chest(reward_count)
   assert(reward_count == 1 or reward_count == 3 or reward_count == 5,
     "chest reward count must be 1, 3, or 5")
   local rewards = {}
+  local all_auto_selected = self:can_auto_select()
   for _ = 1, reward_count do
     local choice
-    local evolutions = {}
-    self:_evolution_cards(evolutions)
-    if #evolutions > 0 then
-      table.sort(evolutions, function(a, b) return card_key(a) < card_key(b) end)
-      choice = evolutions[1]
+    if self:can_auto_select() then
+      choice = fallback_card(self.auto_fallback_kind)
     else
-      choice = self:_random_chest_card()
+      all_auto_selected = false
+      local evolutions = {}
+      self:_evolution_cards(evolutions)
+      if #evolutions > 0 then
+        table.sort(evolutions, function(a, b) return card_key(a) < card_key(b) end)
+        choice = evolutions[1]
+      else
+        choice = self:_random_chest_card()
+      end
     end
     if not choice then break end
     local result = self:apply(choice)
@@ -310,6 +366,7 @@ function ProgressionSystem:claim_chest(reward_count)
   end
   self.chests_opened = self.chests_opened + 1
   self.chest_rewards_claimed = self.chest_rewards_claimed + #rewards
+  rewards.auto_selected = all_auto_selected and #rewards > 0
   if #rewards > 0 then
     local names = {}
     for _, reward in ipairs(rewards) do names[#names + 1] = reward.title end
@@ -436,6 +493,7 @@ function ProgressionSystem:snapshot()
     evolutions = self.evolutions,
     chests_opened = self.chests_opened,
     chest_rewards_claimed = self.chest_rewards_claimed,
+    auto_fallback_kind = self.auto_fallback_kind,
   }
 end
 
@@ -457,6 +515,8 @@ function ProgressionSystem:restore(snapshot)
   self.evolutions = snapshot.evolutions or {}
   self.chests_opened = snapshot.chests_opened or 0
   self.chest_rewards_claimed = snapshot.chest_rewards_claimed or 0
+  self.auto_fallback_kind = AUTO_FALLBACKS[snapshot.auto_fallback_kind]
+      and snapshot.auto_fallback_kind or nil
   self.weapon_runtime:sync(self.inventory)
   self:_apply_passive_effects()
   return self:snapshot()

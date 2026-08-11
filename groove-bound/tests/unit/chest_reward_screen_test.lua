@@ -22,15 +22,12 @@ local function fresh()
     function() return popped end
 end
 
-T["luck spin converges, locks the count, then reveals every exact reward"] = function()
+T["spinning chests converge, flash, then reveal every exact reward"] = function()
   local screen = fresh()
-  H.eq(screen:phase(), "count_roll")
+  H.eq(screen:phase(), "converge")
   H.eq(screen:visible_reel_count(), 0)
-  H.is_true(screen:rolling_multiplier() == 1
-    or screen:rolling_multiplier() == 3
-    or screen:rolling_multiplier() == 5)
   screen:update(screen:count_roll_duration() + 0.01)
-  H.eq(screen:phase(), "count_lock")
+  H.eq(screen:phase(), "flash")
   H.eq(screen:visible_reel_count(), 0)
   H.eq(screen:displayed_roll(), 3)
   screen:update(screen:count_lock_duration())
@@ -52,13 +49,19 @@ T["luck spin converges, locks the count, then reveals every exact reward"] = fun
   end
 end
 
-T["chest reveal cannot be skipped until the animation finishes"] = function()
+T["Escape and Circle skip the chest animation directly to rewards"] = function()
   local screen, popped = fresh()
-  H.is_false(screen:keypressed("return"))
+  H.is_true(screen:keypressed("escape"))
+  H.eq(screen:phase(), "complete")
+  H.eq(screen:visible_reel_count(), 3)
   H.eq(popped(), 0)
-  screen:update(screen:animation_duration())
   H.is_true(screen:keypressed("return"))
   H.eq(popped(), 1)
+
+  local controller, controller_popped = fresh()
+  H.is_true(controller:gamepadpressed(nil, "b"))
+  H.eq(controller:phase(), "complete")
+  H.eq(controller_popped(), 0)
 end
 
 T["luck multiplier resolves directly into the reward cards"] = function()
@@ -67,7 +70,7 @@ T["luck multiplier resolves directly into the reward cards"] = function()
   screen:update(screen:count_roll_duration() + 0.01)
   H.eq(screen:displayed_roll(), 3)
   H.is_false(screen.complete)
-  H.eq(screen:phase(), "count_lock")
+  H.eq(screen:phase(), "flash")
   H.is_nil(screen:visible_symbol(3))
   screen:update(screen:count_lock_duration())
   H.eq(screen:phase(), "rewards")

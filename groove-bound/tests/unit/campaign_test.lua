@@ -11,7 +11,8 @@ local definitions = require("src.config.admin_controls")
 
 local T = {}
 
-local function fresh(character_id)
+local function fresh(character_id, opts)
+  opts = opts or {}
   local tuning = Tuning(definitions)
   local ctx = RunContext({ seed = 123, tuning = tuning })
   local stage = Content.stages[1]
@@ -28,8 +29,26 @@ local function fresh(character_id)
     arena = arena,
     player = player,
     character = character,
+    mode = opts.mode,
+    fresh_world_entry = opts.fresh_world_entry,
   })
   return combat, ctx, player, tuning
+end
+
+T["fresh standalone World Tour entries receive bounded starter-build scaling"] = function()
+  local assisted = fresh("joe", {
+    mode = "world_tour", fresh_world_entry = true,
+  })
+  local carried = fresh("joe", {
+    mode = "world_tour", fresh_world_entry = false,
+  })
+  local assist = assisted:fresh_entry_factors()
+  H.is_true(assist.health < 1)
+  H.is_true(assist.damage < 1)
+  H.is_true(assist.spawn < 1)
+  H.eq(carried:fresh_entry_factors().health, 1)
+  H.is_true(assisted:_difficulty_multiplier()
+    < carried:_difficulty_multiplier())
 end
 
 T["campaign exposes two distinct validated three-minute stages"] = function()

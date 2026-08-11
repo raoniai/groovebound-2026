@@ -248,6 +248,41 @@ T["fully capped chest rolls fall back to concrete utility rewards"] = function()
     or rewards[1].kind == "guard")
 end
 
+T["fully capped builds remember and auto-apply the chosen utility reward"] = function()
+  local progression, inventory, _, player = fresh(10, 9090)
+  inventory.capacity = 1
+  progression.passives.capacity = 0
+  H.is_true(progression:is_auto_select_available())
+  H.is_false(progression:can_auto_select())
+  H.is_true(progression:set_auto_fallback("guard"))
+  H.is_true(progression:can_auto_select())
+  local before = player.guard or 0
+  local reward = progression:auto_select()
+  H.eq(reward.kind, "guard")
+  H.eq(player.guard, before + 25)
+
+  local chest = progression:claim_chest(3)
+  H.is_true(chest.auto_selected)
+  H.eq(#chest, 3)
+  for _, item in ipairs(chest) do H.eq(item.kind, "guard") end
+
+  local snapshot = progression:snapshot()
+  H.eq(snapshot.auto_fallback_kind, "guard")
+  local restored = fresh(1, 5150)
+  restored:restore(snapshot)
+  H.eq(restored.auto_fallback_kind, "guard")
+end
+
+T["auto-selection pauses as soon as a build choice becomes legal"] = function()
+  local progression, inventory = fresh(10, 808)
+  inventory.capacity = 1
+  progression.passives.capacity = 0
+  progression:set_auto_fallback("coins")
+  H.is_true(progression:can_auto_select())
+  inventory.capacity = 2
+  H.is_false(progression:can_auto_select())
+end
+
 T["evolution progress reports every missing ingredient explicitly"] = function()
   local progression = fresh(4)
   local progress = progression:evolution_progress()

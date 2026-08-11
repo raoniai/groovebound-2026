@@ -8,8 +8,8 @@ local ChestRewardScreen = class()
 ChestRewardScreen.kind = "chest_reward"
 ChestRewardScreen.opaque = false
 
-local COUNT_ROLL_DURATION = 2.65
-local COUNT_LOCK_DURATION = 0.62
+local COUNT_ROLL_DURATION = 1.85
+local COUNT_LOCK_DURATION = 0.55
 local REWARD_HOLD_DURATION = 0.95
 
 local kind_colors = {
@@ -73,8 +73,8 @@ end
 
 function ChestRewardScreen:phase()
   if self.complete then return "complete" end
-  if self.elapsed < COUNT_ROLL_DURATION then return "count_roll" end
-  if self.elapsed < self:reward_reveal_at() then return "count_lock" end
+  if self.elapsed < COUNT_ROLL_DURATION then return "converge" end
+  if self.elapsed < self:reward_reveal_at() then return "flash" end
   return "rewards"
 end
 
@@ -185,25 +185,25 @@ function ChestRewardScreen:_draw_reward_card(symbol, rect, index)
     math.max(0, self.elapsed - self:reward_reveal_at()
       - (index - 1) * 0.045) / 0.22)
   local lift = (1 - entrance) * 34
-  self.app.assets:draw_reward_stage(
-    self:reward_stage_frame(), rect.x, rect.y + lift, rect.w, rect.h,
+  self.app.assets:draw_ui_backplate(
+    rect.x, rect.y + lift, rect.w, rect.h,
     { color = { 1, 1, 1, entrance } })
 
   self:_draw_symbol(symbol, rect.x + rect.w / 2,
-    rect.y + 82 + lift, math.min(86, rect.w * 0.54))
+    rect.y + rect.h * 0.28 + lift, math.min(132, rect.w * 0.58))
   love.graphics.setColor(color[1], color[2], color[3], entrance)
   love.graphics.setFont(Fonts.get(12))
   love.graphics.printf(kind_labels[symbol.kind] or "REWARD",
-    rect.x + 18, rect.y + 132 + lift, rect.w - 36, "center")
+    rect.x + 18, rect.y + rect.h * 0.49 + lift, rect.w - 36, "center")
   love.graphics.setColor(1, 0.97, 1, entrance)
   love.graphics.setFont(Fonts.get(#self.rewards >= 5 and 15 or 19))
   love.graphics.printf(symbol.title,
-    rect.x + 20, rect.y + 157 + lift, rect.w - 40, "center")
-  if symbol.description and rect.h >= 260 then
+    rect.x + 20, rect.y + rect.h * 0.57 + lift, rect.w - 40, "center")
+  if symbol.description and rect.h >= 360 then
     love.graphics.setColor(0.78, 0.75, 0.88, entrance)
     love.graphics.setFont(Fonts.get(12))
     love.graphics.printf(symbol.description,
-      rect.x + 24, rect.y + 202 + lift, rect.w - 48, "center")
+      rect.x + 24, rect.y + rect.h * 0.73 + lift, rect.w - 48, "center")
   end
 end
 
@@ -216,9 +216,9 @@ function ChestRewardScreen:_draw_orbiting_chests(w, h, progress)
   local center_x = w / 2
   local center_y = math.min(h * 0.50, 310)
   local convergence = smoothstep((progress - 0.58) / 0.42)
-  local radius_x = math.min(218, w * 0.25) * (1 - convergence)
-  local radius_y = math.min(112, h * 0.17) * (1 - convergence)
-  local chest_size = 62 + convergence * 34
+  local radius_x = math.min(310, w * 0.31) * (1 - convergence)
+  local radius_y = math.min(160, h * 0.23) * (1 - convergence)
+  local chest_size = 100 + convergence * 58
   local rotation_speed = 5.4 - progress * 3.2
   for index = 1, 5 do
     local angle = self.elapsed * rotation_speed
@@ -236,38 +236,26 @@ function ChestRewardScreen:_draw_orbiting_chests(w, h, progress)
   end
 end
 
-function ChestRewardScreen:_draw_count_animation(w, h, phase)
+function ChestRewardScreen:_draw_chest_animation(w, h, phase)
   local progress = math.min(1, self.elapsed / COUNT_ROLL_DURATION)
   local center_x = w / 2
   local center_y = math.min(h * 0.50, 310)
-  local selector_size = math.min(330, h - 220, w * 0.40)
-  if phase == "count_roll" then
+  if phase == "converge" then
     self:_draw_orbiting_chests(w, h, progress)
   end
   local lock_elapsed = math.max(0, self.elapsed - COUNT_ROLL_DURATION)
-  local lock_flash = phase == "count_lock"
-    and math.max(0, 1 - lock_elapsed / COUNT_LOCK_DURATION) or 0
-  local selector_scale = phase == "count_lock"
-    and (1 + math.sin(lock_elapsed * 18) * 0.025) or 1
-  self.app.assets:draw_chest_luck(
-    phase == "count_lock" and 5 or self:luck_sprite_frame(),
-    center_x - selector_size * selector_scale / 2,
-    center_y - selector_size * selector_scale / 2,
-    selector_size * selector_scale, selector_size * selector_scale)
-  if lock_flash > 0 then
-    love.graphics.setColor(1.0, 0.78, 0.22, lock_flash * 0.24)
-    love.graphics.circle("fill", center_x, center_y,
-      selector_size * (0.45 + (1 - lock_flash) * 0.25))
+  if phase == "flash" then
+    local flash_progress = math.min(1, lock_elapsed / COUNT_LOCK_DURATION)
+    local flash = math.sin(flash_progress * math.pi)
+    local size = 178 + flash * 24
+    love.graphics.setBlendMode("add")
+    love.graphics.setColor(1, 1, 1, flash * 0.72)
+    love.graphics.circle("fill", center_x, center_y, 82 + flash * 110)
+    love.graphics.setBlendMode("alpha")
+    self.app.assets:draw_reward_chest(8, center_x, center_y, size, {
+      color = { 1, 1, 1, 1 },
+    })
   end
-  love.graphics.setColor(0.018, 0.008, 0.05, 0.92)
-  love.graphics.rectangle("fill", center_x - 82,
-    center_y + selector_size * 0.15, 164, 76, 12, 12)
-  love.graphics.setColor(1.0, 0.80, 0.24, 1)
-  love.graphics.setFont(Fonts.get(52))
-  local multiplier = phase == "count_lock"
-    and (self.reveal.roll or #self.rewards) or self:rolling_multiplier()
-  love.graphics.printf("×" .. multiplier, center_x - 82,
-    center_y + selector_size * 0.15 + 10, 164, "center")
 end
 
 function ChestRewardScreen:draw()
@@ -282,31 +270,23 @@ function ChestRewardScreen:draw()
   love.graphics.printf("MYSTERY CHEST", 0, 30, w, "center")
   love.graphics.setFont(Fonts.get(16))
   love.graphics.setColor(0.86, 0.84, 0.94, 1)
-  love.graphics.printf(phase == "count_roll"
-      and "THE VINYL DECIDES: 1, 3, OR 5 REWARDS"
-      or phase == "count_lock" and ("LUCK LOCKED  ×"
-        .. tostring(self:displayed_roll()))
-      or "LUCK ×" .. tostring(self:displayed_roll()) .. "  •  REWARDS REVEALED",
+  love.graphics.printf(phase == "converge"
+      and "CHESTS CONVERGING"
+      or phase == "flash" and "DROP LOCKED"
+      or "REWARDS REVEALED",
     0, 76, w, "center")
 
-  if phase == "count_roll" or phase == "count_lock" then
-    self:_draw_count_animation(w, h, phase)
+  if phase == "converge" or phase == "flash" then
+    self:_draw_chest_animation(w, h, phase)
   else
     local count = self:visible_reel_count()
     local gap = count >= 5 and 10 or 18
     local available_w = math.min(1180, w - 44)
-    local preferred = count == 1 and 390 or count == 3 and 300 or 210
+    local preferred = count == 1 and 520 or count == 3 and 370 or 226
     local card_w = math.min(preferred, (available_w - gap * (count - 1)) / count)
     local total_w = card_w * count + gap * (count - 1)
-    local card_h = math.min(count == 1 and 360 or count == 3 and 330 or 300, h - 224)
+    local card_h = math.min(count == 1 and 430 or count == 3 and 400 or 350, h - 224)
     local start_x = (w - total_w) / 2
-    local panel_x, panel_y = start_x - 16, 102
-    love.graphics.setColor(0.018, 0.008, 0.05, 0.78)
-    love.graphics.rectangle("fill", panel_x, panel_y,
-      total_w + 32, card_h + 12, 14, 14)
-    love.graphics.setColor(0.42, 0.24, 0.66, 0.5)
-    love.graphics.rectangle("line", panel_x, panel_y,
-      total_w + 32, card_h + 12, 14, 14)
     for index, reward in ipairs(self.rewards) do
       self:_draw_reward_card(reward, {
         x = start_x + (index - 1) * (card_w + gap),
@@ -334,8 +314,7 @@ function ChestRewardScreen:draw()
   Hints.draw(self.complete and {
     { symbol = "cross", label = "Continue" },
   } or {
-    { symbol = "options", label = phase == "count_roll"
-      and "Luck is slowing down" or "Rewards locked in" },
+    { symbol = "circle", label = "Skip animation" },
   }, h - 27, w, { font_size = 12, glyph_size = 17, gap = 18 })
   UIScale.finish()
 end
@@ -346,14 +325,28 @@ function ChestRewardScreen:_continue()
   return true
 end
 
+function ChestRewardScreen:_skip_animation()
+  if self.complete then return false end
+  self.elapsed = self:animation_duration()
+  self.settled_count = #self.rewards
+  self.complete = true
+  if not self.resolution_sound_played and self.app.assets then
+    self.app.assets:play("level_up", 0.05)
+    self.resolution_sound_played = true
+  end
+  return true
+end
+
 function ChestRewardScreen:keypressed(key)
-  if key == "return" or key == "space" or key == "escape" or key == "x" then
+  if key == "escape" and not self.complete then return self:_skip_animation() end
+  if key == "return" or key == "space" or key == "x" then
     return self:_continue()
   end
   return false
 end
 
 function ChestRewardScreen:gamepadpressed(_, button)
+  if button == "b" and not self.complete then return self:_skip_animation() end
   if button == "a" or button == "b" then return self:_continue() end
   return false
 end

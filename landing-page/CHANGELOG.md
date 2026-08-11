@@ -2,6 +2,38 @@
 
 This file is the local implementation record. Add a new entry at the top after every material site pass.
 
+## 2026-08-11 | SITE-023 | v0.7.0 public World Tour release
+
+Updated Home, Catalog, Builder, the shared release badge, footer release-note
+links, and World Tour record copy for the v0.7.0 Mac distribution. The stable
+GitHub Latest DMG route remains unchanged, while public-facing copy now states
+that the Prologue plus Funk, Soul, and Disco are included in the download and
+keeps the six later World Tour routes clearly marked as future work.
+
+## 2026-08-11 | SITE-022 | Cross-cell sprite isolation repair
+
+Re-audited all 160 World Tour derivatives as labeled contact sheets and replaced fixed-cell extraction with atlas-wide connected-component segmentation. Each transparent sprite now receives only the artwork assigned to its authored identity, while complete subjects that cross nominal grid lines are recovered instead of clipped. This removed neighboring enemy, prop, badge, interface, perk, chest, and completion-frame fragments from corners and edges; recovered 36 sprites beyond their original cell bounds; discarded isolated pixel noise; and retained exact alpha trimming, native resolution, source hashes, and the original atlases unchanged.
+
+## 2026-08-11 | SITE-021 | Individual World Tour sprite extraction
+
+Replaced every live World Tour atlas-cell consumer with one of 160 individually extracted transparent PNGs organized by enemies, environments, floors, mechanics, interface, evolutions, perks, and chest systems. Added a reusable source-preserving extractor and SHA-256 manifest, trimmed every derivative to its exact visible alpha bounds without resizing, cleared hidden RGB and residual chroma green, rebuilt the chest animation from eight independent frames, and removed forced square proportions so floating and gallery artwork remains centered without stretching. The original runtime and website atlas copies remain untouched as provenance sources only.
+
+## 2026-08-11 | SITE-020 | Direct copy, Prologue-first flow, and complete World Tour catalog
+
+Rewrote the Home and Catalog copy in Raoni's direct voice, placed the complete Prologue experience before World Tour, and removed the internal V1 label from public-facing website and game interface text. Expanded the Catalog from 62 to 116 records with 24 World Tour enemies, nine worlds, 19 permanent perks, and two chests. Mixed World Tour enemies, perks, and chests into the draggable Home, Catalog, and Builder compositions; replaced short fixed hovering with slow multi-direction roaming while preserving drag and keyboard control plus reduced-motion behavior; and corrected the musical chest animation to use the source atlas cell's 1:2 proportions without stretching.
+
+## 2026-08-11 | SITE-019 | World Tour V1 visual sync
+
+Added a full World Tour V1 chapter to Home from canonical active-branch content and byte-identical runtime art. The new presentation separates the public v0.6.0 Prologue build from the local World Tour preview; maps all six core and three secret world slots; presents the playable Funk, Soul, and Disco two-stage routes with their enemy, environment, and floor atlases; and exposes the complete current World Tour interface, mechanics, perk, chest, completion, progression, and second evolution graphic set. Expanded the Catalog from 54 to 62 records with all sixteen authentic fusion icons and recipes. Added keyboard-accessible world tabs, an animated musical chest with a reduced-motion state, responsive layouts, a direct World Tour navigation route on all three pages, and a source-parity note beside the copied site assets.
+
+## 2026-08-10 | SITE-018 | Compact archive and Home trailer
+
+Rebuilt the Catalog as a denser six-column desktop archive with smaller equal-size records, larger icon-led filters that wrap without horizontal scrolling, name-only cards, and a consistent plus affordance for opening full details. Widened section headings and removed low-value experiment labels to reduce unnecessary line breaks and visual noise. Added the authentic 30-second Groove Bound trailer immediately below the Home hero as a large centered 16:9 player with its original promotional thumbnail.
+
+## 2026-08-10 | SITE-017 | Viewport-centred primary navigation
+
+Anchored the desktop Home, Catalog, and Builder menu to the true horizontal centre of the viewport instead of centring it inside the remaining space between the GB icon and release actions. The left identity and right CTA blocks now remain independent, while the existing compact mobile menu is unchanged.
+
 ## 2026-08-10 | SITE-016 | v0.6.0 release synchronisation
 
 Updated Home, Catalog, and Builder to identify public build v0.6.0, link its release notes, and send every Mac download action through GitHub's stable Latest-release DMG route so future package replacements do not strand older page links.

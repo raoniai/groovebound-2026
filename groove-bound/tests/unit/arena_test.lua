@@ -96,7 +96,7 @@ T["tall scenery trims only its top ten percent for passing behind"] = function()
   H.is_true(a:blocked(460, 470, 12))
 end
 
-T["tree decorations block their base while the canopy remains pass-behind"] = function()
+T["tree decorations block their full body with only a narrow canopy lane"] = function()
   local a = Arena({
     width = 1000,
     height = 800,
@@ -107,11 +107,27 @@ T["tree decorations block their base while the canopy remains pass-behind"] = fu
         icon = { col = 1, row = 2 } },
     },
   })
-  H.is_false(a:blocked(500, 390, 12), "canopy must not become a wall")
+  H.is_false(a:blocked(500, 326, 8), "small top lane remains pass-behind")
+  H.is_true(a:blocked(500, 350, 12), "tree body must not admit the player")
+  H.is_true(a:blocked(500, 400, 12), "trunk must not blend with the player")
   H.is_true(a:blocked(500, 448, 12), "planter and trunk base must block")
   local x, y = a:resolve_movement(430, 448, 500, 448, 12)
   H.eq(x, 430)
   H.eq(y, 448)
+end
+
+T["pass-behind scenery exposes almost all of its height as collision"] = function()
+  local a = Arena({
+    width = 1000,
+    height = 800,
+    wall = 20,
+    obstacles = {
+      { x = 400, y = 200, w = 120, h = 300,
+        icon = { col = 1, row = 1 }, pass_behind = true },
+    },
+  })
+  H.is_false(a:blocked(460, 209, 4))
+  H.is_true(a:blocked(460, 228, 8))
 end
 
 T["safe drop placement moves a chest out of blocked geometry deterministically"] = function()

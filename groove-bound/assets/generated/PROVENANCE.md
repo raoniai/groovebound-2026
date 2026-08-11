@@ -259,6 +259,28 @@ reward-card row. The replacement retains the vinyl luck chest, adds safe cell
 padding, and uses five restrained speaker-texture card backplates. The runtime
 consumer also samples each cell with a two-pixel UV inset.
 
+### Atlas isolation repair
+
+Repaired 11 August 2026 with
+`scripts/extract_world_tour_runtime_sprites.py`. The repair covers the 147
+transparent World Tour cells used by the game across enemy, environment,
+chest, mechanic, interface, perk, menu and expansion-evolution atlases. It
+segments connected alpha components across each full source sheet, assigns
+every component to one authored cell, removes isolated pixel noise, and then
+rebuilds the same grid with uniformly scaled, centred sprites and at least an
+eight-pixel transparent gutter. This prevents neighboring subjects and edge
+fragments from appearing in adjacent frames without changing runtime loaders,
+row/column mappings, content IDs, mechanics or timing.
+
+The musical chest sheet was additionally normalised from a malformed square
+1256×1256 canvas, whose 4×2 mapping produced 314×628 cells, to a 1600×800
+4×2 atlas with eight square 400×400 cells. This corrects the chest animation's
+proportions while retaining its existing frame order. Tightly cropped audit
+derivatives and their hashes live under
+`campaign/world-tour-sprites/`; they are build intermediates and are excluded
+from the packaged game. The original generated source candidates remain
+unchanged under `source-candidates/`.
+
 `source-candidates/completion-ui-atlas-source.png` supplies the asset-driven
 Backbeat Streets, Orbit Line, campaign victory and Funk mastery crests plus
 encore chest, resonance, enemy and boss badges. Both new sources were generated
@@ -503,3 +525,22 @@ nearest-neighbour sampling, keyed from chroma green to RGBA and inspected for
 cell-boundary isolation. Runtime projectile art deliberately aliases the
 matching base-weapon projectile cell; only the inventory/evolution identity
 uses the new atlas, avoiding a hidden expansion of the 6x4 projectile contract.
+
+## Level-up and reward interface sprites
+
+**Generated:** 2026-08-11 with OpenAI image generation in Codex built-in mode
+
+| Runtime file | Role |
+|---|---|
+| `campaign/ui/new-tag.png` (512x214 RGBA) | Dedicated magenta NEW corner badge for progression cards |
+| `campaign/ui/reward-backplate.png` (241x214 RGBA) | Tight reusable reward/card backplate promoted from the project chest reveal atlas extraction |
+
+The NEW-tag prompt requested one isolated arcade pixel-art corner badge with
+the exact word NEW, hot-magenta enamel, cyan edge light, restrained gold
+hardware, no extra text, no shadow and a uniform green chroma background. The
+untouched generated source is retained at
+`source-candidates/ui-new-tag-source.png`; the runtime image was converted with
+the bundled soft-matte/despill helper and resized with nearest-neighbour
+sampling. The reward backplate is first-party project art extracted from
+`campaign/chest-luck-reveal-atlas.png`; this promoted tight crop prevents atlas
+padding from shrinking information inside wide and tall runtime cards.

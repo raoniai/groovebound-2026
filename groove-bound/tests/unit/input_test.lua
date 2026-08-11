@@ -107,6 +107,21 @@ T["gamepad aim persists when stick returns to center"] = function()
   H.near(ay, -1, 0.0001, "last stick direction must persist")
 end
 
+T["released gamepad aim target follows the moving player"] = function()
+  local input, b = make_input(fake_backend())
+  b.axes.rightx = 1
+  input:aim_vector(100, 120, nil)
+  H.eq(input.last_pointer_world_x, 172)
+  H.eq(input.last_pointer_world_y, 120)
+
+  b.axes.rightx = 0
+  local ax, ay = input:aim_vector(180, 210, nil)
+  H.near(ax, 1, 0.0001)
+  H.near(ay, 0, 0.0001)
+  H.eq(input.last_pointer_world_x, 252)
+  H.eq(input.last_pointer_world_y, 210)
+end
+
 T["action key mapping"] = function()
   H.is_true(Input.is_action("escape", "pause"))
   H.is_true(Input.is_action("p", "pause"))

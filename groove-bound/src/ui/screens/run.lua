@@ -87,6 +87,7 @@ function RunScreen:enter()
     character = self.character,
     stages = self.stages,
     mode = self.mode,
+    fresh_world_entry = self.mode == "world_tour" and not self.opts.build,
   })
   if self.mode == "world_tour" and self.opts.build then
     self.combat.progression:restore(self.opts.build)
@@ -199,11 +200,12 @@ function RunScreen:exit()
 end
 
 function RunScreen:update(dt)
-  local time_scale = self.app.tuning:get("simulation.time_scale")
+  local time_scale = self.app.tuning
+    and self.app.tuning:get("simulation.time_scale") or 1
   local sim_dt = dt * time_scale
   self.seed_notice = math.max(0, self.seed_notice - dt)
   local outcome = self.pending_outcome
-  if not outcome then
+  if not outcome and self.ctx then
     self.ctx:update(sim_dt)
     self.player:update(sim_dt, self.input, self.camera, self.arena)
     self.ctx.world:moved(self.player)
@@ -229,11 +231,15 @@ function RunScreen:update(dt)
 
   local chest_reveal = self.combat:take_pending_chest_reveal()
   if chest_reveal and not self.choice_open then
-    self.choice_open = true
-    self.pending_outcome = outcome
-    local ChestRewardScreen = require("src.ui.screens.chest_reward")
-    self.app.states:push(ChestRewardScreen(
-      self.app, chest_reveal))
+    if chest_reveal.auto_selected then
+      self.choice_open = false
+    else
+      self.choice_open = true
+      self.pending_outcome = outcome
+      local ChestRewardScreen = require("src.ui.screens.chest_reward")
+      self.app.states:push(ChestRewardScreen(
+        self.app, chest_reveal))
+    end
   elseif outcome == "stage_clear" and not self.transitioning then
     self.pending_outcome = nil
     self.transitioning = true
@@ -265,9 +271,14 @@ function RunScreen:update(dt)
     self.finished = true
     self:_show_results("defeat")
   elseif self.combat.xp:has_pending_choice() and not self.choice_open then
-    self.choice_open = true
-    local LevelUpScreen = require("src.ui.screens.level_up")
-    self.app.states:push(LevelUpScreen(self.app, self.combat))
+    if self.combat.progression:can_auto_select() then
+      self.combat.progression:auto_select()
+      self.combat.xp:consume_choice()
+    else
+      self.choice_open = true
+      local LevelUpScreen = require("src.ui.screens.level_up")
+      self.app.states:push(LevelUpScreen(self.app, self.combat))
+    end
   end
 end
 
@@ -402,20 +413,31 @@ function RunScreen:_draw_world_mechanic_hud()
   local Fonts = require("src.ui.fonts")
   local snapshot = self.world_mechanic:snapshot()
   local w = love.graphics.getWidth()
-  local panel_w = math.min(440, w - 50)
-  local x = (w - panel_w) / 2
+  local panel_w = math.min(318, w - 36)
+  local panel_h = 168
+  local x = w - panel_w - 18
+  local y = 154
   local boosted = snapshot.boost_remaining > 0
-  love.graphics.setColor(0.018, 0.008, 0.05, 0.94)
-  love.graphics.rectangle("fill", x, 92, panel_w, 58, 10, 10)
+  self.app.assets:draw_ui_backplate(x, y, panel_w, panel_h, {
+    color = { 0.82, 0.74, 1.0, 0.94 },
+  })
   local mechanic_id = self.world_mechanic.definition.id
   local icon_col = mechanic_id == "funk_hold_the_pocket" and 2
     or mechanic_id == "soul_resonance_reserve" and 3 or 4
-  self.app.assets:draw_world_interface(icon_col, 1, x + 8, 96, 50, 50)
+  self.app.assets:draw_world_interface(icon_col, 1, x + 18, y + 18, 78, 78)
+  local mechanic_row = mechanic_id == "soul_resonance_reserve" and 1 or 2
+  if mechanic_id == "funk_hold_the_pocket" then
+    self.app.assets:draw_funk_pad(snapshot.frame,
+      x + panel_w - 102, y + 18, 82, 82)
+  else
+    self.app.assets:draw_world_mechanic(snapshot.frame, mechanic_row,
+      x + panel_w - 102, y + 18, 82, 82)
+  end
   local success = snapshot.notice > 0
   love.graphics.setColor(success and { 0.42, 1.0, 0.70, 1 }
     or boosted and { 1.0, 0.76, 0.20, 1 }
     or { 0.30, 0.94, 1.0, 1 })
-  love.graphics.setFont(Fonts.get(16))
+  love.graphics.setFont(Fonts.body(16))
   local title = success and snapshot.reward_text
     or mechanic_id == "soul_resonance_reserve"
       and (boosted and ("RESONANCE RESTORED  •  CHAIN ×" .. snapshot.chain)
@@ -425,18 +447,16 @@ function RunScreen:_draw_world_mechanic_hud()
         or "STEP INTO THE MOVING SPOTLIGHT")
     or boosted and ("POCKET BOOST  •  CHAIN ×" .. snapshot.chain)
       or "MOVE TO THE LIT BASS PAD"
-  love.graphics.printf(title,
-    x + 58, 101, panel_w - 68, "center")
+  love.graphics.printf(title, x + 24, y + 102, panel_w - 48, "center")
   love.graphics.setColor(0.80, 0.78, 0.90, 1)
-  love.graphics.setFont(Fonts.get(12))
+  love.graphics.setFont(Fonts.body(12))
   local detail = success and "REWARD SECURED  •  KEEP THE CHAIN ALIVE"
     or mechanic_id == "soul_resonance_reserve"
       and "Charge clean resonance for bounded healing"
     or mechanic_id == "disco_spotlight_flow"
       and "Ride the prism lane for a speed burst"
     or "Catch the gold downbeat for a speed burst"
-  love.graphics.printf(detail,
-    x + 58, 127, panel_w - 68, "center")
+  love.graphics.printf(detail, x + 24, y + 132, panel_w - 48, "center")
 end
 
 function RunScreen:boss_warning_state()

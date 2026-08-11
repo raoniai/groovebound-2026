@@ -97,6 +97,11 @@ function Input:aim_vector(px, py, camera)
     if len > 0.001 then
       self.last_aim_x, self.last_aim_y = dx / len, dy / len
     end
+  else
+    -- The reticle is a direction marker, not a world-space waypoint. Keep it
+    -- anchored to the moving player after the stick is released.
+    self.last_pointer_world_x = px + self.last_aim_x * 72
+    self.last_pointer_world_y = py + self.last_aim_y * 72
   end
 
   return self.last_aim_x, self.last_aim_y

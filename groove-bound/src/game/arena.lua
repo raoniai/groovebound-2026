@@ -78,15 +78,14 @@ end
 
 local function decoration_collision_rect(decoration)
   local size = decoration.size or 0
-  local width = decoration.hitbox_w or size * 0.58
-  local height = decoration.hitbox_h or size * 0.24
+  local width = decoration.hitbox_w or size * 0.68
+  local top_open = decoration.hitbox_top_open or size * 0.10
   local offset_x = decoration.hitbox_offset_x or 0
-  local offset_y = decoration.hitbox_offset_y or size * 0.30
   return {
     x = decoration.x + offset_x - width / 2,
-    y = decoration.y + offset_y - height / 2,
+    y = decoration.y - size / 2 + top_open,
     w = width,
-    h = height,
+    h = size - top_open,
   }
 end
 
@@ -359,9 +358,9 @@ function Arena:draw_overlays()
     self.assets:draw_environment_upper(
       decoration.icon, decoration.x, decoration.y, decoration.size,
       {
-        color = { 1, 1, 1, 0.72 },
+        color = { 1, 1, 1, 1 },
         atlas = decoration.atlas or environment_atlas,
-        fraction = decoration.overlay_fraction or 0.54,
+        fraction = decoration.overlay_fraction or 1,
       })
   end
   for _, obstacle in ipairs(self.obstacles) do
@@ -373,7 +372,7 @@ function Arena:draw_overlays()
         math.max(obstacle.w, obstacle.h),
         {
           atlas = obstacle.atlas or environment_atlas,
-          fraction = obstacle.overlay_fraction or 0.58,
+          fraction = obstacle.overlay_fraction or 1,
         })
     end
   end

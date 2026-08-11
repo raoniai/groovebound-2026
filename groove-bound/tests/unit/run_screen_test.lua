@@ -153,6 +153,27 @@ T["a final chest reveal and stage confirmation complete before the cutscene"] = 
   H.eq(pushed[3], "cutscene")
 end
 
+T["auto-selected capped chest rewards stay in play without opening a modal"] = function()
+  local pushed = 0
+  local queue = { { roll = 3, auto_selected = true, rewards = {
+    { kind = "guard", id = "guard", title = "Sound Check" },
+  } } }
+  local screen = RunScreen({
+    states = { push = function() pushed = pushed + 1 end },
+  }, {})
+  screen.seed_notice = 0
+  screen.choice_open = false
+  screen.transitioning = false
+  screen.finished = false
+  screen.combat = {
+    take_pending_chest_reveal = function() return table.remove(queue, 1) end,
+    xp = { has_pending_choice = function() return false end },
+  }
+  screen:update(0.1)
+  H.eq(pushed, 0)
+  H.is_false(screen.choice_open)
+end
+
 T["World Tour stage confirmation advances into its second playable arena"] = function()
   local began
   local screen = RunScreen({ content = Content }, {

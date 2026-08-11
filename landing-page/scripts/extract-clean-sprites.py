@@ -10,6 +10,7 @@ onto a square transparent canvas.
 
 from __future__ import annotations
 
+import argparse
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -151,7 +152,52 @@ def extract_grouped_atlas(
         canvas.save(output_dir / f"{prefix}-{index + 1}.png", optimize=True)
 
 
+def extract_grid_atlas(
+    source_path: Path,
+    output_dir: Path,
+    prefix: str,
+    start_index: int,
+    columns: int,
+    rows: int,
+) -> None:
+    """Copy strict atlas cells without altering their authentic alpha artwork."""
+    source = Image.open(source_path).convert("RGBA")
+    if source.width % columns or source.height % rows:
+        raise RuntimeError(f"Atlas grid does not divide evenly: {source_path}")
+    cell_width = source.width // columns
+    cell_height = source.height // rows
+    output_dir.mkdir(parents=True, exist_ok=True)
+    for row in range(rows):
+        for column in range(columns):
+            index = start_index + row * columns + column
+            cell = source.crop((
+                column * cell_width,
+                row * cell_height,
+                (column + 1) * cell_width,
+                (row + 1) * cell_height,
+            ))
+            cell.save(output_dir / f"{prefix}-{index}.png", optimize=True)
+
+
 def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--world-tour-evolutions-only",
+        action="store_true",
+        help="Extract the second eight-cell evolution atlas without touching existing site sprites.",
+    )
+    args = parser.parse_args()
+    if args.world_tour_evolutions_only:
+        extract_grid_atlas(
+            ROOT / "groove-bound/assets/generated/evolved-weapon-icons-atlas-2.png",
+            ROOT / "landing-page/assets/sprites/evolved",
+            "evolved",
+            start_index=9,
+            columns=4,
+            rows=2,
+        )
+        return
+
     extract_grouped_atlas(
         ROOT / "groove-bound/assets/generated/enemy-variants-atlas.png",
         ROOT / "landing-page/assets/sprites/enemies",
