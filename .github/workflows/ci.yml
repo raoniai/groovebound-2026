@@ -2,7 +2,10 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
+      - codex/world-tour-v1
+      - codex/windows-version
   pull_request:
 
 jobs:

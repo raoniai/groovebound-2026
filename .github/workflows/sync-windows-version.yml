@@ -1,0 +1,61 @@
+name: Sync Windows version branch
+
+on:
+  push:
+    branches:
+      - codex/world-tour-v1
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-windows-version
+  cancel-in-progress: false
+
+env:
+  CANONICAL_BRANCH: codex/world-tour-v1
+  WINDOWS_BRANCH: codex/windows-version
+
+jobs:
+  sync:
+    if: github.repository == 'raoniai/groovebound-2026'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out the Windows branch
+        uses: actions/checkout@v4
+        with:
+          ref: codex/windows-version
+          fetch-depth: 0
+
+      - name: Merge the latest canonical source
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin \
+            "+refs/heads/${CANONICAL_BRANCH}:refs/remotes/origin/${CANONICAL_BRANCH}" \
+            "+refs/heads/${WINDOWS_BRANCH}:refs/remotes/origin/${WINDOWS_BRANCH}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git merge --no-edit "origin/${CANONICAL_BRANCH}"
+
+      - name: Install regression dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y luajit lua-check love xvfb
+
+      - name: Verify merged source
+        working-directory: groove-bound
+        run: |
+          make test
+          make lint
+          xvfb-run -a env GROOVE_BOUND_SMOKE=1 love .
+
+      - name: Audit desktop portability
+        run: |
+          python3 skills/groove-bound-desktop-distribution/scripts/portability_audit.py --root .
+          git diff --check "origin/${WINDOWS_BRANCH}..HEAD"
+
+      - name: Push the synchronized Windows branch
+        run: git push origin "HEAD:${WINDOWS_BRANCH}"
