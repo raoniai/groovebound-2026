@@ -27,11 +27,9 @@ def sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
-def copy_streams(destination: Path, *sources: Path) -> None:
-    with destination.open("wb") as output:
-        for source in sources:
-            with source.open("rb") as handle:
-                shutil.copyfileobj(handle, output, length=1024 * 1024)
+def append_file(destination: Path, source: Path) -> None:
+    with destination.open("ab") as output, source.open("rb") as handle:
+        shutil.copyfileobj(handle, output, length=1024 * 1024)
 
 
 def windows_version(version: str) -> str:
@@ -85,7 +83,7 @@ def main() -> int:
     shutil.copytree(runtime, stage)
 
     target_exe = stage / f"{PRODUCT}.exe"
-    copy_streams(target_exe, love_exe, love_file)
+    shutil.copy2(love_exe, target_exe)
     for development_exe in (stage / "love.exe", stage / "lovec.exe"):
         if development_exe.exists():
             development_exe.unlink()
@@ -108,6 +106,21 @@ def main() -> int:
         ]
         subprocess.run(command, check=True)
         branding = "icon_and_version_metadata"
+
+    # Resource editors rewrite the PE image. Brand the base runtime first, then
+    # append the game ZIP so the fused payload and its central directory remain
+    # byte-for-byte intact at the end of the executable.
+    append_file(target_exe, love_file)
+    try:
+        with zipfile.ZipFile(target_exe) as fused:
+            bad = fused.testzip()
+            fused_names = set(fused.namelist())
+    except zipfile.BadZipFile as error:
+        raise SystemExit(f"fused executable payload is unreadable: {error}") from error
+    if bad:
+        raise SystemExit(f"fused executable payload failed at {bad}")
+    if "release-build.txt" not in fused_names:
+        raise SystemExit("fused executable is missing the release marker")
 
     instructions = (GAME_ROOT / "packaging/windows/README-Windows.txt").read_text()
     (stage / "README-Windows.txt").write_text(
