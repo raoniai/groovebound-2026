@@ -98,6 +98,13 @@ function love.load()
   -- CI boot smoke: proving LÖVE reaches this point is sufficient. The flag is
   -- never set by normal play or packaged releases.
   if os.getenv("GROOVE_BOUND_SMOKE") == "1" then
+    if os.getenv("GROOVE_BOUND_SMOKE_MARKER") == "1" then
+      local written, marker_error = love.filesystem.write(
+        "smoke-ok.txt",
+        "boot-complete\n"
+      )
+      assert(written, "packaged smoke marker failed: " .. tostring(marker_error))
+    end
     love.event.quit(0)
   end
 end

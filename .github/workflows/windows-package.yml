@@ -100,17 +100,32 @@ jobs:
         working-directory: groove-bound
         shell: powershell
         run: |
+          $smokeRoot = Join-Path $PWD "dist\smoke-appdata"
+          New-Item -ItemType Directory -Force -Path $smokeRoot | Out-Null
+          $env:APPDATA = $smokeRoot
           $env:GROOVE_BOUND_SMOKE = "1"
+          $env:GROOVE_BOUND_SMOKE_MARKER = "1"
           $process = Start-Process `
             -FilePath "dist\unpacked\Groove Bound\Groove Bound.exe" `
             -PassThru
-          try {
-            Wait-Process -Id $process.Id -Timeout 60 -ErrorAction Stop
-          } catch {
-            Stop-Process -Id $process.Id -Force -ErrorAction SilentlyContinue
-            throw "packaged Windows boot smoke timed out"
+          $deadline = (Get-Date).AddSeconds(60)
+          $marker = $null
+          while ((Get-Date) -lt $deadline -and -not $marker -and -not $process.HasExited) {
+            Start-Sleep -Seconds 1
+            $process.Refresh()
+            $marker = Get-ChildItem -Path $smokeRoot -Filter "smoke-ok.txt" -File -Recurse -ErrorAction SilentlyContinue |
+              Select-Object -First 1
           }
-          if ($process.ExitCode -ne 0) { throw "packaged Windows boot smoke failed" }
+          if (-not $marker) {
+            Stop-Process -Id $process.Id -Force -ErrorAction SilentlyContinue
+            throw "packaged Windows boot did not reach the validated boot marker"
+          }
+          if ((Get-Content $marker.FullName -Raw).Trim() -ne "boot-complete") {
+            throw "packaged Windows boot marker is invalid"
+          }
+          if (-not $process.HasExited) {
+            Stop-Process -Id $process.Id -Force
+          }
 
       - name: Upload Windows candidate
         uses: actions/upload-artifact@v4
