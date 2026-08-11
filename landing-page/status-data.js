@@ -1,12 +1,96 @@
 window.GROOVE_STATUS = {
-  "generatedAt": "2026-08-11T12:28:06.920Z",
-  "generatedAtLabel": "11 Aug 2026, 10:28 pm",
+  "generatedAt": "2026-08-11T13:29:47.491Z",
+  "generatedAtLabel": "11 Aug 2026, 11:29 pm",
   "game": {
     "branch": "codex/world-tour-v1",
-    "commit": "6bcd920",
+    "commit": "50f6421",
     "dirty": false,
     "workingChanges": 0,
     "history": [
+      {
+        "hash": "50f6421",
+        "date": "2026-08-11",
+        "dateLabel": "2026-08-11",
+        "sortKey": "2026-08-11T23:19:02+10:00",
+        "subject": "release: publish desktop v0.7.1"
+      },
+      {
+        "hash": "fd76f3b",
+        "date": "2026-08-11",
+        "dateLabel": "2026-08-11",
+        "sortKey": "2026-08-11T23:13:33+10:00",
+        "subject": "release: publish desktop v0.7.1"
+      },
+      {
+        "hash": "b105447",
+        "date": "2026-08-11",
+        "dateLabel": "2026-08-11",
+        "sortKey": "2026-08-11T23:02:26+10:00",
+        "subject": "ci: add headless fused Windows bootstrap"
+      },
+      {
+        "hash": "b532c2c",
+        "date": "2026-08-11",
+        "dateLabel": "2026-08-11",
+        "sortKey": "2026-08-11T22:55:59+10:00",
+        "subject": "fix: brand Windows runtime before fusion"
+      },
+      {
+        "hash": "b81c444",
+        "date": "2026-08-11",
+        "dateLabel": "2026-08-11",
+        "sortKey": "2026-08-11T22:50:13+10:00",
+        "subject": "ci: drive Windows smoke through game arguments"
+      },
+      {
+        "hash": "79b1ce6",
+        "date": "2026-08-11",
+        "dateLabel": "2026-08-11",
+        "sortKey": "2026-08-11T22:45:08+10:00",
+        "subject": "ci: verify packaged Windows boot marker"
+      },
+      {
+        "hash": "e79a7f0",
+        "date": "2026-08-11",
+        "dateLabel": "2026-08-11",
+        "sortKey": "2026-08-11T22:37:45+10:00",
+        "subject": "ci: build LuaJIT on Windows runners"
+      },
+      {
+        "hash": "e0d2586",
+        "date": "2026-08-11",
+        "dateLabel": "2026-08-11",
+        "sortKey": "2026-08-11T22:34:10+10:00",
+        "subject": "ci: package Windows inside branch sync"
+      },
+      {
+        "hash": "46748a4",
+        "date": "2026-08-11",
+        "dateLabel": "2026-08-11",
+        "sortKey": "2026-08-11T22:31:37+10:00",
+        "subject": "Merge remote-tracking branch 'origin/codex/world-tour-v1' into codex/world-tour-v1"
+      },
+      {
+        "hash": "789d1f3",
+        "date": "2026-08-11",
+        "dateLabel": "2026-08-11",
+        "sortKey": "2026-08-11T22:31:05+10:00",
+        "subject": "ci: chain Windows packaging after branch sync"
+      },
+      {
+        "hash": "c7d570d",
+        "date": "2026-08-11",
+        "dateLabel": "2026-08-11",
+        "sortKey": "2026-08-11T22:31:02+10:00",
+        "subject": "docs: record v0.7.1 release state"
+      },
+      {
+        "hash": "5016d4f",
+        "date": "2026-08-11",
+        "dateLabel": "2026-08-11",
+        "sortKey": "2026-08-11T22:28:06+10:00",
+        "subject": "docs: refresh synchronized release status"
+      },
       {
         "hash": "6bcd920",
         "date": "2026-08-11",

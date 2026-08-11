@@ -14,20 +14,20 @@ This document answers four questions: what is authoritative, what the latest ver
 
 <!-- LIVE-SNAPSHOT:START -->
 
-_Generated from live repository evidence: 2026-08-11 22:27 AEST_
+_Generated from live repository evidence: 2026-08-11 23:29 AEST_
 
 | Field | Live value |
 |---|---|
 | Branch | `codex/world-tour-v1` |
-| HEAD | `a6d8132` — feat: ship v0.7.1 menu and controller overhaul |
+| HEAD | `50f6421` — release: publish desktop v0.7.1 |
 | Upstream | `origin/codex/world-tour-v1` |
-| Compared with `origin/main` | 27 ahead, 0 behind |
-| Working changes | 27 files: 0 game, 18 site, 0 skills/package |
-| Lua source/test files | 109 source, 55 test |
-| Game tree excluding `dist/` | 488.3 MiB |
+| Compared with `origin/main` | 43 ahead, 0 behind |
+| Working changes | 1 files: 0 game, 1 site, 0 skills/package |
+| Lua source/test files | 112 source, 58 test |
+| Game tree excluding `dist/` | 488.5 MiB |
 | Current `.love` artifact | 161.1 MiB |
-| Test suite | passed: 342 tests, 0 failures |
-| Lint | passed: 0 warnings / 0 errors in 166 files |
+| Test suite | passed: 353 tests, 0 failures |
+| Lint | passed: 0 warnings / 0 errors in 172 files |
 | Skill packages | 11 |
 
 <!-- LIVE-SNAPSHOT:END -->
@@ -91,20 +91,22 @@ The public landing site is a separate static presentation under `landing-page/`.
 | Combat readability and HUD | Published in v0.6.0, tests passed, and visually sampled | Hit slide/pulse, camera shake, damage flash, HP-loss callout, concern below 20%, stronger critical state below 5%, transparent enlarged aim reticle, gameplay-only OS cursor hiding, compact right-side power-up notices, separate 50% panel shades, and tiled nine-slice slot frames with fixed corners | Full combat-feel pass with flash/reduced-flash options and physical controller |
 | Character, upgrade, and results interface | Published in v0.7.1, tests passed, and visually sampled | Anton/Oswald typography, modular nine-slice upgrade cards, relevant-equipped evolution rows only, exact icon-led gain-to-total attributes, generated NEW badge, pickup-art utility choices, existing reroll/skip sprite CTAs, and bright sprite-backed menu focus | Manual defeat/victory results pass and final small-screen readability review |
 | Save system | Version 2 profiles and slots | Save, migration, profile, export and World Tour session tests | Cross-platform clean-machine fixtures |
-| Landing page and repository README | v0.7.1 release copy committed and pushed at `a6d8132`; public deployment not configured | Home, Catalog and Builder release source identifies v0.7.1 and keeps the stable Latest DMG route; the route publicly resolves to the v0.7.1 DMG | Preserve and complete the separate uncommitted campaign/Builder redesign; physical-phone refresh, trailer audio check, explicit deployment destination, and `main` promotion |
+| Landing page and repository README | Windows and macOS v0.7.1 download copy committed and pushed at `50f6421`; public deployment not configured | Home, Catalog and Builder expose stable Latest Windows ZIP and Mac DMG routes; desktop and mobile browser checks passed without overflow, broken images, or console errors | Physical-phone refresh, trailer audio check, explicit deployment destination, and `main` promotion |
 | World Tour runtime atlases | Committed, pushed, source-runtime verified, and excluded from the package audit payload where appropriate | 147 transparent cells across 16 repaired atlases validate with zero edge crossings and no component reuse; runtime loader mappings remain stable | Focused physical-controller World Tour playthrough |
-| Desktop distribution | v0.7.1 `.love`, universal macOS ZIP, and icon-bearing DMG published as GitHub Latest | Valid 279-entry `.love`; ad-hoc signed universal app; version, packaged boot, signature, icon resource, DMG checksum, GitHub asset digests, tag and public Latest redirects verified | Native Windows/Linux artifacts and test matrix; Apple notarization if required |
+| Desktop distribution | Synchronized v0.7.1 Windows x64 ZIP, universal macOS ZIP/DMG, and common `.love` published as GitHub Latest | Both desktop packages embed `.love` SHA-256 `a6f3b28f…2efcdd`; Windows PE branding, fused payload, native tests, bootstrap marker, manifests, checksums, public assets, and Latest redirects verified | Physical Windows graphical/audio/controller/SmartScreen/save-migration QA; Windows code signing; Apple notarization if required |
 | Engine migration | Planned | Engine migration research and parity roadmap | Clean baseline and bounded target-engine spike |
 | Groove Bound skills | Installed, committed, and pushed | Eleven installed packages match repository source; structural, package, and representative helper validation passed | Fresh-agent forward tests |
 
 ## Active working state
 
-The v0.7.1 game, runtime media, tests, documentation, repository README,
-and release-specific landing-page source are committed and pushed on
-`codex/world-tour-v1` at `a6d8132`. Tag `v0.7.1` resolves to that source commit and its DMG, universal
-Mac ZIP, and `.love` artifacts are public as GitHub Latest. The separate root
-story/mechanics handover, banner PSD, and `promo-assets/` source folder remain
-intentionally untouched and outside the release commit.
+The v0.7.1 game, Windows support, runtime media, tests, documentation,
+repository README, and release-specific landing-page source are committed and
+pushed on `codex/world-tour-v1` at `50f6421`. The mirrored
+`codex/windows-version` branch resolves to the same commit. GitHub Latest now
+publishes the Windows x64 ZIP, Windows manifest and checksums, refreshed Mac
+DMG/ZIP, and one common `.love` payload from that source commit. The separate
+root story/mechanics handover, banner PSD, and `promo-assets/` source folder
+remain intentionally untouched and outside the release commit.
 
 Current active themes include:
 
@@ -114,8 +116,8 @@ Current active themes include:
   reference-only and are excluded from distribution.
 - `landing-page/` is committed source, but the repository has no configured
   public homepage and no deployment has been claimed.
-- A separate World Tour campaign identity and Builder redesign remains
-  uncommitted in the working tree and was deliberately excluded from v0.7.1.
+- The protected original workspace and its unrelated concurrent work were not
+  edited; Windows implementation and release work used an isolated clean clone.
 - This handover remains the canonical delivery record after release work.
 
 Do not infer `main` promotion or landing-page deployment from the feature-branch push and GitHub release.
@@ -124,18 +126,19 @@ Do not infer `main` promotion or landing-page deployment from the feature-branch
 
 | Layer | Latest state | Meaning |
 |---|---|---|
-| Automated tests | 342 passed, 0 failed on 2026-08-11 | v0.7.1 spatial controller navigation, menu parity, world starter loadouts, evolution-aware auto-pick, card media and existing systems tested locally |
-| Lint | 0 warnings and 0 errors across 166 files on 2026-08-11 | Current Lua source and tests statically checked |
-| Package | Published v0.7.1 `.love`: 168,874,386 bytes, SHA-256 `cc1906d132453ec5e2d227c636bf269804908e61cf18fbb4a24747b169469564` | Valid ZIP with 279 entries; menu/card sprites present; tests, docs, MP4s and source candidates excluded; GitHub digest matches local artifact |
-| macOS artifacts | Published v0.7.1 universal ZIP and icon-bearing DMG | ZIP: 180,078,801 bytes, SHA-256 `553a7075938ad5a11675abba708999cfa860297bf4dd79db98834299d6c75b99`; DMG: 183,310,295 bytes, SHA-256 `613f559d09ee942d1fe335f64de376b2b5090f314964a4988ab90f235f4e064d`; GitHub digests match |
-| Packaged boot | Verified on 2026-08-11 | v0.7.1 packaged game validated content and reached the title screen in LÖVE 11.5; universal architectures, app version, icon resource, ad-hoc signature and DMG checksum verified |
+| Automated tests | 353 passed, 0 failed on 2026-08-11 | Native Windows CI and local checks cover controller ownership/hot-plug behavior, vibration routing, save migration, release-profile safety, menu parity, and existing systems |
+| Lint | 0 warnings and 0 errors across 172 files on 2026-08-11 | Current Lua source and tests statically checked |
+| Common package | Published v0.7.1 `.love`: 168,944,047 bytes, SHA-256 `a6f3b28fae797e0cd12b9e755750a758455f73542ab58e630e71cc89aa2efcdd` | Built once on Linux and consumed unchanged by both Windows and Mac packaging jobs; release renderer rejects payload drift |
+| Windows artifact | Published v0.7.1 x64 ZIP: 173,654,466 bytes, SHA-256 `72c9b6b21c56015fd7b7741309fde4922c88fac46157b23d223bbd3383f4fe7b` | Official pinned LÖVE 11.5 runtime, Groove Bound icon/version PE metadata, intact fused payload, manifest/checksums, packaged bootstrap, and public Latest redirect verified; executable is unsigned |
+| macOS artifacts | Published synchronized v0.7.1 universal ZIP and icon-bearing DMG | ZIP: 180,043,697 bytes, SHA-256 `db4fc62b9fe22b7a554aae20e4ee8e22676e06d1588cc8e6a06f9095da56d69a`; DMG: 183,408,440 bytes, SHA-256 `68e7e3ef038bd51aa60c70bd7b5564f6e54c0f0ec063c81c923138914615f858`; GitHub digests match |
+| Packaged boot | Verified in Windows and macOS CI on 2026-08-11 | Packaged headless bootstrap validates content and writes the expected marker; this is a startup-integrity check, not full graphical/audio play |
 | Manual graphical QA | Focused v0.7.1 source captures verified | Pause, Options, Controls, Admin, level-up cards, evolution filtering, generated NEW badge, reward-card scale, and right-side mechanic safe area visually inspected; full campaign, physical controller, audio and small-screen play-feel remain open |
-| Source release commit | `a6d8132` — feat: ship v0.7.1 menu and controller overhaul | Tag `v0.7.1`, the pushed branch and public release all resolve to this commit |
-| Feature-branch push | `origin/codex/world-tour-v1` contains `a6d8132` | Feature branch is current; `main` remains independently unpromoted |
+| Source release commit | `50f6421` — release: publish desktop v0.7.1 | Public release notes identify the full commit `50f64218d81e5399c81412a04e141ab5bc0ac8b5` |
+| Parallel branches | `origin/codex/world-tour-v1` and `origin/codex/windows-version` both contain `50f6421` | The Windows branch is workflow-mirrored from the canonical feature branch after every push |
 | Main promotion | Not current | Verify `origin/main` independently |
-| Public release/download | v0.7.1 is published as GitHub Latest with DMG, ZIP, and `.love` assets | Release and tag verified public-live; GitHub digests match local SHA-256 values; the stable Latest DMG URL resolves through v0.7.1 to the 183,310,295-byte asset |
-| Landing download link | v0.7.1 release source committed and pushed on the feature branch | Home, Catalog and Builder keep the stable Latest DMG route, which now resolves publicly to v0.7.1; visible release badges in the committed source link v0.7.1 |
-| GitHub README presentation | Landing-styled rewrite committed and pushed at `f96acf9` | GitHub Markdown API rendered 21,124 bytes with 28 images, 50 links, and 3 tables; all 29 local references and 7 navigation anchors resolve; default-page visibility still depends on merging to `main` |
+| Public release/download | v0.7.1 is published as GitHub Latest with seven synchronized desktop assets | Release body, GitHub digests, manifest, checksum ledger, Windows ZIP and Mac DMG Latest redirects verified public-live |
+| Landing download link | Windows and Mac v0.7.1 CTA source committed and pushed on the feature branch | Home, Catalog and Builder use stable Latest routes; 1440×900 and 390×844 browser QA passed on all three pages |
+| GitHub README presentation | Windows badge, CTA, install/SmartScreen guidance, version and verification counts committed on the feature branch | Default-page visibility still depends on the planned fast-forward to `main` |
 | Landing deployment | Not performed or proven | GitHub reports no configured repository homepage; source publication is not a public-site deployment |
 
 ## Desktop and engine portability
@@ -151,7 +154,7 @@ For an engine migration, keep LÖVE as the golden reference. The leading researc
 - Automated checks do not prove the remaining visual, video, navigation, audio, controller, or game-feel criteria.
 - Generated and legacy assets require maintained provenance and package separation.
 - Website asset copies can drift from canonical runtime assets.
-- Signing, notarization, credentials, store submission, public release, deployment, destructive migration, and engine cutover require explicit approval.
+- Signing, notarization, credentials, store submission, deployment, destructive migration, and engine cutover require explicit approval. The user explicitly approved this v0.7.1 public release and default-branch update.
 
 ## Next safe actions
 
@@ -163,17 +166,45 @@ For an engine migration, keep LÖVE as the golden reference. The leading researc
 3. Produce the two planned 4-by-6 enemy movement atlases and wire three-frame
    animation for all sixteen enemy definitions without changing deterministic
    movement or combat timing.
-4. Promote the verified source to `main` only through a separately approved
-   merge after reviewing the feature-branch delta and CI state.
+4. Fast-forward the verified source to `main` after confirming ancestry and the
+   final clean status/handover commit.
 5. Keep the stable GitHub Latest Download URL in future landing-page releases;
    Apple signing/notarization and site deployment remain separate approval gates.
-6. Extend the desktop matrix with native Windows and Linux artifacts from the
-   same verified `.love` candidate.
+6. Run the public Windows ZIP on a physical Windows x64 PC, covering graphical
+   and audio play, controller hot-plug/vibration, SmartScreen, and clean-machine
+   save migration; add Windows code signing when a certificate is approved.
 7. Freeze a clean migration baseline before any Godot or MonoGame spike.
 8. Deploy the landing page only when its destination and public state are
    explicitly approved.
 
 ## Continuation history
+
+### 2026-08-11 — Native Windows x64 and synchronized desktop release
+
+- Added release-safe packaging with a fused Windows executable, Groove Bound
+  icon and PE metadata, pinned official LÖVE 11.5 runtime, deterministic ZIP,
+  machine-readable manifest, checksums, and unsigned-build disclosure.
+- Centralized active-controller ownership and vibration, added hot-plug handling,
+  and implemented validated read-only migration from the earlier Windows LÖVE
+  save location into the fused executable identity.
+- Added native Windows CI for 353 tests, lint, PE metadata, fused-ZIP integrity,
+  package contents, and a headless packaged bootstrap marker. Full GUI, audio,
+  controller, SmartScreen, and save-migration behavior remains physical-PC QA.
+- Built the `.love` once and supplied that exact payload to both Windows and Mac
+  packaging. The release publication gate verifies Windows manifest parity
+  against the Mac/common payload before replacing any public desktop assets.
+- Updated the repository README and landing Home, Catalog, and Builder surfaces
+  with Windows CTAs, installation guidance, v0.7.1 status, and stable Latest
+  routes. Desktop/mobile browser QA found no overflow, broken images, or console
+  errors; the repository still has no configured landing-page deployment.
+- Published seven synchronized assets on GitHub Latest from `50f6421`, including
+  Windows ZIP SHA-256 `72c9b6b2…f4fe7b` and common `.love` SHA-256
+  `a6f3b28f…2efcdd`. `codex/windows-version` mirrors
+  `codex/world-tour-v1` at the same commit.
+- Delivery state: source committed and pushed, native Windows/macOS CI passed,
+  and v0.7.1 public assets and stable redirects verified. Default-branch
+  promotion is the next gated step; site deployment, signing/notarization, and
+  physical Windows hardware QA remain open.
 
 ### 2026-08-11 — v0.7.1 menu, controller, and World Tour release
 
