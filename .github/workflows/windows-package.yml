@@ -36,6 +36,13 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Download shared common payload
+        uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: Groove-Bound-common
+          path: groove-bound/dist
+
       - name: Set up native compiler tools
         uses: step-security/msvc-dev-cmd@v1
 
@@ -67,7 +74,10 @@ jobs:
       - name: Build deterministic common payload
         working-directory: groove-bound
         shell: powershell
-        run: python scripts/package_love.py --version $env:RELEASE_VERSION --require-clean
+        run: |
+          if (-not (Test-Path "dist\groove-bound.love")) {
+            python scripts/package_love.py --version $env:RELEASE_VERSION --require-clean
+          }
 
       - name: Verify common payload
         working-directory: groove-bound

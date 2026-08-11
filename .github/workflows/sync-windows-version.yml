@@ -61,12 +61,45 @@ jobs:
       - name: Push the synchronized Windows branch
         run: git push origin "HEAD:${WINDOWS_BRANCH}"
 
-  package-windows:
+  package-common:
     needs: sync
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out canonical source
+        uses: actions/checkout@v4
+        with:
+          ref: codex/world-tour-v1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Build and verify the common payload once
+        working-directory: groove-bound
+        run: |
+          python scripts/package_love.py --version "$RELEASE_VERSION" --require-clean
+          python scripts/verify_release_package.py dist/groove-bound.love
+
+      - name: Upload common payload
+        uses: actions/upload-artifact@v4
+        with:
+          name: Groove-Bound-common
+          path: groove-bound/dist/groove-bound.love
+          if-no-files-found: error
+          retention-days: 14
+
+  package-windows:
+    needs:
+      - sync
+      - package-common
     uses: ./.github/workflows/windows-package.yml
 
   package-macos:
-    needs: sync
+    needs:
+      - sync
+      - package-common
     uses: ./.github/workflows/macos-package.yml
 
   publish-desktop:

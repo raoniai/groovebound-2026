@@ -27,6 +27,13 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Download shared common payload
+        uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: Groove-Bound-common
+          path: groove-bound/dist
+
       - name: Download pinned LÖVE runtime
         shell: bash
         run: |
@@ -40,7 +47,9 @@ jobs:
         working-directory: groove-bound
         shell: bash
         run: |
-          python scripts/package_love.py --version "$RELEASE_VERSION" --require-clean
+          if [ ! -f dist/groove-bound.love ]; then
+            python scripts/package_love.py --version "$RELEASE_VERSION" --require-clean
+          fi
           python scripts/verify_release_package.py dist/groove-bound.love
 
       - name: Build universal macOS ZIP and DMG
