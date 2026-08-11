@@ -59,3 +59,7 @@ jobs:
 
       - name: Push the synchronized Windows branch
         run: git push origin "HEAD:${WINDOWS_BRANCH}"
+
+  package-windows:
+    needs: sync
+    uses: ./.github/workflows/windows-package.yml
