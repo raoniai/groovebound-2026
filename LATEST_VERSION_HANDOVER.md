@@ -14,19 +14,20 @@ This document answers four questions: what is authoritative, what the latest ver
 
 <!-- LIVE-SNAPSHOT:START -->
 
-_Generated from live repository evidence: 2026-08-11 20:30 AEST_
+_Generated from live repository evidence: 2026-08-11 22:27 AEST_
 
 | Field | Live value |
 |---|---|
 | Branch | `codex/world-tour-v1` |
-| Release source | `29c779d` — feat: ship World Tour v0.7.0 interface and release |
-| Upstream | `origin/codex/world-tour-v1` includes the release source and this follow-up delivery record |
-| Compared with `origin/main` | 25 ahead, 0 behind after the delivery-record commit |
-| Working changes | Three protected root paths remain outside the release: the story/mechanics working handover, banner PSD, and `promo-assets/` source folder |
-| Lua source/test files | 106 source, 51 test |
-| Current `.love` artifact | 164,992,773 bytes; 254 valid entries |
-| Test suite | passed: 329 tests, 0 failures |
-| Lint | passed: 0 warnings / 0 errors in 159 files |
+| HEAD | `a6d8132` — feat: ship v0.7.1 menu and controller overhaul |
+| Upstream | `origin/codex/world-tour-v1` |
+| Compared with `origin/main` | 27 ahead, 0 behind |
+| Working changes | 27 files: 0 game, 18 site, 0 skills/package |
+| Lua source/test files | 109 source, 55 test |
+| Game tree excluding `dist/` | 488.3 MiB |
+| Current `.love` artifact | 161.1 MiB |
+| Test suite | passed: 342 tests, 0 failures |
+| Lint | passed: 0 warnings / 0 errors in 166 files |
 | Skill packages | 11 |
 
 <!-- LIVE-SNAPSHOT:END -->
@@ -80,27 +81,27 @@ The public landing site is a separate static presentation under `landing-page/`.
 | Campaign flow | Committed and pushed preview on `GPT/stage-2-cutscenes` | Source, campaign tests, upstream branch | Full current-HEAD campaign playthrough |
 | Deterministic simulation | Tests passed | Named RNG streams and seeded full-run tests | Replay-file format for engine differential testing |
 | Progression and fusion | Tests passed | Seeded offers, anti-repeat, capacity and evolution tests | Ongoing balance/play-feel evidence |
-| Chest rewards | Published in v0.7.0, tests passed, visually sampled, and package verified | Five large spinning chests converge without number cycling, flash the centre chest, reveal large sprite-backed rewards, and accept Esc/Circle animation skip; capped builds auto-apply the selected utility reward | Physical-controller timing and reward-feel playthrough with naturally dropped chests |
+| Chest rewards | Published in v0.7.1, tests passed, visually sampled, and package verified | Five large spinning chests converge without number cycling, flash the centre chest, reveal large sprite-backed rewards, and accept Esc/Circle animation skip; capped builds auto-apply the selected utility reward unless an eligible evolution must be shown | Physical-controller timing and reward-feel playthrough with naturally dropped chests |
 | Arena collision and navigation | Published in v0.7.0 and tests passed | Tall props now block 90% of their height and redraw their complete opaque sprite above actors; deterministic safe-drop and navigation tests remain green | Confirm every authored tall prop in a full playthrough |
 | Enemy projectiles | Committed, pushed, and tests passed | Sprite mapping, attack tuning, content and entity tests | Confirm readability, rate, and boss pressure in play |
 | Cutscene video | Six runtime videos published in v0.6.0 and package verified | Both new MP4s converted to packaged OGV; scene-ID discovery; Circle/`b` skip tests; global mute now drives video-source volume; skip/mute separation visually verified | Physical PlayStation controller check; listening check for mute during each video; full-video fade, pause, final-frame, fallback, and campaign-order playthrough |
 | Music system | Implemented preview | Catalog, router, director, content, OGG assets and tests | BeatClock, latency calibration, groove scoring, and accessibility remain future work |
 | Application icon | Published in the v0.6.0 macOS app; tests passed, package verified, and manual small-size QA verified | Commit `097c883`; Joe/Lyra adventure emblem at 512px RGBA; native `GrooveBound.icns` present and referenced in the verified app bundle | Confirm the rebuilt native app icon in the macOS Dock on another clean Mac |
-| Generic controller and camera support | Published in v0.7.0 and tests passed | Released right-stick aim preserves direction while the world-space reticle follows the moving player; input abstraction, hints, deadzone, vibration and camera zoom remain covered | Physical PlayStation controller check; hot-plug identity, glyphs/remapping, wired/wireless matrix |
+| Generic controller and camera support | Published in v0.7.1 and tests passed | Right-stick aim preserves direction while the world-space reticle follows the moving player; spatial D-pad navigation now respects all four directions, and Pause, Settings, Controls and Admin have controller parity | Physical PlayStation controller check; hot-plug identity, glyphs/remapping, wired/wireless matrix |
 | Combat readability and HUD | Published in v0.6.0, tests passed, and visually sampled | Hit slide/pulse, camera shake, damage flash, HP-loss callout, concern below 20%, stronger critical state below 5%, transparent enlarged aim reticle, gameplay-only OS cursor hiding, compact right-side power-up notices, separate 50% panel shades, and tiled nine-slice slot frames with fixed corners | Full combat-feel pass with flash/reduced-flash options and physical controller |
-| Character, upgrade, and results interface | Published in v0.7.0, tests passed, and visually sampled | Anton/Oswald typography, sprite-backed level-up and reward cards, complete sprite-only evolution guide, exact gain-to-total rows, generated NEW badge, pickup-art utility choices, and existing reroll/skip sprite CTAs | Manual defeat/victory results pass and final small-screen readability review |
+| Character, upgrade, and results interface | Published in v0.7.1, tests passed, and visually sampled | Anton/Oswald typography, modular nine-slice upgrade cards, relevant-equipped evolution rows only, exact icon-led gain-to-total attributes, generated NEW badge, pickup-art utility choices, existing reroll/skip sprite CTAs, and bright sprite-backed menu focus | Manual defeat/victory results pass and final small-screen readability review |
 | Save system | Version 2 profiles and slots | Save, migration, profile, export and World Tour session tests | Cross-platform clean-machine fixtures |
-| Landing page and repository README | Committed and pushed at `29c779d`; public deployment not configured | Home, Catalog and Builder identify v0.7.0, keep the stable Latest DMG route, and state that Prologue/Funk/Soul/Disco ship in the download; 160 site sprites and the current trailer remain source-controlled | Physical-phone refresh, trailer audio check, explicit deployment destination, and `main` promotion |
+| Landing page and repository README | v0.7.1 release copy committed and pushed at `a6d8132`; public deployment not configured | Home, Catalog and Builder release source identifies v0.7.1 and keeps the stable Latest DMG route; the route publicly resolves to the v0.7.1 DMG | Preserve and complete the separate uncommitted campaign/Builder redesign; physical-phone refresh, trailer audio check, explicit deployment destination, and `main` promotion |
 | World Tour runtime atlases | Committed, pushed, source-runtime verified, and excluded from the package audit payload where appropriate | 147 transparent cells across 16 repaired atlases validate with zero edge crossings and no component reuse; runtime loader mappings remain stable | Focused physical-controller World Tour playthrough |
-| Desktop distribution | v0.7.0 `.love`, universal macOS ZIP, and icon-bearing DMG published as GitHub Latest | Valid 254-entry `.love`; ad-hoc signed universal app; version, packaged boot, signature, icon resource, DMG checksum, GitHub asset digests, tag and public Latest redirects verified | Native Windows/Linux artifacts and test matrix; Apple notarization if required |
+| Desktop distribution | v0.7.1 `.love`, universal macOS ZIP, and icon-bearing DMG published as GitHub Latest | Valid 279-entry `.love`; ad-hoc signed universal app; version, packaged boot, signature, icon resource, DMG checksum, GitHub asset digests, tag and public Latest redirects verified | Native Windows/Linux artifacts and test matrix; Apple notarization if required |
 | Engine migration | Planned | Engine migration research and parity roadmap | Clean baseline and bounded target-engine spike |
 | Groove Bound skills | Installed, committed, and pushed | Eleven installed packages match repository source; structural, package, and representative helper validation passed | Fresh-agent forward tests |
 
 ## Active working state
 
-The v0.7.0 game, repaired runtime media, tests, documentation, repository README,
-and landing-page source are committed and pushed on `codex/world-tour-v1` at
-`29c779d`. Tag `v0.7.0` resolves to that source commit and its DMG, universal
+The v0.7.1 game, runtime media, tests, documentation, repository README,
+and release-specific landing-page source are committed and pushed on
+`codex/world-tour-v1` at `a6d8132`. Tag `v0.7.1` resolves to that source commit and its DMG, universal
 Mac ZIP, and `.love` artifacts are public as GitHub Latest. The separate root
 story/mechanics handover, banner PSD, and `promo-assets/` source folder remain
 intentionally untouched and outside the release commit.
@@ -113,6 +114,8 @@ Current active themes include:
   reference-only and are excluded from distribution.
 - `landing-page/` is committed source, but the repository has no configured
   public homepage and no deployment has been claimed.
+- A separate World Tour campaign identity and Builder redesign remains
+  uncommitted in the working tree and was deliberately excluded from v0.7.1.
 - This handover remains the canonical delivery record after release work.
 
 Do not infer `main` promotion or landing-page deployment from the feature-branch push and GitHub release.
@@ -121,17 +124,17 @@ Do not infer `main` promotion or landing-page deployment from the feature-branch
 
 | Layer | Latest state | Meaning |
 |---|---|---|
-| Automated tests | 329 passed, 0 failed on 2026-08-11 | v0.7.0 controller aim, auto-pick progression, chest animation, collision, fresh-world assist, media, campaign and existing systems tested locally |
-| Lint | 0 warnings and 0 errors across 159 files on 2026-08-11 | Current Lua source and tests statically checked |
-| Package | Published v0.7.0 `.love`: 164,992,773 bytes, SHA-256 `0098c90ec018573fad0ccd6a9a320744f42ae7f4aa3e7e331e932a6046b3e4ce` | Valid ZIP with 254 entries; new fonts and UI sprites present; tests, docs, MP4s, source candidates and isolated audit derivatives excluded; GitHub digest matches local artifact |
-| macOS artifacts | Published v0.7.0 universal ZIP and icon-bearing DMG | ZIP: 176,198,940 bytes, SHA-256 `8fec29dc1ba3becfbc1a74878d6acb62b61e659372a80bbecb01df74390f00a9`; DMG: 179,387,154 bytes, SHA-256 `7fd9c15be6b330e147d0d869f9bf125dc97a9efbee14d3f6f3f8ee4395c745e7`; GitHub digests match |
-| Packaged boot | Verified on 2026-08-11 | v0.7.0 packaged app validated content and reached the title screen in LÖVE 11.5; universal architectures, app version, icon resource, ad-hoc signature and DMG checksum verified |
-| Manual graphical QA | Focused v0.7.0 source captures verified | Level-up cards, all evolution sprite rows, generated NEW badge, reward-card scale, and right-side mechanic safe area visually inspected; full campaign, physical controller, audio and small-screen play-feel remain open |
-| Source release commit | `29c779d` — feat: ship World Tour v0.7.0 interface and release | Tag `v0.7.0`, the pushed branch and public release all resolve to this commit |
-| Feature-branch push | `origin/codex/world-tour-v1` contains `29c779d` | Feature branch is current; `main` remains independently unpromoted |
+| Automated tests | 342 passed, 0 failed on 2026-08-11 | v0.7.1 spatial controller navigation, menu parity, world starter loadouts, evolution-aware auto-pick, card media and existing systems tested locally |
+| Lint | 0 warnings and 0 errors across 166 files on 2026-08-11 | Current Lua source and tests statically checked |
+| Package | Published v0.7.1 `.love`: 168,874,386 bytes, SHA-256 `cc1906d132453ec5e2d227c636bf269804908e61cf18fbb4a24747b169469564` | Valid ZIP with 279 entries; menu/card sprites present; tests, docs, MP4s and source candidates excluded; GitHub digest matches local artifact |
+| macOS artifacts | Published v0.7.1 universal ZIP and icon-bearing DMG | ZIP: 180,078,801 bytes, SHA-256 `553a7075938ad5a11675abba708999cfa860297bf4dd79db98834299d6c75b99`; DMG: 183,310,295 bytes, SHA-256 `613f559d09ee942d1fe335f64de376b2b5090f314964a4988ab90f235f4e064d`; GitHub digests match |
+| Packaged boot | Verified on 2026-08-11 | v0.7.1 packaged game validated content and reached the title screen in LÖVE 11.5; universal architectures, app version, icon resource, ad-hoc signature and DMG checksum verified |
+| Manual graphical QA | Focused v0.7.1 source captures verified | Pause, Options, Controls, Admin, level-up cards, evolution filtering, generated NEW badge, reward-card scale, and right-side mechanic safe area visually inspected; full campaign, physical controller, audio and small-screen play-feel remain open |
+| Source release commit | `a6d8132` — feat: ship v0.7.1 menu and controller overhaul | Tag `v0.7.1`, the pushed branch and public release all resolve to this commit |
+| Feature-branch push | `origin/codex/world-tour-v1` contains `a6d8132` | Feature branch is current; `main` remains independently unpromoted |
 | Main promotion | Not current | Verify `origin/main` independently |
-| Public release/download | v0.7.0 is published as GitHub Latest with DMG, ZIP, and `.love` assets | Release and tag verified public-live; GitHub digests match local SHA-256 values; stable `/releases/latest/download/` DMG and `.love` URLs returned HTTP 206 |
-| Landing download link | v0.7.0 source committed and pushed on the feature branch | Home, Catalog and Builder use the stable Latest DMG route, which now resolves publicly to v0.7.0; visible badges link the exact v0.7.0 release |
+| Public release/download | v0.7.1 is published as GitHub Latest with DMG, ZIP, and `.love` assets | Release and tag verified public-live; GitHub digests match local SHA-256 values; the stable Latest DMG URL resolves through v0.7.1 to the 183,310,295-byte asset |
+| Landing download link | v0.7.1 release source committed and pushed on the feature branch | Home, Catalog and Builder keep the stable Latest DMG route, which now resolves publicly to v0.7.1; visible release badges in the committed source link v0.7.1 |
 | GitHub README presentation | Landing-styled rewrite committed and pushed at `f96acf9` | GitHub Markdown API rendered 21,124 bytes with 28 images, 50 links, and 3 tables; all 29 local references and 7 navigation anchors resolve; default-page visibility still depends on merging to `main` |
 | Landing deployment | Not performed or proven | GitHub reports no configured repository homepage; source publication is not a public-site deployment |
 
@@ -171,6 +174,30 @@ For an engine migration, keep LÖVE as the golden reference. The leading researc
    explicitly approved.
 
 ## Continuation history
+
+### 2026-08-11 — v0.7.1 menu, controller, and World Tour release
+
+- Added generated menu-category and focus-frame sprites plus modular nine-slice
+  upgrade-card and attribute-icon assets, with source candidates, reproducible
+  build scripts, and provenance.
+- Reworked selection visibility and spatial navigation so D-pad input follows
+  the actual four-direction layout across level-up, World Tour, starter-loadout,
+  results, title, Pause, Options, Controls, and Admin surfaces.
+- Rebuilt Pause, Options, Controls, and Admin with concise sprite-backed panels,
+  category art, action blocks, and complete controller access.
+- Filtered evolution guidance to equipped weapons, clarified icon-led gains and
+  totals, added gradual free starter loadouts for harder worlds, and preserved
+  chest presentation whenever an eligible evolution exists.
+- Verified 342 tests, zero lint warnings, focused 1280-by-720 menu captures,
+  valid package archives, universal architectures, ad-hoc signature, app icon,
+  v0.7.1 metadata, packaged boot, and DMG checksum.
+- Committed and pushed source as `a6d8132`; published tag and GitHub Latest
+  release `v0.7.1` with digest-matched DMG, ZIP, and `.love` assets. The stable
+  Latest DMG link now resolves publicly to v0.7.1.
+- Delivery state: source committed and pushed on `codex/world-tour-v1`; release
+  public-live verified. `main` promotion, landing deployment, Apple notarization,
+  and a physical-controller hardware pass remain open. The separate uncommitted
+  campaign-identity/Builder redesign and protected root assets remain untouched.
 
 ### 2026-08-11 — World Tour game-atlas isolation repair
 
