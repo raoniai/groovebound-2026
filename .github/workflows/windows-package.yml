@@ -96,7 +96,7 @@ jobs:
           if ($manifest.executable.signing -ne "unsigned") { throw "unexpected signing state" }
           Expand-Archive "dist\Groove-Bound-Windows-x64.zip" -DestinationPath "dist\unpacked"
 
-      - name: Run packaged Windows boot smoke
+      - name: Run packaged Windows bootstrap smoke
         working-directory: groove-bound
         shell: powershell
         run: |
@@ -110,7 +110,7 @@ jobs:
           $process = Start-Process `
             -FilePath (Join-Path $smokeDir "Groove Bound.exe") `
             -WorkingDirectory $smokeDir `
-            -ArgumentList "groove-bound-smoke groove-bound-smoke-marker" `
+            -ArgumentList "groove-bound-headless-smoke groove-bound-smoke-marker" `
             -PassThru
           $deadline = (Get-Date).AddSeconds(60)
           while ((Get-Date) -lt $deadline -and -not (Test-Path $marker) -and -not $process.HasExited) {

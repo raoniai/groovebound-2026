@@ -274,7 +274,7 @@ packaging, and contribution ground rules.
 - 353 automated tests passing.
 - 0 Luacheck warnings or errors across 172 files.
 - Package integrity and forbidden-source checks passing.
-- Windows x64 ZIP, executable branding, runtime manifest, and packaged CI boot verified.
+- Windows x64 ZIP, executable branding, runtime manifest, fused payload, and packaged CI bootstrap verified.
 - Universal macOS app, icon, signature, DMG checksum, and packaged boot verified.
 - GitHub CI passing on the release branch.
 

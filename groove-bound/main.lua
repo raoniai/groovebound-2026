@@ -61,6 +61,17 @@ function love.load()
   app.weapon_catalog = require("src.game.systems.weapon_catalog")(app.content)
   Log.info("boot", "Content validated")
 
+  if has_argument("groove-bound-headless-smoke") then
+    if has_argument("groove-bound-smoke-marker") then
+      local marker, marker_error = io.open("groove-bound-smoke-ok.txt", "wb")
+      assert(marker, "packaged smoke marker failed: " .. tostring(marker_error))
+      marker:write("boot-complete\n")
+      marker:close()
+    end
+    love.event.quit(0)
+    return
+  end
+
   app.bus = EventBus()
   app.states = StateMachine()
   app.profile_store = ProfileStore({ legacy_backend = WindowsLegacyBackend.detect() })
