@@ -36,14 +36,20 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install native LuaJIT
-        shell: powershell
-        run: choco install luajit --yes --no-progress
+      - name: Set up native compiler tools
+        uses: step-security/msvc-dev-cmd@v1
+
+      - name: Build native LuaJIT
+        uses: leafo/gh-actions-lua@v13
+        with:
+          luaVersion: luajit-2.1
 
       - name: Run the regression suite on Windows
         working-directory: groove-bound
         shell: powershell
-        run: luajit tests/run.lua
+        run: |
+          lua -v
+          lua tests/run.lua
 
       - name: Download pinned packaging tools
         shell: powershell
