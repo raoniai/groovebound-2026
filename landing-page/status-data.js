@@ -1,17 +1,24 @@
 window.GROOVE_STATUS = {
-  "generatedAt": "2026-08-11T12:21:57.238Z",
-  "generatedAtLabel": "11 Aug 2026, 10:21 pm",
+  "generatedAt": "2026-08-11T12:25:06.481Z",
+  "generatedAtLabel": "11 Aug 2026, 10:25 pm",
   "game": {
     "branch": "codex/world-tour-v1",
-    "commit": "6a7640c",
+    "commit": "8eabe29",
     "dirty": false,
     "workingChanges": 0,
     "history": [
       {
-        "hash": "6a7640c",
+        "hash": "8eabe29",
         "date": "2026-08-11",
         "dateLabel": "2026-08-11",
-        "sortKey": "2026-08-11T22:21:53+10:00",
+        "sortKey": "2026-08-11T22:25:02+10:00",
+        "subject": "docs: refresh Windows release status"
+      },
+      {
+        "hash": "2a9b10f",
+        "date": "2026-08-11",
+        "dateLabel": "2026-08-11",
+        "sortKey": "2026-08-11T22:25:02+10:00",
         "subject": "feat: add Windows x64 desktop support"
       },
       {
