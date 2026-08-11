@@ -12,9 +12,11 @@ T["World Tour catalog has nine stable worlds and first two wave sets"] = functio
   H.eq(content.world_tour.funk.first_clear_unlock, "soul")
   H.eq(content.world_tour.soul.order, 2)
   H.eq(content.world_tour.funk.implementation_status, "playable")
-  H.eq(content.world_tour.soul.implementation_status, "catalog_ready")
+  H.eq(content.world_tour.soul.implementation_status, "playable")
+  H.eq(content.world_tour.disco.implementation_status, "playable")
   H.is_true(#content.world_tour_waves.funk >= 5)
   H.is_true(#content.world_tour_waves.soul >= 5)
+  H.is_true(#content.world_tour_waves.disco >= 5)
   H.eq(#content.world_stages.funk, 2)
   H.eq(content.world_stages.funk[1].world_id, "funk")
   H.eq(content.world_stages.funk[1].final_boss, "boogie_tank")
@@ -26,6 +28,10 @@ T["World Tour catalog has nine stable worlds and first two wave sets"] = functio
   H.eq(#content.world_stages.funk[2].mechanic.pads, 5)
   H.eq(content.enemies.mothership_of_funk.boss_type, "final")
   H.eq(content.enemies.mothership_of_funk.sprite.atlas, "funk")
+  H.eq(#content.world_stages.soul, 2)
+  H.eq(#content.world_stages.disco, 2)
+  H.eq(content.world_stages.soul[2].final_boss, "velvet_titan")
+  H.eq(content.world_stages.disco[2].final_boss, "prism_monarch")
 end
 
 T["Funk world has an authored visual roster and escalating second stage"] = function()
@@ -62,6 +68,21 @@ end
 T["full content validation accepts the World Tour catalog"] = function()
   local content = require("src.content.init")
   H.eq(#Validate.check(content), 0)
+end
+
+T["every unevolved weapon has exactly one authored evolution"] = function()
+  local content = require("src.content.init")
+  local recipes_by_weapon = {}
+  for _, recipe in pairs(content.evolutions) do
+    recipes_by_weapon[recipe.base_weapon] =
+      (recipes_by_weapon[recipe.base_weapon] or 0) + 1
+    H.is_true(content.weapons[recipe.result_weapon].evolved == true)
+  end
+  for id, weapon in pairs(content.weapons) do
+    if not weapon.evolved then
+      H.eq(recipes_by_weapon[id], 1, id)
+    end
+  end
 end
 
 return T

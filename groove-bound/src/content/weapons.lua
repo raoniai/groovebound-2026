@@ -541,4 +541,92 @@ return {
         lifetime = 3.2, spread = 7, pierce = 5, knockback = 20 },
     },
   },
+
+  prismatic_triangle = {
+    id = "prismatic_triangle", name = "Prismatic Triangle",
+    description = "Triangle Tracer refracts into three piercing spectral lanes.",
+    archetype = "spread", role = "Triangle fusion", pattern = "cross",
+    rarity = "evolved", evolved = true,
+    icon = { atlas = "evolved2", col = 1, row = 1 },
+    projectile_color = { 0.48, 0.96, 1.0, 1 }, max_level = 1,
+    levels = { { damage = 64, cooldown = 0.34, count = 9, speed = 690,
+      size = 10, lifetime = 2.5, spread = 0, pierce = 6, knockback = 18 } },
+  },
+
+  velvet_impaler = {
+    id = "velvet_impaler", name = "Velvet Impaler",
+    description = "Cello Lance becomes a sustained armored spear line.",
+    archetype = "projectile", role = "Cello fusion", pattern = "aimed",
+    rarity = "evolved", evolved = true,
+    icon = { atlas = "evolved2", col = 2, row = 1 },
+    projectile_color = { 0.42, 0.72, 1.0, 1 }, max_level = 1,
+    levels = { { damage = 92, cooldown = 0.42, count = 3, speed = 760,
+      size = 14, lifetime = 3.0, spread = 3, pierce = 9, knockback = 34 } },
+  },
+
+  carnival_superorbit = {
+    id = "carnival_superorbit", name = "Carnival Superorbit",
+    description = "Maraca Orbit expands into a relentless carnival halo.",
+    archetype = "spread", role = "Maraca fusion", pattern = "spiral",
+    rarity = "evolved", evolved = true,
+    icon = { atlas = "evolved2", col = 3, row = 1 },
+    projectile_color = { 1.0, 0.42, 0.72, 1 }, max_level = 1,
+    levels = { { damage = 42, cooldown = 0.19, count = 12, speed = 600,
+      size = 10, lifetime = 2.8, spread = 0, pierce = 5, knockback = 16 } },
+  },
+
+  resonance_rupture = {
+    id = "resonance_rupture", name = "Resonance Rupture",
+    description = "Tuning Fork tears synchronized lanes through the arena.",
+    archetype = "spread", role = "Tuning fork fusion", pattern = "front_back",
+    rarity = "evolved", evolved = true,
+    icon = { atlas = "evolved2", col = 4, row = 1 },
+    projectile_color = { 0.52, 0.86, 1.0, 1 }, max_level = 1,
+    levels = { { damage = 78, cooldown = 0.30, count = 8, speed = 720,
+      size = 12, lifetime = 3.2, spread = 5, pierce = 8, knockback = 28 } },
+  },
+
+  stadium_keytar = {
+    id = "stadium_keytar", name = "Stadium Keytar",
+    description = "Keytar Chord fills the stage with a championship wall of sound.",
+    archetype = "spread", role = "Keytar fusion", pattern = "wall",
+    rarity = "evolved", evolved = true,
+    icon = { atlas = "evolved2", col = 1, row = 2 },
+    projectile_color = { 0.62, 0.44, 1.0, 1 }, max_level = 1,
+    levels = { { damage = 72, cooldown = 0.50, count = 14, speed = 430,
+      size = 20, lifetime = 3.4, spread = 8, pierce = 6, knockback = 22 } },
+  },
+
+  cathedral_overdrive = {
+    id = "cathedral_overdrive", name = "Cathedral Overdrive",
+    description = "Bell Tower and armor toll an arena-clearing overdrive nova.",
+    archetype = "spread", role = "Bell fusion", pattern = "radial",
+    rarity = "evolved", evolved = true,
+    icon = { atlas = "evolved2", col = 2, row = 2 },
+    projectile_color = { 1.0, 0.76, 0.22, 1 }, max_level = 1,
+    levels = { { damage = 105, cooldown = 0.70, count = 18, speed = 470,
+      size = 16, lifetime = 3.0, spread = 0, pierce = 7, knockback = 52 } },
+  },
+
+  infinite_mixtape = {
+    id = "infinite_mixtape", name = "Infinite Mixtape",
+    description = "Tape Repeater loops luminous side lanes without an ending.",
+    archetype = "spread", role = "Tape fusion", pattern = "sideways",
+    rarity = "evolved", evolved = true,
+    icon = { atlas = "evolved2", col = 3, row = 2 },
+    projectile_color = { 0.34, 1.0, 0.82, 1 }, max_level = 1,
+    levels = { { damage = 54, cooldown = 0.20, count = 10, speed = 680,
+      size = 10, lifetime = 3.2, spread = 4, pierce = 6, knockback = 18 } },
+  },
+
+  aurora_harp = {
+    id = "aurora_harp", name = "Aurora Harp",
+    description = "Laser Harp fans celestial strings across the whole front line.",
+    archetype = "spread", role = "Laser harp fusion", pattern = "aimed",
+    rarity = "evolved", evolved = true,
+    icon = { atlas = "evolved2", col = 4, row = 2 },
+    projectile_color = { 0.32, 0.96, 1.0, 1 }, max_level = 1,
+    levels = { { damage = 48, cooldown = 0.16, count = 12, speed = 820,
+      size = 8, lifetime = 2.0, spread = 12, pierce = 4, knockback = 14 } },
+  },
 }

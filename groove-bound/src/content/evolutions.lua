@@ -76,4 +76,36 @@ return {
     "synth_wave",
     "echo_chamber",
     "neon_crescendo"),
+
+  triangle_prism = fusion(
+    "triangle_prism", "Prismatic Triangle Fusion",
+    "triangle_tracer", "breath_control", "prismatic_triangle"),
+
+  cello_impaler = fusion(
+    "cello_impaler", "Velvet Cello Fusion",
+    "cello_lance", "power_amplifier", "velvet_impaler"),
+
+  maraca_superorbit = fusion(
+    "maraca_superorbit", "Carnival Maraca Fusion",
+    "maraca_orbit", "quickstep", "carnival_superorbit"),
+
+  fork_rupture = fusion(
+    "fork_rupture", "Resonance Fork Fusion",
+    "tuning_fork", "overdrive_pedal", "resonance_rupture"),
+
+  keytar_stadium = fusion(
+    "keytar_stadium", "Stadium Keytar Fusion",
+    "keytar_chord", "encore", "stadium_keytar"),
+
+  bell_cathedral = fusion(
+    "bell_cathedral", "Cathedral Bell Fusion",
+    "bell_tower", "safety_vest", "cathedral_overdrive"),
+
+  tape_infinite = fusion(
+    "tape_infinite", "Infinite Mixtape Fusion",
+    "tape_repeater", "pickup_magnet", "infinite_mixtape"),
+
+  harp_aurora = fusion(
+    "harp_aurora", "Aurora Harp Fusion",
+    "laser_harp", "echo_chamber", "aurora_harp"),
 }

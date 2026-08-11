@@ -37,12 +37,12 @@ local function live_run(level)
   }
 end
 
-T["database exposes sixteen base weapons and eight evolutions"] = function()
+T["database exposes sixteen base weapons and sixteen evolutions"] = function()
   local catalog = WeaponCatalog(Content)
   local counts = catalog:counts()
-  H.eq(counts.all, 24)
+  H.eq(counts.all, 32)
   H.eq(counts.base, 16)
-  H.eq(counts.evolved, 8)
+  H.eq(counts.evolved, 16)
   H.eq(counts.supports, 8)
   H.eq(counts.owned, 0)
   H.eq(counts.level_up, 16)

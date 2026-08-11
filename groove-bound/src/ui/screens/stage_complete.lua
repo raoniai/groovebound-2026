@@ -89,11 +89,13 @@ function StageCompleteScreen:draw()
     color = { 1.0, 0.72, 0.20, 0.96 * eased },
   })
 
-  local crest_size = math.min(372, panel_w * 0.56)
+  local crest_size = 118
   local crest_bob = reduced and 0 or math.sin(self.elapsed * 3.4) * 3
-  self.app.assets:draw_completion_ui(
-    self:header_cell(), 1,
-    w / 2 - crest_size / 2, panel_y - 22 + crest_bob,
+  local world_col = self.payload.world_id == "funk" and 2
+    or self.payload.world_id == "soul" and 3
+    or self.payload.world_id == "disco" and 4 or 1
+  self.app.assets:draw_world_interface(world_col, 1,
+    panel_x + 36, panel_y + 28 + crest_bob,
     crest_size, crest_size,
     { color = { 1, 1, 1, eased } })
 
@@ -101,38 +103,55 @@ function StageCompleteScreen:draw()
     and (self.payload.mode == "world_tour"
       and "WORLD MASTERED" or "CAMPAIGN COMPLETE")
     or ("STAGE " .. self.payload.stage_index .. " COMPLETE")
-  love.graphics.setFont(Fonts.get(34))
+  love.graphics.setFont(Fonts.get(30))
   love.graphics.setColor(1.0, 0.76, 0.22, 1)
   love.graphics.printf(complete_title,
-    panel_x + 62, panel_y + 73, panel_w - 124, "center")
+    panel_x + 174, panel_y + 48, panel_w - 214, "center")
   love.graphics.setFont(Fonts.get(19))
   love.graphics.setColor(0.34, 0.94, 1.0, 1)
   love.graphics.printf(self.payload.stage_name,
-    panel_x + 80, panel_y + 118, panel_w - 160, "center")
+    panel_x + 174, panel_y + 91, panel_w - 214, "center")
 
-  local status_y = panel_y + 166
-  local status_gap = 28
-  local status_w = 190
+  local status_y = panel_y + 158
+  local status_gap = 16
+  local status_w = 230
   local status_start = w / 2 - status_w - status_gap / 2
   for index, status in ipairs({
-    { icon = 1, text = "ENCORE CHEST CLAIMED" },
-    { icon = 2, text = "RESONANCE SECURED" },
+    { kind = "chest", text = "ENCORE CHEST CLAIMED",
+      color = { 1.0, 0.70, 0.20, 0.95 } },
+    { kind = "mechanic", text = "WORLD MECHANIC SECURED",
+      color = { 0.28, 0.90, 1.0, 0.95 } },
   }) do
     local x = status_start + (index - 1) * (status_w + status_gap)
-    self.app.assets:draw_completion_ui(
-      status.icon, 2, x, status_y, 52, 52,
-      { color = { 1, 1, 1, eased } })
+    love.graphics.setColor(0.042, 0.020, 0.090, 0.94)
+    love.graphics.rectangle("fill", x, status_y, status_w, 58, 9, 9)
+    love.graphics.setColor(status.color[1], status.color[2], status.color[3], eased)
+    love.graphics.rectangle("line", x, status_y, status_w, 58, 9, 9)
+    if status.kind == "chest" then
+      self.app.assets:draw_stage_clear_chest(
+        x + 30, status_y + 29, 50, { color = { 1, 1, 1, eased } })
+    elseif self.payload.world_id == "funk" then
+      self.app.assets:draw_funk_pad(5, x + 5, status_y + 4, 50, 50,
+        { color = { 1, 1, 1, eased } })
+    else
+      local row = self.payload.world_id == "soul" and 1 or 2
+      self.app.assets:draw_world_mechanic(5, row,
+        x + 5, status_y + 4, 50, 50,
+        { color = { 1, 1, 1, eased } })
+    end
     love.graphics.setFont(Fonts.get(12))
     love.graphics.setColor(0.86, 0.84, 0.92, eased)
-    love.graphics.printf(status.text, x + 48, status_y + 18,
-      status_w - 48, "left")
+    love.graphics.printf(status.text, x + 58, status_y + 19,
+      status_w - 66, "center")
   end
 
   local stats = self.payload.stats or {}
-  local stats_y = panel_y + 232
+  local stats_y = panel_y + 226
   local stat_values = {
-    { icon = 3, value = stats.kills or 0, label = "ENEMIES CLEARED" },
-    { icon = 4, value = stats.bosses or 1, label = "BOSSES DEFEATED" },
+    { col = world_col, value = stats.kills or 0, label = "ENEMIES CLEARED",
+      color = { 0.88, 0.34, 1.0, 0.92 } },
+    { col = 5, value = stats.bosses or 1, label = "BOSSES DEFEATED",
+      color = { 1.0, 0.72, 0.20, 0.92 } },
   }
   local stat_w = 210
   local stat_start = w / 2 - stat_w - 10
@@ -140,8 +159,10 @@ function StageCompleteScreen:draw()
     local x = stat_start + (index - 1) * (stat_w + 20)
     love.graphics.setColor(0.045, 0.022, 0.090, 0.92)
     love.graphics.rectangle("fill", x, stats_y, stat_w, 70, 10, 10)
-    self.app.assets:draw_completion_ui(stat.icon, 2,
-      x + 6, stats_y + 5, 60, 60, { color = { 1, 1, 1, eased } })
+    love.graphics.setColor(stat.color[1], stat.color[2], stat.color[3], eased)
+    love.graphics.rectangle("line", x, stats_y, stat_w, 70, 10, 10)
+    self.app.assets:draw_world_interface(stat.col, 2,
+      x + 8, stats_y + 7, 56, 56, { color = { 1, 1, 1, eased } })
     love.graphics.setFont(Fonts.get(23))
     love.graphics.setColor(1.0, 0.76, 0.22, eased)
     love.graphics.printf(tostring(stat.value), x + 66, stats_y + 11,

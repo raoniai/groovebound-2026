@@ -36,10 +36,14 @@ function ResultsScreen:_layout()
   local next_label = self.result.outcome == "victory"
     and (self.result.mode == "world_tour" and "WORLD TOUR CATALOG"
       or "ENTER WORLD TOUR") or "CONTINUE CAMPAIGN"
+  local draw_icon = self.app.assets and function(icon, ix, iy, iw, ih, opts)
+    self.app.assets:draw_world_interface(icon.col, icon.row, ix, iy, iw, ih, opts)
+  end or nil
   self.buttons = widgets.ButtonList({
     widgets.Button({
       label = next_label, x = x, y = y, w = bw, h = bh,
       font_size = 21,
+      icon = { col = 3, row = 2 }, draw_icon = draw_icon,
       variant = "primary",
       on_press = function()
         if self.result.outcome == "victory" then
@@ -54,6 +58,7 @@ function ResultsScreen:_layout()
     widgets.Button({
       label = "Return to Title", x = x, y = y + bh + gap, w = bw, h = bh,
       font_size = 20,
+      icon = { col = 1, row = 1 }, draw_icon = draw_icon,
       on_press = function()
         local TitleScreen = require("src.ui.screens.title")
         self.app.states:switch(TitleScreen(self.app))
@@ -81,14 +86,6 @@ function ResultsScreen:draw()
   love.graphics.setColor(0.012, 0.008, 0.035, victory and 0.72 or 0.56)
   love.graphics.rectangle("fill", 0, 0, screen_w, screen_h)
   local w, h = UIScale.begin()
-
-  if victory and self.app.assets.icon then
-    local icon = self.app.assets.icon
-    local scale = 120 / icon:getWidth()
-    love.graphics.setColor(1, 1, 1, 0.9)
-    love.graphics.draw(icon, w / 2, h * 0.22, 0, scale, scale,
-      icon:getWidth() / 2, icon:getHeight() / 2)
-  end
 
   love.graphics.setFont(Fonts.get(38))
   love.graphics.setColor(victory and { 0.96, 0.78, 0.22, 1 } or { 0.95, 0.3, 0.38, 1 })

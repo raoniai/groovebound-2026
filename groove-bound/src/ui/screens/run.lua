@@ -13,6 +13,7 @@ local RunContext = require("src.game.run_context")
 local CombatSystem = require("src.game.systems.combat_system")
 local FunkPocketSystem = require("src.game.systems.funk_pocket_system")
 local JourneyProgress = require("src.meta.journey_progress")
+local WorldTourSession = require("src.meta.world_tour_session")
 
 local RunScreen = class()
 RunScreen.kind = "run"
@@ -85,7 +86,11 @@ function RunScreen:enter()
     options = self.app.profile.options,
     character = self.character,
     stages = self.stages,
+    mode = self.mode,
   })
+  if self.mode == "world_tour" and self.opts.build then
+    self.combat.progression:restore(self.opts.build)
+  end
   self.world_mechanic = self.stages[1].mechanic
     and FunkPocketSystem({
       definition = self.stages[1].mechanic,
@@ -174,6 +179,14 @@ end
 
 function RunScreen:_show_results(outcome)
   local payload = self:_results_payload(outcome)
+  if self.mode == "world_tour" then
+    if outcome == "victory" then
+      WorldTourSession.capture(
+        self.app, self.character.id, payload.progression)
+    else
+      WorldTourSession.clear(self.app)
+    end
+  end
   JourneyProgress.record_result(self.app, payload)
   local ResultsScreen = require("src.ui.screens.results")
   self.app.states:push(ResultsScreen(self.app, payload))
@@ -195,7 +208,19 @@ function RunScreen:update(dt)
     self.player:update(sim_dt, self.input, self.camera, self.arena)
     self.ctx.world:moved(self.player)
     if self.world_mechanic then
+      local previous_activations = self.world_mechanic.activations
       self.world_mechanic:update(sim_dt, self.ctx.time)
+      if self.world_mechanic.activations > previous_activations then
+        local snapshot = self.world_mechanic:snapshot()
+        local pad = self.world_mechanic.definition.pads[snapshot.success_index]
+        if pad then
+          self.combat.vfx:spawn("hit", pad.x, pad.y, {
+            scale = 0.82, duration = 0.72,
+            color = { 0.44, 1.0, 0.68, 1 },
+          })
+        end
+        if self.app.assets then self.app.assets:play("level_up", 0.10) end
+      end
     end
     outcome = self.combat:update(sim_dt)
     self.camera:follow(self.player.x, self.player.y, sim_dt)
@@ -220,6 +245,7 @@ function RunScreen:update(dt)
       stage_name = stage.name,
       stats = self.combat.stats,
       mode = self.mode,
+      world_id = self.world_id,
     }))
   elseif outcome == "victory" and not self.finished then
     self.pending_outcome = nil
@@ -232,6 +258,7 @@ function RunScreen:update(dt)
       stage_name = stage.name,
       stats = self.combat.stats,
       mode = self.mode,
+      world_id = self.world_id,
     }))
   elseif outcome == "defeat" and not self.finished then
     self.pending_outcome = nil
@@ -347,10 +374,26 @@ function RunScreen:_draw_world_mechanic()
   for index, pad in ipairs(definition.pads) do
     local active = index == snapshot.active_index
     local frame = active and snapshot.frame or 1
-    local size = active and 230 or 185
-    self.app.assets:draw_funk_pad(frame,
-      pad.x - size / 2, pad.y - size / 2, size, size,
-      { color = active and { 1, 1, 1, 0.96 } or { 0.52, 0.44, 0.68, 0.38 } })
+    local succeeded = index == snapshot.success_index and snapshot.notice > 0
+    local reduced = self.app.profile.options.reduced_motion == true
+    local success_pulse = succeeded and not reduced
+      and (1 + math.sin(self.ctx.time * 16) * 0.08) or 1
+    local size = (active and 230 or 185) * success_pulse
+    local mechanic_id = definition.id
+    if mechanic_id == "soul_resonance_reserve" then
+      frame = active and math.max(1, math.min(5,
+        math.floor((snapshot.charge or 0) / definition.charge_seconds * 4) + 1)) or 1
+    end
+    local row = mechanic_id == "soul_resonance_reserve" and 1 or 2
+    local color = succeeded and { 1, 0.94, 0.38, 1 }
+      or active and { 1, 1, 1, 0.96 } or { 0.52, 0.44, 0.68, 0.38 }
+    if mechanic_id == "funk_hold_the_pocket" then
+      self.app.assets:draw_funk_pad(frame, pad.x-size/2, pad.y-size/2,
+        size, size, { color=color })
+    else
+      self.app.assets:draw_world_mechanic(frame, row,
+        pad.x-size/2, pad.y-size/2, size, size, { color=color })
+    end
   end
 end
 
@@ -364,16 +407,35 @@ function RunScreen:_draw_world_mechanic_hud()
   local boosted = snapshot.boost_remaining > 0
   love.graphics.setColor(0.018, 0.008, 0.05, 0.94)
   love.graphics.rectangle("fill", x, 92, panel_w, 58, 10, 10)
-  self.app.assets:draw_world_tour_icon(2, 1, x + 8, 96, 50, 50)
-  love.graphics.setColor(boosted and { 1.0, 0.76, 0.20, 1 }
+  local mechanic_id = self.world_mechanic.definition.id
+  local icon_col = mechanic_id == "funk_hold_the_pocket" and 2
+    or mechanic_id == "soul_resonance_reserve" and 3 or 4
+  self.app.assets:draw_world_interface(icon_col, 1, x + 8, 96, 50, 50)
+  local success = snapshot.notice > 0
+  love.graphics.setColor(success and { 0.42, 1.0, 0.70, 1 }
+    or boosted and { 1.0, 0.76, 0.20, 1 }
     or { 0.30, 0.94, 1.0, 1 })
   love.graphics.setFont(Fonts.get(16))
-  love.graphics.printf(boosted and ("POCKET BOOST  •  CHAIN ×" .. snapshot.chain)
-      or "MOVE TO THE LIT BASS PAD",
+  local title = success and snapshot.reward_text
+    or mechanic_id == "soul_resonance_reserve"
+      and (boosted and ("RESONANCE RESTORED  •  CHAIN ×" .. snapshot.chain)
+        or "HOLD THE LIT RESONANCE POOL")
+    or mechanic_id == "disco_spotlight_flow"
+      and (boosted and ("SPOTLIGHT FLOW  •  CHAIN ×" .. snapshot.chain)
+        or "STEP INTO THE MOVING SPOTLIGHT")
+    or boosted and ("POCKET BOOST  •  CHAIN ×" .. snapshot.chain)
+      or "MOVE TO THE LIT BASS PAD"
+  love.graphics.printf(title,
     x + 58, 101, panel_w - 68, "center")
   love.graphics.setColor(0.80, 0.78, 0.90, 1)
   love.graphics.setFont(Fonts.get(12))
-  love.graphics.printf("Catch the gold downbeat for a speed burst",
+  local detail = success and "REWARD SECURED  •  KEEP THE CHAIN ALIVE"
+    or mechanic_id == "soul_resonance_reserve"
+      and "Charge clean resonance for bounded healing"
+    or mechanic_id == "disco_spotlight_flow"
+      and "Ride the prism lane for a speed burst"
+    or "Catch the gold downbeat for a speed burst"
+  love.graphics.printf(detail,
     x + 58, 127, panel_w - 68, "center")
 end
 

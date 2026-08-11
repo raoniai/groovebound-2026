@@ -4,6 +4,7 @@ local settings = require("src.config.settings")
 local widgets = require("src.ui.widgets.button")
 local UIScale = require("src.ui.scale")
 local JourneyProgress = require("src.meta.journey_progress")
+local WorldTourSession = require("src.meta.world_tour_session")
 
 local WorldTourScreen = class()
 WorldTourScreen.kind = "world_tour"
@@ -59,10 +60,11 @@ function WorldTourScreen:_play_selected()
   end
   local character_id = self.app.slot.journey.character_id ~= ""
     and self.app.slot.journey.character_id or "joe"
-  JourneyProgress.begin_run(self.app, "funk", world.id)
+  JourneyProgress.begin_run(self.app, "world_tour", world.id)
   local RunScreen = require("src.ui.screens.run")
   self.app.states:switch(RunScreen(self.app, {
     mode = "world_tour", world_id = world.id, character_id = character_id,
+    build = WorldTourSession.get(self.app, character_id),
   }))
   return true
 end
@@ -133,7 +135,7 @@ function WorldTourScreen:_draw_world_slot(world, rect, selected)
       or unlocked and { 0.36, 0.92, 1, 0.78 } or { 0.42, 0.38, 0.52, 0.42 },
   })
   local col = world.id == "funk" and 2 or world.id == "soul" and 3 or 4
-  self.app.assets:draw_world_tour_icon(col, 1,
+  self.app.assets:draw_world_interface(col, 1,
     rect.x + rect.w * 0.16, rect.y + 5, rect.w * 0.68, rect.h * 0.68,
     { color = unlocked and { 1, 1, 1, 1 } or { 0.52, 0.48, 0.62, 0.48 } })
   love.graphics.setFont(Fonts.get(math.max(10, math.min(14, rect.w * 0.12))))
@@ -159,7 +161,7 @@ function WorldTourScreen:_draw_record(world, rect)
     { color = unlocked and { 0.36, 0.92, 1, 0.78 } or { 0.42, 0.38, 0.52, 0.46 } })
 
   local icon_col = world.id == "funk" and 2 or world.id == "soul" and 3 or 4
-  self.app.assets:draw_world_tour_icon(icon_col, 1,
+  self.app.assets:draw_world_interface(icon_col, 1,
     rect.x + 18, rect.y + 12, 112, 112,
     { color = unlocked and { 1, 1, 1, 1 } or { 0.48, 0.45, 0.58, 0.48 } })
   love.graphics.setFont(Fonts.get(26))
@@ -170,8 +172,8 @@ function WorldTourScreen:_draw_record(world, rect)
   love.graphics.setFont(Fonts.get(14))
   love.graphics.setColor(0.72, 0.72, 0.84, 1)
   love.graphics.printf(self.catalog_only and "CATALOG PREVIEW  •  START A CAMPAIGN TO PLAY"
-    or unlocked and (world.id == "funk"
-      and "PLAYABLE  •  HOLD THE POCKET" or "CATALOGED  •  COMING NEXT")
+    or unlocked and (world.implementation_status == "playable"
+      and "PLAYABLE  •  WORLD MECHANIC ACTIVE" or "CATALOGED  •  COMING NEXT")
       or "LOCKED  •  CLEAR THE PREVIOUS WORLD",
     rect.x + 134, rect.y + 59, rect.w - 154, "left")
 
@@ -179,11 +181,17 @@ function WorldTourScreen:_draw_record(world, rect)
   self.app.assets:draw_world_tour_icon(badge_col, 2,
     rect.x + rect.w - 112, rect.y + 82, 92, 92,
     { color = grade ~= "" and { 1, 1, 1, 1 } or { 0.48, 0.45, 0.58, 0.42 } })
-  love.graphics.setFont(Fonts.get(34))
+  local badge_x, badge_y, badge_w, badge_h =
+    rect.x + rect.w - 112, rect.y + 82, 92, 92
+  local grade_font = Fonts.get(34)
+  local grade_text = grade ~= "" and grade or "—"
+  local text_y = badge_y + (badge_h - grade_font:getHeight()) / 2 - 1
+  love.graphics.setFont(grade_font)
+  love.graphics.setColor(0.005, 0.002, 0.018, grade ~= "" and 0.95 or 0.65)
+  love.graphics.printf(grade_text, badge_x + 3, text_y + 4, badge_w, "center")
   love.graphics.setColor(grade ~= "" and { 1, 0.96, 1, 1 }
     or { 0.55, 0.52, 0.64, 0.8 })
-  love.graphics.printf(grade ~= "" and grade or "—",
-    rect.x + rect.w - 112, rect.y + 111, 92, "center")
+  love.graphics.printf(grade_text, badge_x, text_y, badge_w, "center")
 
   local bar_x, bar_y = rect.x + 28, rect.y + 154
   local bar_w = math.max(120, rect.w - 168)
@@ -277,9 +285,6 @@ end
 function WorldTourScreen:mousemoved(x, y)
   x, y = UIScale.point(x, y, self.ui_scale)
   self.buttons:mousemoved(x, y)
-  for index, rect in ipairs(self.slot_rects) do
-    if inside(rect, x, y) then self.selected = index end
-  end
 end
 
 function WorldTourScreen:mousepressed(x, y, button)

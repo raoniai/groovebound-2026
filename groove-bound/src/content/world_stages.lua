@@ -29,6 +29,42 @@ local function mechanic(pads, cycle_seconds, radius)
   }
 end
 
+local function themed_stage(id, world_id, name, subtitle, final_boss, wave_module,
+    mechanic_id, stage_index)
+  local width, height = 5400 + stage_index * 200, 3400 + stage_index * 160
+  local pads = {
+    { x=width/2, y=height/2 }, { x=width*.36, y=height*.34 },
+    { x=width*.64, y=height*.34 }, { x=width*.36, y=height*.66 },
+    { x=width*.64, y=height*.66 },
+  }
+  local obs, deco = {}, {}
+  local positions = {
+    { .12,.16 },{ .30,.12 },{ .50,.14 },{ .70,.12 },{ .88,.16 },
+    { .12,.82 },{ .30,.86 },{ .50,.84 },{ .70,.86 },{ .88,.82 },
+  }
+  for i,p in ipairs(positions) do obs[#obs+1] = { x=width*p[1], y=height*p[2],
+    w=230+(i%3)*18, h=210+(i%2)*18, icon={col=(i-1)%4+1,row=1} } end
+  local dpos={{.20,.34},{.80,.34},{.18,.64},{.82,.64},{.32,.50},{.68,.50},{.50,.26},{.50,.74}}
+  for i,p in ipairs(dpos) do deco[#deco+1] = { x=width*p[1], y=height*p[2],
+    size=145+(i%3)*14, icon={col=(i-1)%4+1,row=2},
+    blocks_base=(i==1 or i==2), hitbox_w=78, hitbox_h=38, hitbox_offset_y=58 } end
+  return { id=id, world_id=world_id, name=name, subtitle=subtitle,
+    width=width, height=height, base_duration=240, wave_base_duration=600,
+    waves=require(wave_module), final_boss=final_boss,
+    floor_style=world_id, environment_atlas=world_id,
+    floor_tint=world_id=="soul" and { .82,.68,.88,1 } or { .70,.78,.96,1 },
+    veil_color=world_id=="soul" and { .08,.012,.065,.26 } or { .012,.025,.075,.24 },
+    grid_color=world_id=="soul" and { 1,.55,.42,.35 } or { .35,.92,1,.34 },
+    mechanic={ id=mechanic_id, cycle_seconds=world_id=="soul" and 4.6 or 3.0,
+      active_window=world_id=="soul" and .72 or .34,
+      charge_seconds=world_id=="soul" and 1.15 or .38,
+      boost_seconds=world_id=="soul" and 1.4 or 2.4,
+      boost_multiplier=world_id=="soul" and 1.08 or 1.42,
+      heal_fraction=world_id=="soul" and .07 or 0,
+      radius=world_id=="soul" and 128 or 118, pads=pads },
+    obstacles=obs, decorations=deco }
+end
+
 return {
   funk = {
     {
@@ -116,5 +152,25 @@ return {
         { x = 4280, y = 2250, size = 155, icon = { col = 3, row = 2 } },
       },
     },
+  },
+  soul = {
+    themed_stage("world_soul_velvet_nave", "soul", "THE VELVET NAVE",
+      "Charge a resonance pool. Spend the harmony to recover.",
+      "organ_colossus", "src.content.world_tour_waves.soul",
+      "soul_resonance_reserve", 1),
+    themed_stage("world_soul_sanctuary_chorus", "soul", "THE SANCTUARY CHORUS",
+      "Answer the Titan's call and keep the sanctuary singing.",
+      "velvet_titan", "src.content.world_tour_waves.soul_stage2",
+      "soul_resonance_reserve", 2),
+  },
+  disco = {
+    themed_stage("world_disco_mirrorball_concourse", "disco", "MIRRORBALL CONCOURSE",
+      "Follow the moving spotlight for a prism-speed surge.",
+      "laser_conductor", "src.content.world_tour_waves.disco",
+      "disco_spotlight_flow", 1),
+    themed_stage("world_disco_prism_platform", "disco", "THE PRISM PLATFORM",
+      "Ride the bonus lane and dethrone the Prism Monarch.",
+      "prism_monarch", "src.content.world_tour_waves.disco_stage2",
+      "disco_spotlight_flow", 2),
   },
 }

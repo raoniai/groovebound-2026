@@ -5,6 +5,7 @@ local Projectile = require("src.game.entities.projectile")
 local XPGem = require("src.game.entities.xp_gem")
 local Pickup = require("src.game.entities.pickup")
 local RewardChest = require("src.game.entities.reward_chest")
+local CombatSystem = require("src.game.systems.combat_system")
 
 local T = {}
 
@@ -215,6 +216,25 @@ T["overtime enrages a boss exactly once with triple health and speed"] = functio
   H.is_false(enemy:enrage_overtime(3))
   enemy:update(1, { x = 90, y = 20 }, 1, arena)
   H.eq(enemy.x, 50)
+end
+
+T["every World Tour stage guarantees a chest by its thirty-sixth kill"] = function()
+  H.is_false(CombatSystem.reward_chest_is_guaranteed({
+    mode = "world_tour", stage_reward_chest_kills = 35,
+    stage_reward_chests_spawned = 0,
+  }))
+  H.is_true(CombatSystem.reward_chest_is_guaranteed({
+    mode = "world_tour", stage_reward_chest_kills = 36,
+    stage_reward_chests_spawned = 0,
+  }))
+  H.is_false(CombatSystem.reward_chest_is_guaranteed({
+    mode = "world_tour", stage_reward_chest_kills = 80,
+    stage_reward_chests_spawned = 1,
+  }))
+  H.is_false(CombatSystem.reward_chest_is_guaranteed({
+    mode = "prologue", stage_reward_chest_kills = 80,
+    stage_reward_chests_spawned = 0,
+  }))
 end
 
 return T

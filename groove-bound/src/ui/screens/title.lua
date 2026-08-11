@@ -90,6 +90,18 @@ function TitleScreen:_catalog()
   }))
 end
 
+function TitleScreen:_perks()
+  local PerkDatabaseScreen = require("src.ui.screens.perk_database")
+  self.app.states:switch(PerkDatabaseScreen(self.app, {
+    catalog_only = not JourneyProgress.has_campaign(self.app),
+  }))
+end
+
+function TitleScreen:_replay_prologue()
+  JourneyProgress.begin_prologue(self.app)
+  self:_start()
+end
+
 function TitleScreen:_confirm_campaign_reset(start_after_reset)
   local CampaignResetConfirm = require("src.ui.screens.campaign_reset_confirm")
   self.app.states:push(CampaignResetConfirm(self.app, {
@@ -136,8 +148,21 @@ function TitleScreen:_layout()
       on_press = function() self:_continue_campaign() end,
     })
     y = y + 54 + gap
+    buttons[#buttons + 1] = button({
+      label = "REPLAY PROLOGUE",
+      x = x, y = y, w = half, h = 42, font_size = 16,
+      icon = { col = 1, row = 2 },
+      on_press = function() self:_replay_prologue() end,
+    })
+    buttons[#buttons + 1] = button({
+      label = "NEW GAME",
+      x = x + half + gap, y = y, w = half, h = 42, font_size = 16,
+      icon = { col = 2, row = 1 },
+      on_press = function() self:_new_game() end,
+    })
+    y = y + 42 + gap
   end
-  buttons[#buttons + 1] = button({
+  if not has_campaign then buttons[#buttons + 1] = button({
       label = has_campaign and "NEW GAME" or "START NEW GAME",
       x = x, y = y, w = has_campaign and half or bw,
       h = has_campaign and 46 or 54,
@@ -145,18 +170,23 @@ function TitleScreen:_layout()
       icon = { col = 2, row = 1 },
       variant = has_campaign and "default" or "primary",
       on_press = function() self:_new_game() end,
-    })
+    }) end
   buttons[#buttons + 1] = button({
-      label = "WORLD TOUR CATALOG",
-      x = has_campaign and x + half + gap or x,
-      y = has_campaign and y or y + 54 + gap,
-      w = has_campaign and half or bw,
-      h = has_campaign and 46 or 48,
+      label = has_campaign and "WORLD TOUR" or "WORLD TOUR CATALOG",
+      x = x, y = has_campaign and y or y + 54 + gap,
+      w = has_campaign and half or half,
+      h = 46,
       font_size = has_campaign and 16 or 18,
       icon = { col = 3, row = 1 },
       on_press = function() self:_catalog() end,
     })
-  y = has_campaign and y + 46 + 7 or y + 54 + gap + 48 + 7
+  buttons[#buttons + 1] = button({
+    label = "PERK CATALOG", x = x + half + gap,
+    y = has_campaign and y or y + 54 + gap, w = half, h = 46,
+    font_size = 16, icon = { col = 5, row = 1 },
+    on_press = function() self:_perks() end,
+  })
+  y = has_campaign and y + 46 + 7 or y + 54 + gap + 46 + 7
   self.dividers[#self.dividers + 1] = { x = x + 16, y = y, w = bw - 32, h = 14 }
   y = y + 17
   buttons[#buttons + 1] = button({

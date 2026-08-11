@@ -217,6 +217,26 @@ T["chest rewards prioritize ready evolutions then rebuild legal item pools"] = f
   H.eq(progression.chest_rewards_claimed, 3)
 end
 
+T["progression snapshots restore an in-memory World Tour build exactly"] = function()
+  local first = fresh(4, 2121)
+  first:apply({ kind = "weapon_add", id = "bass_drop" })
+  first:apply({ kind = "passive_add", id = "quickstep" })
+  first.rerolls = 4
+  first.coins = 37
+  local snapshot = first:snapshot()
+
+  local restored, inventory, runtime, player = fresh(1, 9090)
+  restored:restore(snapshot)
+  H.eq(inventory:get_slot(1).id, "kazoo_pistol")
+  H.eq(inventory:get_slot(1).level, 4)
+  H.eq(inventory:get_slot(2).id, "bass_drop")
+  H.eq(restored.passives:get("quickstep").level, 1)
+  H.eq(restored.rerolls, 4)
+  H.eq(restored.coins, 37)
+  H.near(player.passive_speed_multiplier, 1.1)
+  H.is_true(runtime:assert_consistent(inventory))
+end
+
 T["fully capped chest rolls fall back to concrete utility rewards"] = function()
   local progression, inventory = fresh(10, 9090)
   inventory.capacity = 1

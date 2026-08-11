@@ -34,12 +34,14 @@ T["Prologue victory unlocks Funk and a saved World Tour route"] = function()
   JourneyProgress.begin_prologue(app)
   local result = {
     outcome = "victory", mode = "prologue", time = 120,
-    stats = { kills = 80, bosses = 2, damage = 3000, xp = 900,
+    stats = { kills = 80, bosses = 2, damage = 3000, xp = 900, coins = 320,
       chests_opened = 4, max_combo = 19 },
   }
   JourneyProgress.record_result(app, result)
   H.is_true(app.slot.prologue.completed)
   H.is_true(app.slot.worlds.funk.unlocked)
+  H.eq(app.slot.perks.open_ears.rank, 1)
+  H.eq(app.slot.wallet.coins, 320)
   H.eq(app.slot.journey.current_route, "world_tour")
   H.eq(app.slot.statistics.victories, 1)
   JourneyProgress.record_result(app, result)
@@ -48,6 +50,7 @@ end
 
 T["Funk victory writes visual grade pillars and best record"] = function()
   local app = fresh()
+  app.content = require("src.content.init")
   local result = {
     outcome = "victory", mode = "world_tour", world_id = "funk",
     time = 210, level = 8, health_fraction = 0.82,
@@ -62,6 +65,24 @@ T["Funk victory writes visual grade pillars and best record"] = function()
   H.is_true(record.pillars.mastery > 0)
   H.eq(app.slot.worlds.funk.clears, 1)
   H.eq(app.slot.journey.current_route, "world_tour")
+end
+
+T["high-grade World victories unlock their perks and the next core world"] = function()
+  local app = fresh()
+  app.content = require("src.content.init")
+  local result = {
+    outcome = "victory", mode = "world_tour", world_id = "funk",
+    time = 480, level = 12, health_fraction = 1,
+    stats = { kills = 170, bosses = 2, damage = 18000, xp = 3200,
+      coins = 740, chests_opened = 8, max_combo = 60 },
+    world_mechanic = { activations = 12, opportunities = 12, best_chain = 9 },
+  }
+  JourneyProgress.record_result(app, result)
+  H.eq(app.slot.records.worlds.funk.grade, "S")
+  H.is_true(app.slot.worlds.soul.unlocked)
+  H.eq(app.slot.perks.pocket_drive.rank, 1)
+  H.eq(app.slot.perks.breakstep.rank, 1)
+  H.eq(app.slot.wallet.coins, 740)
 end
 
 T["campaign reset clears the active Slot and in-memory journey"] = function()

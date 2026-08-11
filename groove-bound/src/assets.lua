@@ -160,6 +160,12 @@ function Assets.load()
   self.enemy.funk_quads,
     self.enemy.funk_cell_w,
     self.enemy.funk_cell_h = grid_quads(self.enemy.funk, 4, 2, 2)
+  for _, id in ipairs({ "soul", "disco" }) do
+    self.enemy[id] = image("assets/generated/campaign/" .. id .. "-enemies-atlas.png")
+    self.enemy[id .. "_quads"],
+      self.enemy[id .. "_cell_w"],
+      self.enemy[id .. "_cell_h"] = grid_quads(self.enemy[id], 4, 2, 8)
+  end
 
   self.floor = image("assets/legacy/images/floor-tiles1.jpg")
   self.floor_quads = {}
@@ -188,6 +194,19 @@ function Assets.load()
       col = (index - 1) % 6 + 1,
       row = math.floor((index - 1) / 6) + 1,
     }
+  end
+  local projectile_aliases = {
+    prismatic_triangle = "triangle_tracer",
+    velvet_impaler = "cello_lance",
+    carnival_superorbit = "maraca_orbit",
+    resonance_rupture = "tuning_fork",
+    stadium_keytar = "keytar_chord",
+    cathedral_overdrive = "bell_tower",
+    infinite_mixtape = "tape_repeater",
+    aurora_harp = "laser_harp",
+  }
+  for id, base_id in pairs(projectile_aliases) do
+    self.projectile_cells[id] = self.projectile_cells[base_id]
   end
   self.combat_fx = SpriteSheet({
     path = "assets/generated/campaign/combat-fx-atlas.png",
@@ -226,7 +245,21 @@ function Assets.load()
     "assets/generated/campaign/world-tour-ui-atlas.png")
   self.world_tour_ui_quads,
     self.world_tour_ui_cell_w,
-    self.world_tour_ui_cell_h = grid_quads(self.world_tour_ui, 5, 2)
+    self.world_tour_ui_cell_h = grid_quads(self.world_tour_ui, 5, 2, 8)
+  self.world_interface = image(
+    "assets/generated/campaign/world-interface-atlas.png")
+  self.world_interface_quads,
+    self.world_interface_cell_w,
+    self.world_interface_cell_h = grid_quads(self.world_interface, 5, 2, 8)
+  self.meta_perks = image("assets/generated/campaign/meta-perks-atlas.png")
+  self.meta_perk_quads,
+    self.meta_perk_cell_w,
+    self.meta_perk_cell_h = grid_quads(self.meta_perks, 5, 4, 8)
+  self.world_mechanics = image(
+    "assets/generated/campaign/world-mechanics-atlas.png")
+  self.world_mechanic_quads,
+    self.world_mechanic_cell_w,
+    self.world_mechanic_cell_h = grid_quads(self.world_mechanics, 5, 2, 4)
   self.menu_button_icons = image(
     "assets/generated/campaign/menu-button-icons-atlas.png")
   self.menu_button_icon_quads,
@@ -239,6 +272,8 @@ function Assets.load()
     backbeat = image("assets/generated/campaign/backbeat-floor-atlas.png"),
     orbit = image("assets/generated/campaign/orbit-floor-atlas.png"),
     funk = image("assets/generated/campaign/funk-floor-atlas.png"),
+    soul = image("assets/generated/campaign/soul-floor-atlas.png"),
+    disco = image("assets/generated/campaign/disco-floor-atlas.png"),
   }
   self.floor_surface_quads = {}
   self.floor_surface_cell_w = {}
@@ -253,6 +288,12 @@ function Assets.load()
   self.weapon_icons = image("assets/generated/weapon-icons-atlas.png")
   self.weapon_icons_2 = image("assets/generated/weapon-icons-atlas-2.png")
   self.evolved_weapon_icons = image("assets/generated/evolved-weapon-icons-atlas.png")
+  self.evolved_weapon_icons_2 = image(
+    "assets/generated/evolved-weapon-icons-atlas-2.png")
+  self.evolved_weapon_icon_quads_2,
+    self.evolved_weapon_icon_cell_w_2,
+    self.evolved_weapon_icon_cell_h_2 = grid_quads(
+      self.evolved_weapon_icons_2, 4, 2, 8)
   self.weapon_icon_quads = {}
   for row = 1, 2 do
     self.weapon_icon_quads[row] = {}
@@ -306,6 +347,14 @@ function Assets.load()
     self.environment_funk_cell_w,
     self.environment_funk_cell_h = grid_quads(
       self.environment_funk, 4, 2, 2)
+  for _, id in ipairs({ "soul", "disco" }) do
+    self["environment_" .. id] = image(
+      "assets/generated/campaign/" .. id .. "-environment-atlas.png")
+    self["environment_" .. id .. "_quads"],
+      self["environment_" .. id .. "_cell_w"],
+      self["environment_" .. id .. "_cell_h"] = grid_quads(
+        self["environment_" .. id], 4, 2, 8)
+  end
   self.environment_upper_quads = {}
 
   self.sfx = {
@@ -409,9 +458,16 @@ function Assets:draw_weapon_icon(icon, x, y, size, opts)
   icon = icon or { col = 1, row = 1 }
   local quad = self.weapon_icon_quads[icon.row][icon.col]
   local atlas = self.weapon_icons
+  local cell_w, cell_h = 256, 256
   if icon.atlas == "base2" then atlas = self.weapon_icons_2
   elseif icon.atlas == "evolved" then atlas = self.evolved_weapon_icons end
-  local scale = size / 256
+  if icon.atlas == "evolved2" then
+    atlas = self.evolved_weapon_icons_2
+    quad = self.evolved_weapon_icon_quads_2[icon.row][icon.col]
+    cell_w = self.evolved_weapon_icon_cell_w_2
+    cell_h = self.evolved_weapon_icon_cell_h_2
+  end
+  local scale = size / math.max(cell_w, cell_h)
   love.graphics.setColor(opts.color or { 1, 1, 1, 1 })
   love.graphics.draw(
     atlas,
@@ -421,8 +477,8 @@ function Assets:draw_weapon_icon(icon, x, y, size, opts)
     opts.rotation or 0,
     scale,
     scale,
-    128,
-    128)
+    cell_w / 2,
+    cell_h / 2)
 end
 
 function Assets:draw_support_icon(icon, x, y, size, opts)
@@ -448,6 +504,11 @@ function Assets:draw_enemy_variant(icon, x, y, size, opts)
     atlas = self.enemy.funk
     quad = self.enemy.funk_quads[icon.row][icon.col]
     cell_size = math.max(self.enemy.funk_cell_w, self.enemy.funk_cell_h)
+  elseif icon.atlas == "soul" or icon.atlas == "disco" then
+    local id = icon.atlas
+    atlas = self.enemy[id]
+    quad = self.enemy[id .. "_quads"][icon.row][icon.col]
+    cell_size = math.max(self.enemy[id .. "_cell_w"], self.enemy[id .. "_cell_h"])
   end
   local scale = size / cell_size
   love.graphics.setColor(opts.color or { 1, 1, 1, 1 })
@@ -455,9 +516,13 @@ function Assets:draw_enemy_variant(icon, x, y, size, opts)
     atlas, quad, x, y, 0,
     opts.flip_x and -scale or scale, scale,
     icon.atlas == "stage2" and self.enemy.stage2_cell_w / 2
-      or icon.atlas == "funk" and self.enemy.funk_cell_w / 2 or 128,
+      or icon.atlas == "funk" and self.enemy.funk_cell_w / 2
+      or (icon.atlas == "soul" or icon.atlas == "disco")
+        and self.enemy[icon.atlas .. "_cell_w"] / 2 or 128,
     icon.atlas == "stage2" and self.enemy.stage2_cell_h / 2
-      or icon.atlas == "funk" and self.enemy.funk_cell_h / 2 or 128)
+      or icon.atlas == "funk" and self.enemy.funk_cell_h / 2
+      or (icon.atlas == "soul" or icon.atlas == "disco")
+        and self.enemy[icon.atlas .. "_cell_h"] / 2 or 128)
 end
 
 local function environment_source(self, icon, atlas_id)
@@ -484,6 +549,11 @@ local function environment_source(self, icon, atlas_id)
     quad = self.environment_funk_quads[icon.row][icon.col]
     cell_w, cell_h = self.environment_funk_cell_w,
       self.environment_funk_cell_h
+  elseif atlas_id == "soul" or atlas_id == "disco" then
+    atlas = self["environment_" .. atlas_id]
+    quad = self["environment_" .. atlas_id .. "_quads"][icon.row][icon.col]
+    cell_w, cell_h = self["environment_" .. atlas_id .. "_cell_w"],
+      self["environment_" .. atlas_id .. "_cell_h"]
   end
   return atlas, quad, cell_w, cell_h
 end
@@ -709,6 +779,28 @@ function Assets:draw_world_tour_icon(col, row, x, y, w, h, opts)
     self.world_tour_ui, self.world_tour_ui_quads,
     self.world_tour_ui_cell_w, self.world_tour_ui_cell_h,
     col, row, x, y, w, h, opts)
+end
+
+function Assets:draw_world_interface(col, row, x, y, w, h, opts)
+  return draw_atlas_cell(self.world_interface, self.world_interface_quads,
+    self.world_interface_cell_w, self.world_interface_cell_h,
+    math.max(1, math.min(5, col or 1)), math.max(1, math.min(2, row or 1)),
+    x, y, w, h, opts)
+end
+
+function Assets:draw_meta_perk(cell, x, y, w, h, opts)
+  cell = math.max(1, math.min(20, cell or 20))
+  local col = (cell - 1) % 5 + 1
+  local row = math.floor((cell - 1) / 5) + 1
+  return draw_atlas_cell(self.meta_perks, self.meta_perk_quads,
+    self.meta_perk_cell_w, self.meta_perk_cell_h, col, row, x, y, w, h, opts)
+end
+
+function Assets:draw_world_mechanic(frame, row, x, y, w, h, opts)
+  return draw_atlas_cell(self.world_mechanics, self.world_mechanic_quads,
+    self.world_mechanic_cell_w, self.world_mechanic_cell_h,
+    math.max(1, math.min(5, frame or 1)), math.max(1, math.min(2, row or 1)),
+    x, y, w, h, opts)
 end
 
 function Assets:draw_menu_button_icon(col, row, x, y, w, h, opts)

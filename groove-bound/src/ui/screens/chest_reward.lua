@@ -280,7 +280,6 @@ function ChestRewardScreen:draw()
   love.graphics.setColor(1.0, 0.76, 0.22, 1)
   love.graphics.setFont(Fonts.get(38))
   love.graphics.printf("MYSTERY CHEST", 0, 30, w, "center")
-  self.app.assets:draw_chest_luck(5, w / 2 - 258, 13, 72, 72)
   love.graphics.setFont(Fonts.get(16))
   love.graphics.setColor(0.86, 0.84, 0.94, 1)
   love.graphics.printf(phase == "count_roll"
@@ -294,16 +293,24 @@ function ChestRewardScreen:draw()
     self:_draw_count_animation(w, h, phase)
   else
     local count = self:visible_reel_count()
-    local gap = count >= 5 and 8 or 14
-    local available_w = math.min(1180, w - 34)
-    local card_w = math.min(310, (available_w - gap * (count - 1)) / count)
+    local gap = count >= 5 and 10 or 18
+    local available_w = math.min(1180, w - 44)
+    local preferred = count == 1 and 390 or count == 3 and 300 or 210
+    local card_w = math.min(preferred, (available_w - gap * (count - 1)) / count)
     local total_w = card_w * count + gap * (count - 1)
-    local card_h = math.min(330, h - 218)
+    local card_h = math.min(count == 1 and 360 or count == 3 and 330 or 300, h - 224)
     local start_x = (w - total_w) / 2
+    local panel_x, panel_y = start_x - 16, 102
+    love.graphics.setColor(0.018, 0.008, 0.05, 0.78)
+    love.graphics.rectangle("fill", panel_x, panel_y,
+      total_w + 32, card_h + 12, 14, 14)
+    love.graphics.setColor(0.42, 0.24, 0.66, 0.5)
+    love.graphics.rectangle("line", panel_x, panel_y,
+      total_w + 32, card_h + 12, 14, 14)
     for index, reward in ipairs(self.rewards) do
       self:_draw_reward_card(reward, {
         x = start_x + (index - 1) * (card_w + gap),
-        y = 104, w = card_w, h = card_h,
+        y = 108, w = card_w, h = card_h,
       }, index)
     end
   end

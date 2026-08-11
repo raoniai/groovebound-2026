@@ -53,6 +53,7 @@ function CombatSystem:init(opts)
   self.character = opts.character or self.content.characters.joe
   self.camera = opts.camera
   self.options = opts.options or {}
+  self.mode = opts.mode or "prologue"
 
   self.enemy_pool = Pool(function() return Enemy() end)
   self.enemy_projectile_pool = Pool(function() return EnemyProjectile() end)
@@ -169,6 +170,8 @@ function CombatSystem:begin_stage(index, arena, initial)
   self.final_boss_spawned = false
   self.final_boss_spawned_at = nil
   self.stage_clear_chest_opened = false
+  self.stage_reward_chest_kills = 0
+  self.stage_reward_chests_spawned = 0
   self.overtime_latched = false
   self.music_final_phase_latched = false
   self.arena = assert(arena)
@@ -482,6 +485,7 @@ function CombatSystem:_kill_enemy(enemy)
     self.ctx.world:add("xp_gem", gem)
   end
   if enemy.definition.boss_type ~= "final" then
+    self.stage_reward_chest_kills = self.stage_reward_chest_kills + 1
     self:_try_spawn_rare_pickup(enemy)
     if not enemy.suppress_reward_chest then self:_try_spawn_reward_chest(enemy) end
   end
@@ -522,7 +526,8 @@ end
 
 function CombatSystem:_try_spawn_reward_chest(enemy)
   local chance = self:reward_chest_chance(enemy)
-  if not self.ctx.rng.loot:chance(chance) then return nil end
+  local guaranteed = self:reward_chest_is_guaranteed()
+  if not guaranteed and not self.ctx.rng.loot:chance(chance) then return nil end
   local x, y = enemy.x, enemy.y
   if self.arena.safe_drop_position then
     x, y = self.arena:safe_drop_position(x, y, 24)
@@ -535,14 +540,26 @@ function CombatSystem:_try_spawn_reward_chest(enemy)
   })
   self.wave_notice = "RARE DROP  •  MUSICAL CHEST"
   self.wave_notice_time = 3.5
+  self.stage_reward_chests_spawned = self.stage_reward_chests_spawned + 1
   return self.ctx.world:add("reward_chest", chest)
 end
 
+function CombatSystem:reward_chest_is_guaranteed()
+  return self.mode == "world_tour"
+    and self.stage_reward_chests_spawned == 0
+    and self.stage_reward_chest_kills >= 36
+end
+
 function CombatSystem:reward_chest_chance(enemy)
+  if self.mode == "world_tour" then
+    return enemy.definition.boss_type == "final" and 0.65
+      or enemy.definition.boss_type == "miniboss" and 0.30
+      or enemy.definition.elite and 0.12
+      or 0.006
+  end
   return enemy.definition.boss_type == "final" and 0.55
     or enemy.definition.boss_type == "miniboss" and 0.22
-    or enemy.definition.elite and 0.075
-    or 0.0015
+    or enemy.definition.elite and 0.075 or 0.0015
 end
 
 function CombatSystem:_roll_chest_reward_count()

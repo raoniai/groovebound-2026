@@ -48,4 +48,41 @@ T["missing a pocket cycle breaks the chain without random state"] = function()
   H.eq(system:snapshot().opportunities, 3)
 end
 
+T["Soul resonance charges in place and heals only once per cycle"] = function()
+  local player = { x=100, y=100, hp=40, max_hp=100, world_speed_multiplier=1 }
+  local system = FunkPocketSystem({ player=player, definition={
+    id="soul_resonance_reserve", cycle_seconds=4, active_window=.7,
+    charge_seconds=.3, boost_seconds=1, boost_multiplier=1.08,
+    heal_fraction=.08, radius=40, pads={{x=100,y=100},{x=300,y=100},{x=500,y=100}},
+  } })
+  system:update(.15, .15)
+  system:update(.15, .30)
+  H.eq(system:snapshot().activations, 1)
+  H.near(player.hp, 48)
+  system:update(.2, .5)
+  H.near(player.hp, 48)
+end
+
+T["Disco spotlight uses the rotating active pad and grants a flow boost"] = function()
+  local player = { x=100, y=100, world_speed_multiplier=1 }
+  local system = FunkPocketSystem({ player=player, definition={
+    id="disco_spotlight_flow", cycle_seconds=2, active_window=.4,
+    boost_seconds=2, boost_multiplier=1.42, radius=45,
+    pads={{x=100,y=100},{x=300,y=100},{x=500,y=100}},
+  } })
+  system:update(.1, 1.7)
+  H.eq(system:snapshot().activations, 1)
+  H.near(player.world_speed_multiplier, 1.42)
+end
+
+T["successful mechanics expose an animated reward alert"] = function()
+  local system = fresh()
+  system:update(0.1, 1.6)
+  local snapshot = system:snapshot()
+  H.is_true(snapshot.notice > 0)
+  H.eq(snapshot.success_index, 1)
+  H.is_true(type(snapshot.reward_text) == "string")
+  H.is_true(#snapshot.reward_text > 0)
+end
+
 return T

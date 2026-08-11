@@ -1,6 +1,7 @@
 -- Enemy definitions. All rhythmless creatures, no real-world references.
+-- luacheck: ignore 631
 
-return {
+local enemies = {
   monotone = {
     id     = "monotone",
     name   = "Monotone",
@@ -449,3 +450,35 @@ return {
     sprite_size = 118,
   },
 }
+
+local function add(id, name, atlas, cell, hp, speed, damage, brain, extra)
+  local e = { id=id, name=name, hp=hp, speed=speed, size=extra.size or 21,
+    damage=damage, xp=extra.xp or math.floor(hp * 0.24), coins=extra.coins or 5,
+    brain=brain, color=extra.color, sprite={ atlas=atlas,
+      col=(cell-1)%4+1, row=math.floor((cell-1)/4)+1 },
+    sprite_size=extra.sprite_size or 104 }
+  for k,v in pairs(extra) do if e[k] == nil then e[k]=v end end
+  enemies[id]=e
+end
+
+local soul = { 0.96, 0.50, 0.78, 1 }
+add("choir_automaton", "Choir Automaton", "soul", 1, 92, 82, 17, "chase", { color=soul })
+add("string_sentinel", "String Sentinel", "soul", 2, 145, 70, 19, "ranged", { color=soul, attack_kind="note_bolt", attack_interval=2.3, attack_range=540, preferred_range=350, windup=0.48, projectile_speed=300 })
+add("organ_walker", "Organ Walker", "soul", 3, 290, 55, 27, "charger", { color=soul, size=27, sprite_size=124 })
+add("harmony_linker", "Harmony Linker", "soul", 4, 210, 76, 22, "orbit", { color=soul, attack_kind="resonance_pulse", attack_interval=2.5, attack_range=160, windup=0.55 })
+add("gospel_moth", "Gospel Moth", "soul", 5, 78, 156, 16, "zigzag", { color=soul, sprite_size=92 })
+add("velvet_knight", "Velvet Knight", "soul", 6, 430, 64, 31, "charger", { color=soul, size=31, sprite_size=138 })
+add("organ_colossus", "Organ Colossus", "soul", 7, 8200, 38, 34, "pulse", { color=soul, size=53, sprite_size=195, boss_type="final", attack_kind="resonance_pulse", attack_interval=1.48, attack_range=250, windup=0.64, xp=850, coins=420 })
+add("velvet_titan", "Velvet Titan", "soul", 8, 17800, 32, 42, "ranged", { color=soul, size=66, sprite_size=244, hurtbox_radius=80, boss_type="final", attack_kind="static_wave", attack_interval=1.28, attack_range=620, preferred_range=410, windup=0.76, projectile_speed=345, projectile_count=26, xp=1500, coins=760 })
+
+local disco = { 0.36, 0.92, 1.0, 1 }
+add("prism_roller", "Prism Roller", "disco", 1, 108, 132, 18, "orbit", { color=disco })
+add("mirror_drone", "Mirror Drone", "disco", 2, 92, 168, 17, "zigzag", { color=disco, sprite_size=96 })
+add("laser_fan", "Laser Fan", "disco", 3, 175, 62, 21, "ranged", { color=disco, attack_kind="note_bolt", attack_interval=1.95, attack_range=590, preferred_range=380, windup=0.42, projectile_speed=340 })
+add("reflection_twin", "Reflection Twin", "disco", 4, 275, 96, 25, "chase", { color=disco, size=27, sprite_size=120 })
+add("platform_pouncer", "Platform Pouncer", "disco", 5, 135, 150, 20, "charger", { color=disco })
+add("glitter_guard", "Glitter Guard", "disco", 6, 480, 72, 33, "charger", { color=disco, size=32, sprite_size=142 })
+add("laser_conductor", "Laser Conductor", "disco", 7, 9000, 42, 36, "ranged", { color=disco, size=55, sprite_size=202, boss_type="final", attack_kind="static_wave", attack_interval=1.42, attack_range=590, preferred_range=390, windup=0.62, projectile_speed=350, projectile_count=22, xp=920, coins=460 })
+add("prism_monarch", "Prism Monarch", "disco", 8, 19400, 36, 44, "pulse", { color=disco, size=68, sprite_size=252, hurtbox_radius=82, boss_type="final", attack_kind="static_wave", attack_interval=1.18, attack_range=650, windup=0.70, projectile_speed=370, projectile_count=28, xp=1650, coins=820 })
+
+return enemies

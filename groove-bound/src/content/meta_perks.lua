@@ -1,6 +1,8 @@
 -- Permanent World Tour perks. Definitions are immutable during a run.
 
+local next_cell = 0
 local function perk(id, name, max_rank, source, description, modifier, rarity)
+  next_cell = next_cell + 1
   local prices = {}
   local bands = max_rank == 5 and { 250, 400, 575, 800 }
     or max_rank == 3 and { 500, 850 } or {}
@@ -8,7 +10,8 @@ local function perk(id, name, max_rank, source, description, modifier, rarity)
   return {
     id = id, name = name, description = description,
     rarity = rarity or (max_rank == 1 and "rare" or "common"),
-    max_rank = max_rank, source = source, sprite = { atlas = "meta_perks" },
+    max_rank = max_rank, source = source,
+    sprite = { atlas = "meta_perks", cell = next_cell },
     balance_revision = 1, prices = prices, modifiers = { modifier },
   }
 end

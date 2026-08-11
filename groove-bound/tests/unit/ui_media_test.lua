@@ -54,6 +54,7 @@ T["runtime UI artwork and character logos have stable production mappings"] = fu
     { "assets/generated/campaign/completion-ui-atlas.png", 1600, 800 },
     { "assets/generated/campaign/funk-enemies-atlas.png", 1600, 800 },
     { "assets/generated/campaign/funk-environment-atlas.png", 1600, 800 },
+    { "assets/generated/evolved-weapon-icons-atlas-2.png", 1600, 800 },
   }) do
     local width, height = png_dimensions(expected[1])
     H.eq(width, expected[2])

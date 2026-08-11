@@ -424,15 +424,42 @@ function ProgressionSystem:skip()
 end
 
 function ProgressionSystem:snapshot()
+  local inventory = self.inventory:snapshot()
+  local passives = self.passives:snapshot()
   return {
-    weapons = self.inventory:snapshot().slots,
-    passives = self.passives:snapshot().slots,
+    inventory = inventory,
+    weapons = inventory.slots,
+    passive_inventory = passives,
+    passives = passives.slots,
     rerolls = self.rerolls,
     coins = self.coins,
     evolutions = self.evolutions,
     chests_opened = self.chests_opened,
     chest_rewards_claimed = self.chest_rewards_claimed,
   }
+end
+
+function ProgressionSystem:restore(snapshot)
+  assert(type(snapshot) == "table", "invalid progression snapshot")
+  local inventory = snapshot.inventory or {
+    capacity = math.max(4, #(snapshot.weapons or {})),
+    revision = 0,
+    slots = snapshot.weapons or {},
+  }
+  local passives = snapshot.passive_inventory or {
+    capacity = math.max(4, #(snapshot.passives or {})),
+    slots = snapshot.passives or {},
+  }
+  self.inventory:restore(inventory)
+  self.passives:restore(passives)
+  self.rerolls = snapshot.rerolls or 1
+  self.coins = snapshot.coins or 0
+  self.evolutions = snapshot.evolutions or {}
+  self.chests_opened = snapshot.chests_opened or 0
+  self.chest_rewards_claimed = snapshot.chest_rewards_claimed or 0
+  self.weapon_runtime:sync(self.inventory)
+  self:_apply_passive_effects()
+  return self:snapshot()
 end
 
 return ProgressionSystem

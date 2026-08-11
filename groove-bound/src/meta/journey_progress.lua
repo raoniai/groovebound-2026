@@ -1,6 +1,10 @@
 -- Single owner for the locally saved campaign journey and World Tour records.
 
 local JourneyProgress = {}
+local PerkProgress = require("src.meta.perk_progress")
+local WorldTourSession = require("src.meta.world_tour_session")
+
+local NEXT_WORLD = { funk = "soul", soul = "disco", disco = "house" }
 
 local function ensure_world(slot, world_id)
   slot.worlds[world_id] = slot.worlds[world_id] or {
@@ -37,10 +41,12 @@ function JourneyProgress.reset(app)
   local reset, error_message = app.profile_store:reset_slot(app.active_slot_id)
   assert(reset, "Could not reset campaign Slot: " .. tostring(error_message))
   app.slot = nil
+  WorldTourSession.clear(app)
   return true
 end
 
 function JourneyProgress.begin_prologue(app)
+  WorldTourSession.clear(app)
   local slot = JourneyProgress.ensure(app)
   slot.journey.state = "in_progress"
   slot.journey.current_route = "prologue"
@@ -116,7 +122,14 @@ function JourneyProgress.record_result(app, result)
   if result.progress_saved then return app.slot end
   result.progress_saved = true
   local slot = JourneyProgress.ensure(app)
+  local content = app.content or require("src.content.init")
   merge_statistics(slot, result)
+
+  if result.outcome == "victory" then
+    local coins = math.max(0, math.floor(((result.stats or {}).coins or 0) + 0.5))
+    slot.wallet.coins = slot.wallet.coins + coins
+    slot.wallet.lifetime_earned = slot.wallet.lifetime_earned + coins
+  end
 
   if result.mode == "world_tour" then
     local world_id = assert(result.world_id)
@@ -129,6 +142,9 @@ function JourneyProgress.record_result(app, result)
         world.best_grade = record.grade
         slot.records.worlds[world_id] = record
       end
+      local next_world = NEXT_WORLD[world_id]
+      if next_world then ensure_world(slot, next_world).unlocked = true end
+      PerkProgress.unlock_for_grade(slot, world_id, record.grade, content)
       slot.journey.current_route = "world_tour"
       slot.journey.active_world_id = ""
     end
@@ -136,6 +152,7 @@ function JourneyProgress.record_result(app, result)
     slot.prologue.completed = true
     slot.prologue.clears = slot.prologue.clears + 1
     ensure_world(slot, "funk").unlocked = true
+    PerkProgress.unlock(slot, "open_ears", content)
     slot.journey.current_route = "world_tour"
     slot.journey.active_world_id = ""
   else

@@ -4,6 +4,7 @@ local ResultsScreen = require("src.ui.screens.results")
 local OptionsScreen = require("src.ui.screens.options")
 local ControlsScreen = require("src.ui.screens.controls")
 local WorldTourScreen = require("src.ui.screens.world_tour")
+local PerkDatabase = require("src.ui.screens.perk_database")
 local Content = require("src.content.init")
 
 local T = {}
@@ -63,6 +64,39 @@ T["World Tour catalog can be inspected before a campaign exists"] = function()
     H.eq(#screen.buttons.buttons, 1)
     H.eq(screen.buttons.buttons[1].label, "RETURN TO TITLE")
   end)
+end
+
+T["World Tour mouse hover never changes the clicked selection"] = function()
+  with_dimensions(1280, 720, function()
+    local screen = WorldTourScreen({ content = Content })
+    screen:_layout()
+    screen.selected = 1
+    local hover = screen.slot_rects[3]
+    screen:mousemoved(hover.x + 4, hover.y + 4)
+    H.eq(screen.selected, 1)
+    H.is_true(screen:mousepressed(hover.x + 4, hover.y + 4, 1))
+    H.eq(screen.selected, 3)
+    screen:mousemoved(screen.slot_rects[2].x + 4, screen.slot_rects[2].y + 4)
+    H.eq(screen.selected, 3)
+  end)
+end
+
+T["Perk database CTAs remain inside the detail panel and above hints"] = function()
+  for _, dimensions in ipairs({ { 800, 600 }, { 1280, 720 } }) do
+    with_dimensions(dimensions[1], dimensions[2], function()
+      local screen = PerkDatabase({ content = Content })
+      screen:_layout()
+      for _, button in ipairs(screen.buttons.buttons) do
+        H.is_true(inside(button, dimensions[1], dimensions[2]))
+        H.is_true(button.x >= screen.detail.x)
+        H.is_true(button.x + button.w <= screen.detail.x + screen.detail.w)
+        H.is_true(button.y >= screen.detail.y)
+        H.is_true(button.y + button.h <= screen.detail.y + screen.detail.h)
+        H.is_true(button.y + button.h <= dimensions[2] - 38)
+      end
+      H.is_false(overlaps(screen.buttons.buttons[1], screen.buttons.buttons[2]))
+    end)
+  end
 end
 
 T["character cards and result actions stay aligned at both supported canvases"] = function()

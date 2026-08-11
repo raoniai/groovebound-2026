@@ -482,3 +482,24 @@ dimensions and transparent RGBA colour type were inspected before integration.
 The runtime copy was then center-cropped around its alpha bounds and resized
 with nearest-neighbour sampling so its crown and speaker remain focal at play
 scale; the uncropped 1254x1254 source remains preserved.
+
+## Complete evolution icon set, second atlas
+
+**Generated:** 2026-08-11 with OpenAI image generation in Codex built-in mode
+
+| Runtime file | Grid / role |
+|---|---|
+| `evolved-weapon-icons-atlas-2.png` (1600x800 RGBA) | 4x2 atlas for the eight expansion-weapon evolutions |
+
+The source prompt required exactly eight isolated, text-free arcade pixel-art
+icons with at least twelve-percent safe padding per cell: Prismatic Triangle,
+Velvet Impaler, Carnival Superorbit, Resonance Rupture, Stadium Keytar,
+Cathedral Overdrive, Infinite Mixtape and Aurora Harp. The untouched 1717x916
+generator output is retained at
+`source-candidates/evolved-weapon-icons-atlas-2-source.png`.
+
+The runtime atlas was center-cropped to the exact 4x2 aspect, resized with
+nearest-neighbour sampling, keyed from chroma green to RGBA and inspected for
+cell-boundary isolation. Runtime projectile art deliberately aliases the
+matching base-weapon projectile cell; only the inventory/evolution identity
+uses the new atlas, avoiding a hidden expansion of the 6x4 projectile contract.

@@ -26,8 +26,8 @@ for _, row in ipairs(worlds) do
     grade_profile = grade_profile, mastery_id = mastery_id,
     music_route = "world_" .. id, environment_atlas = "world_" .. id,
     floor_atlas = "world_" .. id .. "_floor", first_clear_unlock = next_world,
-    implementation_status = id == "funk" and "playable"
-      or id == "soul" and "catalog_ready" or "planned",
+    implementation_status = (id == "funk" or id == "soul" or id == "disco")
+      and "playable" or "planned",
     rewards = {
       C = "world_" .. id .. "_grade_c", B = "world_" .. id .. "_grade_b",
       A = "world_" .. id .. "_grade_a", S = "world_" .. id .. "_grade_s",
