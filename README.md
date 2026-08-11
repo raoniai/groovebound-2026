@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="landing-page/assets/campaign-banner.png" alt="Groove Bound — Joe and Lyra defend Backbeat and the Orbit Line from a cosmic machine orchestra" width="100%">
+  <img src="docs/assets/thumb-16x9-v1.png" alt="Groove Bound — Joe and Lyra defend Backbeat and the Orbit Line from a cosmic machine orchestra" width="100%">
 </p>
 
 <p align="center">
