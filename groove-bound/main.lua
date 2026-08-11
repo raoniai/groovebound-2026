@@ -24,6 +24,13 @@ local TitleScreen = require("src.ui.screens.title")
 local GlobalAudioControl = require("src.ui.global_audio_control")
 local CursorPolicy = require("src.ui.cursor_policy")
 
+local function has_argument(expected)
+  for _, value in pairs(arg or {}) do
+    if value == expected then return true end
+  end
+  return false
+end
+
 -- The app container: every screen receives this instead of reaching for
 -- globals. App-scoped only — per-run objects live in RunContext (Phase 1).
 local app = {
@@ -97,13 +104,14 @@ function love.load()
 
   -- CI boot smoke: proving LÖVE reaches this point is sufficient. The flag is
   -- never set by normal play or packaged releases.
-  if os.getenv("GROOVE_BOUND_SMOKE") == "1" then
-    if os.getenv("GROOVE_BOUND_SMOKE_MARKER") == "1" then
-      local written, marker_error = love.filesystem.write(
-        "smoke-ok.txt",
-        "boot-complete\n"
-      )
-      assert(written, "packaged smoke marker failed: " .. tostring(marker_error))
+  if os.getenv("GROOVE_BOUND_SMOKE") == "1"
+      or has_argument("groove-bound-smoke") then
+    if os.getenv("GROOVE_BOUND_SMOKE_MARKER") == "1"
+        or has_argument("groove-bound-smoke-marker") then
+      local marker, marker_error = io.open("groove-bound-smoke-ok.txt", "wb")
+      assert(marker, "packaged smoke marker failed: " .. tostring(marker_error))
+      marker:write("boot-complete\n")
+      marker:close()
     end
     love.event.quit(0)
   end

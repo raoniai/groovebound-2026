@@ -101,26 +101,27 @@ jobs:
         shell: powershell
         run: |
           $smokeRoot = Join-Path $PWD "dist\smoke-appdata"
+          $smokeDir = Resolve-Path "dist\unpacked\Groove Bound"
+          $marker = Join-Path $smokeDir "groove-bound-smoke-ok.txt"
           New-Item -ItemType Directory -Force -Path $smokeRoot | Out-Null
           $env:APPDATA = $smokeRoot
           $env:GROOVE_BOUND_SMOKE = "1"
           $env:GROOVE_BOUND_SMOKE_MARKER = "1"
           $process = Start-Process `
-            -FilePath "dist\unpacked\Groove Bound\Groove Bound.exe" `
+            -FilePath (Join-Path $smokeDir "Groove Bound.exe") `
+            -WorkingDirectory $smokeDir `
+            -ArgumentList "groove-bound-smoke groove-bound-smoke-marker" `
             -PassThru
           $deadline = (Get-Date).AddSeconds(60)
-          $marker = $null
-          while ((Get-Date) -lt $deadline -and -not $marker -and -not $process.HasExited) {
+          while ((Get-Date) -lt $deadline -and -not (Test-Path $marker) -and -not $process.HasExited) {
             Start-Sleep -Seconds 1
             $process.Refresh()
-            $marker = Get-ChildItem -Path $smokeRoot -Filter "smoke-ok.txt" -File -Recurse -ErrorAction SilentlyContinue |
-              Select-Object -First 1
           }
-          if (-not $marker) {
+          if (-not (Test-Path $marker)) {
             Stop-Process -Id $process.Id -Force -ErrorAction SilentlyContinue
             throw "packaged Windows boot did not reach the validated boot marker"
           }
-          if ((Get-Content $marker.FullName -Raw).Trim() -ne "boot-complete") {
+          if ((Get-Content $marker -Raw).Trim() -ne "boot-complete") {
             throw "packaged Windows boot marker is invalid"
           }
           if (-not $process.HasExited) {
