@@ -428,9 +428,9 @@
     ["future-funk","Future Funk","Tomorrow Mall","The Recompiler","Planned","Secret world unlocked through Electro and Techno grades.","assets/world-tour/sprites/ui/world-tour/portal.png","Secret world"]
   ].map(([id,name,location,boss,status,mechanic,image,kind]) => ({
     key: `world-${id}`, name, type: "World", rarity: kind, role: location, image,
-    description: status === "Playable" ? `${name} has two connected stages in the public v0.7.0 build.` : `${name} is defined for a future two-stage route.`,
+    description: status === "Playable" ? `${name} has two connected stages in the public v0.7.1 build.` : `${name} is defined for a future two-stage route.`,
     strength: mechanic,
-    weakness: status === "Playable" ? "Available now in the public Mac download." : "Planned and not playable yet.",
+    weakness: status === "Playable" ? "Available now in the public Windows and Mac downloads." : "Planned and not playable yet.",
     facts: [status, location, boss]
   }));
   worlds.forEach((world) => inspectionCatalog.set(world.key, world));

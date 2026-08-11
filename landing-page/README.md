@@ -9,9 +9,10 @@ After every material game or landing-page change:
 2. Refresh the local preview.
 3. Verify Home, Catalog, Builder, the integrated story route, media sound controls, catalog search and filters, the item inspector, screenshot lightboxes, drag interactions, and mobile layouts.
 
-All public Mac download buttons use GitHub's stable Latest-release DMG route,
-while the visible release badge and notes link identify the exact current
-version. The GB icon is the landing-page identity; rebuilding the packaged app
-icon requires a separate game release.
+All public Windows and Mac download buttons use GitHub's stable Latest-release
+asset routes. Windows buttons target `Groove-Bound-Windows-x64.zip`; Mac buttons
+target `Groove-Bound-macOS.dmg`. The visible release badge and notes link identify
+the exact current version. The GB icon is the landing-page identity; rebuilding
+the packaged app icons requires a separate game release.
 
 The public landing-page status ledger was removed from the site. `CHANGELOG.md` remains the local implementation record.

@@ -17,6 +17,8 @@
   --accent: #f2bf32;
   --accent-hot: #ffd85a;
   --accent-ink: #160f05;
+  --windows: #19d3c5;
+  --windows-hot: #58efe4;
   --line: rgba(242, 191, 50, 0.28);
   --line-soft: rgba(248, 244, 255, 0.15);
   --header: 70px;
@@ -72,6 +74,9 @@ h3 { font-size: clamp(2rem, 4vw, 4.2rem); }
 .button:hover::before, .button:focus-visible::before { opacity: 1; }
 .button:hover { color: var(--accent-ink); }
 .button--gold { background: var(--accent); color: var(--accent-ink); }
+.button--windows { border-color: var(--windows); background: var(--windows); color: #071615; }
+.button--windows::before { background: var(--windows-hot); }
+.button--windows:hover { color: #071615; }
 .button--glass { border-color: rgba(248,244,255,.54); background: rgba(18,11,33,.86); color: var(--text); backdrop-filter: blur(12px); }
 .button--large { min-height: 58px; padding-inline: 1.65rem; font-size: .86rem; }
 .button__icon { flex: 0 0 auto; width: 20px; height: 20px; object-fit: contain; }
@@ -776,6 +781,7 @@ h3 { font-size: clamp(2rem, 4vw, 4.2rem); }
 
 /* SITE-006: quieter inspect metadata, branded sound, seamless drag strip, and matched CTAs. */
 .apple-mark { flex: 0 0 auto; font: 1.45rem/1 -apple-system, BlinkMacSystemFont, sans-serif; }
+.windows-mark { flex: 0 0 auto; font: 1.25rem/1 var(--pixel); }
 .cta-pair { display: grid; grid-template-columns: repeat(2,minmax(220px,1fr)); align-items: stretch; gap: .8rem; width: min(760px,100%); }
 .cta-pair > .button { width: 100%; min-width: 0; min-height: 62px; }
 .cta-pair .platform-note { grid-column: 1 / -1; justify-self: center; color: var(--muted); font: .62rem/1.3 var(--pixel); text-align: center; text-transform: uppercase; }

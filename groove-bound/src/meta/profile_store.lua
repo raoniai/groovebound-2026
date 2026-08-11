@@ -54,6 +54,7 @@ end
 function ProfileStore:init(opts)
   opts = opts or {}
   self.backend = opts.backend or Save.default_backend()
+  self.legacy_backend = opts.legacy_backend
   self.clock = opts.clock or function() return os.date("!%Y-%m-%dT%H:%M:%SZ") end
   self.slots = {}
   self.device_settings = Save({
@@ -80,6 +81,51 @@ function ProfileStore:init(opts)
       return true
     end,
   })
+end
+
+function ProfileStore:import_external_version_two()
+  if not self.legacy_backend then
+    return false, { status = "external_source_unavailable" }
+  end
+  if self.backend.exists("device-settings.json")
+      or self.backend.exists("slot-1.json")
+      or self.backend.exists("slot-2.json")
+      or self.backend.exists("slot-3.json") then
+    return false, { status = "target_version_two_exists" }
+  end
+
+  local source = ProfileStore({
+    backend = self.legacy_backend,
+    clock = self.clock,
+  })
+  local device, device_status = source:load_device_settings()
+  if not device or device_status.status == "default" then
+    return false, { status = "external_version_two_not_found" }
+  end
+
+  local slots = {}
+  for slot_id = 1, 3 do
+    local slot = source:load_slot(slot_id)
+    if slot then slots[slot_id] = slot end
+  end
+
+  local saved, save_error = self:save_device_settings(device)
+  if not saved then
+    return nil, { status = "external_import_failed", error = save_error }
+  end
+  local imported_slots = 0
+  for slot_id = 1, 3 do
+    if slots[slot_id] then
+      local slot_saved, slot_error = self:save_slot(slot_id, slots[slot_id])
+      if not slot_saved then
+        self.device_settings:clear()
+        for rollback_id = 1, 3 do self:_slot_store(rollback_id):clear() end
+        return nil, { status = "external_import_failed", error = slot_error }
+      end
+      imported_slots = imported_slots + 1
+    end
+  end
+  return true, { status = "external_version_two_imported", slots = imported_slots }
 end
 
 local function valid_slot_id(slot_id)
@@ -211,6 +257,8 @@ function ProfileStore:migrate_legacy_v1()
 end
 
 function ProfileStore:activate()
+  local external_result, external_status = self:import_external_version_two()
+  if external_result == nil then return nil, external_status end
   local migration_result, migration_status = self:migrate_legacy_v1()
   if migration_result == nil then return nil, migration_status end
 
@@ -230,7 +278,11 @@ function ProfileStore:activate()
     device_status = { status = "created", source = "defaults" }
   end
 
-  return device, { migration = migration_status, device = device_status }
+  return device, {
+    external = external_status,
+    migration = migration_status,
+    device = device_status,
+  }
 end
 
 return ProfileStore

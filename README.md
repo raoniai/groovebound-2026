@@ -8,14 +8,17 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/raoniai/groovebound-2026/releases/latest/download/Groove-Bound-Windows-x64.zip">
+    <img src="https://img.shields.io/badge/DOWNLOAD_FOR_WINDOWS-19D3C5?style=for-the-badge&logo=windows11&logoColor=111111" alt="Download Groove Bound for Windows x64">
+  </a>
   <a href="https://github.com/raoniai/groovebound-2026/releases/latest/download/Groove-Bound-macOS.dmg">
     <img src="https://img.shields.io/badge/DOWNLOAD_FOR_MAC-F2BF32?style=for-the-badge&logo=apple&logoColor=111111" alt="Download Groove Bound for macOS">
   </a>
-  <a href="https://github.com/raoniai/groovebound-2026/releases/tag/v0.7.0">
-    <img src="https://img.shields.io/badge/PUBLIC_BUILD-v0.7.0-EA316E?style=for-the-badge" alt="Public build v0.7.0">
+  <a href="https://github.com/raoniai/groovebound-2026/releases/tag/v0.7.1">
+    <img src="https://img.shields.io/badge/PUBLIC_BUILD-v0.7.1-EA316E?style=for-the-badge" alt="Public build v0.7.1">
   </a>
   <a href="https://github.com/raoniai/groovebound-2026/actions/workflows/ci.yml">
-    <img src="https://img.shields.io/github/actions/workflow/status/raoniai/groovebound-2026/ci.yml?branch=GPT%2Fstage-2-cutscenes&style=for-the-badge&label=CI&color=19D3C5" alt="Continuous integration status">
+    <img src="https://img.shields.io/github/actions/workflow/status/raoniai/groovebound-2026/ci.yml?branch=codex%2Fworld-tour-v1&style=for-the-badge&label=CI&color=19D3C5" alt="Continuous integration status">
   </a>
 </p>
 
@@ -181,7 +184,7 @@ Explore the [Weapon Database](groove-bound/docs/WEAPON_DATABASE.md) and
   <img src="landing-page/assets/screens/stage2-escalation.png" alt="The Orbit Line threat escalating" width="49%">
 </p>
 
-The v0.7.0 preview includes camera zoom from 75% to 150%, keyboard/mouse and
+The v0.7.1 preview includes camera zoom from 75% to 150%, keyboard/mouse and
 gamepad support, persistent options, aim assistance, rebindings, vibration,
 flash and shake controls, adaptive music, cutscene mute, a transparent campaign
 HUD, chest reward reels, and a complete Arsenal database.
@@ -189,6 +192,20 @@ HUD, chest reward reels, and a complete Arsenal database.
 ---
 
 ## Download and play
+
+### Windows x64
+
+<p>
+  <a href="https://github.com/raoniai/groovebound-2026/releases/latest/download/Groove-Bound-Windows-x64.zip">
+    <img src="https://img.shields.io/badge/DOWNLOAD-GROOVE_BOUND_FOR_WINDOWS-19D3C5?style=for-the-badge&logo=windows11&logoColor=111111" alt="Download Groove Bound for Windows x64">
+  </a>
+</p>
+
+Extract the complete **Groove Bound** folder, keep the executable and DLLs
+together, then launch **Groove Bound.exe**. LÖVE does not need to be installed.
+The preview is unsigned, so Windows Defender SmartScreen may ask you to choose
+**More info → Run anyway** on first launch. Validate the ZIP against the
+checksums in the GitHub release before bypassing that warning.
 
 ### macOS
 
@@ -207,15 +224,13 @@ The universal build includes LÖVE 11.5 and supports Apple Silicon and Intel Mac
 The preview is ad-hoc signed rather than Apple-notarized. If macOS blocks the
 first launch, Control-click **Groove Bound**, choose **Open**, then confirm.
 
-### Windows and Linux
+### Linux
 
-Native packages are not yet published. Install [LÖVE 11.5](https://love2d.org/)
-and download the
+Install [LÖVE 11.5](https://love2d.org/) and download the
 [platform-neutral `.love` build](https://github.com/raoniai/groovebound-2026/releases/latest/download/groove-bound.love).
 
 | Platform | Launch |
 |---|---|
-| Windows | Double-click `groove-bound.love`, or drag it onto `love.exe`. |
 | Linux | Run `love groove-bound.love`. |
 
 ### Controls
@@ -256,9 +271,10 @@ packaging, and contribution ground rules.
 
 ### Current verification
 
-- 269 automated tests passing.
-- 0 Luacheck warnings or errors across 123 files.
+- 340 automated tests passing.
+- 0 Luacheck warnings or errors across 165 files.
 - Package integrity and forbidden-source checks passing.
+- Windows x64 ZIP, executable branding, runtime manifest, and packaged CI boot verified.
 - Universal macOS app, icon, signature, DMG checksum, and packaged boot verified.
 - GitHub CI passing on the release branch.
 

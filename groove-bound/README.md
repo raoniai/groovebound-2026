@@ -115,10 +115,14 @@ two arenas use separate low-contrast four-variation floor atlases:
 
 ## Download
 
-The latest macOS build is a self-contained universal app with the Groove Bound
+The latest Windows x64 build is a self-contained portable ZIP with the branded
+Groove Bound executable, matching LÖVE 11.5 runtime DLLs, licences, and a release
+manifest: [download the Windows ZIP](https://github.com/raoniai/groovebound-2026/releases/latest/download/Groove-Bound-Windows-x64.zip).
+
+The macOS build remains a self-contained universal app with the Groove Bound
 icon: [download the DMG](https://github.com/raoniai/groovebound-2026/releases/latest/download/Groove-Bound-macOS.dmg).
 The platform-neutral [`groove-bound.love`](https://github.com/raoniai/groovebound-2026/releases/latest/download/groove-bound.love)
-remains available for Windows and Linux.
+remains available for Linux and development use.
 
 ## Development requirements
 
@@ -130,8 +134,9 @@ remains available for Windows and Linux.
 ```sh
 cd groove-bound
 make run        # or: love .
-make package    # platform-neutral .love archive
-make package-macos VERSION=0.7.0  # universal .app ZIP and DMG
+make package VERSION=0.7.1  # deterministic release .love archive
+make package-macos VERSION=0.7.1  # universal .app ZIP and DMG
+make package-windows VERSION=0.7.1 LOVE_WINDOWS_RUNTIME=/path/to/love-11.5-win64
 ```
 
 ## Test / lint

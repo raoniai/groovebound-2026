@@ -4,9 +4,10 @@
 
 - `codex/world-tour-v1` is the canonical source for gameplay, content, interface,
   shared runtime assets, saves, and cross-platform fixes.
-- `codex/windows-version` is the downstream Windows delivery branch. It may add
-  Windows packaging, metadata, diagnostics, and target-native verification, but
-  it must not become a separate gameplay implementation.
+- `codex/windows-version` is the downstream Windows integration and native-QA
+  branch. It may prototype Windows packaging, metadata, diagnostics, and
+  target-native verification, but it must not become a separate gameplay
+  implementation.
 
 Both branches build from the same Lua/LÖVE source and the same verified `.love`
 payload. The Windows branch exists to develop and verify the Windows artifact in
@@ -31,8 +32,10 @@ verified Windows branch intact, with the failed workflow as the visible alert.
 
 - Shared gameplay, content, interface, media, save, and engine fixes land in
   `codex/world-tour-v1` first and flow forward automatically.
-- Windows-only packaging or target integration lands in
-  `codex/windows-version`.
+- Experimental Windows-only target integration may begin in
+  `codex/windows-version`. Once verified, reusable packaging scripts and release
+  workflows are manually promoted to `codex/world-tour-v1` so version tags can
+  build every desktop platform from one canonical release definition.
 - If Windows testing reveals a shared runtime bug, fix it in
   `codex/world-tour-v1`; do not leave a divergent gameplay patch only in the
   Windows branch.

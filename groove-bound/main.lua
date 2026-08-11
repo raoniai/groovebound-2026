@@ -6,6 +6,7 @@ local EventBus = require("src.core.event_bus")
 local Log = require("src.core.log")
 local StateMachine = require("src.core.state_machine")
 local ProfileStore = require("src.meta.profile_store")
+local WindowsLegacyBackend = require("src.meta.windows_legacy_backend")
 local Assets = require("src.assets")
 local MusicCatalog = require("src.audio.music_catalog")
 local MusicContext = require("src.audio.music_context")
@@ -13,6 +14,7 @@ local MusicDirector = require("src.audio.music_director")
 local MusicRouter = require("src.audio.music_router")
 local AudioSettings = require("src.audio.audio_settings")
 local InputEventGate = require("src.game.input_event_gate")
+local ControllerManager = require("src.game.controller_manager")
 local Tuning = require("src.debug.tuning")
 local admin_controls = require("src.config.admin_controls")
 local settings = require("src.config.settings")
@@ -54,7 +56,7 @@ function love.load()
 
   app.bus = EventBus()
   app.states = StateMachine()
-  app.profile_store = ProfileStore()
+  app.profile_store = ProfileStore({ legacy_backend = WindowsLegacyBackend.detect() })
   local activation
   app.profile, activation = app.profile_store:activate()
   assert(app.profile, "World Tour save activation failed: "
@@ -65,6 +67,7 @@ function love.load()
   app.active_slot_id = app.profile.active_slot
   app.slot = app.profile_store:load_slot(app.active_slot_id)
   Log.info("save", "Device Settings " .. activation.device.status
+    .. "; Windows import " .. activation.external.status
     .. "; legacy migration " .. activation.migration.status)
   if app.profile.options.fullscreen then
     love.window.setFullscreen(true, "desktop")
@@ -149,6 +152,14 @@ function love.joystickpressed(joystick, button)
   if app.input_gate:joystick_button(button) ~= "pause" then return end
   if not app.input_gate:accept("joystick", button) then return end
   app.states:gamepadpressed(joystick, "start")
+end
+
+function love.joystickadded(joystick)
+  ControllerManager.shared:added(joystick)
+end
+
+function love.joystickremoved(joystick)
+  ControllerManager.shared:removed(joystick)
 end
 
 function love.resize(w, h)

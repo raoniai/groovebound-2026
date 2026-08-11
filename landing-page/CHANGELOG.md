@@ -2,6 +2,14 @@
 
 This file is the local implementation record. Add a new entry at the top after every material site pass.
 
+## 2026-08-11 | SITE-024 | Windows x64 public download
+
+Added a parallel Windows x64 download route to Home, Catalog, Builder, shared
+headers, hero and closing calls to action, and every footer. Updated the public
+build to v0.7.1, retained the stable Mac DMG route, replaced Mac-only wording,
+and added responsive cyan Windows controls without changing the site's cinematic
+identity or reduced-motion behavior.
+
 ## 2026-08-11 | SITE-023 | v0.7.0 public World Tour release
 
 Updated Home, Catalog, Builder, the shared release badge, footer release-note

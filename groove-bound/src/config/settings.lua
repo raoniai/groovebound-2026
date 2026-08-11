@@ -2,6 +2,8 @@
 -- live in src/content/ — never here. Nothing in src/game may hardcode a
 -- numeric tunable; it reads from here or from content.
 
+local is_release = require("src.config.release_profile").is_release()
+
 return {
   player = {
     speed = 220,        -- base movement speed, px/sec
@@ -68,9 +70,9 @@ return {
   },
 
   debug = {
-    enabled = true,
+    enabled = not is_release,
     admin = {
-      enabled = true,       -- forced off by release packaging in Phase 7
+      enabled = not is_release,
       toggle_key = "f1",
     },
     overlay = {

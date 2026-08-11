@@ -9,6 +9,7 @@
 local class = require("src.core.class")
 local controls = require("src.config.controls")
 local settings = require("src.config.settings")
+local controllers = require("src.game.controller_manager").shared
 
 local Input = class()
 
@@ -16,12 +17,7 @@ local function love_backend()
   return {
     is_key_down = function(...) return love.keyboard.isDown(...) end,
     mouse_position = function() return love.mouse.getPosition() end,
-    axis = function(name)
-      local sticks = love.joystick.getJoysticks()
-      local js = sticks[1]
-      if js then return js:getGamepadAxis(name) end
-      return 0
-    end,
+    axis = function(name) return controllers:axis(name) end,
   }
 end
 

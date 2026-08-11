@@ -151,4 +151,52 @@ T["activation migrates once and returns the runtime Device Settings profile"] = 
   H.eq(store:load_slot(1).wallet.coins, 75)
 end
 
+T["external version two import preserves validated settings and Slots"] = function()
+  local source_fs = fake_fs()
+  local source = ProfileStore({ backend = source_fs, clock = function() return "source-time" end })
+  local device = source:load_device_settings()
+  device.active_slot = 2
+  device.options.music_volume = 0.35
+  H.is_true(source:save_device_settings(device))
+  local slot = source:create_slot(2)
+  slot.wallet.coins = 880
+  H.is_true(source:save_slot(2, slot))
+
+  local target_fs = fake_fs()
+  local target = ProfileStore({
+    backend = target_fs,
+    legacy_backend = source_fs,
+    clock = function() return "target-time" end,
+  })
+  local profile, activation = target:activate()
+  H.eq(activation.external.status, "external_version_two_imported")
+  H.eq(activation.external.slots, 1)
+  H.eq(profile.active_slot, 2)
+  H.near(profile.options.music_volume, 0.35)
+  H.eq(target:load_slot(2).wallet.coins, 880)
+  H.is_true(source_fs.exists("device-settings.json"), "source must remain intact")
+
+  local _, repeated = target:activate()
+  H.eq(repeated.external.status, "target_version_two_exists")
+  H.eq(target:load_slot(2).wallet.coins, 880)
+end
+
+T["external version two import never overwrites an existing target"] = function()
+  local source_fs = fake_fs()
+  local source = ProfileStore({ backend = source_fs })
+  local source_device = source:load_device_settings()
+  source_device.options.music_volume = 0.1
+  H.is_true(source:save_device_settings(source_device))
+
+  local target_fs = fake_fs()
+  local target = ProfileStore({ backend = target_fs, legacy_backend = source_fs })
+  local target_device = target:load_device_settings()
+  target_device.options.music_volume = 0.9
+  H.is_true(target:save_device_settings(target_device))
+
+  local profile, activation = target:activate()
+  H.eq(activation.external.status, "target_version_two_exists")
+  H.near(profile.options.music_volume, 0.9)
+end
+
 return T

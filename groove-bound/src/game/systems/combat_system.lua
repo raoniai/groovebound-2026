@@ -18,6 +18,7 @@ local XPRewards = require("src.game.xp_rewards")
 local ProgressionSystem = require("src.game.systems.progression_system")
 local TestMode = require("src.game.test_mode")
 local settings = require("src.config.settings")
+local controllers = require("src.game.controller_manager").shared
 
 local CombatSystem = class()
 
@@ -744,11 +745,8 @@ function CombatSystem:_player_hit_feedback(trauma)
   if self.camera and self.options.screen_shake ~= false then
     self.camera:add_trauma(trauma)
   end
-  if self.options.vibration ~= false and love and love.joystick then
-    local joysticks = love.joystick.getJoysticks()
-    if joysticks[1] and joysticks[1].setVibration then
-      joysticks[1]:setVibration(0.35, 0.55, 0.12)
-    end
+  if self.options.vibration ~= false then
+    controllers:vibrate(0.35, 0.55, 0.12)
   end
 end
 

@@ -1,0 +1,115 @@
+name: Windows x64 package
+
+on:
+  push:
+    branches:
+      - codex/windows-version
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: windows-package-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  RELEASE_VERSION: 0.7.1
+  LOVE_RUNTIME_URL: https://github.com/love2d/love/releases/download/11.5/love-11.5-win64.zip
+  LOVE_RUNTIME_SHA256: ba6e56be2685e53c817749c4a5007f51137136fe5a3ab64920508babc2e74369
+  RCEDIT_URL: https://github.com/electron/rcedit/releases/download/v2.0.0/rcedit-x64.exe
+  RCEDIT_SHA256: 3e7801db1a5edbec91b49a24a094aad776cb4515488ea5a4ca2289c400eade2a
+
+jobs:
+  package:
+    runs-on: windows-latest
+    timeout-minutes: 25
+    steps:
+      - name: Check out synchronized source
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install native LuaJIT
+        shell: powershell
+        run: choco install luajit --yes --no-progress
+
+      - name: Run the regression suite on Windows
+        working-directory: groove-bound
+        shell: powershell
+        run: luajit tests/run.lua
+
+      - name: Download pinned packaging tools
+        shell: powershell
+        run: |
+          Invoke-WebRequest -Uri $env:LOVE_RUNTIME_URL -OutFile love-runtime.zip
+          Invoke-WebRequest -Uri $env:RCEDIT_URL -OutFile rcedit-x64.exe
+          if ((Get-FileHash love-runtime.zip -Algorithm SHA256).Hash.ToLower() -ne $env:LOVE_RUNTIME_SHA256) {
+            throw "LÖVE runtime checksum mismatch"
+          }
+          if ((Get-FileHash rcedit-x64.exe -Algorithm SHA256).Hash.ToLower() -ne $env:RCEDIT_SHA256) {
+            throw "rcedit checksum mismatch"
+          }
+          Expand-Archive love-runtime.zip -DestinationPath love-runtime
+
+      - name: Build deterministic common payload
+        working-directory: groove-bound
+        shell: powershell
+        run: python scripts/package_love.py --version $env:RELEASE_VERSION --require-clean
+
+      - name: Verify common payload
+        working-directory: groove-bound
+        shell: powershell
+        run: python scripts/verify_release_package.py dist/groove-bound.love
+
+      - name: Build branded Windows x64 ZIP
+        working-directory: groove-bound
+        shell: powershell
+        run: |
+          python scripts/build_windows_release.py `
+            --version $env:RELEASE_VERSION `
+            --runtime-dir ..\love-runtime\love-11.5-win64 `
+            --resource-editor ..\rcedit-x64.exe `
+            --require-branding
+
+      - name: Verify executable metadata and manifest
+        working-directory: groove-bound
+        shell: powershell
+        run: |
+          $exe = Get-Item "dist\windows-build\Groove Bound\Groove Bound.exe"
+          if ($exe.VersionInfo.ProductName -ne "Groove Bound") { throw "ProductName metadata missing" }
+          if ($exe.VersionInfo.FileDescription -ne "Groove Bound") { throw "FileDescription metadata missing" }
+          $manifest = Get-Content "dist\Groove-Bound-Windows-x64.manifest.json" | ConvertFrom-Json
+          if ($manifest.executable.branding -ne "icon_and_version_metadata") { throw "branding not verified" }
+          if ($manifest.executable.signing -ne "unsigned") { throw "unexpected signing state" }
+          Expand-Archive "dist\Groove-Bound-Windows-x64.zip" -DestinationPath "dist\unpacked"
+
+      - name: Run packaged Windows boot smoke
+        working-directory: groove-bound
+        shell: powershell
+        run: |
+          $env:GROOVE_BOUND_SMOKE = "1"
+          $process = Start-Process `
+            -FilePath "dist\unpacked\Groove Bound\Groove Bound.exe" `
+            -PassThru
+          try {
+            Wait-Process -Id $process.Id -Timeout 60 -ErrorAction Stop
+          } catch {
+            Stop-Process -Id $process.Id -Force -ErrorAction SilentlyContinue
+            throw "packaged Windows boot smoke timed out"
+          }
+          if ($process.ExitCode -ne 0) { throw "packaged Windows boot smoke failed" }
+
+      - name: Upload Windows candidate
+        uses: actions/upload-artifact@v4
+        with:
+          name: Groove-Bound-Windows-x64
+          path: |
+            groove-bound/dist/Groove-Bound-Windows-x64.zip
+            groove-bound/dist/Groove-Bound-Windows-x64.manifest.json
+            groove-bound/dist/SHA256SUMS-Windows.txt
+          if-no-files-found: error
+          retention-days: 14

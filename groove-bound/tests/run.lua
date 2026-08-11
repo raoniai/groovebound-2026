@@ -18,11 +18,20 @@ local pattern = arg[1]
 -- Discover test files.
 local function list_test_files()
   local files = {}
-  local pipe = io.popen('ls "' .. root .. '/tests/unit/" 2>/dev/null')
+  local is_windows = package.config:sub(1, 1) == "\\"
+  local unit_dir = root .. (is_windows and "\\tests\\unit" or "/tests/unit")
+  local command
+  if is_windows then
+    command = 'dir /b /a-d "' .. unit_dir .. '\\*_test.lua" 2>nul'
+  else
+    command = 'find "' .. unit_dir .. '" -maxdepth 1 -type f -name "*_test.lua" -print 2>/dev/null'
+  end
+  local pipe = io.popen(command)
   if pipe then
     for line in pipe:lines() do
-      if line:match("_test%.lua$") then
-        files[#files + 1] = line:gsub("%.lua$", "")
+      local filename = line:match("([^/\\]+)$") or line
+      if filename:match("_test%.lua$") then
+        files[#files + 1] = filename:gsub("%.lua$", "")
       end
     end
     pipe:close()

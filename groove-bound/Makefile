@@ -1,8 +1,9 @@
 # Groove Bound developer targets. Run from the groove-bound/ directory.
 
 LUA ?= luajit
+PYTHON ?= python3
 
-.PHONY: run test lint package package-macos clean
+.PHONY: run test lint package package-macos package-windows clean
 
 run:
 	love .
@@ -13,24 +14,18 @@ test:
 lint:
 	luacheck src main.lua conf.lua tests
 
-# Build a distributable .love (a zip of the game folder).
-package: clean
-	mkdir -p dist
-	zip -9 -y -r dist/groove-bound.love . \
-		-x "dist/*" -x "tests/*" -x "docs/*" -x "design-system/*" \
-		-x "Makefile" -x ".luacheckrc" -x "*.md" \
-		-x "scripts/*" \
-		-x ".DS_Store" -x "*/.DS_Store" -x "assets/generated/*-source.png" \
-		-x "assets/generated/source-candidates/*" \
-		-x "assets/generated/campaign/world-tour-sprites/*" \
-		-x "assets/video/*.mp4" \
-		-x "music/*" \
-		-x "docs/screenshots/*"
+# Build a deterministic public .love with release-only controls enabled.
+package:
+	$(PYTHON) scripts/package_love.py --version "$(VERSION)"
 
 # Build a universal macOS app, ZIP, and DMG with the Groove Bound icon.
 # Requires the official LÖVE 11.5 app at /Applications/love.app.
 package-macos: package
 	VERSION="$(VERSION)" scripts/build_macos_release.sh
 
+# Build the self-contained Windows x64 ZIP from an extracted official runtime.
+package-windows: package
+	$(PYTHON) scripts/build_windows_release.py --version "$(VERSION)" --runtime-dir "$(LOVE_WINDOWS_RUNTIME)"
+
 clean:
-	rm -f dist/groove-bound.love dist/Groove-Bound-macOS.zip dist/Groove-Bound-macOS.dmg
+	$(PYTHON) scripts/clean_dist.py

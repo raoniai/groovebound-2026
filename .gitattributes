@@ -1,0 +1,19 @@
+* text=auto
+*.lua text eol=lf
+*.py text eol=lf
+*.sh text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.ps1 text eol=crlf
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ogg binary
+*.ogv binary
+*.mp4 binary
+*.love binary
+*.zip binary
+*.dmg binary
+*.exe binary
+*.dll binary
