@@ -132,14 +132,14 @@ function ProgressionSystem:update(dt)
 end
 
 function ProgressionSystem:_weapon_cards(out)
-  for slot, instance in ipairs(self.inventory.slots) do
+  for _, instance in ipairs(self.inventory.slots) do
     local definition = self.content.weapons[instance.id]
     if not definition.evolved and instance.level < definition.max_level then
       out[#out + 1] = card(
         "weapon_level",
         instance.id,
         definition.name .. "  R" .. (instance.level + 1),
-        "Upgrade the weapon currently firing from slot " .. slot .. ".",
+        definition.description,
         1)
     end
   end
@@ -199,6 +199,34 @@ function ProgressionSystem:_fallback_cards(out)
   out[#out + 1] = fallback_card("heal")
   out[#out + 1] = fallback_card("coins")
   out[#out + 1] = fallback_card("guard")
+end
+
+function ProgressionSystem:grant_starter_loadout(loadout)
+  loadout = loadout or {}
+  local granted = { weapons = {}, passives = {} }
+  local seen_weapons, seen_passives = {}, {}
+  for _, id in ipairs(loadout.weapons or {}) do
+    local definition = self.content.weapons[id]
+    if definition and not definition.evolved and not seen_weapons[id]
+      and not self.inventory:get(id)
+      and self.inventory:count() < self.inventory.capacity
+    then
+      self:apply({ kind = "weapon_add", id = id })
+      granted.weapons[#granted.weapons + 1] = id
+      seen_weapons[id] = true
+    end
+  end
+  for _, id in ipairs(loadout.passives or {}) do
+    local definition = self.content.passives[id]
+    if definition and not seen_passives[id] and not self.passives:get(id)
+      and self.passives:count() < self.passives.capacity
+    then
+      self:apply({ kind = "passive_add", id = id })
+      granted.passives[#granted.passives + 1] = id
+      seen_passives[id] = true
+    end
+  end
+  return granted
 end
 
 function ProgressionSystem:is_auto_select_available()
@@ -338,7 +366,9 @@ function ProgressionSystem:claim_chest(reward_count)
   assert(reward_count == 1 or reward_count == 3 or reward_count == 5,
     "chest reward count must be 1, 3, or 5")
   local rewards = {}
-  local all_auto_selected = self:can_auto_select()
+  local evolution_pending = #self:eligible_evolutions() > 0
+  local all_auto_selected = self:can_auto_select() and not evolution_pending
+  local has_evolution = false
   for _ = 1, reward_count do
     local choice
     if self:can_auto_select() then
@@ -356,6 +386,7 @@ function ProgressionSystem:claim_chest(reward_count)
     end
     if not choice then break end
     local result = self:apply(choice)
+    has_evolution = has_evolution or choice.kind == "evolution"
     rewards[#rewards + 1] = {
       kind = choice.kind,
       id = choice.id,
@@ -367,6 +398,7 @@ function ProgressionSystem:claim_chest(reward_count)
   self.chests_opened = self.chests_opened + 1
   self.chest_rewards_claimed = self.chest_rewards_claimed + #rewards
   rewards.auto_selected = all_auto_selected and #rewards > 0
+  rewards.has_evolution = has_evolution
   if #rewards > 0 then
     local names = {}
     for _, reward in ipairs(rewards) do names[#names + 1] = reward.title end

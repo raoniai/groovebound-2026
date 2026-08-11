@@ -271,8 +271,8 @@ packaging, and contribution ground rules.
 
 ### Current verification
 
-- 340 automated tests passing.
-- 0 Luacheck warnings or errors across 165 files.
+- 353 automated tests passing.
+- 0 Luacheck warnings or errors across 172 files.
 - Package integrity and forbidden-source checks passing.
 - Windows x64 ZIP, executable branding, runtime manifest, and packaged CI boot verified.
 - Universal macOS app, icon, signature, DMG checksum, and packaged boot verified.

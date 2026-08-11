@@ -4,72 +4,30 @@
 local class = require("src.core.class")
 local Fonts = require("src.ui.fonts")
 local settings = require("src.config.settings")
-local Icons = require("src.ui.icons")
 local Hints = require("src.ui.controller_hints")
+local MenuChrome = require("src.ui.menu_chrome")
+local SpatialNavigation = require("src.ui.spatial_navigation")
 
 local AdminScreen = class()
 AdminScreen.kind = "admin"
 AdminScreen.opaque = false
 
 local categories = {
-  { id = "All", label = "Overview", color = { 0.96, 0.76, 0.22, 1 }, glyph = "grid" },
-  { id = "Simulation", label = "Simulation", color = { 0.40, 0.72, 1.0, 1 }, glyph = "clock" },
-  { id = "Run", label = "Run & Stages", color = { 0.22, 0.92, 1.0, 1 }, glyph = "wave" },
-  { id = "Player", label = "Player", color = { 0.34, 1.0, 0.68, 1 }, glyph = "person" },
-  { id = "Combat", label = "Combat", color = { 1.0, 0.38, 0.42, 1 }, glyph = "burst" },
-  { id = "Projectiles", label = "Bullets", color = { 1.0, 0.62, 0.20, 1 }, glyph = "arrow" },
-  { id = "Enemies", label = "Enemies", color = { 0.92, 0.28, 0.68, 1 }, glyph = "enemy" },
-  { id = "Rewards", label = "Rewards", color = { 0.42, 0.94, 0.84, 1 }, glyph = "gem" },
-  { id = "Groove", label = "Groove", color = { 0.72, 0.42, 1.0, 1 }, glyph = "wave" },
+  { id = "All", label = "Overview", color = { 0.96, 0.76, 0.22, 1 }, sprite = 1 },
+  { id = "Simulation", label = "Simulation", color = { 0.40, 0.72, 1.0, 1 }, sprite = 2 },
+  { id = "Run", label = "Run & Stages", color = { 0.22, 0.92, 1.0, 1 }, sprite = 3 },
+  { id = "Player", label = "Player", color = { 0.34, 1.0, 0.68, 1 }, sprite = 4 },
+  { id = "Combat", label = "Combat", color = { 1.0, 0.38, 0.42, 1 }, sprite = 5 },
+  { id = "Projectiles", label = "Bullets", color = { 1.0, 0.62, 0.20, 1 }, sprite = 6 },
+  { id = "Enemies", label = "Enemies", color = { 0.92, 0.28, 0.68, 1 }, sprite = 7 },
+  { id = "Rewards", label = "Rewards", color = { 0.42, 0.94, 0.84, 1 }, sprite = 8 },
+  { id = "Groove", label = "Groove", color = { 0.72, 0.42, 1.0, 1 }, sprite = 9 },
 }
 
 local function contains(rect, x, y)
   return rect
     and x >= rect.x and x <= rect.x + rect.w
     and y >= rect.y and y <= rect.y + rect.h
-end
-
-local function draw_glyph(kind, x, y, size, color)
-  love.graphics.setColor(color)
-  love.graphics.setLineWidth(2)
-  local r = size / 2
-  if kind == "grid" then
-    for row = -1, 0 do
-      for col = -1, 0 do
-        love.graphics.rectangle("line", x + col * r + 2, y + row * r + 2, r - 4, r - 4, 2, 2)
-      end
-    end
-  elseif kind == "clock" then
-    love.graphics.circle("line", x, y, r - 2)
-    love.graphics.line(x, y, x, y - r * 0.55)
-    love.graphics.line(x, y, x + r * 0.42, y)
-  elseif kind == "person" then
-    love.graphics.circle("line", x, y - r * 0.45, r * 0.28)
-    love.graphics.arc("line", "open", x, y + r * 0.55, r * 0.62, math.pi, math.pi * 2)
-  elseif kind == "burst" then
-    love.graphics.circle("line", x, y, r * 0.35)
-    for index = 0, 7 do
-      local angle = index / 8 * math.pi * 2
-      love.graphics.line(
-        x + math.cos(angle) * r * 0.52, y + math.sin(angle) * r * 0.52,
-        x + math.cos(angle) * r, y + math.sin(angle) * r)
-    end
-  elseif kind == "arrow" then
-    love.graphics.line(x - r, y + r * 0.45, x + r, y - r * 0.45)
-    love.graphics.line(x + r, y - r * 0.45, x + r * 0.35, y - r * 0.55)
-    love.graphics.line(x + r, y - r * 0.45, x + r * 0.62, y + r * 0.15)
-  elseif kind == "enemy" then
-    love.graphics.polygon("line",
-      x - r, y + r, x - r * 0.7, y - r * 0.55, x, y - r, x + r * 0.7, y - r * 0.55, x + r, y + r)
-    love.graphics.circle("fill", x - r * 0.35, y, 2)
-    love.graphics.circle("fill", x + r * 0.35, y, 2)
-  elseif kind == "gem" then
-    love.graphics.polygon("line", x, y - r, x + r, y, x, y + r, x - r, y)
-  else
-    love.graphics.line(x - r, y, x - r * 0.5, y - r * 0.55, x, y + r * 0.45,
-      x + r * 0.5, y - r * 0.55, x + r, y)
-  end
-  love.graphics.setLineWidth(1)
 end
 
 function AdminScreen:init(app, opts)
@@ -80,6 +38,8 @@ function AdminScreen:init(app, opts)
   self.scroll = 1
   self.rows = {}
   self.category_rects = {}
+  self.focus_area = "rows"
+  self.action_index = 1
 end
 
 function AdminScreen:enter()
@@ -182,6 +142,22 @@ function AdminScreen:_layout()
   else
     self.run_tool_rects = nil
   end
+  self.action_items = {}
+  local function action(id, rect)
+    self.action_items[#self.action_items + 1] = { id = id, rect = rect }
+  end
+  if self.run_tool_rects then
+    action("level", self.run_tool_rects.level)
+    action("evolution", self.run_tool_rects.evolution)
+    action("force_evolution", self.run_tool_rects.force_evolution)
+    action("boss", self.run_tool_rects.boss)
+    action("clear_stage", self.run_tool_rects.clear_stage)
+  end
+  action("reset_all", self.reset_all_rect)
+  action("arsenal", self.arsenal_rect)
+  action("close", self.close_rect)
+  self.action_index = math.max(1,
+    math.min(self.action_index, #self.action_items))
   self:_keep_selected_visible()
 end
 
@@ -220,8 +196,9 @@ end
 
 function AdminScreen:_draw_sidebar()
   local panel = self.panel
-  love.graphics.setColor(0.055, 0.048, 0.095, 1)
-  love.graphics.rectangle("fill", panel.x, panel.y, self.sidebar_w, panel.h, 8, 8)
+  MenuChrome.panel(self.app.assets, {
+    x = panel.x, y = panel.y, w = self.sidebar_w, h = panel.h,
+  }, { corner = 38, alpha = 0.96 })
   love.graphics.setColor(settings.ui.accent_color)
   love.graphics.setFont(Fonts.get(21))
   love.graphics.print("ADMIN", panel.x + 20, panel.y + 18)
@@ -239,16 +216,18 @@ function AdminScreen:_draw_sidebar()
     }
     self.category_rects[index] = rect
     local selected = index == self.category_index
-    love.graphics.setColor(selected and { 0.16, 0.14, 0.25, 1 } or { 0.08, 0.07, 0.13, 1 })
-    love.graphics.rectangle("fill", rect.x, rect.y, rect.w, rect.h, 5, 5)
-    if selected then
-      love.graphics.setColor(category.color)
-      love.graphics.rectangle("fill", rect.x, rect.y, 4, rect.h, 2, 2)
+    MenuChrome.panel(self.app.assets, rect, {
+      corner = 17, alpha = selected and 1 or 0.62,
+    })
+    if selected and self.focus_area == "categories" then
+      MenuChrome.focus(self.app.assets, rect, { corner = 18 })
     end
-    draw_glyph(category.glyph, rect.x + 24, rect.y + 22, 22, category.color)
+    self.app.assets:draw_menu_category_icon(category.sprite,
+      rect.x + 5, rect.y + 4, rect.h - 8,
+      { color = { 1, 1, 1, selected and 1 or 0.66 } })
     love.graphics.setColor(selected and settings.ui.text_color or { 0.72, 0.70, 0.80, 1 })
     love.graphics.setFont(Fonts.get(15))
-    love.graphics.print(category.label, rect.x + 46, rect.y + 15)
+    love.graphics.print(category.label, rect.x + 48, rect.y + 15)
   end
 end
 
@@ -286,13 +265,15 @@ function AdminScreen:_draw_rows()
     row.plus = { x = row.x + row.w - 44, y = y + 10, w = 40, h = 36 }
     self.rows[index] = row
     local selected = index == self.selected
-    love.graphics.setColor(selected and { 0.17, 0.145, 0.26, 1 } or { 0.095, 0.083, 0.15, 1 })
-    love.graphics.rectangle("fill", row.x, row.y, row.w, row.h, 6, 6)
-    love.graphics.setColor(selected and category.color or { 0.30, 0.27, 0.40, 1 })
-    love.graphics.setLineWidth(selected and 2 or 1)
-    love.graphics.rectangle("line", row.x, row.y, row.w, row.h, 6, 6)
-
-    draw_glyph(category.glyph, row.x + 26, row.y + 28, 24, category.color)
+    MenuChrome.panel(self.app.assets, row, {
+      corner = 20, alpha = selected and 1 or 0.68,
+    })
+    if selected and self.focus_area == "rows" then
+      MenuChrome.focus(self.app.assets, row, { corner = 22 })
+    end
+    self.app.assets:draw_menu_category_icon(category.sprite,
+      row.x + 6, row.y + 5, row.h - 10,
+      { color = { 1, 1, 1, selected and 1 or 0.66 } })
     love.graphics.setColor(settings.ui.text_color)
     love.graphics.setFont(Fonts.get(17))
     love.graphics.print(definition.label, row.x + 50, row.y + 9)
@@ -315,45 +296,84 @@ function AdminScreen:_draw_rows()
   end
 end
 
-function AdminScreen:_draw_button(rect, label, color)
-  love.graphics.setColor(0.12, 0.10, 0.19, 1)
-  love.graphics.rectangle("fill", rect.x, rect.y, rect.w, rect.h, 4, 4)
-  love.graphics.setColor(color or settings.ui.button.border)
-  love.graphics.rectangle("line", rect.x, rect.y, rect.w, rect.h, 4, 4)
-  love.graphics.setColor(settings.ui.text_color)
+function AdminScreen:_draw_button(rect, label, color, focused)
+  MenuChrome.panel(self.app.assets, rect, {
+    corner = math.min(15, rect.h * 0.42), alpha = focused and 1 or 0.72,
+  })
+  if focused then MenuChrome.focus(self.app.assets, rect, { corner = 15 }) end
+  love.graphics.setColor(focused and { 1, 0.84, 0.28, 1 }
+    or color or settings.ui.text_color)
   love.graphics.setFont(Fonts.get(14))
   love.graphics.printf(label, rect.x, rect.y + 9, rect.w, "center")
+end
+
+function AdminScreen:_action_focused(id)
+  if self.focus_area ~= "actions" then return false end
+  local action = self.action_items and self.action_items[self.action_index]
+  return action and action.id == id
+end
+
+function AdminScreen:_activate_action()
+  local action = self.action_items and self.action_items[self.action_index]
+  if not action then return false end
+  local id = action.id
+  if id == "reset_all" then
+    self.app.tuning:reset_all()
+  elseif id == "arsenal" then
+    self:_open_arsenal()
+  elseif id == "close" then
+    self.app.states:pop()
+  elseif self.app.active_run and id == "level" then
+    self.app.active_run.combat:admin_grant_level()
+  elseif self.app.active_run and id == "evolution" then
+    self.app.active_run.combat:admin_prepare_evolution()
+  elseif self.app.active_run and id == "force_evolution" then
+    self.app.active_run.combat:admin_force_evolution()
+  elseif self.app.active_run and id == "boss" then
+    self.app.active_run.combat:admin_spawn_final_boss()
+  elseif self.app.active_run and id == "clear_stage" then
+    self.app.active_run.combat:admin_clear_stage()
+  else
+    return false
+  end
+  return true
+end
+
+function AdminScreen:_move_action(direction)
+  local next_index = SpatialNavigation.find(
+    self.action_items, self.action_index, direction,
+    function(action) return action.rect end)
+  if next_index == self.action_index then return false end
+  self.action_index = next_index
+  return true
 end
 
 function AdminScreen:draw()
   local w, h = love.graphics.getDimensions()
   love.graphics.setColor(0, 0, 0, 0.78)
   love.graphics.rectangle("fill", 0, 0, w, h)
-  love.graphics.setColor(0.075, 0.065, 0.12, 0.99)
-  love.graphics.rectangle(
-    "fill", self.panel.x, self.panel.y, self.panel.w, self.panel.h, 8, 8)
-  love.graphics.setColor(settings.ui.button.border)
-  love.graphics.rectangle(
-    "line", self.panel.x, self.panel.y, self.panel.w, self.panel.h, 8, 8)
+  MenuChrome.panel(self.app.assets, self.panel, { corner = 48, alpha = 0.98 })
   self:_draw_sidebar()
 
   local category = categories[self.category_index]
   self:_draw_button(self.options_tab, "OPTIONS", { 0.38, 0.82, 1.0, 1 })
-  self:_draw_button(self.admin_tab, "ADMIN", category.color)
-  Icons.draw("display", self.options_tab.x + 18, self.options_tab.y + 17,
-    16, { 0.38, 0.82, 1.0, 1 })
-  Icons.draw("admin", self.admin_tab.x + 18, self.admin_tab.y + 17,
-    16, category.color)
+  self:_draw_button(self.admin_tab, "ADMIN", category.color, true)
+  self.app.assets:draw_menu_button_icon(4, 1,
+    self.options_tab.x + 5, self.options_tab.y + 3, 32, 32)
+  self.app.assets:draw_menu_category_icon(1,
+    self.admin_tab.x + 5, self.admin_tab.y + 3, 32)
   love.graphics.setColor(category.color)
   love.graphics.setFont(Fonts.get(24))
   love.graphics.print(category.label, self.content_x + 326, self.panel.y + 20)
   love.graphics.setColor(0.68, 0.66, 0.76, 1)
   love.graphics.setFont(Fonts.get(14))
   love.graphics.print(
-    "Live tuning  •  [ / ] or L1/R1 sections  •  F1/Esc closes",
+    "D-pad moves  •  Cross adds  •  Square subtracts  •  L1/R1 sections",
     self.content_x, self.panel.y + 62)
   Hints.draw({
-    { symbol = "dpad", label = "Adjust" },
+    { symbol = "dpad", label = "Move" },
+    { symbol = "cross", label = "+ / Use" },
+    { symbol = "square", label = "-" },
     { symbol = "triangle", label = "Reset selected" },
     { symbol = "circle", label = "Close" },
   }, self.panel.y + 79, self.content_w,
@@ -361,15 +381,23 @@ function AdminScreen:draw()
   self:_draw_rows()
 
   if self.run_tool_rects then
-    self:_draw_button(self.run_tool_rects.level, "Grant Level  G", category.color)
-    self:_draw_button(self.run_tool_rects.evolution, "Prepare Evolution  E", category.color)
-    self:_draw_button(self.run_tool_rects.force_evolution, "Rank-1 Evolve  R", category.color)
-    self:_draw_button(self.run_tool_rects.boss, "Spawn Boss  B", category.color)
-    self:_draw_button(self.run_tool_rects.clear_stage, "Clear Stage  N", category.color)
+    self:_draw_button(self.run_tool_rects.level, "Grant Level", category.color,
+      self:_action_focused("level"))
+    self:_draw_button(self.run_tool_rects.evolution, "Prepare Evolution", category.color,
+      self:_action_focused("evolution"))
+    self:_draw_button(self.run_tool_rects.force_evolution, "Rank-1 Evolve", category.color,
+      self:_action_focused("force_evolution"))
+    self:_draw_button(self.run_tool_rects.boss, "Spawn Boss", category.color,
+      self:_action_focused("boss"))
+    self:_draw_button(self.run_tool_rects.clear_stage, "Clear Stage", category.color,
+      self:_action_focused("clear_stage"))
   end
-  self:_draw_button(self.reset_all_rect, "Reset all", category.color)
-  self:_draw_button(self.arsenal_rect, "Arsenal Database", { 0.38, 0.92, 1.0, 1 })
-  self:_draw_button(self.close_rect, "Close", category.color)
+  self:_draw_button(self.reset_all_rect, "Reset all", category.color,
+    self:_action_focused("reset_all"))
+  self:_draw_button(self.arsenal_rect, "Arsenal", { 0.38, 0.92, 1.0, 1 },
+    self:_action_focused("arsenal"))
+  self:_draw_button(self.close_rect, "Close", category.color,
+    self:_action_focused("close"))
 end
 
 function AdminScreen:_open_options()
@@ -397,18 +425,55 @@ function AdminScreen:keypressed(key)
     self:_set_category(self.category_index - 1)
     return true
   elseif key == "up" or key == "w" then
-    self.selected = self.selected - 1
-    self:_keep_selected_visible()
+    if self.focus_area == "categories" then
+      self:_set_category(self.category_index - 1)
+    elseif self.focus_area == "actions" then
+      if not self:_move_action("up") then self.focus_area = "rows" end
+    else
+      self.selected = self.selected - 1
+      self:_keep_selected_visible()
+    end
     return true
   elseif key == "down" or key == "s" then
-    self.selected = self.selected + 1
-    self:_keep_selected_visible()
+    if self.focus_area == "categories" then
+      self:_set_category(self.category_index + 1)
+    elseif self.focus_area == "actions" then
+      self:_move_action("down")
+    elseif self.selected >= #self:_definitions() then
+      self.focus_area = "actions"
+    else
+      self.selected = self.selected + 1
+      self:_keep_selected_visible()
+    end
     return true
   elseif key == "left" or key == "a" then
-    self:_adjust(-1)
+    if self.focus_area == "rows" then
+      self.focus_area = "categories"
+    elseif self.focus_area == "actions" then
+      self:_move_action("left")
+    end
     return true
-  elseif key == "right" or key == "d" or key == "return" or key == "space" then
-    self:_adjust(1)
+  elseif key == "right" or key == "d" then
+    if self.focus_area == "categories" then
+      self.focus_area = "rows"
+    elseif self.focus_area == "actions" then
+      self:_move_action("right")
+    end
+    return true
+  elseif key == "return" or key == "space" then
+    if self.focus_area == "categories" then
+      self.focus_area = "rows"
+    elseif self.focus_area == "actions" then
+      self:_activate_action()
+    else
+      self:_adjust(1)
+    end
+    return true
+  elseif key == "-" or key == "kp-" then
+    if self.focus_area == "rows" then self:_adjust(-1) end
+    return true
+  elseif key == "=" or key == "+" or key == "kp+" then
+    if self.focus_area == "rows" then self:_adjust(1) end
     return true
   elseif key == "backspace" then
     local definition = self:_definitions()[self.selected]
@@ -455,8 +520,12 @@ function AdminScreen:gamepadpressed(_, button)
     return self:keypressed("down")
   elseif button == "dpleft" then
     return self:keypressed("left")
-  elseif button == "dpright" or button == "a" then
+  elseif button == "dpright" then
     return self:keypressed("right")
+  elseif button == "a" then
+    return self:keypressed("return")
+  elseif button == "x" then
+    return self:keypressed("-")
   elseif button == "y" then
     local definition = self:_definitions()[self.selected]
     if definition then self.app.tuning:reset(definition.id) end
@@ -467,7 +536,25 @@ end
 
 function AdminScreen:mousemoved(x, y)
   for index, row in pairs(self.rows) do
-    if contains(row, x, y) then self.selected = index return true end
+    if contains(row, x, y) then
+      self.selected = index
+      self.focus_area = "rows"
+      return true
+    end
+  end
+  for index, rect in ipairs(self.category_rects) do
+    if contains(rect, x, y) then
+      if self.category_index ~= index then self:_set_category(index) end
+      self.focus_area = "categories"
+      return true
+    end
+  end
+  for index, action in ipairs(self.action_items or {}) do
+    if contains(action.rect, x, y) then
+      self.action_index = index
+      self.focus_area = "actions"
+      return true
+    end
   end
   return false
 end

@@ -2,6 +2,15 @@
 
 This file is the local implementation record. Add a new entry at the top after every material site pass.
 
+## 2026-08-11 | SITE-025 | v0.7.1 menu and controller release
+
+Updated the visible public-build links and version copy to v0.7.1 while
+preserving the stable GitHub Latest asset routes. The release adds clear
+sprite-backed menu focus, true four-direction controller navigation, complete
+controller access through Pause, Settings, Controls and Admin, the cleaner
+level-up/evolution presentation, evolution-aware capped-build chest handling,
+and gradual free starter loadouts for harder World Tour routes.
+
 ## 2026-08-11 | SITE-024 | Windows x64 public download
 
 Added a parallel Windows x64 download route to Home, Catalog, Builder, shared

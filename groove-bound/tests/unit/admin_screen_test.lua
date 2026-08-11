@@ -28,7 +28,7 @@ end
 
 T["keyboard changes and resets the selected control"] = function()
   local screen, tuning = fresh()
-  screen:keypressed("right")
+  screen:keypressed("=")
   H.eq(tuning:get("simulation.time_scale"), 1.1)
   screen:keypressed("backspace")
   H.eq(tuning:get("simulation.time_scale"), 1)
@@ -38,10 +38,22 @@ T["gamepad navigation and adjustment use the same tuning model"] = function()
   local screen, tuning = fresh()
   screen:gamepadpressed(nil, "dpdown")
   H.eq(screen.selected, 2)
-  screen:gamepadpressed(nil, "dpright")
+  screen:gamepadpressed(nil, "a")
   H.is_true(tuning:get("test.enhanced_mode"))
+  screen:gamepadpressed(nil, "x")
+  H.is_false(tuning:get("test.enhanced_mode"))
+  screen:gamepadpressed(nil, "a")
   screen:gamepadpressed(nil, "y")
   H.is_false(tuning:get("test.enhanced_mode"))
+end
+
+T["gamepad left and right move between category and control areas"] = function()
+  local screen = fresh()
+  H.eq(screen.focus_area, "rows")
+  screen:gamepadpressed(nil, "dpleft")
+  H.eq(screen.focus_area, "categories")
+  screen:gamepadpressed(nil, "dpright")
+  H.eq(screen.focus_area, "rows")
 end
 
 T["mouse plus button adjusts its exact row"] = function()

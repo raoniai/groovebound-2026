@@ -91,6 +91,8 @@ function RunScreen:enter()
   })
   if self.mode == "world_tour" and self.opts.build then
     self.combat.progression:restore(self.opts.build)
+  elseif self.mode == "world_tour" and self.opts.starter_loadout then
+    self.combat.progression:grant_starter_loadout(self.opts.starter_loadout)
   end
   self.world_mechanic = self.stages[1].mechanic
     and FunkPocketSystem({
@@ -231,7 +233,7 @@ function RunScreen:update(dt)
 
   local chest_reveal = self.combat:take_pending_chest_reveal()
   if chest_reveal and not self.choice_open then
-    if chest_reveal.auto_selected then
+    if chest_reveal.auto_selected and not chest_reveal.has_evolution then
       self.choice_open = false
     else
       self.choice_open = true

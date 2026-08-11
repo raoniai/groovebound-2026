@@ -132,17 +132,8 @@ function CampaignResetConfirm:keypressed(key)
 end
 
 function CampaignResetConfirm:gamepadpressed(_, button)
-  if button == "a" then self.buttons:confirm() return true end
   if button == "b" then self:_cancel() return true end
-  if button == "dpleft" or button == "dpup" then
-    self.buttons:move_focus(-1)
-    return true
-  end
-  if button == "dpright" or button == "dpdown" then
-    self.buttons:move_focus(1)
-    return true
-  end
-  return false
+  return self.buttons:gamepadpressed(button)
 end
 
 function CampaignResetConfirm:mousemoved(x, y)

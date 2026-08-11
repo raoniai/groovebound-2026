@@ -475,8 +475,9 @@ helper, center-cropped, resized to 512×512, and visually inspected. Their chrom
 and transparent high-resolution sources are stored under `source-candidates/`.
 Runtime draws the slot frame as four fixed corners plus tiled top, bottom, left,
 and right strips, so rectangular blocks extend without stretching the art.
-Semantic stat and CTA icons are now transparent code-drawn glyphs; HUD panel
-shades are separate 50%-alpha elements.
+General HUD semantic glyphs remain code-drawn; upgrade-card attributes use the
+dedicated generated atlas documented below. HUD panel shades remain separate
+translucent layout elements.
 
 The game-over prompt used only project-owned Joe/Lyra portraits, the current
 title background, and the obsolete first-party game-over panel as references.
@@ -544,3 +545,65 @@ the bundled soft-matte/despill helper and resized with nearest-neighbour
 sampling. The reward backplate is first-party project art extracted from
 `campaign/chest-luck-reveal-atlas.png`; this promoted tight crop prevents atlas
 padding from shrinking information inside wide and tall runtime cards.
+
+## Scalable upgrade-card construction kit
+
+**Generated:** 2026-08-11 with OpenAI image generation in Codex built-in mode
+
+| Runtime file | Role |
+|---|---|
+| `campaign/ui/upgrade-card-frame-v2/top-left.png` | Fixed upper-left corner |
+| `campaign/ui/upgrade-card-frame-v2/top.png` | Horizontally extendable top middle |
+| `campaign/ui/upgrade-card-frame-v2/top-right.png` | Fixed upper-right corner |
+| `campaign/ui/upgrade-card-frame-v2/left.png` | Vertically extendable left middle |
+| `campaign/ui/upgrade-card-frame-v2/center.png` | Scalable dark honeycomb interior |
+| `campaign/ui/upgrade-card-frame-v2/right.png` | Vertically extendable right middle |
+| `campaign/ui/upgrade-card-frame-v2/bottom-left.png` | Fixed lower-left corner |
+| `campaign/ui/upgrade-card-frame-v2/bottom.png` | Horizontally extendable bottom middle |
+| `campaign/ui/upgrade-card-frame-v2/bottom-right.png` | Fixed lower-right corner |
+| `campaign/ui/upgrade-attribute-icons-atlas.png` (1600x800 RGBA) | 4x2 semantic stat-icon atlas |
+
+The card prompt requested one front-on portrait equipment-rack frame with
+decoration concentrated in the corners, quiet repeatable middle edges, a dark
+navy honeycomb interior, restrained cyan/magenta/violet/gold hardware, no text,
+no icons, no perspective and a uniform green chroma surround. The untouched
+source is retained at
+`source-candidates/upgrade-card-frame-v2-source.png`. The keyed result was
+trimmed and divided into nine independent runtime PNGs by
+`scripts/build_upgrade_card_frame.py`; runtime scales only the relevant middle
+or centre piece while keeping each corner independent.
+
+The attribute-atlas prompt requested exactly eight isolated icons in a strict
+4x2 grid: damage, fire rate, projectile count, projectile speed, health, guard,
+coins and total rank. It prohibited text, shared particles and cell crossings.
+The untouched source is retained at
+`source-candidates/upgrade-attribute-icons-atlas-source.png`; the runtime atlas
+was keyed with the bundled soft-matte/despill helper, normalised to 1600x800
+RGBA and visually inspected before integration.
+
+## Menu navigation sprite kit
+
+**Generated:** 2026-08-11 with OpenAI image generation in Codex built-in mode
+
+| Runtime file | Role |
+|---|---|
+| `campaign/ui/menu-category-icons-atlas-v2.png` (1600x1200 RGBA) | Strict 4x3 atlas for Admin, Settings and control-category identities |
+| `campaign/ui/menu-focus-frame-v2/top-left.png` through `bottom-right.png` | Nine independent focus-frame corners, repeatable edges and transparent centre |
+
+The category-atlas prompt requested exactly twelve isolated, text-free,
+front-on pixel-art symbols for overview, simulation, route, player, combat,
+projectile, enemy, rewards, groove, audio, display and controller settings. It
+required a strict 4x3 layout, consistent scale, generous cell gutters and no
+cross-cell particles. The focus-frame prompt requested one high-contrast wide
+cyan/gold/magenta equipment rail with fixed mechanical corners, quiet middle
+edges, no text or icons and an empty chroma interior specifically intended for
+nine-slice use. Untouched generated sources are retained at
+`source-candidates/menu-category-icons-atlas-v2-source.png` and
+`source-candidates/menu-focus-frame-v2-source.png`.
+
+`scripts/build_menu_ui_assets.py` pads the atlas to square cells without
+cropping, converts chroma green with edge despill, normalises the runtime atlas
+to 1600x1200 and divides the keyed focus frame into nine separate PNGs. Runtime
+menus reuse the existing upgrade-card kit for backplates and the existing menu
+action atlas for Resume, Settings, Exit and Back CTAs; the new art is limited
+to semantic categories and the selected-state overlay.

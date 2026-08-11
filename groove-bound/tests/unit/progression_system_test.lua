@@ -273,6 +273,34 @@ T["fully capped builds remember and auto-apply the chosen utility reward"] = fun
   H.eq(restored.auto_fallback_kind, "guard")
 end
 
+T["ready evolutions always interrupt remembered chest auto-selection"] = function()
+  local progression, inventory = fresh(10, 4141)
+  inventory.capacity = 1
+  progression.passives.capacity = 1
+  progression:apply({ kind = "passive_add", id = "breath_control" })
+  progression.auto_fallback_kind = "guard"
+
+  local rewards = progression:claim_chest(1)
+  H.eq(rewards[1].kind, "evolution")
+  H.is_true(rewards.has_evolution)
+  H.is_false(rewards.auto_selected)
+end
+
+T["starter loadout grants are bounded free additions"] = function()
+  local progression, inventory = fresh(1, 5151)
+  local granted = progression:grant_starter_loadout({
+    weapons = { "bass_drop", "cymbal_slicer" },
+    passives = { "quickstep", "safety_vest" },
+  })
+  H.eq(#granted.weapons, 2)
+  H.eq(#granted.passives, 2)
+  H.eq(inventory:get_slot(2).id, "bass_drop")
+  H.eq(inventory:get_slot(3).id, "cymbal_slicer")
+  H.eq(progression.passives:get("quickstep").level, 1)
+  H.eq(progression.passives:get("safety_vest").level, 1)
+  H.eq(progression.coins, 0)
+end
+
 T["auto-selection pauses as soon as a build choice becomes legal"] = function()
   local progression, inventory = fresh(10, 808)
   inventory.capacity = 1

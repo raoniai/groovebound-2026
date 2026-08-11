@@ -17,6 +17,14 @@ local worlds = {
 }
 
 local catalog = {}
+local starter_loadouts = {
+  [1] = { weapons = 0, passives = 0 },
+  [2] = { weapons = 1, passives = 0 },
+  [3] = { weapons = 1, passives = 1 },
+  [4] = { weapons = 1, passives = 1 },
+  [5] = { weapons = 2, passives = 1 },
+  [6] = { weapons = 2, passives = 2 },
+}
 for _, row in ipairs(worlds) do
   local id, order, kind, name, genre, grade_profile, mastery_id, boss, next_world = unpack(row)
   catalog[id] = {
@@ -26,6 +34,7 @@ for _, row in ipairs(worlds) do
     grade_profile = grade_profile, mastery_id = mastery_id,
     music_route = "world_" .. id, environment_atlas = "world_" .. id,
     floor_atlas = "world_" .. id .. "_floor", first_clear_unlock = next_world,
+    starter_loadout = starter_loadouts[math.min(order, 6)],
     implementation_status = (id == "funk" or id == "soul" or id == "disco")
       and "playable" or "planned",
     rewards = {
