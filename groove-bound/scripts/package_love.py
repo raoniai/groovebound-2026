@@ -96,8 +96,7 @@ def main() -> int:
     with zipfile.ZipFile(output, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as archive:
         archive.writestr(archive_info("release-build.txt"), marker)
         for relative, path in files:
-            executable = os.access(path, os.X_OK)
-            archive.writestr(archive_info(relative.as_posix(), executable), path.read_bytes())
+            archive.writestr(archive_info(relative.as_posix()), path.read_bytes())
 
     with zipfile.ZipFile(output) as archive:
         bad = archive.testzip()

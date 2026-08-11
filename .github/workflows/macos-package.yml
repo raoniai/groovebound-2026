@@ -1,0 +1,74 @@
+name: macOS universal package
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+permissions:
+  contents: read
+
+env:
+  RELEASE_VERSION: 0.7.1
+  LOVE_RUNTIME_URL: https://github.com/love2d/love/releases/download/11.5/love-11.5-macos.zip
+  LOVE_RUNTIME_SHA256: 6795bb3a1656af6a2fdfe741e150787b481886d3a280327a261a3fdded586913
+
+jobs:
+  package:
+    runs-on: macos-latest
+    timeout-minutes: 25
+    steps:
+      - name: Check out canonical source
+        uses: actions/checkout@v4
+        with:
+          ref: codex/world-tour-v1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Download pinned LÖVE runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fsSL "$LOVE_RUNTIME_URL" -o "$RUNNER_TEMP/love-runtime.zip"
+          printf '%s  %s\n' "$LOVE_RUNTIME_SHA256" "$RUNNER_TEMP/love-runtime.zip" | shasum -a 256 -c -
+          ditto -x -k "$RUNNER_TEMP/love-runtime.zip" "$RUNNER_TEMP/love-runtime"
+          test -x "$RUNNER_TEMP/love-runtime/love.app/Contents/MacOS/love"
+
+      - name: Build and verify deterministic common payload
+        working-directory: groove-bound
+        shell: bash
+        run: |
+          python scripts/package_love.py --version "$RELEASE_VERSION" --require-clean
+          python scripts/verify_release_package.py dist/groove-bound.love
+
+      - name: Build universal macOS ZIP and DMG
+        working-directory: groove-bound
+        shell: bash
+        run: |
+          LOVE_APP="$RUNNER_TEMP/love-runtime/love.app" \
+            VERSION="$RELEASE_VERSION" \
+            scripts/build_macos_release.sh
+
+      - name: Run packaged macOS bootstrap smoke
+        shell: bash
+        run: |
+          set -euo pipefail
+          smoke_dir="$RUNNER_TEMP/groove-bound-smoke"
+          mkdir -p "$smoke_dir"
+          cd "$smoke_dir"
+          "$GITHUB_WORKSPACE/groove-bound/dist/macos-build/Groove Bound.app/Contents/MacOS/love" \
+            groove-bound-headless-smoke groove-bound-smoke-marker
+          test "$(cat groove-bound-smoke-ok.txt)" = "boot-complete"
+
+      - name: Upload macOS candidate
+        uses: actions/upload-artifact@v4
+        with:
+          name: Groove-Bound-macOS
+          path: |
+            groove-bound/dist/Groove-Bound-macOS.dmg
+            groove-bound/dist/Groove-Bound-macOS.zip
+            groove-bound/dist/groove-bound.love
+          if-no-files-found: error
+          retention-days: 14

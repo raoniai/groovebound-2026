@@ -16,6 +16,7 @@ concurrency:
 env:
   CANONICAL_BRANCH: codex/world-tour-v1
   WINDOWS_BRANCH: codex/windows-version
+  RELEASE_VERSION: 0.7.1
 
 jobs:
   sync:
@@ -63,3 +64,61 @@ jobs:
   package-windows:
     needs: sync
     uses: ./.github/workflows/windows-package.yml
+
+  package-macos:
+    needs: sync
+    uses: ./.github/workflows/macos-package.yml
+
+  publish-desktop:
+    needs:
+      - package-windows
+      - package-macos
+    if: "github.event_name == 'push' && github.event.head_commit.message == 'release: publish desktop v0.7.1'"
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - name: Check out release metadata
+        uses: actions/checkout@v4
+        with:
+          ref: codex/world-tour-v1
+
+      - name: Download Windows candidate
+        uses: actions/download-artifact@v4
+        with:
+          name: Groove-Bound-Windows-x64
+          path: release-assets/windows
+
+      - name: Download macOS candidate
+        uses: actions/download-artifact@v4
+        with:
+          name: Groove-Bound-macOS
+          path: release-assets/macos
+
+      - name: Verify payload parity and render release notes
+        run: |
+          python3 groove-bound/scripts/render_desktop_release.py \
+            --version "$RELEASE_VERSION" \
+            --commit "$GITHUB_SHA" \
+            --assets-dir release-assets \
+            --template groove-bound/packaging/release-v0.7.1.md \
+            --notes-output release-assets/RELEASE-NOTES.md \
+            --sums-output release-assets/SHA256SUMS-Desktop.txt
+
+      - name: Publish synchronized desktop assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release upload "v${RELEASE_VERSION}" \
+            release-assets/windows/Groove-Bound-Windows-x64.zip \
+            release-assets/windows/Groove-Bound-Windows-x64.manifest.json \
+            release-assets/windows/SHA256SUMS-Windows.txt \
+            release-assets/macos/Groove-Bound-macOS.dmg \
+            release-assets/macos/Groove-Bound-macOS.zip \
+            release-assets/macos/groove-bound.love \
+            release-assets/SHA256SUMS-Desktop.txt \
+            --clobber
+          gh release edit "v${RELEASE_VERSION}" \
+            --title "Groove Bound v${RELEASE_VERSION}" \
+            --notes-file release-assets/RELEASE-NOTES.md
