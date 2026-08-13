@@ -1,12 +1,19 @@
 window.GROOVE_STATUS = {
-  "generatedAt": "2026-08-13T05:27:40.748Z",
-  "generatedAtLabel": "13 Aug 2026, 03:27 pm",
+  "generatedAt": "2026-08-13T05:38:09.965Z",
+  "generatedAtLabel": "13 Aug 2026, 03:38 pm",
   "game": {
     "branch": "codex/ui-polish-v0.8.2",
-    "commit": "65be522",
-    "dirty": true,
-    "workingChanges": 5,
+    "commit": "63496c7",
+    "dirty": false,
+    "workingChanges": 0,
     "history": [
+      {
+        "hash": "63496c7",
+        "date": "2026-08-13",
+        "dateLabel": "2026-08-13",
+        "sortKey": "2026-08-13T15:28:20+10:00",
+        "subject": "release: publish desktop v0.8.3"
+      },
       {
         "hash": "65be522",
         "date": "2026-08-13",

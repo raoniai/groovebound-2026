@@ -14,20 +14,20 @@ This document answers four questions: what is authoritative, what the latest ver
 
 <!-- LIVE-SNAPSHOT:START -->
 
-_Generated from live repository evidence: 2026-08-13 15:25 AEST_
+_Generated from live repository evidence: 2026-08-13 15:38 AEST_
 
 | Field | Live value |
 |---|---|
 | Branch | `codex/ui-polish-v0.8.2` |
-| HEAD | `693885a` — release: publish desktop v0.8.2 |
+| HEAD | `63496c7` — release: publish desktop v0.8.3 |
 | Upstream | `origin/codex/world-tour-v1` |
-| Compared with `origin/main` | 9 ahead, 1 behind |
-| Working changes | 13 files: 12 game, 0 site, 0 skills/package |
+| Compared with `origin/main` | 11 ahead, 1 behind |
+| Working changes | 0 files: 0 game, 0 site, 0 skills/package |
 | Lua source/test files | 114 source, 60 test |
 | Game tree excluding `dist/` | 632.9 MiB |
 | Current `.love` artifact | 193.5 MiB |
-| Test suite | not run by this refresh |
-| Lint | not run by this refresh |
+| Test suite | passed: 380 tests, 0 failures |
+| Lint | passed: 0 warnings / 0 errors in 176 files |
 | Skill packages | 11 |
 
 <!-- LIVE-SNAPSHOT:END -->
@@ -54,7 +54,7 @@ The player selects Joe or Lyra Vex, keeps one build across both stages, levels t
 - A compact sprite-backed level-point CTA below the current build and a
   non-overlapping, timed, individually dismissible right-side alert stack with
   Clear All.
-- A locally implemented HUD refinement separates HP, Guard, and XP into clean
+- The published v0.8.3 HUD refinement separates HP, Guard, and XP into clean
   sprite-segmented rows; fits all six weapon slots inside their panel; uses
   dedicated sprite devices for score and combo; and keeps boss, mechanic, and
   alert information in non-competing regions.
@@ -91,7 +91,7 @@ The public landing site is a separate static presentation under `landing-page/`.
 |---|---|---|---|
 | Campaign flow | Committed and pushed preview on `GPT/stage-2-cutscenes` | Source, campaign tests, upstream branch | Full current-HEAD campaign playthrough |
 | Deterministic simulation | Tests passed | Named RNG streams and seeded full-run tests | Replay-file format for engine differential testing |
-| Progression and fusion | v0.8.1 published baseline; capped utility repetition implemented and verified locally | Level gains bank spendable points without interrupting play by default; after a fully capped build chooses HP, Tip, or Guard, queued and future level points repeat that utility independently of Auto Menu until a legal build choice reappears; seeded offers, anti-repeat, capacity and evolution tests remain green | Ongoing balance/play-feel evidence and a full physical-controller run |
+| Progression and fusion | Published in v0.8.3; tests and packaged bootstrap passed | Level gains bank spendable points without interrupting play by default; after a fully capped build chooses HP, Tip, or Guard, queued and future level points repeat that utility independently of Auto Menu until a legal build choice reappears; seeded offers, anti-repeat, capacity and evolution tests remain green | Ongoing balance/play-feel evidence and a full physical-controller run |
 | Chest rewards | Published in v0.7.1, tests passed, visually sampled, and package verified | Five large spinning chests converge without number cycling, flash the centre chest, reveal large sprite-backed rewards, and accept Esc/Circle animation skip; capped builds auto-apply the selected utility reward unless an eligible evolution must be shown | Physical-controller timing and reward-feel playthrough with naturally dropped chests |
 | Arena collision and navigation | Published in v0.7.0 and tests passed | Tall props now block 90% of their height and redraw their complete opaque sprite above actors; deterministic safe-drop and navigation tests remain green | Confirm every authored tall prop in a full playthrough |
 | Enemy projectiles | Committed, pushed, and tests passed | Sprite mapping, attack tuning, content and entity tests | Confirm readability, rate, and boss pressure in play |
@@ -99,32 +99,30 @@ The public landing site is a separate static presentation under `landing-page/`.
 | Music system | Published in v0.8.0, tests and audio audit passed, focused macOS play sampled | 28 new World Tour OGG cues; one continuous hub plus unique Funk, Soul, Disco, House, Electro, Techno, Cosmic Boogie, Soulful Garage, and Future Funk packs; route/boss routing live for playable worlds; 59-record audio audit and five game captures | Human creative listening across all cues; physical Windows audio play; future-stage pressure/finale activation; BeatClock, latency calibration, groove scoring, and accessibility remain future work |
 | Application icon | Published in the v0.6.0 macOS app; tests passed, package verified, and manual small-size QA verified | Commit `097c883`; Joe/Lyra adventure emblem at 512px RGBA; native `GrooveBound.icns` present and referenced in the verified app bundle | Confirm the rebuilt native app icon in the macOS Dock on another clean Mac |
 | Generic controller and camera support | Published in v0.8.1 and tests passed | Level-up navigation uses strict spatial rows for D-pad, arrow keys, and WASD: left/right never wrap into another row, while up/down selects the nearest aligned item; existing right-stick aim and controller parity remain intact | Physical PlayStation controller check; hot-plug identity, glyphs/remapping, wired/wireless matrix |
-| Combat readability and HUD | v0.8.1 published baseline; refinement implemented and verified locally | HP, Guard, and XP have separate labeled sprite bars; critical HP flashes with reduced-flash fallback; six weapon slots remain bounded; level-point Triangle and L tips are independently clickable; score/combo have dedicated sprite devices; the compact mechanic reserves the right rail; Boss HP is directly below timing | Full combat-feel visual pass with normal/reduced flash and physical controller |
-| Character, upgrade, and results interface | Published baseline plus local refinement; tests passed | Perk cards and CTAs use sprite-led chrome with tighter rank/unknown treatment; results remove Final Setlist, Evolved, shots, and bosses copy, promote Level/Kills/XP, and raise CTAs; World Tour confirmation now asks for a player before starting the selected world | Manual defeat/victory, Perk Database, and World Tour character-flow pass |
+| Combat readability and HUD | Published in v0.8.3; tests and package gates passed | HP, Guard, and XP have separate labeled sprite bars; critical HP flashes with reduced-flash fallback; six weapon slots remain bounded; level-point Triangle and L tips are independently clickable; score/combo have dedicated sprite devices; the compact mechanic reserves the right rail; Boss HP is directly below timing | Full combat-feel visual pass with normal/reduced flash and physical controller |
+| Character, upgrade, and results interface | Published in v0.8.3; tests and package gates passed | Perk cards and CTAs use sprite-led chrome with tighter rank/unknown treatment; results remove Final Setlist, Evolved, shots, and bosses copy, promote Level/Kills/XP, and raise CTAs; World Tour confirmation now asks for a player before starting the selected world | Manual defeat/victory, Perk Database, and World Tour character-flow pass |
 | Save system | Version 2 profiles and slots | Save, migration, profile, export and World Tour session tests | Cross-platform clean-machine fixtures |
 | Landing page and repository README | v0.8.0 source committed and pushed at `9fc3e3a`; public deployment not configured | Home, Catalog and Builder identify v0.8.0 and expose verified stable Latest Windows ZIP and Mac DMG routes | FTP upload/deployment approval, post-deploy browser refresh, physical-phone refresh, trailer audio check, and `main` promotion |
 | World Tour runtime atlases | Committed, pushed, source-runtime verified, and excluded from the package audit payload where appropriate | 147 transparent cells across 16 repaired atlases validate with zero edge crossings and no component reuse; runtime loader mappings remain stable | Focused physical-controller World Tour playthrough |
-| Desktop distribution | Synchronized v0.8.1 Windows x64 ZIP, universal macOS ZIP/DMG, and common `.love` published as GitHub Latest | Both desktop packages embed `.love` SHA-256 `e24e01e6…281a`; Windows PE branding, native 372-test pass, fused payload, Windows/macOS bootstrap markers, manifests, checksums, seven public assets, and Latest redirects verified | Physical Windows graphical/audio/controller/SmartScreen/save-migration QA; Windows code signing; Apple notarization if required |
+| Desktop distribution | Synchronized v0.8.3 Windows x64 ZIP, universal macOS ZIP/DMG, and common `.love` published as GitHub Latest | Both desktop packages embed `.love` SHA-256 `c2a4d998…4830`; Windows PE branding, native 380-test pass, fused payload, Windows/macOS bootstrap markers, manifests, checksums, seven public assets, and Latest redirects verified | Physical Windows graphical/audio/controller/SmartScreen/save-migration QA; Windows code signing; Apple notarization if required |
 | Engine migration | Planned | Engine migration research and parity roadmap | Clean baseline and bounded target-engine spike |
 | Groove Bound skills | Installed, committed, and pushed | Eleven installed packages match repository source; structural, package, and representative helper validation passed | Fresh-agent forward tests |
 
 ## Active working state
 
-The v0.8.1 banked level-up flow, strict directional navigation, settings parity,
-level-point CTA, alert-stack cleanup, generated UI art, tests, documentation,
-and packaging metadata are committed and pushed on `codex/world-tour-v1`
-through `66b58bb`. The synchronized `codex/windows-version` branch contains the
+The v0.8.3 HUD, capped utility loop, Perk Database, results, and World Tour
+character-flow refinements are committed and pushed on `codex/world-tour-v1`
+through `63496c7`. The synchronized `codex/windows-version` branch contains the
 same canonical source. GitHub Latest publishes the branded Windows x64 ZIP,
 Windows manifest and checksums, universal Mac DMG/ZIP, and one common `.love`
-payload from that source commit. The landing page and all unrelated dirty
-workspace material remain intentionally untouched and outside the release
-commits.
+payload from that source commit. The landing-page source identifies v0.8.3 and
+retains stable Latest asset routes; unrelated dirty workspace material remains
+untouched.
 
 Current active themes include:
 
-- The current `codex/ui-polish-v0.8.2` worktree contains a local, uncommitted UI
-  and capped-progression refinement based on the v0.8.2 release source. Tests
-  and lint pass; no package, push, release, or public deployment is claimed.
+- The isolated `codex/ui-polish-v0.8.2` worktree is clean at the v0.8.3 release
+  source. It was used to protect the unrelated active workspace changes.
 
 - The two supplied MP4 files remain reference/source media and are excluded from
   distribution; their OGV derivatives are packaged runtime media.
@@ -143,19 +141,19 @@ Do not infer `main` promotion or landing-page deployment from the feature-branch
 
 | Layer | Latest state | Meaning |
 |---|---|---|
-| Automated tests | 380 passed, 0 failed locally on `codex/ui-polish-v0.8.2` on 2026-08-13 | Adds six-slot containment, dual clickable level tips, capped utility repetition, mechanic rail separation, and World Tour character-selection coverage |
-| Lint | 0 warnings and 0 errors across 176 files on 2026-08-13 | Current local Lua source and tests statically checked |
+| Automated tests | 380 passed, 0 failed locally, in Linux CI, and in native Windows packaging CI on 2026-08-13 | Adds six-slot containment, dual clickable level tips, capped utility repetition, mechanic rail separation, and World Tour character-selection coverage |
+| Lint | 0 warnings and 0 errors across 176 files locally and in CI on 2026-08-13 | Current release Lua source and tests statically checked |
 | Audio audit | 59 records passed; 28 new World Tour cues are 48 kHz stereo OGG Vorbis | World Tour loudness is -18.6 to -17.4 LUFS, maximum true peak is -5.1 dBFS, and maximum seam jump is 0.04253; human creative listening remains open |
-| Common package | Published v0.8.1 `.love`: 202,727,764 bytes, SHA-256 `e24e01e6eb48d61c849afd5bb1b128f4ac16bb8c08f1a926af113573c270281a` | Built once and consumed unchanged by both Windows and Mac jobs; contains the runtime UI atlas and excludes generated source candidates |
-| Windows artifact | Published v0.8.1 x64 ZIP: 207,443,365 bytes, SHA-256 `1c92d776630c1d408433b59f993c4bfecac0b710b977a756aabca02ab6b373f7` | Official pinned LÖVE 11.5 runtime, Groove Bound icon/version PE metadata, native tests, fused payload, manifest/checksums, packaged bootstrap, and public Latest redirect verified; executable is unsigned |
-| macOS artifacts | Published synchronized v0.8.1 universal ZIP and icon-bearing DMG | ZIP: 213,832,978 bytes, SHA-256 `799013352fd419127e23121b346446ddb35ce2d99315ea611e1484c79ce1ebeb`; DMG: 217,229,739 bytes, SHA-256 `a5e810ca7d1b5016366c2ded36b1ef3327a98333850d1847d906d7e1c540405a`; GitHub digests match |
+| Common package | Published v0.8.3 `.love`: 202,861,735 bytes, SHA-256 `c2a4d9981ef4da20e76d2ec32ea4166cf940e43809301dcd7d936eae45ea4830` | Built once and consumed unchanged by both Windows and Mac jobs; archive integrity, release marker, runtime assets, and exclusions verified |
+| Windows artifact | Published v0.8.3 x64 ZIP: 207,576,571 bytes, SHA-256 `29d374af5cd9985a4016c8e4082919f3173bb94de705c49b50e20bc18b8ac73e` | Official pinned LÖVE 11.5 runtime, Groove Bound icon/version PE metadata, native tests, fused payload, manifest/checksums, packaged bootstrap, and public Latest redirect verified; executable is unsigned |
+| macOS artifacts | Published synchronized v0.8.3 universal ZIP and icon-bearing DMG | ZIP: 213,966,176 bytes, SHA-256 `973e6fe9f72111da116bbcc0bf5507657731cfb538e37bc3f460c068f628d0f7`; DMG: 217,445,165 bytes, SHA-256 `5e5832d175150bc89323d9cf50fa7a3532ee4392d11c22914914483a7fd019d1`; GitHub digests match |
 | Packaged boot | Verified in Windows and macOS CI on 2026-08-13; local macOS package smoke also passed | Packaged bootstrap validates content and writes the expected marker; this is a startup-integrity check, not full graphical/audio play |
 | Manual graphical QA | Earlier five focused v0.8.0 captures remain verified; current refinement launch smoke passed, but current-screen capture was unavailable | Full current HUD, results, Perk Database, low/critical HP, boss, and physical-controller visual review remains open |
-| Source release commit | `66b58bb` — release: publish desktop v0.8.1 | Public release notes identify full commit `66b58bb678aede639f0ab3165f8250de6dfb5e64`; tag `v0.8.1` resolves to it |
-| Parallel branches | `origin/codex/world-tour-v1` and `origin/codex/windows-version` both at `66b58bb` | The Windows branch is workflow-mirrored from the canonical feature branch after every push |
+| Source release commit | `63496c7` — release: publish desktop v0.8.3 | Public release notes identify full commit `63496c72903167b2460190f497fd9d29857d8b1b`; tag `v0.8.3` resolves to it |
+| Parallel branches | `origin/codex/world-tour-v1` and `origin/codex/windows-version` both at `63496c7` | The Windows branch is workflow-mirrored from the canonical feature branch after every push |
 | Main promotion | Not current | Verify `origin/main` independently |
-| Public release/download | v0.8.1 is published as GitHub Latest with seven synchronized desktop assets | Release body, seven GitHub digests, manifest, checksum ledger, Windows ZIP, Mac DMG, and common `.love` Latest redirects verified public-live |
-| Landing download link | Windows and Mac v0.8.0 CTA source committed and pushed on the feature branch | Home, Catalog, and Builder use stable Latest routes and point to the public v0.8.0 release; source is FTP-ready but not deployed |
+| Public release/download | v0.8.3 is published as GitHub Latest with seven synchronized desktop assets | Release body, seven GitHub digests, manifest, checksum ledger, Windows ZIP, Mac DMG, and common `.love` Latest redirects verified public-live |
+| Landing download link | Windows and Mac v0.8.3 CTA source committed and pushed on the feature branch | Home, Catalog, and Builder use stable Latest routes; all three asset routes returned HTTP 200 for v0.8.3. Site source is not separately deployed here |
 | GitHub README presentation | Windows badge, CTA, install/SmartScreen guidance, version and verification counts committed on the feature branch | Default-page visibility still depends on the planned fast-forward to `main` |
 | Landing deployment | Not performed or proven | GitHub reports no configured repository homepage; source publication is not a public-site deployment |
 
@@ -172,7 +170,7 @@ For an engine migration, keep LÖVE as the golden reference. The leading researc
 - Automated checks do not prove the remaining visual, video, navigation, audio, controller, or game-feel criteria.
 - Generated and legacy assets require maintained provenance and package separation.
 - Website asset copies can drift from canonical runtime assets.
-- Signing, notarization, credentials, store submission, FTP/site deployment, destructive migration, and engine cutover require explicit approval. The user explicitly approved this v0.8.1 GitHub release and desktop packaging; no FTP upload or `main` promotion was inferred.
+- Signing, notarization, credentials, store submission, FTP/site deployment, destructive migration, and engine cutover require explicit approval. The user explicitly approved this v0.8.3 GitHub release and desktop packaging; no FTP upload or `main` promotion was inferred.
 
 ## Next safe actions
 
@@ -193,12 +191,12 @@ For an engine migration, keep LÖVE as the golden reference. The leading researc
    save migration; add Windows code signing when a certificate is approved.
 7. Freeze a clean migration baseline before any Godot or MonoGame spike.
 8. Upload the FTP-ready landing-page source only when the destination and public
-   deployment are explicitly approved, then verify v0.8.0 labels and both
+   deployment are explicitly approved, then verify v0.8.3 labels and both
    stable Latest download routes on the public site.
 
 ## Continuation history
 
-### 2026-08-13 — local HUD, capped utility, and campaign-flow refinement
+### 2026-08-13 — v0.8.3 HUD, capped utility, and campaign-flow release
 
 - Separated HP, Guard, and XP into compact sprite-segmented bars with labels
   above the rails, subtle low/critical warning icons, critical-bar flashing,
@@ -212,9 +210,11 @@ For an engine migration, keep LÖVE as the golden reference. The leading researc
 - Tightened sprite-led Perk Database cards/CTAs, simplified completion results,
   promoted Level/Kills/XP, raised the CTA group, and inserted character choice
   between World Tour selection and starting a run.
-- Verified 380 tests and zero lint findings across 176 files. Work is locally
-  complete in `codex/ui-polish-v0.8.2`; commit, push, packaging, release, main
-  promotion, and public deployment were not performed.
+- Verified 380 tests and zero lint findings across 176 files locally and in CI.
+  Published seven synchronized public assets from `63496c7`; both platform
+  packages share `.love` SHA-256 `c2a4d998…4830`, both packaged boot markers
+  passed, and the stable Latest routes returned HTTP 200. Main promotion,
+  signing/notarization, physical Windows QA, and site deployment remain open.
 
 ### 2026-08-13 — v0.8.1 optional level-up and interface release
 
