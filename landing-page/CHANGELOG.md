@@ -2,6 +2,13 @@
 
 This file is the local implementation record. Add a new entry at the top after every material site pass.
 
+## 2026-08-13 | SITE-026 | v0.8.0 World Tour soundtrack release
+
+Updated the visible public-build labels and release-note links to v0.8.0 while
+keeping the stable GitHub Latest download routes for Windows and macOS. The new
+release adds a continuous World Tour hub theme and distinct three-cue music
+packs for all nine worlds.
+
 ## 2026-08-11 | SITE-025 | v0.7.1 menu and controller release
 
 Updated the visible public-build links and version copy to v0.7.1 while

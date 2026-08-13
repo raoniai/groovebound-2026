@@ -64,7 +64,7 @@ def sha256(path: Path) -> str:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--output", type=Path, default=GAME_ROOT / "dist/groove-bound.love")
-    parser.add_argument("--version", default=os.environ.get("VERSION", "0.7.1"))
+    parser.add_argument("--version", default=os.environ.get("VERSION", "0.8.0"))
     parser.add_argument("--require-clean", action="store_true")
     args = parser.parse_args()
 

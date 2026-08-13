@@ -134,9 +134,9 @@ remains available for Linux and development use.
 ```sh
 cd groove-bound
 make run        # or: love .
-make package VERSION=0.7.1  # deterministic release .love archive
-make package-macos VERSION=0.7.1  # universal .app ZIP and DMG
-make package-windows VERSION=0.7.1 LOVE_WINDOWS_RUNTIME=/path/to/love-11.5-win64
+make package VERSION=0.8.0  # deterministic release .love archive
+make package-macos VERSION=0.8.0  # universal .app ZIP and DMG
+make package-windows VERSION=0.8.0 LOVE_WINDOWS_RUNTIME=/path/to/love-11.5-win64
 ```
 
 ## Test / lint

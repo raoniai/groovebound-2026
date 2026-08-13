@@ -16,7 +16,7 @@
 - Automated audio audit: all 59 soundtrack records passed; World Tour LUFS
   range -18.6 to -17.4, highest true peak -5.1 dBFS, highest decoded seam jump
   0.04254.
-- Unit/regression suite: 355 tests, 0 failures after integration.
+- Unit/regression suite: 358 tests, 0 failures after integration.
 - Boogie Tank exception: the promoted first take is a validated 32-beat loop
   because neither generated candidate contained a safe 64-beat window. Both
   source candidates are preserved; no regeneration was used.
