@@ -25,7 +25,7 @@ T["validated catalog exposes the approved title cue"] = function()
   H.eq(catalog:get("title").beats, 32)
 end
 
-T["loop cues must declare exactly 32 beats"] = function()
+T["loop cues must declare a multiple of 32 beats"] = function()
   local err = H.errors(function()
     MusicCatalog({
       broken = {
@@ -34,7 +34,7 @@ T["loop cues must declare exactly 32 beats"] = function()
       },
     }, { file_exists = function() return true end })
   end)
-  H.is_true(err:find("32 beats", 1, true) ~= nil)
+  H.is_true(err:find("multiple of 32 beats", 1, true) ~= nil)
 end
 
 T["shipped title record resolves to its promoted runtime asset"] = function()
@@ -50,9 +50,11 @@ T["shipped title record resolves to its promoted runtime asset"] = function()
   H.eq(catalog:get("title").path, "assets/music/01_title.ogg")
   local count = 0
   for _ in pairs(records) do count = count + 1 end
-  H.eq(count, 31)
+  H.eq(count, 59)
   H.eq(catalog:get("stage_clear_sting").beats, 8)
   H.is_false(catalog:get("stage_clear_sting").loop)
+  H.eq(catalog:get("world_funk_route").beats, 128)
+  H.eq(catalog:get("world_funk_mothership").beats, 64)
 end
 
 T["catalog rejects duplicate paths and unsupported transitions"] = function()

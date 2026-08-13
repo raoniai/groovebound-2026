@@ -57,6 +57,49 @@ T["gameplay uses live wave index and bosses override intensity"] = function()
     "stage2_overload")
 end
 
+T["every World Tour world resolves to its own gameplay route pack"] = function()
+  local expected = {
+    funk = "world_funk_route",
+    soul = "world_soul_route",
+    disco = "world_disco_route",
+    house = "world_house_route",
+    electro = "world_electro_route",
+    techno = "world_techno_route",
+    cosmic_boogie = "world_cosmic_boogie_route",
+    soulful_garage = "world_soulful_garage_route",
+    future_funk = "world_future_funk_route",
+  }
+  for world_id, cue in pairs(expected) do
+    H.eq(MusicRouter.route({ screen = "run", world_id = world_id }).cue, cue)
+  end
+end
+
+T["World Tour menus keep the neutral hub groove continuous"] = function()
+  H.eq(MusicRouter.route({ screen = "world_tour", world_id = "funk" }).cue,
+    "world_tour_hub")
+  H.eq(MusicRouter.route({ screen = "world_loadout", world_id = "disco" }).cue,
+    "world_tour_hub")
+end
+
+T["playable World Tour routes and bosses use their unique packs"] = function()
+  local cases = {
+    { "funk", nil, "world_funk_route" },
+    { "funk", "boogie_tank", "world_funk_boogie_tank" },
+    { "funk", "mothership_of_funk", "world_funk_mothership" },
+    { "soul", nil, "world_soul_route" },
+    { "soul", "organ_colossus", "world_soul_organ_colossus" },
+    { "soul", "velvet_titan", "world_soul_velvet_titan" },
+    { "disco", nil, "world_disco_route" },
+    { "disco", "laser_conductor", "world_disco_laser_conductor" },
+    { "disco", "prism_monarch", "world_disco_prism_monarch" },
+  }
+  for _, case in ipairs(cases) do
+    local intent = MusicRouter.route({ screen = "run", world_id = case[1],
+      stage_index = 1, wave_index = 7, boss_id = case[2] })
+    H.eq(intent.cue, case[3])
+  end
+end
+
 T["Grand Orchestrator final phase latches and low health layers only at matching tempo"] = function()
   local phase_one = MusicRouter.route({ screen = "run", stage_index = 2,
     wave_index = 9, boss_id = "grand_orchestrator", boss_phase_two = false,
@@ -70,24 +113,34 @@ T["Grand Orchestrator final phase latches and low health layers only at matching
   H.is_nil(final.overlay)
 end
 
-T["temporary modal cues preserve their exact underlay"] = function()
-  for screen, cue in pairs({ pause = "pause", arsenal = "arsenal", admin = "admin" }) do
+T["browsing databases uses their persistent utility music"] = function()
+  for screen, cue in pairs({ arsenal = "arsenal", perk_database = "arsenal",
+      admin = "admin" }) do
     local intent = MusicRouter.route({ screen = screen })
     H.eq(intent.cue, cue)
     H.is_true(intent.preserve_underlay)
     H.is_true(intent.immediate)
   end
-  H.eq(MusicRouter.route({ screen = "level_up", has_evolution = false }).cue,
-    "level_up")
-  H.eq(MusicRouter.route({ screen = "level_up", has_evolution = true }).cue,
-    "evolution")
-  H.eq(MusicRouter.route({ screen = "chest_reward" }).cue, "level_up")
 end
 
-T["nested options inherit the audible modal beneath them"] = function()
-  local intent = MusicRouter.route({ screen = "options", modal_origin = "pause" })
-  H.eq(intent.cue, "pause")
-  H.is_true(intent.preserve_underlay)
+T["run overlays continue and duck the current world music"] = function()
+  for _, screen in ipairs({ "pause", "level_up", "chest_reward" }) do
+    local intent = MusicRouter.route({ screen = screen,
+      current_cue = "world_funk_route", has_evolution = false })
+    H.eq(intent.cue, "world_funk_route")
+    H.is_false(intent.preserve_underlay)
+    H.eq(intent.duck_db, -5)
+  end
+  H.eq(MusicRouter.route({ screen = "level_up", has_evolution = true }).cue,
+    "evolution")
+end
+
+T["nested options continue the audible cue beneath them"] = function()
+  local intent = MusicRouter.route({ screen = "options", modal_origin = "pause",
+    current_cue = "world_soul_route" })
+  H.eq(intent.cue, "world_soul_route")
+  H.is_false(intent.preserve_underlay)
+  H.eq(intent.duck_db, -5)
 end
 
 T["stage clear event passes through the first-press cutscene exactly once"] = function()
