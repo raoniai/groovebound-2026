@@ -16,7 +16,7 @@ concurrency:
 env:
   CANONICAL_BRANCH: codex/world-tour-v1
   WINDOWS_BRANCH: codex/windows-version
-  RELEASE_VERSION: 0.8.1
+  RELEASE_VERSION: 0.8.2
 
 jobs:
   sync:
@@ -106,7 +106,7 @@ jobs:
     needs:
       - package-windows
       - package-macos
-    if: "github.event_name == 'push' && github.event.head_commit.message == 'release: publish desktop v0.8.1'"
+    if: "github.event_name == 'push' && github.event.head_commit.message == 'release: publish desktop v0.8.2'"
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
@@ -135,7 +135,7 @@ jobs:
             --version "$RELEASE_VERSION" \
             --commit "$GITHUB_SHA" \
             --assets-dir release-assets \
-            --template groove-bound/packaging/release-v0.8.1.md \
+            --template groove-bound/packaging/release-v0.8.2.md \
             --notes-output release-assets/RELEASE-NOTES.md \
             --sums-output release-assets/SHA256SUMS-Desktop.txt
 

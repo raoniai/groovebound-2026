@@ -54,7 +54,7 @@ def zip_tree(source: Path, destination: Path) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--version", default="0.8.1")
+    parser.add_argument("--version", default="0.8.2")
     parser.add_argument("--runtime-dir", type=Path, required=True)
     parser.add_argument("--love-file", type=Path, default=DIST / "groove-bound.love")
     parser.add_argument("--icon", type=Path, default=GAME_ROOT / "packaging/windows/GrooveBound.ico")

@@ -15,7 +15,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  RELEASE_VERSION: 0.8.1
+  RELEASE_VERSION: 0.8.2
   LOVE_RUNTIME_URL: https://github.com/love2d/love/releases/download/11.5/love-11.5-win64.zip
   LOVE_RUNTIME_SHA256: ba6e56be2685e53c817749c4a5007f51137136fe5a3ab64920508babc2e74369
   RCEDIT_URL: https://github.com/electron/rcedit/releases/download/v2.0.0/rcedit-x64.exe
