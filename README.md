@@ -14,8 +14,8 @@
   <a href="https://github.com/raoniai/groovebound-2026/releases/latest/download/Groove-Bound-macOS.dmg">
     <img src="https://img.shields.io/badge/DOWNLOAD_FOR_MAC-F2BF32?style=for-the-badge&logo=apple&logoColor=111111" alt="Download Groove Bound for macOS">
   </a>
-  <a href="https://github.com/raoniai/groovebound-2026/releases/tag/v0.8.0">
-    <img src="https://img.shields.io/badge/PUBLIC_BUILD-v0.8.0-EA316E?style=for-the-badge" alt="Public build v0.8.0">
+  <a href="https://github.com/raoniai/groovebound-2026/releases/tag/v0.8.1">
+    <img src="https://img.shields.io/badge/PUBLIC_BUILD-v0.8.1-EA316E?style=for-the-badge" alt="Public build v0.8.1">
   </a>
   <a href="https://github.com/raoniai/groovebound-2026/actions/workflows/ci.yml">
     <img src="https://img.shields.io/github/actions/workflow/status/raoniai/groovebound-2026/ci.yml?branch=codex%2Fworld-tour-v1&style=for-the-badge&label=CI&color=19D3C5" alt="Continuous integration status">
@@ -184,7 +184,7 @@ Explore the [Weapon Database](groove-bound/docs/WEAPON_DATABASE.md) and
   <img src="landing-page/assets/screens/stage2-escalation.png" alt="The Orbit Line threat escalating" width="49%">
 </p>
 
-The v0.8.0 preview includes camera zoom from 75% to 150%, keyboard/mouse and
+The v0.8.1 preview includes camera zoom from 75% to 150%, keyboard/mouse and
 gamepad support, persistent options, aim assistance, rebindings, vibration,
 flash and shake controls, adaptive music, cutscene mute, a transparent campaign
 HUD, chest reward reels, and a complete Arsenal database.
