@@ -2,6 +2,14 @@
 
 This file is the local implementation record. Add a new entry at the top after every material site pass.
 
+## 2026-08-13 | SITE-027 | v0.8.3 HUD and progression release
+
+Updated Home, Catalog, and Builder to identify public build v0.8.3 while
+preserving the stable Latest download routes. The release separates HP, Guard,
+XP, score, combo, timing, Boss HP, and the stage mechanic into clean sprite-led
+devices; tightens results and Perk Database presentation; and asks for a player
+after selecting a World Tour route.
+
 ## 2026-08-13 | SITE-026 | v0.8.0 World Tour soundtrack release
 
 Updated the visible public-build labels and release-note links to v0.8.0 while

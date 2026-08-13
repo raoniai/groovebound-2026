@@ -8,7 +8,7 @@ permissions:
   contents: read
 
 env:
-  RELEASE_VERSION: 0.8.2
+  RELEASE_VERSION: 0.8.3
   LOVE_RUNTIME_URL: https://github.com/love2d/love/releases/download/11.5/love-11.5-macos.zip
   LOVE_RUNTIME_SHA256: 6795bb3a1656af6a2fdfe741e150787b481886d3a280327a261a3fdded586913
 
