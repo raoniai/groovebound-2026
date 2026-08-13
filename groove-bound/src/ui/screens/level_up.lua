@@ -40,8 +40,22 @@ function LevelUpScreen:enter()
 end
 
 function LevelUpScreen:_choose(choice)
+  local utility = choice.kind == "heal" or choice.kind == "coins"
+    or choice.kind == "guard"
+  if utility and self.combat.progression.is_auto_select_available
+    and self.combat.progression:is_auto_select_available()
+  then
+    self.combat.progression:set_auto_fallback(choice.kind)
+  end
   local result = self.combat.progression:apply(choice)
   self.combat.xp:consume_choice()
+  while self.combat.xp:has_pending_choice()
+    and self.combat.progression.can_auto_select
+    and self.combat.progression:can_auto_select()
+  do
+    self.combat.progression:auto_select()
+    self.combat.xp:consume_choice()
+  end
   local has_more = self.combat.xp:has_pending_choice()
   if has_more then
     self.offer = self.combat.progression:create_offer()

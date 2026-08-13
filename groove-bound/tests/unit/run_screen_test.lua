@@ -94,16 +94,17 @@ T["boss danger warning names the attack when the player is in range"] = function
   H.eq(warning.detail, "ATTACK CHARGING")
 end
 
-T["mechanic explainer sits below the timer and between persistent side rails"] = function()
+T["mechanic explainer sits under score without touching the timer"] = function()
   local screen = RunScreen({}, {})
   local HUD = require("src.ui.hud")
   local hud = HUD({}, {}, {})
   for _, width in ipairs({ 800, 1280 }) do
     local timer = hud:timer_rect(width)
     local mechanic = screen:world_mechanic_hud_rect(width)
-    H.is_true(mechanic.y > timer.y + timer.h)
-    H.is_true(mechanic.x >= 288)
-    H.is_true(mechanic.x + mechanic.w <= width - 272)
+    H.is_true(mechanic.y >= timer.y + timer.h)
+    H.is_true(mechanic.x >= timer.x + timer.w)
+    H.eq(mechanic.x + mechanic.w, width - 8)
+    H.eq(mechanic.y, 70)
   end
 end
 
@@ -250,6 +251,28 @@ T["automatic mode opens only newly earned unsnoozed points"] = function()
   screen.combat.xp.pending_choices = 3
   screen:update(0.1)
   H.eq(pushed[2], "level_up")
+end
+
+T["remembered capped utility spends points even when auto menu is off"] = function()
+  local screen, pushed = level_point_screen(false)
+  local applied = 0
+  screen.combat.progression = {
+    can_auto_select = function() return true end,
+    auto_select = function()
+      applied = applied + 1
+      return { kind = "heal" }
+    end,
+  }
+  screen.combat.xp.consume_choice = function(self)
+    self.pending_choices = self.pending_choices - 1
+  end
+  screen.combat.xp.has_pending_choice = function(self)
+    return self.pending_choices > 0
+  end
+  screen:update(0.1)
+  H.eq(applied, 2)
+  H.eq(screen.combat.xp.pending_choices, 0)
+  H.eq(#pushed, 0)
 end
 
 T["World Tour stage confirmation advances into its second playable arena"] = function()

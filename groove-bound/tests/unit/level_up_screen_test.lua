@@ -168,4 +168,38 @@ T["automatic menu toggle persists without spending a point"] = function()
   H.eq(saves, 1)
 end
 
+T["chosen capped utility repeats across every queued level point"] = function()
+  local points, applied, automatic, remembered = 3, 0, 0
+  local popped
+  local progression = {
+    is_auto_select_available = function() return true end,
+    set_auto_fallback = function(_, kind) remembered = kind; return true end,
+    can_auto_select = function() return remembered ~= nil end,
+    apply = function() applied = applied + 1 end,
+    auto_select = function()
+      automatic = automatic + 1
+      return { kind = remembered }
+    end,
+  }
+  local combat = {
+    progression = progression,
+    xp = {
+      consume_choice = function()
+        points = points - 1
+      end,
+      has_pending_choice = function() return points > 0 end,
+    },
+  }
+  local screen = setmetatable({
+    app = { states = { pop = function(_, result) popped = result end } },
+    combat = combat,
+  }, LevelUpScreen)
+  screen:_choose({ kind = "guard", id = "guard", title = "Sound Check" })
+  H.eq(remembered, "guard")
+  H.eq(applied, 1)
+  H.eq(automatic, 2)
+  H.eq(points, 0)
+  H.eq(popped.kind, "guard")
+end
+
 return T

@@ -5,6 +5,7 @@ local widgets = require("src.ui.widgets.button")
 local UIScale = require("src.ui.scale")
 local PerkProgress = require("src.meta.perk_progress")
 local RankBadge = require("src.ui.rank_badge")
+local MenuChrome = require("src.ui.menu_chrome")
 
 local PerkDatabase = class()
 PerkDatabase.kind = "perk_database"
@@ -59,12 +60,24 @@ function PerkDatabase:_layout()
   end
   local bw = math.min(230, self.detail.w - 20)
   local purchase_y = self.detail.y + self.detail.h - 108
+  local function button(opts)
+    opts.renderer = function(value)
+      MenuChrome.action(self.app.assets, value, {
+        menu_cell = opts.menu_cell,
+        label = value.label,
+        font_size = opts.font_size,
+      })
+    end
+    return widgets.Button(opts)
+  end
   self.buttons = widgets.ButtonList({
-    widgets.Button({ label = "UPGRADE PERK", x = self.detail.x + (self.detail.w - bw) / 2,
+    button({ label = "UPGRADE PERK", x = self.detail.x + (self.detail.w - bw) / 2,
       y = purchase_y, w = bw, h = 46, variant = "primary", font_size = 15,
+      menu_cell = 5,
       on_press = function() self:_buy() end }),
-    widgets.Button({ label = "RETURN TO TITLE", x = self.detail.x + (self.detail.w - bw) / 2,
+    button({ label = "RETURN TO TITLE", x = self.detail.x + (self.detail.w - bw) / 2,
       y = purchase_y + 52, w = bw, h = 42, font_size = 14,
+      menu_cell = 8,
       on_press = function() self:_back() end }),
   })
 end
@@ -98,26 +111,25 @@ function PerkDatabase:draw()
   for i, perk in ipairs(self.perks) do
     local r, owned = self.card_rects[i], self:_owned(perk)
     local selected = i == self.selected
-    love.graphics.setColor(selected and { 0.17, 0.065, 0.24, 1 } or { 0.035, 0.018, 0.075, 1 })
-    love.graphics.rectangle("fill", r.x, r.y, r.w, r.h, 8, 8)
-    love.graphics.setColor(selected and { 1, 0.72, 0.18, 1 }
-      or owned and { 0.2, 0.85, 1, 0.75 } or { 0.3, 0.28, 0.42, 0.7 })
-    love.graphics.rectangle("line", r.x, r.y, r.w, r.h, 8, 8)
+    love.graphics.setColor(selected and { 0.17, 0.065, 0.24, 0.82 }
+      or { 0.035, 0.018, 0.075, 0.78 })
+    love.graphics.rectangle("fill", r.x + 3, r.y + 3, r.w - 6, r.h - 6, 6, 6)
+    self.app.assets:draw_upgrade_card_frame(r.x, r.y, r.w, r.h, {
+      corner = math.min(16, r.h * 0.28),
+      color = selected and { 1, 0.76, 0.22, 0.96 }
+        or owned and { 0.32, 0.92, 1, 0.72 } or { 0.48, 0.44, 0.62, 0.44 },
+    })
     self.app.assets:draw_meta_perk(owned and perk.sprite.cell or 20,
       r.x + 5, r.y + 5, math.min(54, r.w * 0.48), r.h - 10,
       { color = owned and { 1, 1, 1, 1 } or { 0.55, 0.5, 0.68, 0.58 } })
     love.graphics.setFont(Fonts.get(math.max(9, math.min(12, r.w * 0.1))))
     love.graphics.setColor(owned and { 0.9, 0.94, 1, 1 } or { 0.55, 0.52, 0.64, 1 })
     love.graphics.printf(owned and string.upper(perk.name) or "UNKNOWN",
-      r.x + math.min(58, r.w * 0.5), r.y + 15, r.w - math.min(63, r.w * 0.5), "center")
-    local rank_x = r.x + math.min(58, r.w * 0.5)
-    local rank_w = r.w - math.min(63, r.w * 0.5)
+      r.x + math.min(55, r.w * 0.47), r.y + (owned and 13 or 28),
+      r.w - math.min(61, r.w * 0.47), "center")
     if owned then
-      draw_rank_device(self.app.assets, rank_x, r.y + r.h - 18, rank_w,
-        owned.rank, perk.max_rank, 26)
-    else
-      love.graphics.setColor(1, 0.76, 0.2, 0.4)
-      love.graphics.printf("LOCKED", rank_x, r.y + r.h - 27, rank_w, "center")
+      RankBadge.draw(self.app.assets, r.x + r.w - 31, r.y + 6, 25,
+        owned.rank, { maxed = owned.rank >= perk.max_rank })
     end
   end
 

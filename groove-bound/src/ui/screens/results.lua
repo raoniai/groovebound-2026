@@ -31,7 +31,7 @@ function ResultsScreen:_layout()
   self.ui_scale = scale
   local bw, bh, gap = 280, 54, 14
   local x = (w - bw) / 2
-  local y = h * 0.79
+  local y = h * 0.70
   local next_label = self.result.outcome == "victory"
     and (self.result.mode == "world_tour" and "WORLD TOUR CATALOG"
       or "ENTER WORLD TOUR") or "CONTINUE CAMPAIGN"
@@ -141,18 +141,35 @@ function ResultsScreen:draw()
       x + chip_w - text_x - 6, "left")
   end
 
-  love.graphics.setColor(0.72, 0.78, 0.90, 1)
-  love.graphics.setFont(Fonts.get(15))
-  local run_line = string.format("KILLS %s  •  XP %s  •  SHOTS %s  •  BOSSES %s",
-    NumberFormat.integer(stats.kills), NumberFormat.integer(stats.xp),
-    NumberFormat.integer(stats.shots), NumberFormat.integer(stats.bosses))
-  local line_font = Fonts.get(15)
-  local line_width = line_font:getWidth(run_line)
-  local level_size = 34
-  local line_x = (w - (level_size + 12 + line_width)) / 2 + level_size + 12
-  RankBadge.draw(self.app.assets, line_x - level_size - 12,
-    chip_y + 78, level_size, self.result.level)
-  love.graphics.printf(run_line, line_x, chip_y + 88, line_width, "left")
+  local progress = {
+    { label = "LEVEL", value = NumberFormat.integer(self.result.level), rank = true },
+    { label = "KILLS", value = NumberFormat.integer(stats.kills), icon = 15 },
+    { label = "XP GAIN", value = NumberFormat.integer(stats.xp), icon = 16 },
+  }
+  local progress_w = math.min(620, w - 120)
+  local progress_gap = 12
+  local progress_chip_w = (progress_w - progress_gap * 2) / 3
+  local progress_x = (w - progress_w) / 2
+  local progress_y = chip_y + 84
+  for index, item in ipairs(progress) do
+    local x = progress_x + (index - 1) * (progress_chip_w + progress_gap)
+    draw_chip(self.app.assets, x, progress_y, progress_chip_w, 58)
+    if item.rank then
+      RankBadge.draw(self.app.assets, x + 14, progress_y + 8, 42,
+        self.result.level)
+    else
+      self.app.assets:draw_menu_stat_icon(item.icon,
+        x + 14, progress_y + 10, 38, { color = { 1, 1, 1, 0.94 } })
+    end
+    love.graphics.setColor(0.68, 0.72, 0.84, 1)
+    love.graphics.setFont(Fonts.get(11))
+    love.graphics.printf(item.label, x + 62, progress_y + 9,
+      progress_chip_w - 72, "left")
+    love.graphics.setColor(settings.ui.text_color)
+    love.graphics.setFont(Fonts.get(21))
+    love.graphics.printf(item.value, x + 62, progress_y + 26,
+      progress_chip_w - 72, "left")
+  end
 
   local weapons = self.result.progression.weapons
   local rack_w = math.min(620, w - 100)
@@ -160,10 +177,7 @@ function ResultsScreen:draw()
     / math.max(1, #weapons))
   local rack_total = #weapons * slot_size + math.max(0, #weapons - 1) * 10
   local rack_x = (w - rack_total) / 2
-  local rack_y = h * 0.49
-  love.graphics.setColor(settings.ui.accent_color)
-  love.graphics.setFont(Fonts.get(14))
-  love.graphics.printf("FINAL SETLIST", 0, rack_y - 27, w, "center")
+  local rack_y = progress_y + 72
   for index, weapon in ipairs(weapons) do
     local definition = self.app.content.weapons[weapon.id]
     local x = rack_x + (index - 1) * (slot_size + 10)
@@ -177,20 +191,6 @@ function ResultsScreen:draw()
       slot_size * 0.75)
     RankBadge.draw(self.app.assets, x + slot_size - 28, rack_y - 7, 34,
       weapon.level, { maxed = weapon.level >= definition.max_level })
-  end
-
-  local evolution_names = {}
-  for _, evolution in ipairs(self.result.progression.evolutions) do
-    local result = self.app.content.weapons[evolution.result_weapon]
-    if result then
-      evolution_names[#evolution_names + 1] =
-        string.upper(evolution.branch) .. " " .. result.name
-    end
-  end
-  if #evolution_names > 0 then
-    love.graphics.setColor(settings.ui.accent_color)
-    love.graphics.printf("Evolved: " .. table.concat(evolution_names, ", "),
-      w * 0.1, h * 0.64, w * 0.8, "center")
   end
 
   self.buttons:draw()

@@ -6,6 +6,7 @@ local ControlsScreen = require("src.ui.screens.controls")
 local WorldTourScreen = require("src.ui.screens.world_tour")
 local PerkDatabase = require("src.ui.screens.perk_database")
 local Content = require("src.content.init")
+local Defaults = require("src.meta.defaults")
 
 local T = {}
 
@@ -79,6 +80,22 @@ T["World Tour mouse hover never changes the clicked selection"] = function()
     screen:mousemoved(screen.slot_rects[2].x + 4, screen.slot_rects[2].y + 4)
     H.eq(screen.selected, 3)
   end)
+end
+
+T["playable World Tour selection asks for a character before starting"] = function()
+  local switched
+  local slot = Defaults.new_slot(1, "now")
+  slot.prologue.completed = true
+  local app = {
+    content = Content,
+    slot = slot,
+    states = { switch = function(_, screen) switched = screen end },
+  }
+  local screen = WorldTourScreen(app)
+  H.is_true(screen:_play_selected())
+  H.eq(switched.kind, "character_select")
+  H.is_true(type(switched.opts.on_confirm) == "function")
+  H.is_true(type(switched.opts.on_back) == "function")
 end
 
 T["Perk database CTAs remain inside the detail panel and above hints"] = function()

@@ -17,10 +17,16 @@ local stat_order = {
   { id = "resonance", label = "RESONANCE", icon = "combo" },
 }
 
-function CharacterSelectScreen:init(app)
+function CharacterSelectScreen:init(app, opts)
   self.app = app
+  self.opts = opts or {}
   self.ids = { "joe", "lyra" }
   self.selected = 1
+  local selected_id = app.slot and app.slot.journey
+    and app.slot.journey.character_id or ""
+  for index, id in ipairs(self.ids) do
+    if id == selected_id then self.selected = index end
+  end
 end
 
 function CharacterSelectScreen:enter()
@@ -48,6 +54,9 @@ end
 function CharacterSelectScreen:_confirm()
   local id = self.ids[self.selected]
   JourneyProgress.select_character(self.app, id)
+  if self.opts.on_confirm then
+    return self.opts.on_confirm(id)
+  end
   local character = self.app.content.characters[id]
   local scene = self.app.content.narrative[character.intro_scene]
   local CutsceneScreen = require("src.ui.screens.cutscene")
@@ -191,6 +200,7 @@ function CharacterSelectScreen:keypressed(key)
     self:_confirm()
     return true
   elseif key == "escape" then
+    if self.opts.on_back then return self.opts.on_back() end
     local TitleScreen = require("src.ui.screens.title")
     self.app.states:switch(TitleScreen(self.app))
     return true

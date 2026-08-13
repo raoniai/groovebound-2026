@@ -107,6 +107,10 @@ function RunScreen:enter()
   self.hud = HUD(self.ctx, self.player, self.combat, {
     on_level_up = function() return self:open_level_up() end,
     has_world_mechanic = function() return self.world_mechanic ~= nil end,
+    get_world_mechanic_rect = function(width)
+      if not self.world_mechanic then return nil end
+      return self:world_mechanic_hud_rect(width)
+    end,
   })
   self.finished = false
   self.transitioning = false
@@ -277,6 +281,17 @@ function RunScreen:update(dt)
     self.finished = true
     self:_show_results("defeat")
   elseif self.combat.xp:has_pending_choice() and not self.choice_open
+    and self.combat.progression.can_auto_select
+    and self.combat.progression:can_auto_select()
+  then
+    while self.combat.xp:has_pending_choice()
+      and self.combat.progression:can_auto_select()
+    do
+      self.combat.progression:auto_select()
+      self.combat.xp:consume_choice()
+    end
+    self.auto_snoozed_points = 0
+  elseif self.combat.xp:has_pending_choice() and not self.choice_open
     and self.app.profile.options.automatic_level_up == true
     and self.combat.xp.pending_choices > (self.auto_snoozed_points or 0)
   then
@@ -440,8 +455,7 @@ function RunScreen:_draw_world_mechanic_hud()
   local rect = self:world_mechanic_hud_rect(w)
   local panel_w, panel_h = rect.w, rect.h
   local x, y = rect.x, rect.y
-  local compact = panel_w < 320
-  local icon_size = compact and 48 or 64
+  local icon_size = 42
   local boosted = snapshot.boost_remaining > 0
   self.app.assets:draw_upgrade_card_frame(x, y, panel_w, panel_h, {
     corner = 24,
@@ -452,23 +466,11 @@ function RunScreen:_draw_world_mechanic_hud()
     or mechanic_id == "soul_resonance_reserve" and 3 or 4
   self.app.assets:draw_world_interface(icon_col, 1,
     x + 14, y + (panel_h - icon_size) / 2, icon_size, icon_size)
-  local mechanic_row = mechanic_id == "soul_resonance_reserve" and 1 or 2
-  if not compact then
-    if mechanic_id == "funk_hold_the_pocket" then
-      self.app.assets:draw_funk_pad(snapshot.frame,
-        x + panel_w - icon_size - 14, y + (panel_h - icon_size) / 2,
-        icon_size, icon_size)
-    else
-      self.app.assets:draw_world_mechanic(snapshot.frame, mechanic_row,
-        x + panel_w - icon_size - 14, y + (panel_h - icon_size) / 2,
-        icon_size, icon_size)
-    end
-  end
   local success = snapshot.notice > 0
   love.graphics.setColor(success and { 0.42, 1.0, 0.70, 1 }
     or boosted and { 1.0, 0.76, 0.20, 1 }
     or { 0.30, 0.94, 1.0, 1 })
-  love.graphics.setFont(Fonts.heading(compact and 11 or 14))
+  love.graphics.setFont(Fonts.heading(10))
   local title = success and snapshot.reward_text
     or mechanic_id == "soul_resonance_reserve"
       and (boosted and ("RESONANCE RESTORED  •  CHAIN ×" .. snapshot.chain)
@@ -479,26 +481,19 @@ function RunScreen:_draw_world_mechanic_hud()
     or boosted and ("POCKET BOOST  •  CHAIN ×" .. snapshot.chain)
       or "MOVE TO THE LIT BASS PAD"
   local text_x = x + icon_size + 20
-  local text_w = panel_w - (icon_size + 20) * 2
-  if compact then
-    text_x = x + icon_size + 17
-    text_w = panel_w - icon_size - 31
-  end
-  love.graphics.printf(title, text_x, y + 23, text_w, "center")
+  local text_w = panel_w - icon_size - 34
+  love.graphics.printf(title, text_x, y + 14, text_w, "left")
   love.graphics.setColor(0.80, 0.78, 0.90, 1)
-  love.graphics.setFont(Fonts.body(compact and 9 or 11))
-  local detail = success and "REWARD SECURED  •  KEEP THE CHAIN ALIVE"
-    or mechanic_id == "soul_resonance_reserve"
-      and "Charge clean resonance for bounded healing"
-    or mechanic_id == "disco_spotlight_flow"
-      and "Ride the prism lane for a speed burst"
-    or "Catch the gold downbeat for a speed burst"
-  love.graphics.printf(detail, text_x, y + 52, text_w, "center")
+  love.graphics.setFont(Fonts.body(9))
+  local detail = success and "REWARD SECURED"
+    or boosted and ("CHAIN ×" .. snapshot.chain)
+    or "ENTER THE HIGHLIGHT"
+  love.graphics.printf(detail, text_x, y + 38, text_w, "left")
 end
 
 function RunScreen:world_mechanic_hud_rect(width)
-  local panel_w = math.max(220, math.min(460, width - 620))
-  return { x = (width - panel_w) / 2, y = 74, w = panel_w, h = 92 }
+  local panel_w = math.min(264, math.max(220, width * 0.22))
+  return { x = width - panel_w - 8, y = 70, w = panel_w, h = 64 }
 end
 
 function RunScreen:boss_warning_state()

@@ -50,19 +50,7 @@ function WorldTourScreen:_world_state(world)
   return saved or {}, unlocked
 end
 
-function WorldTourScreen:_play_selected()
-  if self.catalog_only or not self.app.slot then
-    self.notice = 2.0
-    return false
-  end
-  local world = self.worlds[self.selected]
-  local _, unlocked = self:_world_state(world)
-  if not unlocked or world.implementation_status ~= "playable" then
-    self.notice = 2.0
-    return false
-  end
-  local character_id = self.app.slot.journey.character_id ~= ""
-    and self.app.slot.journey.character_id or "joe"
+function WorldTourScreen:_start_selected_world(world, character_id)
   local build = WorldTourSession.get(self.app, character_id)
   local starter = world.starter_loadout or { weapons = 0, passives = 0 }
   if not build and (starter.weapons > 0 or starter.passives > 0) then
@@ -78,6 +66,30 @@ function WorldTourScreen:_play_selected()
   self.app.states:switch(RunScreen(self.app, {
     mode = "world_tour", world_id = world.id, character_id = character_id,
     build = build,
+  }))
+  return true
+end
+
+function WorldTourScreen:_play_selected()
+  if self.catalog_only or not self.app.slot then
+    self.notice = 2.0
+    return false
+  end
+  local world = self.worlds[self.selected]
+  local _, unlocked = self:_world_state(world)
+  if not unlocked or world.implementation_status ~= "playable" then
+    self.notice = 2.0
+    return false
+  end
+  local CharacterSelectScreen = require("src.ui.screens.character_select")
+  self.app.states:switch(CharacterSelectScreen(self.app, {
+    on_confirm = function(character_id)
+      return self:_start_selected_world(world, character_id)
+    end,
+    on_back = function()
+      self.app.states:switch(WorldTourScreen(self.app))
+      return true
+    end,
   }))
   return true
 end

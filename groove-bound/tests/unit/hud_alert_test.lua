@@ -55,10 +55,26 @@ T["level-point CTA opens from a primary mouse click"] = function()
     on_level_up = function() opened = opened + 1; return true end,
   })
   hud.ui_scale = 1
-  hud.level_up_rect = { x = 8, y = 190, w = 280, h = 46 }
-  H.is_true(hud:mousepressed(40, 210, 1))
+  hud.level_up_tip_rects = {
+    { x = 112, y = 233, w = 32, h = 20 },
+    { x = 150, y = 233, w = 32, h = 20 },
+  }
+  H.is_true(hud:mousepressed(128, 243, 1))
   H.eq(opened, 1)
-  H.is_false(hud:mousepressed(40, 210, 2))
+  H.is_true(hud:mousepressed(166, 243, 1))
+  H.eq(opened, 2)
+  H.is_false(hud:mousepressed(128, 243, 2))
+end
+
+T["six weapon slots remain inside the sprite panel at supported widths"] = function()
+  local hud = fresh()
+  hud.combat.inventory = { capacity = 6 }
+  for _, width in ipairs({ 800, 1280, 2048 }) do
+    local layout = hud:layout_metrics(width)
+    local last_x = layout.bar_x + 5 * layout.rack_step
+    H.is_true(last_x + layout.slot_size
+      <= layout.panel.x + layout.panel.w - 8)
+  end
 end
 
 return T
