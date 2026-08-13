@@ -100,6 +100,22 @@ T["runtime UI artwork and character logos have stable production mappings"] = fu
       H.eq(png_color_type(path), 6)
     end
   end
+  local hud_kit = "assets/generated/campaign/ui/hud-interface-kit-v1/"
+  local hud_expected = {
+    ["rank-badge.png"] = { 256, 256 },
+    ["max-badge.png"] = { 256, 256 },
+    ["bar-left.png"] = { 96, 64 },
+    ["bar-middle.png"] = { 64, 64 },
+    ["bar-right.png"] = { 96, 64 },
+    ["bar-fill.png"] = { 64, 24 },
+  }
+  for name, dimensions in pairs(hud_expected) do
+    local path = hud_kit .. name
+    local width, height = png_dimensions(path)
+    H.eq(width, dimensions[1])
+    H.eq(height, dimensions[2])
+    H.eq(png_color_type(path), 6)
+  end
   local aim_w, aim_h = png_dimensions(
     "assets/generated/campaign/aim-reticle.png")
   H.eq(aim_w, aim_h)

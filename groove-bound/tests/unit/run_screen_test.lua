@@ -94,6 +94,19 @@ T["boss danger warning names the attack when the player is in range"] = function
   H.eq(warning.detail, "ATTACK CHARGING")
 end
 
+T["mechanic explainer sits below the timer and between persistent side rails"] = function()
+  local screen = RunScreen({}, {})
+  local HUD = require("src.ui.hud")
+  local hud = HUD({}, {}, {})
+  for _, width in ipairs({ 800, 1280 }) do
+    local timer = hud:timer_rect(width)
+    local mechanic = screen:world_mechanic_hud_rect(width)
+    H.is_true(mechanic.y > timer.y + timer.h)
+    H.is_true(mechanic.x >= 288)
+    H.is_true(mechanic.x + mechanic.w <= width - 272)
+  end
+end
+
 T["plus and minus adjust and persist gameplay zoom presets"] = function()
   local saved = 0
   local screen = RunScreen({

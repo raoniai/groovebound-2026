@@ -320,7 +320,7 @@ function ChestRewardScreen:_draw_evolution_theatre(w, h)
     self.app.assets:draw_support_icon(support.icon, right_x, source_y, 150, {
       color = { 1, 1, 1, source_alpha },
     })
-    self:_draw_evolution_label(base.name .. " R" .. recipe.required_weapon_level,
+    self:_draw_evolution_label(base.name .. "  •  MAX RANK",
       left_x, source_y + 104, 260, { 0.42, 0.88, 1 }, source_alpha)
     self:_draw_evolution_label(support.name,
       right_x, source_y + 104, 260, { 0.76, 0.45, 1 }, source_alpha)
@@ -358,7 +358,7 @@ function ChestRewardScreen:_draw_evolution_theatre(w, h)
       rotation = support_rotation,
       color = { 1, 1, 1, source_alpha },
     })
-  self:_draw_evolution_label(base.name .. " R" .. recipe.required_weapon_level,
+  self:_draw_evolution_label(base.name .. "  •  MAX RANK",
     left_x, source_y + 108, 270, { 0.42, 0.88, 1 }, source_alpha)
   self:_draw_evolution_label(support.name,
     right_x, source_y + 108, 270, { 0.76, 0.45, 1 }, source_alpha)

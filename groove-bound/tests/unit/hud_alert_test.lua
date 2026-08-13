@@ -1,5 +1,6 @@
 local H = require("tests.helpers")
 local HUD = require("src.ui.hud")
+local NumberFormat = require("src.ui.number_format")
 
 local T = {}
 
@@ -19,32 +20,45 @@ local function fresh()
   return HUD({}, {}, combat), combat
 end
 
-T["right-side alerts expose relevant sprite categories"] = function()
+T["right-side alerts exclude the persistent level-point CTA"] = function()
   local hud = fresh()
   local alerts = hud:alert_entries({ notice = 0 })
-  H.eq(#alerts, 3)
-  H.eq(alerts[1].id, "level")
-  H.eq(alerts[1].icon, 1)
-  H.eq(alerts[2].id, "pickup")
-  H.eq(alerts[2].icon, 4)
-  H.eq(alerts[3].id, "upgrade")
-  H.eq(alerts[3].icon, 5)
+  H.eq(#alerts, 2)
+  H.eq(alerts[1].id, "pickup")
+  H.eq(alerts[1].icon, 4)
+  H.eq(alerts[2].id, "upgrade")
+  H.eq(alerts[2].icon, 5)
 end
 
 T["alerts can be dismissed individually or cleared together"] = function()
-  local hud, combat = fresh()
+  local hud = fresh()
   hud.current_alerts = hud:alert_entries({ notice = 0 })
   H.is_true(hud:dismiss_top_alert())
   local visible = hud:alert_entries({ notice = 0 })
-  H.eq(#visible, 2)
+  H.eq(#visible, 1)
   hud.current_alerts = visible
   H.is_true(hud:clear_alerts())
   H.eq(#hud:alert_entries({ notice = 0 }), 0)
-  combat.xp.notification = 0
-  hud:alert_entries({ notice = 0 })
-  combat.xp.notification = 1
-  combat.xp.pending_choices = 4
-  H.eq(hud:alert_entries({ notice = 0 })[1].id, "level")
+end
+
+T["score numbers use thousands separators"] = function()
+  H.eq(NumberFormat.integer(999), "999")
+  H.eq(NumberFormat.integer(1000), "1,000")
+  H.eq(NumberFormat.integer(1234567), "1,234,567")
+  H.eq(NumberFormat.integer(-4200), "-4,200")
+end
+
+T["level-point CTA opens from a primary mouse click"] = function()
+  local opened = 0
+  local _, combat = fresh()
+  local hud = HUD({}, {}, combat, {
+    on_level_up = function() opened = opened + 1; return true end,
+  })
+  hud.ui_scale = 1
+  hud.level_up_rect = { x = 8, y = 190, w = 280, h = 46 }
+  H.is_true(hud:mousepressed(40, 210, 1))
+  H.eq(opened, 1)
+  H.is_false(hud:mousepressed(40, 210, 2))
 end
 
 return T

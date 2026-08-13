@@ -106,6 +106,7 @@ function RunScreen:enter()
   }
   self.hud = HUD(self.ctx, self.player, self.combat, {
     on_level_up = function() return self:open_level_up() end,
+    has_world_mechanic = function() return self.world_mechanic ~= nil end,
   })
   self.finished = false
   self.transitioning = false
@@ -436,31 +437,38 @@ function RunScreen:_draw_world_mechanic_hud()
   local Fonts = require("src.ui.fonts")
   local snapshot = self.world_mechanic:snapshot()
   local w = love.graphics.getWidth()
-  local panel_w = math.min(318, w - 36)
-  local panel_h = 168
-  local x = w - panel_w - 18
-  local y = math.max(154, self.hud:right_column_bottom() + 8)
+  local rect = self:world_mechanic_hud_rect(w)
+  local panel_w, panel_h = rect.w, rect.h
+  local x, y = rect.x, rect.y
+  local compact = panel_w < 320
+  local icon_size = compact and 48 or 64
   local boosted = snapshot.boost_remaining > 0
-  self.app.assets:draw_ui_backplate(x, y, panel_w, panel_h, {
-    color = { 0.82, 0.74, 1.0, 0.94 },
+  self.app.assets:draw_upgrade_card_frame(x, y, panel_w, panel_h, {
+    corner = 24,
+    color = { 0.82, 0.74, 1.0, 0.96 },
   })
   local mechanic_id = self.world_mechanic.definition.id
   local icon_col = mechanic_id == "funk_hold_the_pocket" and 2
     or mechanic_id == "soul_resonance_reserve" and 3 or 4
-  self.app.assets:draw_world_interface(icon_col, 1, x + 18, y + 18, 78, 78)
+  self.app.assets:draw_world_interface(icon_col, 1,
+    x + 14, y + (panel_h - icon_size) / 2, icon_size, icon_size)
   local mechanic_row = mechanic_id == "soul_resonance_reserve" and 1 or 2
-  if mechanic_id == "funk_hold_the_pocket" then
-    self.app.assets:draw_funk_pad(snapshot.frame,
-      x + panel_w - 102, y + 18, 82, 82)
-  else
-    self.app.assets:draw_world_mechanic(snapshot.frame, mechanic_row,
-      x + panel_w - 102, y + 18, 82, 82)
+  if not compact then
+    if mechanic_id == "funk_hold_the_pocket" then
+      self.app.assets:draw_funk_pad(snapshot.frame,
+        x + panel_w - icon_size - 14, y + (panel_h - icon_size) / 2,
+        icon_size, icon_size)
+    else
+      self.app.assets:draw_world_mechanic(snapshot.frame, mechanic_row,
+        x + panel_w - icon_size - 14, y + (panel_h - icon_size) / 2,
+        icon_size, icon_size)
+    end
   end
   local success = snapshot.notice > 0
   love.graphics.setColor(success and { 0.42, 1.0, 0.70, 1 }
     or boosted and { 1.0, 0.76, 0.20, 1 }
     or { 0.30, 0.94, 1.0, 1 })
-  love.graphics.setFont(Fonts.body(16))
+  love.graphics.setFont(Fonts.heading(compact and 11 or 14))
   local title = success and snapshot.reward_text
     or mechanic_id == "soul_resonance_reserve"
       and (boosted and ("RESONANCE RESTORED  •  CHAIN ×" .. snapshot.chain)
@@ -470,16 +478,27 @@ function RunScreen:_draw_world_mechanic_hud()
         or "STEP INTO THE MOVING SPOTLIGHT")
     or boosted and ("POCKET BOOST  •  CHAIN ×" .. snapshot.chain)
       or "MOVE TO THE LIT BASS PAD"
-  love.graphics.printf(title, x + 24, y + 102, panel_w - 48, "center")
+  local text_x = x + icon_size + 20
+  local text_w = panel_w - (icon_size + 20) * 2
+  if compact then
+    text_x = x + icon_size + 17
+    text_w = panel_w - icon_size - 31
+  end
+  love.graphics.printf(title, text_x, y + 23, text_w, "center")
   love.graphics.setColor(0.80, 0.78, 0.90, 1)
-  love.graphics.setFont(Fonts.body(12))
+  love.graphics.setFont(Fonts.body(compact and 9 or 11))
   local detail = success and "REWARD SECURED  •  KEEP THE CHAIN ALIVE"
     or mechanic_id == "soul_resonance_reserve"
       and "Charge clean resonance for bounded healing"
     or mechanic_id == "disco_spotlight_flow"
       and "Ride the prism lane for a speed burst"
     or "Catch the gold downbeat for a speed burst"
-  love.graphics.printf(detail, x + 24, y + 132, panel_w - 48, "center")
+  love.graphics.printf(detail, text_x, y + 52, text_w, "center")
+end
+
+function RunScreen:world_mechanic_hud_rect(width)
+  local panel_w = math.max(220, math.min(460, width - 620))
+  return { x = (width - panel_w) / 2, y = 74, w = panel_w, h = 92 }
 end
 
 function RunScreen:boss_warning_state()

@@ -668,3 +668,32 @@ to 1600x1200 and divides the keyed focus frame into nine separate PNGs. Runtime
 menus reuse the existing upgrade-card kit for backplates and the existing menu
 action atlas for Resume, Settings, Exit and Back CTAs; the new art is limited
 to semantic categories and the selected-state overlay.
+
+## Persistent HUD badge and segmented-bar kit
+
+**Generated:** 2026-08-13 with OpenAI image generation in Codex built-in mode
+
+| Runtime file | Role | SHA-256 |
+|---|---|---|
+| `campaign/ui/hud-interface-kit-v1/rank-badge.png` | Empty number device shared by weapon, passive, perk, player-level and point counters | `abeb70ef230785d5c74936b30417c12ca43b63d107d8c095f86da892fc970096` |
+| `campaign/ui/hud-interface-kit-v1/max-badge.png` | Same-size highlighted max-state device with no text | `17b1607560d4a4ac1af673ef0e68bf6991dedf5f4e7fea9f6606bd7fc2af9dc9` |
+| `campaign/ui/hud-interface-kit-v1/bar-left.png` | Fixed left status-bar cap | `6887b8a105b95a6a6eababcf6539e770b5f6140fd1a06a1a048b075f2d65f079` |
+| `campaign/ui/hud-interface-kit-v1/bar-middle.png` | Horizontally repeated status-bar rail | `3cce27e7c5159f75cffd2ce2aea72b7ee04db34fe0c52a7e27fdd9ea2e4afaf4` |
+| `campaign/ui/hud-interface-kit-v1/bar-right.png` | Fixed right status-bar cap | `bdc8206e2ddb827e4c152bb4f18eb4e28ad0164d67f92ced76a9590b2cf67fdc` |
+| `campaign/ui/hud-interface-kit-v1/bar-fill.png` | Horizontally repeated neutral segmented fill, tinted by runtime status | `10307e4a9f86edbeab50cfcdbfd41ce4e5fecf27ed6bc8a511be5d2eb7a1eb9b` |
+
+The prompt used the approved level-point alert atlas and transparent HUD frame
+as style references. It requested a strict text-free 3x2 source grid containing
+an empty circular rank badge, a same-size highlighted max badge, compatible
+left/middle/right horizontal bar pieces, and a neutral segmented fill tile in
+the established dark-navy, cyan, violet and gold arcade-pixel palette. The
+background was required to be uniform chroma green with generous cell padding,
+no shadows, particles, watermark, embedded letters or numbers.
+
+The untouched generated source is retained as
+`source-candidates/hud-interface-kit-v1-source.png` (SHA-256
+`02d9f9f18a1286dcbe0a111a2a39df65cf6825b7fc35c0e6f6776a3881f8386f`)
+and remains package-excluded. The bundled soft-matte/despill helper removed the
+chroma background. `scripts/build_hud_interface_kit.py` then normalized the two
+badges, cropped stable bar caps and repeatable rail/fill samples, cleared hidden
+RGB, enforced RGBA dimensions and wrote the runtime files above.

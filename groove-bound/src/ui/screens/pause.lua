@@ -1,11 +1,11 @@
 -- Sprite-backed pause modal. The frozen run remains visible beneath it.
 
 local class = require("src.core.class")
+local AudioSettings = require("src.audio.audio_settings")
 local Fonts = require("src.ui.fonts")
 local Input = require("src.game.input")
 local settings = require("src.config.settings")
 local widgets = require("src.ui.widgets.button")
-local Hints = require("src.ui.controller_hints")
 local MenuChrome = require("src.ui.menu_chrome")
 
 local PauseScreen = class()
@@ -14,7 +14,6 @@ PauseScreen.opaque = false
 
 function PauseScreen:init(app)
   self.app = app
-  self.notice = nil
 end
 
 function PauseScreen:enter()
@@ -26,8 +25,8 @@ function PauseScreen:_button(opts)
   opts.renderer = function(button)
     MenuChrome.action(self.app.assets, button, {
       menu_cell = opts.menu_cell,
-      label = opts.label,
-      subtitle = opts.subtitle,
+      settings_cell = opts.settings_cell,
+      label = opts.dynamic_label and opts.dynamic_label() or opts.label,
       font_size = 18,
     })
   end
@@ -37,34 +36,35 @@ end
 function PauseScreen:_layout()
   local w, h = love.graphics.getDimensions()
   local panel_w = math.min(560, w - 48)
-  local panel_h = math.min(476, h - 84)
+  local panel_h = math.min(374, h - 84)
   self.panel = {
     x = (w - panel_w) / 2,
     y = math.max(24, (h - panel_h) / 2 - 8),
     w = panel_w,
     h = panel_h,
   }
-  local bw, bh, gap = panel_w - 104, 68, 7
+  local bw, bh, gap = panel_w - 104, 54, 8
   local x = self.panel.x + 52
-  local y = self.panel.y + 104
+  local y = self.panel.y + 82
   local buttons = {
     self:_button({
-      label = "RESUME", subtitle = "Return to the run",
+      label = "RESUME",
       menu_cell = 1,
       x = x, y = y, w = bw, h = bh,
       on_press = function() self.app.states:pop() end,
     }),
     self:_button({
-      label = "COPY RUN SEED", subtitle = "Save this exact run setup",
-      menu_cell = 11,
+      label = "MUTE", dynamic_label = function()
+        return self.app.profile.options.muted and "UNMUTE" or "MUTE"
+      end,
+      settings_cell = 4,
       x = x, y = y + (bh + gap), w = bw, h = bh,
       on_press = function()
-        if self.app.active_run then self.app.active_run:copy_seed() end
-        self.notice = "RUN SEED COPIED"
+        AudioSettings.toggle_muted(self.app)
       end,
     }),
     self:_button({
-      label = "SETTINGS", subtitle = "Audio, display, gameplay and controls",
+      label = "SETTINGS",
       menu_cell = 4,
       x = x, y = y + (bh + gap) * 2, w = bw, h = bh,
       on_press = function()
@@ -73,7 +73,7 @@ function PauseScreen:_layout()
       end,
     }),
     self:_button({
-      label = "QUIT TO TITLE", subtitle = "End this run and return to the title",
+      label = "QUIT TO TITLE",
       menu_cell = 6,
       x = x, y = y + (bh + gap) * 3, w = bw, h = bh,
       on_press = function()
@@ -100,24 +100,8 @@ function PauseScreen:draw()
   love.graphics.setColor(settings.ui.accent_color)
   love.graphics.printf("PAUSED", self.panel.x, self.panel.y + 28,
     self.panel.w, "center")
-  love.graphics.setFont(Fonts.body(14))
-  love.graphics.setColor(0.72, 0.76, 0.86, 1)
-  love.graphics.printf("THE BEAT IS HELD", self.panel.x,
-    self.panel.y + 72, self.panel.w, "center")
 
   self.button_list:draw()
-  if self.notice then
-    love.graphics.setFont(Fonts.body(13))
-    love.graphics.setColor(0.34, 1.0, 0.68, 1)
-    love.graphics.printf(self.notice, self.panel.x,
-      self.panel.y + self.panel.h - 34, self.panel.w, "center")
-  end
-  Hints.draw({
-    { symbol = "dpad", label = "Move" },
-    { symbol = "cross", label = "Select" },
-    { symbol = "circle", label = "Resume" },
-    { symbol = "options", label = "Resume" },
-  }, h - 28, w, { font_size = 13, glyph_size = 18, gap = 17 })
 end
 
 function PauseScreen:keypressed(key)

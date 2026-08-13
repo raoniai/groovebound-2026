@@ -5,9 +5,9 @@ local class = require("src.core.class")
 local Fonts = require("src.ui.fonts")
 local settings = require("src.config.settings")
 local widgets = require("src.ui.widgets.button")
-local Hints = require("src.ui.controller_hints")
 local UIScale = require("src.ui.scale")
 local MenuChrome = require("src.ui.menu_chrome")
+local RankBadge = require("src.ui.rank_badge")
 
 local LevelUpScreen = class()
 LevelUpScreen.kind = "level_up"
@@ -188,10 +188,12 @@ function LevelUpScreen:draw()
 
   love.graphics.setColor(settings.ui.accent_color)
   love.graphics.setFont(Fonts.heading(h < 680 and 27 or 34))
-  love.graphics.printf(string.format("CHOOSE YOUR NEXT RIFF  •  %d POINT%s",
-      self.combat.xp.pending_choices,
-      self.combat.xp.pending_choices == 1 and "" or "S"),
-    0, h < 680 and 18 or 24, w, "center")
+  local heading_y = h < 680 and 18 or 24
+  love.graphics.printf("CHOOSE YOUR NEXT RIFF",
+    0, heading_y, w, "center")
+  RankBadge.draw(self.app.assets, w / 2 + math.min(244, w * 0.29),
+    heading_y - 3, h < 680 and 34 or 40,
+    self.combat.xp.pending_choices)
 
   local reroll_button = self.buttons.buttons[#self.offer + 1]
   local skip_button = self.buttons.buttons[#self.offer + 2]
@@ -234,9 +236,17 @@ function LevelUpScreen:draw()
 
     love.graphics.setColor(settings.ui.text_color)
     love.graphics.setFont(Fonts.heading(self.compact and 17 or 19))
-    love.graphics.printf(choice.title,
+    local title = (choice.title or ""):gsub("%s+R%d+$", "")
+    love.graphics.printf(title,
       button.x + 28, button.y + (self.compact and 132 or 148),
       button.w - 56, "center")
+
+    local rank, maxed = self:_choice_rank(choice)
+    if rank then
+      RankBadge.draw(self.app.assets,
+        button.x + button.w - (self.compact and 48 or 54),
+        button.y + 49, self.compact and 34 or 40, rank, { maxed = maxed })
+    end
 
     local description_y = button.y + (self.compact and 164 or 181)
     local description_h = self.compact and 49 or 58
@@ -256,16 +266,26 @@ function LevelUpScreen:draw()
   if self:_requirements_visible() then
     self:_draw_evolution_guide(w, h)
   end
-  love.graphics.setColor(0.015, 0.01, 0.05, 0.92)
-  love.graphics.rectangle("fill", 0, h - 40, w, 40)
-  Hints.draw({
-    { symbol = "dpad", label = "Choose" },
-    { symbol = "cross", label = "Select" },
-    { symbol = "square", label = "Reroll" },
-    { symbol = "triangle", label = "Auto menu" },
-    { symbol = "circle", label = "Close" },
-  }, h - 30, w, { font_size = 13, glyph_size = 18, gap = 18 })
   UIScale.finish()
+end
+
+function LevelUpScreen:_choice_rank(choice)
+  if choice.kind == "weapon_add" then return 1, false end
+  if choice.kind == "weapon_level" then
+    local definition = self.app.content.weapons[choice.id]
+    local owned = self.combat.inventory:get(choice.id)
+    local level = math.min(definition.max_level, owned.level + 1)
+    return level, level >= definition.max_level
+  end
+  if choice.kind == "passive_add" then return 1, false end
+  if choice.kind == "passive_level" then
+    local definition = self.app.content.passives[choice.id]
+    local owned = self.combat.progression.passives:get(choice.id)
+    local level = math.min(definition.max_level, owned.level + 1)
+    return level, level >= definition.max_level
+  end
+  if choice.kind == "evolution" then return 0, true end
+  return nil, false
 end
 
 function LevelUpScreen:_draw_cta(button, kind)
@@ -474,7 +494,7 @@ function LevelUpScreen:_fusion_hint(choice)
   local prefix
   if choice.kind == "weapon_add" or choice.kind == "weapon_level" then
     recipe = self:_recipe_for_base(choice.id)
-    prefix = "R10 + SUPPORT: "
+    prefix = "MAX RANK + SUPPORT: "
   elseif choice.kind == "passive_add" or choice.kind == "passive_level" then
     recipe = self:_recipe_for_support(choice.id)
     prefix = "PAIRS WITH: "
@@ -486,7 +506,7 @@ function LevelUpScreen:_fusion_hint(choice)
   if choice.kind == "weapon_add" or choice.kind == "weapon_level" then
     return prefix .. support.name .. " -> " .. result.name
   end
-  return prefix .. base.name .. " R10 -> " .. result.name
+  return prefix .. base.name .. " AT MAX -> " .. result.name
 end
 
 function LevelUpScreen:evolution_recipe_layout(cell_w)
@@ -611,7 +631,7 @@ function LevelUpScreen:_choice_stats(choice)
       local to = math.min(passive.max_level, from + 1)
       local value = passive.per_level * to
       local delta = passive.per_level
-      return string.format("R%d  TOTAL %+d%%", to, math.floor(value * 100 + 0.5)),
+      return string.format("RANK TOTAL %+d%%", math.floor(value * 100 + 0.5)),
         string.format("%+d%% %s", math.floor(delta * 100 + 0.5),
           string.upper(passive.stat:gsub("_", " ")))
     end

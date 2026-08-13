@@ -5,6 +5,9 @@
 local class = require("src.core.class")
 local Fonts = require("src.ui.fonts")
 local Icons = require("src.ui.icons")
+local Hints = require("src.ui.controller_hints")
+local NumberFormat = require("src.ui.number_format")
+local RankBadge = require("src.ui.rank_badge")
 local settings = require("src.config.settings")
 local UIScale = require("src.ui.scale")
 
@@ -36,11 +39,8 @@ function HUD:_raw_alerts(stage)
       }
     end
   end
-  if self.combat.xp.notification > 0 then
-    add("level", string.format("LEVEL-UP POINTS  ×%d",
-      self.combat.xp.pending_choices), 1, { 1.0, 0.76, 0.22, 1 },
-      self.combat.xp.notification)
-  end
+  -- Pending points have a persistent clickable CTA and do not duplicate into
+  -- the right alert rail.
   if self.combat.progression.evolution_notice > 0 then
     add("evolution", self.combat.progression.evolution_notice_text
       or "EVOLUTION READY", 2, { 1.0, 0.76, 0.22, 1 },
@@ -107,6 +107,10 @@ function HUD:right_column_bottom()
   return self.right_bottom or 68
 end
 
+function HUD:timer_rect(width)
+  return { x = width / 2 - 170, y = 6, w = 340, h = 62 }
+end
+
 function HUD:mousepressed(x, y, button)
   if button ~= 1 then return false end
   x, y = UIScale.point(x, y, self.ui_scale)
@@ -120,17 +124,16 @@ function HUD:mousepressed(x, y, button)
   return false
 end
 
-local function draw_panel(x, y, w, h, accent, alpha)
+local function draw_panel(assets, x, y, w, h, accent, alpha)
   accent = accent or { 0.42, 0.36, 0.66, 1 }
   local panel_alpha = alpha or 0.50
-  love.graphics.setColor(0.022, 0.016, 0.055, panel_alpha)
-  love.graphics.rectangle("fill", x, y, w, h, 7, 7)
-  love.graphics.setColor(
-    accent[1], accent[2], accent[3], math.min(0.62, panel_alpha * 1.16))
-  love.graphics.setLineWidth(1)
-  love.graphics.rectangle("line", x, y, w, h, 7, 7)
-  love.graphics.line(x + 8, y, x + 31, y)
-  love.graphics.line(x + w - 31, y + h, x + w - 8, y + h)
+  assets:draw_upgrade_card_frame(x, y, w, h, {
+    corner = math.min(18, h * 0.32),
+    color = {
+      math.max(0.58, accent[1]), math.max(0.58, accent[2]),
+      math.max(0.58, accent[3]), math.min(0.96, panel_alpha + 0.34),
+    },
+  })
 end
 
 local function draw_slot(assets, x, y, size, active)
@@ -159,20 +162,17 @@ function HUD:draw()
   local urgency = health_state == "normal" and 0
     or effects and (0.5 + 0.5 * math.sin(self.ctx.time * pulse_speed)) or 0.55
 
-  draw_panel(8, 8, 280, 174,
+  draw_panel(assets, 8, 8, 280, 174,
     health_state == "critical" and { 1.0, 0.12, 0.24, 1 }
       or health_state == "concern" and { 1.0, 0.48, 0.18, 1 }
       or { 0.28, 0.72, 1.0, 1 }, 0.50)
-  love.graphics.setColor(0.15, 0.12, 0.18, 0.85)
-  love.graphics.rectangle("fill", bar_x, bar_y, bar_w, bar_h, 4, 4)
-  love.graphics.setColor(health_state == "critical"
-    and { 1.0, 0.05, 0.12, 1 }
-    or health_state == "concern" and { 1.0, 0.34, 0.16, 1 }
-    or { 0.85, 0.25, 0.30, 1 })
-  love.graphics.rectangle("fill", bar_x, bar_y, bar_w * hp_frac, bar_h, 4, 4)
-  love.graphics.setColor(0.6, 0.55, 0.7, 1)
-  love.graphics.setLineWidth(1)
-  love.graphics.rectangle("line", bar_x, bar_y, bar_w, bar_h, 4, 4)
+  assets:draw_segmented_bar(bar_x, bar_y, bar_w, bar_h, hp_frac, {
+    frame_color = { 1, 1, 1, 0.66 },
+    fill_color = health_state == "critical"
+      and { 1.0, 0.05, 0.12, 1 }
+      or health_state == "concern" and { 1.0, 0.34, 0.16, 1 }
+      or { 0.90, 0.20, 0.28, 1 },
+  })
 
   love.graphics.setColor(settings.ui.text_color)
   love.graphics.setFont(Fonts.get(15))
@@ -205,23 +205,22 @@ function HUD:draw()
   -- XP bar and rank.
   local xp_y = bar_y + bar_h + 8
   local xp_frac = self.combat.xp:progress()
-  love.graphics.setColor(0.10, 0.12, 0.18, 0.9)
-  love.graphics.rectangle("fill", bar_x, xp_y, bar_w, 10, 3, 3)
-  love.graphics.setColor(0.18, 0.92, 0.72, 1)
-  love.graphics.rectangle("fill", bar_x, xp_y, bar_w * xp_frac, 10, 3, 3)
+  assets:draw_segmented_bar(bar_x, xp_y, bar_w, 12, xp_frac, {
+    frame_color = { 1, 1, 1, 0.52 },
+    fill_color = { 0.18, 0.92, 0.62, 1 },
+  })
   love.graphics.setFont(Fonts.get(12))
   love.graphics.setColor(settings.ui.text_color)
   local weapon = self.combat.inventory:get_slot(1)
+  RankBadge.draw(assets, bar_x, xp_y + 15, 27, self.combat.xp.level)
   love.graphics.print(
-    string.format("LV %d  •  %s R%d  •  W%d/%d  •  P%d/%d",
-      self.combat.xp.level,
+    string.format("%s  •  W%d/%d  •  P%d/%d",
       self.combat.content.weapons[weapon.id].name,
-      weapon.level,
       self.combat.inventory:count(),
       self.combat.inventory.capacity,
       self.combat.progression.passives:count(),
       self.combat.progression.passives.capacity),
-    bar_x, xp_y + 14)
+    bar_x + 33, xp_y + 20)
 
   -- Always-visible weapon rack. This mirrors the authoritative inventory so
   -- players can read every active emitter and rank without opening a menu.
@@ -234,10 +233,8 @@ function HUD:draw()
       local definition = self.combat.content.weapons[instance.id]
       self.combat.assets:draw_weapon_icon(
         definition.icon, rack_x + slot_size / 2, rack_y + slot_size / 2, 34)
-      love.graphics.setColor(settings.ui.accent_color)
-      love.graphics.setFont(Fonts.get(14))
-      love.graphics.printf("R" .. instance.level,
-        rack_x, rack_y + slot_size - 14, slot_size - 2, "right")
+      RankBadge.draw(assets, rack_x + slot_size - 20, rack_y - 5, 24,
+        instance.level, { maxed = instance.level >= definition.max_level })
     end
   end
 
@@ -250,60 +247,59 @@ function HUD:draw()
       local definition = self.combat.content.passives[instance.id]
       self.combat.assets:draw_support_icon(
         definition.icon, support_x + slot_size / 2, support_y + slot_size / 2, 31)
-      love.graphics.setColor(0.78, 0.48, 1.0, 1)
-      love.graphics.setFont(Fonts.get(14))
-      love.graphics.printf("R" .. instance.level,
-        support_x, support_y + slot_size - 14, slot_size - 2, "right")
+      RankBadge.draw(assets, support_x + slot_size - 20, support_y - 5, 24,
+        instance.level, { maxed = instance.level >= definition.max_level })
     end
   end
 
   self.level_up_rect = nil
   if self.combat.xp.pending_choices > 0 then
-    local rect = { x = 8, y = 190, w = 280, h = 54 }
+    local rect = { x = 8, y = 190, w = 280, h = 46 }
     self.level_up_rect = rect
     local reduced = self.player.options.reduced_motion == true
     local pulse = reduced and 1 or 0.92 + math.sin(self.ctx.time * 5) * 0.08
-    draw_panel(rect.x, rect.y, rect.w, rect.h,
+    draw_panel(assets, rect.x, rect.y, rect.w, rect.h,
       { 1.0, 0.72, 0.20, 1 }, 0.58 * pulse)
-    self.combat.assets:draw_level_alert_icon(
-      1, rect.x + 31, rect.y + rect.h / 2, 44)
+    Hints.draw_glyph("triangle", rect.x + 28, rect.y + rect.h / 2, 28)
     love.graphics.setColor(1.0, 0.84, 0.30, 1)
-    love.graphics.setFont(Fonts.get(17))
-    love.graphics.print(string.format("SPEND LEVEL POINTS  ×%d",
-      self.combat.xp.pending_choices), rect.x + 58, rect.y + 8)
-    love.graphics.setColor(0.78, 0.77, 0.88, 1)
-    love.graphics.setFont(Fonts.get(11))
-    love.graphics.print(self.combat.options.automatic_level_up == true
-      and "L / △ OPEN  •  AUTO MENU ON"
-      or "L / △ OPEN  •  PLAY WHEN READY",
-      rect.x + 58, rect.y + 33)
+    love.graphics.setFont(Fonts.get(16))
+    love.graphics.print("SPEND LEVEL POINTS", rect.x + 48, rect.y + 15)
+    RankBadge.draw(assets, rect.x + rect.w - 41, rect.y + 5, 36,
+      self.combat.xp.pending_choices)
   end
 
   -- Run timer, top-center.
   local minutes = math.floor(self.ctx.time / 60)
   local seconds = math.floor(self.ctx.time % 60)
-  draw_panel(w / 2 - 158, 6, 316, 58, { 0.68, 0.42, 0.90, 1 }, 0.50)
+  local timer = self:timer_rect(w)
+  local timer_x, timer_y, timer_w, timer_h =
+    timer.x, timer.y, timer.w, timer.h
+  draw_panel(assets, timer_x, timer_y, timer_w, timer_h,
+    { 0.68, 0.42, 0.90, 1 }, 0.50)
   love.graphics.setFont(Fonts.get(28))
   love.graphics.setColor(settings.ui.text_color)
-  love.graphics.printf(string.format("%02d:%02d", minutes, seconds), 0, 14, w, "center")
-  love.graphics.setFont(Fonts.get(15))
+  love.graphics.printf(string.format("%02d:%02d", minutes, seconds),
+    timer_x, 12, timer_w, "center")
+  love.graphics.setFont(Fonts.get(12))
   love.graphics.setColor(0.78, 0.72, 0.88, 1)
   local stage = self.combat:stage_snapshot(self.ctx.time)
   if stage.is_overtime then
     local overtime = math.floor(stage.overtime)
     love.graphics.setColor(1.0, 0.34, 0.46, 1)
-    love.graphics.printf(
-      string.format("STAGE %d/%d  •  %s  •  OVERTIME +%02d:%02d",
-        stage.stage, stage.count, stage.name,
-        math.floor(overtime / 60), overtime % 60),
-      0, 42, w, "center")
+    love.graphics.printf(string.format("STAGE %d/%d  •  %s",
+      stage.stage, stage.count, stage.name), timer_x + 16, 45,
+      timer_w - 110, "left")
+    love.graphics.printf(string.format("+%02d:%02d",
+      math.floor(overtime / 60), overtime % 60), timer_x + timer_w - 90,
+      45, 74, "right")
   else
     local remaining = math.ceil(stage.remaining)
-    love.graphics.printf(
-      string.format("STAGE %d/%d  •  %s  •  %02d:%02d",
-        stage.stage, stage.count, stage.name,
-        math.floor(remaining / 60), remaining % 60),
-      0, 42, w, "center")
+    love.graphics.printf(string.format("STAGE %d/%d  •  %s",
+      stage.stage, stage.count, stage.name), timer_x + 16, 45,
+      timer_w - 110, "left")
+    love.graphics.printf(string.format("%02d:%02d",
+      math.floor(remaining / 60), remaining % 60),
+      timer_x + timer_w - 90, 45, 74, "right")
   end
 
   local toast_y = 72
@@ -321,7 +317,7 @@ function HUD:draw()
   end
   for index, alert in ipairs(self.current_alerts) do
     local toast_x, toast_w, toast_h = w - 286, 278, 34
-    draw_panel(toast_x, toast_y, toast_w, toast_h,
+    draw_panel(assets, toast_x, toast_y, toast_w, toast_h,
       alert.color, 0.48 * alert.alpha)
     self.combat.assets:draw_level_alert_icon(
       alert.icon, toast_x + 19, toast_y + toast_h / 2, 26,
@@ -346,11 +342,11 @@ function HUD:draw()
   end)
   if boss then
     local boss_w, boss_h = math.min(560, w * 0.55), 16
-    local boss_x, boss_y = (w - boss_w) / 2, 70
-    love.graphics.setColor(0.08, 0.04, 0.12, 0.95)
-    love.graphics.rectangle("fill", boss_x, boss_y, boss_w, boss_h, 4, 4)
-    love.graphics.setColor(0.95, 0.18, 0.48, 1)
-    love.graphics.rectangle("fill", boss_x, boss_y, boss_w * boss.hp / boss.max_hp, boss_h, 4, 4)
+    local mechanic_active = self.opts.has_world_mechanic
+      and self.opts.has_world_mechanic() == true
+    local boss_x, boss_y = (w - boss_w) / 2, mechanic_active and 174 or 74
+    assets:draw_segmented_bar(boss_x, boss_y, boss_w, boss_h,
+      boss.hp / boss.max_hp, { fill_color = { 0.95, 0.18, 0.48, 1 } })
     love.graphics.setColor(settings.ui.text_color)
     love.graphics.setFont(Fonts.get(15))
     local boss_label = boss.definition.name
@@ -380,11 +376,12 @@ function HUD:draw()
 
   love.graphics.setFont(Fonts.get(14))
   love.graphics.setColor(settings.ui.accent_color)
-  draw_panel(w - 272, 10, 264, 54, { 0.70, 0.42, 0.90, 1 }, 0.50)
+  draw_panel(assets, w - 272, 10, 264, 54,
+    { 0.70, 0.42, 0.90, 1 }, 0.50)
   Icons.draw("score", w - 248, 37, 22, { 1.0, 0.72, 0.24, 0.92 })
   love.graphics.printf(
-    string.format("SCORE %06d   COMBO ×%d",
-      self.combat.stats.score, self.combat.stats.combo),
+    string.format("SCORE %s   COMBO ×%d",
+      NumberFormat.integer(self.combat.stats.score), self.combat.stats.combo),
     0, 31, w - 20, "right")
 
   local buff_colors = {
@@ -398,10 +395,7 @@ function HUD:draw()
     local remaining = self.combat.buffs[kind]
     if remaining > 0 then
       local color = buff_colors[kind]
-      love.graphics.setColor(0.045, 0.035, 0.09, 0.50)
-      love.graphics.rectangle("fill", w - 190, buff_y, 174, 32, 5, 5)
-      love.graphics.setColor(color)
-      love.graphics.rectangle("line", w - 190, buff_y, 174, 32, 5, 5)
+      draw_panel(assets, w - 190, buff_y, 174, 32, color, 0.50)
       love.graphics.setFont(Fonts.get(14))
       love.graphics.printf(buff_labels[kind] .. "  " .. string.format("%.1fs", remaining),
         w - 182, buff_y + 9, 158, "center")

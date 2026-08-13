@@ -4,6 +4,8 @@ local settings = require("src.config.settings")
 local widgets = require("src.ui.widgets.button")
 local UIScale = require("src.ui.scale")
 local MenuChrome = require("src.ui.menu_chrome")
+local NumberFormat = require("src.ui.number_format")
+local RankBadge = require("src.ui.rank_badge")
 
 local ResultsScreen = class()
 ResultsScreen.kind = "results"
@@ -108,10 +110,10 @@ function ResultsScreen:draw()
       .. "/" .. (self.result.stage_count or 2) },
     { icon = 10, label = "TIME", value = string.format("%02d:%02d",
       math.floor(self.result.time / 60), math.floor(self.result.time % 60)) },
-    { icon = 11, label = "SCORE", value = tostring(stats.score) },
+    { icon = 11, label = "SCORE", value = NumberFormat.integer(stats.score) },
     { icon = 12, label = "MAX COMBO", value = "×" .. stats.max_combo },
-    { icon = 13, label = "DAMAGE", value = tostring(math.floor(stats.damage)) },
-    { icon = 14, label = "COINS", value = tostring(
+    { icon = 13, label = "DAMAGE", value = NumberFormat.integer(stats.damage) },
+    { icon = 14, label = "COINS", value = NumberFormat.integer(
       stats.coins + self.result.progression.coins) },
   }
   local panel_w = math.min(1040, w - 80)
@@ -141,11 +143,16 @@ function ResultsScreen:draw()
 
   love.graphics.setColor(0.72, 0.78, 0.90, 1)
   love.graphics.setFont(Fonts.get(15))
-  love.graphics.printf(
-    string.format("LEVEL %d  •  KILLS %d  •  XP %d  •  SHOTS %d  •  BOSSES %d",
-      self.result.level, stats.kills, math.floor(stats.xp),
-      stats.shots, stats.bosses),
-    0, chip_y + 88, w, "center")
+  local run_line = string.format("KILLS %s  •  XP %s  •  SHOTS %s  •  BOSSES %s",
+    NumberFormat.integer(stats.kills), NumberFormat.integer(stats.xp),
+    NumberFormat.integer(stats.shots), NumberFormat.integer(stats.bosses))
+  local line_font = Fonts.get(15)
+  local line_width = line_font:getWidth(run_line)
+  local level_size = 34
+  local line_x = (w - (level_size + 12 + line_width)) / 2 + level_size + 12
+  RankBadge.draw(self.app.assets, line_x - level_size - 12,
+    chip_y + 78, level_size, self.result.level)
+  love.graphics.printf(run_line, line_x, chip_y + 88, line_width, "left")
 
   local weapons = self.result.progression.weapons
   local rack_w = math.min(620, w - 100)
@@ -168,10 +175,8 @@ function ResultsScreen:draw()
     self.app.assets:draw_weapon_icon(
       definition.icon, x + slot_size / 2, rack_y + slot_size / 2,
       slot_size * 0.75)
-    love.graphics.setColor(settings.ui.accent_color)
-    love.graphics.setFont(Fonts.get(13))
-    love.graphics.printf("R" .. weapon.level, x, rack_y + slot_size - 18,
-      slot_size - 5, "right")
+    RankBadge.draw(self.app.assets, x + slot_size - 28, rack_y - 7, 34,
+      weapon.level, { maxed = weapon.level >= definition.max_level })
   end
 
   local evolution_names = {}

@@ -16,11 +16,14 @@ end
 
 T["pause controller moves in four directions and confirms focused action"] = function()
   with_dimensions(1280, 720, function()
-    local copied = 0
+    local muted = false
     local app = {
       log = { info = function() end },
       states = { pop = function() end, push = function() end },
-      active_run = { copy_seed = function() copied = copied + 1 end },
+      profile = { options = { muted = false, master_volume = 1,
+        music_volume = 1, sfx_volume = 1 } },
+      music = { set_volume = function(_, volume) muted = volume == 0 end },
+      save = { save = function() end },
     }
     local screen = PauseScreen(app)
     screen:enter()
@@ -29,7 +32,12 @@ T["pause controller moves in four directions and confirms focused action"] = fun
     H.is_true(screen:gamepadpressed(nil, "dpright"))
     H.eq(screen.button_list.focus_index, 2)
     H.is_true(screen:gamepadpressed(nil, "a"))
-    H.eq(copied, 1)
+    H.is_true(muted)
+    H.is_true(app.profile.options.muted)
+    H.eq(#screen.button_list.buttons, 4)
+    for _, button in ipairs(screen.button_list.buttons) do
+      H.is_false(button.label == "COPY RUN SEED")
+    end
   end)
 end
 

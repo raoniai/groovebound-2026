@@ -10,6 +10,13 @@ function GlobalAudioControl.new(app)
   return setmetatable({ app = app, hovered = false }, GlobalAudioControl)
 end
 
+function GlobalAudioControl:is_visible()
+  local top = self.app.states and self.app.states:top()
+  local kind = top and top.kind
+  return kind ~= "run" and kind ~= "pause" and kind ~= "level_up"
+    and kind ~= "chest_reward" and kind ~= "stage_complete"
+end
+
 function GlobalAudioControl:_rect()
   local w, h = love.graphics.getDimensions()
   local scale = UIScale.factor(w, h)
@@ -19,6 +26,7 @@ function GlobalAudioControl:_rect()
 end
 
 function GlobalAudioControl:contains(x, y)
+  if not self:is_visible() then return false end
   local r = self:_rect()
   return x >= r.x and x <= r.x + r.w and y >= r.y and y <= r.y + r.h
 end
@@ -41,15 +49,14 @@ function GlobalAudioControl:mousepressed(x, y, button)
 end
 
 function GlobalAudioControl:draw()
+  if not self:is_visible() then return end
   local r = self:_rect()
   local muted = self.app.profile.options.muted
-  love.graphics.setColor(self.hovered and { 0.18, 0.16, 0.28, 0.98 }
-    or { 0.035, 0.025, 0.08, 0.82 })
-  love.graphics.rectangle("fill", r.x, r.y, r.w, r.h, 7, 7)
-  love.graphics.setColor(muted and { 1.0, 0.38, 0.50, 1 }
-    or { 0.30, 0.94, 1.0, 1 })
-  love.graphics.setLineWidth(self.hovered and 2 or 1)
-  love.graphics.rectangle("line", r.x, r.y, r.w, r.h, 7, 7)
+  self.app.assets:draw_cta_frame(r.x, r.y, r.w, r.h, {
+    corner = r.w * 0.30,
+    color = muted and { 1.0, 0.52, 0.62, self.hovered and 1 or 0.88 }
+      or { 0.72, 0.96, 1.0, self.hovered and 1 or 0.88 },
+  })
   Icons.draw(muted and "speaker_off" or "speaker",
     r.x + r.w / 2, r.y + r.h / 2, 20 * r.scale,
     muted and { 1.0, 0.38, 0.50, 1 } or { 0.88, 0.96, 1.0, 1 })
@@ -57,9 +64,10 @@ function GlobalAudioControl:draw()
     local label = muted and "UNMUTE" or "MUTE"
     local font = Fonts.get(math.floor(13 * r.scale + 0.5))
     local tw = font:getWidth(label) + 18 * r.scale
-    love.graphics.setColor(0.035, 0.025, 0.08, 0.96)
-    love.graphics.rectangle("fill", r.x - tw - 8 * r.scale,
-      r.y + 7 * r.scale, tw, 30 * r.scale, 5 * r.scale, 5 * r.scale)
+    self.app.assets:draw_cta_frame(r.x - tw - 8 * r.scale,
+      r.y + 7 * r.scale, tw, 30 * r.scale, {
+        corner = 8 * r.scale, color = { 0.74, 0.94, 1.0, 0.96 },
+      })
     love.graphics.setFont(font)
     love.graphics.setColor(0.92, 0.92, 0.97, 1)
     love.graphics.printf(label, r.x - tw - 8 * r.scale,

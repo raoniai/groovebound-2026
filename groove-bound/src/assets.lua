@@ -327,6 +327,15 @@ function Assets.load()
     "assets/generated/campaign/ui/cta-frame-v1/")
   self.cta_focus = nine_slice(
     "assets/generated/campaign/ui/cta-focus-v1/")
+  local hud_kit_root = "assets/generated/campaign/ui/hud-interface-kit-v1/"
+  self.hud_interface = {
+    rank_badge = image(hud_kit_root .. "rank-badge.png"),
+    max_badge = image(hud_kit_root .. "max-badge.png"),
+    bar_left = image(hud_kit_root .. "bar-left.png"),
+    bar_middle = image(hud_kit_root .. "bar-middle.png"),
+    bar_right = image(hud_kit_root .. "bar-right.png"),
+    bar_fill = image(hud_kit_root .. "bar-fill.png"),
+  }
   local focus_frame_root =
     "assets/generated/campaign/ui/menu-focus-frame-v2/"
   self.menu_focus_frame = {
@@ -518,6 +527,58 @@ end
 
 function Assets:draw_hud_slot(x, y, w, h, opts)
   self:draw_hud_frame(x, y, w, h, opts)
+  return true
+end
+
+local function draw_horizontal_tiles(value, x, y, w, h)
+  if w <= 0 or h <= 0 then return end
+  local source_w, source_h = value:getDimensions()
+  local tile_w = source_w * h / source_h
+  local drawn = 0
+  while drawn < w - 0.01 do
+    local piece_w = math.min(tile_w, w - drawn)
+    local source_piece_w = source_w * piece_w / tile_w
+    local quad = love.graphics.newQuad(
+      0, 0, source_piece_w, source_h, source_w, source_h)
+    love.graphics.draw(value, quad, x + drawn, y, 0,
+      h / source_h, h / source_h)
+    drawn = drawn + piece_w
+  end
+end
+
+function Assets:draw_segmented_bar(x, y, w, h, fraction, opts)
+  opts = opts or {}
+  fraction = math.max(0, math.min(1, fraction or 0))
+  local cap_w = math.min(w / 2, h * 1.5)
+  local middle_w = math.max(0, w - cap_w * 2)
+
+  love.graphics.setColor(opts.frame_color or { 1, 1, 1, 1 })
+  local left = self.hud_interface.bar_left
+  local right = self.hud_interface.bar_right
+  local left_w, left_h = left:getDimensions()
+  local right_w, right_h = right:getDimensions()
+  love.graphics.draw(left, x, y, 0, cap_w / left_w, h / left_h)
+  draw_horizontal_tiles(
+    self.hud_interface.bar_middle, x + cap_w, y, middle_w, h)
+  love.graphics.draw(right, x + w - cap_w, y, 0,
+    cap_w / right_w, h / right_h)
+
+  local inset_x, inset_y = math.max(3, h * 0.18), h * 0.27
+  local fill_w = math.max(0, (w - inset_x * 2) * fraction)
+  love.graphics.setColor(opts.fill_color or { 1, 1, 1, 1 })
+  draw_horizontal_tiles(self.hud_interface.bar_fill,
+    x + inset_x, y + inset_y, fill_w, h - inset_y * 2)
+  return true
+end
+
+function Assets:draw_rank_badge_sprite(x, y, size, maxed, opts)
+  opts = opts or {}
+  local value = maxed and self.hud_interface.max_badge
+    or self.hud_interface.rank_badge
+  local width, height = value:getDimensions()
+  love.graphics.setColor(opts.color or { 1, 1, 1, 1 })
+  love.graphics.draw(value, x, y, opts.rotation or 0,
+    size / width, size / height)
   return true
 end
 

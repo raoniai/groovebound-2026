@@ -4,6 +4,7 @@ local Hints = require("src.ui.controller_hints")
 local widgets = require("src.ui.widgets.button")
 local UIScale = require("src.ui.scale")
 local PerkProgress = require("src.meta.perk_progress")
+local RankBadge = require("src.ui.rank_badge")
 
 local PerkDatabase = class()
 PerkDatabase.kind = "perk_database"
@@ -68,17 +69,10 @@ function PerkDatabase:_layout()
   })
 end
 
-local function draw_rank_dots(x, y, width, rank, max_rank)
-  local gap = math.min(16, width / math.max(1, max_rank))
-  local total = (max_rank - 1) * gap
-  local start = x + (width - total) / 2
-  for index = 1, max_rank do
-    local filled = index <= rank
-    love.graphics.setColor(filled and { 1, 0.76, 0.20, 1 }
-      or { 0.30, 0.27, 0.42, 0.9 })
-    love.graphics.circle(filled and "fill" or "line",
-      start + (index - 1) * gap, y, filled and 4 or 3.5)
-  end
+local function draw_rank_device(assets, x, y, width, rank, max_rank, size)
+  size = math.min(size or 28, width)
+  RankBadge.draw(assets, x + (width - size) / 2, y - size / 2,
+    size, rank, { maxed = rank >= max_rank })
 end
 
 local function source_label(source)
@@ -119,8 +113,8 @@ function PerkDatabase:draw()
     local rank_x = r.x + math.min(58, r.w * 0.5)
     local rank_w = r.w - math.min(63, r.w * 0.5)
     if owned then
-      draw_rank_dots(rank_x, r.y + r.h - 20, rank_w,
-        owned.rank, perk.max_rank)
+      draw_rank_device(self.app.assets, rank_x, r.y + r.h - 18, rank_w,
+        owned.rank, perk.max_rank, 26)
     else
       love.graphics.setColor(1, 0.76, 0.2, 0.4)
       love.graphics.printf("LOCKED", rank_x, r.y + r.h - 27, rank_w, "center")
@@ -156,8 +150,8 @@ function PerkDatabase:draw()
   love.graphics.printf(owned and (price and ("NEXT RANK  •  " .. price .. " COINS") or "MAX RANK") or "LOCKED",
     d.x + 20, d.y + 315, d.w - 40, "center")
   if owned then
-    draw_rank_dots(d.x + 40, d.y + 350, d.w - 80,
-      owned.rank, perk.max_rank)
+    draw_rank_device(self.app.assets, d.x + 40, d.y + 350, d.w - 80,
+      owned.rank, perk.max_rank, 48)
   end
   if self.notice ~= "" then
     local notice_y = self.buttons.buttons[1].y - 38

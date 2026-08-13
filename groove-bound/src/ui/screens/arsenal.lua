@@ -4,6 +4,7 @@
 local class = require("src.core.class")
 local Fonts = require("src.ui.fonts")
 local settings = require("src.config.settings")
+local RankBadge = require("src.ui.rank_badge")
 
 local ArsenalScreen = class()
 ArsenalScreen.kind = "arsenal"
@@ -246,7 +247,11 @@ function ArsenalScreen:_draw_detail(entry)
   local y = rect.y + (compact and 218 or 310)
   love.graphics.setColor(settings.ui.accent_color)
   love.graphics.setFont(Fonts.get(16))
-  love.graphics.print("RANK 1  →  RANK " .. entry.definition.max_level, rect.x + 24, y)
+  love.graphics.print("RANK", rect.x + 24, y + 7)
+  RankBadge.draw(self.app.assets, rect.x + 80, y - 3, 34, 1)
+  love.graphics.print("→", rect.x + 124, y + 7)
+  RankBadge.draw(self.app.assets, rect.x + 152, y - 3, 34,
+    entry.definition.max_level, { maxed = true })
   love.graphics.setColor(settings.ui.text_color)
   love.graphics.setFont(Fonts.get(15))
   love.graphics.print(
@@ -273,7 +278,7 @@ function ArsenalScreen:_draw_detail(entry)
       entry.recipe.required_passives[1].id]
     acquisition = "Evolution only: "
       .. self.app.content.weapons[entry.recipe.base_weapon].name
-      .. " R" .. entry.recipe.required_weapon_level
+      .. " AT MAX RANK"
       .. " + " .. support.name .. ". Both components are consumed."
   elseif entry.active then
     acquisition = "Active in weapon slot " .. entry.slot
@@ -326,9 +331,9 @@ function ArsenalScreen:_draw_support_detail(entry)
   love.graphics.setColor(settings.ui.text_color)
   love.graphics.setFont(Fonts.get(15))
   love.graphics.print(support_value(entry.definition), rect.x + 24, y + 28)
-  love.graphics.print(
-    "Maximum rank  " .. entry.definition.max_level,
-    rect.x + 24, y + 51)
+  love.graphics.print("Maximum rank", rect.x + 24, y + 58)
+  RankBadge.draw(self.app.assets, rect.x + 140, y + 43, 42,
+    entry.definition.max_level, { maxed = true })
 
   love.graphics.setColor(support_color)
   love.graphics.setFont(Fonts.get(16))
@@ -340,7 +345,7 @@ function ArsenalScreen:_draw_support_detail(entry)
   else
     for index, record in ipairs(entry.recipes) do
       love.graphics.printf(
-        record.base.name .. " R" .. record.recipe.required_weapon_level
+        record.base.name .. " AT MAX"
           .. "  →  " .. record.result.name,
         rect.x + 24, y + 116 + (index - 1) * 24, rect.w - 48, "left")
     end

@@ -3,6 +3,7 @@ local Fonts = require("src.ui.fonts")
 local settings = require("src.config.settings")
 local widgets = require("src.ui.widgets.button")
 local UIScale = require("src.ui.scale")
+local NumberFormat = require("src.ui.number_format")
 local JourneyProgress = require("src.meta.journey_progress")
 local WorldTourSession = require("src.meta.world_tour_session")
 local SpatialNavigation = require("src.ui.spatial_navigation")
@@ -234,7 +235,7 @@ function WorldTourScreen:_draw_record(world, rect)
   end
   love.graphics.setFont(Fonts.get(14))
   love.graphics.setColor(0.68, 0.66, 0.78, 1)
-  love.graphics.printf("BEST SCORE " .. tostring(saved.best_score or 0)
+  love.graphics.printf("BEST SCORE " .. NumberFormat.integer(saved.best_score or 0)
       .. "  •  CLEARS " .. tostring(saved.clears or 0),
     rect.x + 24, rect.y + rect.h - 39, rect.w - 48, "center")
 end
