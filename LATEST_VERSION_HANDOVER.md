@@ -14,19 +14,19 @@ This document answers four questions: what is authoritative, what the latest ver
 
 <!-- LIVE-SNAPSHOT:START -->
 
-_Generated from live repository evidence: 2026-08-11 23:29 AEST_
+_Generated from live repository evidence: 2026-08-13 12:19 AEST_
 
 | Field | Live value |
 |---|---|
-| Branch | `codex/world-tour-v1` |
-| HEAD | `50f6421` — release: publish desktop v0.7.1 |
+| Branch | `codex/world-tour-v1` (release worktree branch: `codex/world-tour-music-release`) |
+| HEAD | `63ed503` — ci: align desktop packaging with v0.8.0 |
 | Upstream | `origin/codex/world-tour-v1` |
-| Compared with `origin/main` | 43 ahead, 0 behind |
-| Working changes | 1 files: 0 game, 1 site, 0 skills/package |
+| Compared with `origin/main` | 3 ahead, 1 behind |
+| Working changes | 0 files: 0 game, 0 site, 0 skills/package |
 | Lua source/test files | 112 source, 58 test |
-| Game tree excluding `dist/` | 488.5 MiB |
-| Current `.love` artifact | 161.1 MiB |
-| Test suite | passed: 353 tests, 0 failures |
+| Game tree excluding `dist/` | 622.9 MiB |
+| Current `.love` artifact | 191.0 MiB |
+| Test suite | passed: 358 tests, 0 failures |
 | Lint | passed: 0 warnings / 0 errors in 172 files |
 | Skill packages | 11 |
 
@@ -49,7 +49,9 @@ The player selects Joe or Lyra Vex, keeps one build across both stages, levels t
 - Sixteen base weapons, eight supports, and sixteen documented fusions.
 - Two enemy families with normal enemies, elites, midbosses, and stage bosses.
 - Persistent options, keyboard/mouse/gamepad controls, rebindings, deadzone, aim assistance, four camera zoom levels, vibration, flash, shake, fullscreen, and volume controls.
-- Adaptive music routing, runtime OGG music, runtime OGV cutscenes, and storyboard fallbacks.
+- Adaptive music routing, 59 runtime OGG music assets including a continuous
+  World Tour hub cue and distinct three-cue packs for all nine worlds, runtime
+  OGV cutscenes, and storyboard fallbacks.
 - Arsenal, Admin, results, level-up, pause, options, character selection, cutscene, run, and chest-reward screens.
 
 The public landing site is a separate static presentation under `landing-page/`. It is not authoritative for gameplay or release state.
@@ -85,35 +87,37 @@ The public landing site is a separate static presentation under `landing-page/`.
 | Arena collision and navigation | Published in v0.7.0 and tests passed | Tall props now block 90% of their height and redraw their complete opaque sprite above actors; deterministic safe-drop and navigation tests remain green | Confirm every authored tall prop in a full playthrough |
 | Enemy projectiles | Committed, pushed, and tests passed | Sprite mapping, attack tuning, content and entity tests | Confirm readability, rate, and boss pressure in play |
 | Cutscene video | Six runtime videos published in v0.6.0 and package verified | Both new MP4s converted to packaged OGV; scene-ID discovery; Circle/`b` skip tests; global mute now drives video-source volume; skip/mute separation visually verified | Physical PlayStation controller check; listening check for mute during each video; full-video fade, pause, final-frame, fallback, and campaign-order playthrough |
-| Music system | Implemented preview | Catalog, router, director, content, OGG assets and tests | BeatClock, latency calibration, groove scoring, and accessibility remain future work |
+| Music system | Published in v0.8.0, tests and audio audit passed, focused macOS play sampled | 28 new World Tour OGG cues; one continuous hub plus unique Funk, Soul, Disco, House, Electro, Techno, Cosmic Boogie, Soulful Garage, and Future Funk packs; route/boss routing live for playable worlds; 59-record audio audit and five game captures | Human creative listening across all cues; physical Windows audio play; future-stage pressure/finale activation; BeatClock, latency calibration, groove scoring, and accessibility remain future work |
 | Application icon | Published in the v0.6.0 macOS app; tests passed, package verified, and manual small-size QA verified | Commit `097c883`; Joe/Lyra adventure emblem at 512px RGBA; native `GrooveBound.icns` present and referenced in the verified app bundle | Confirm the rebuilt native app icon in the macOS Dock on another clean Mac |
 | Generic controller and camera support | Published in v0.7.1 and tests passed | Right-stick aim preserves direction while the world-space reticle follows the moving player; spatial D-pad navigation now respects all four directions, and Pause, Settings, Controls and Admin have controller parity | Physical PlayStation controller check; hot-plug identity, glyphs/remapping, wired/wireless matrix |
 | Combat readability and HUD | Published in v0.6.0, tests passed, and visually sampled | Hit slide/pulse, camera shake, damage flash, HP-loss callout, concern below 20%, stronger critical state below 5%, transparent enlarged aim reticle, gameplay-only OS cursor hiding, compact right-side power-up notices, separate 50% panel shades, and tiled nine-slice slot frames with fixed corners | Full combat-feel pass with flash/reduced-flash options and physical controller |
 | Character, upgrade, and results interface | Published in v0.7.1, tests passed, and visually sampled | Anton/Oswald typography, modular nine-slice upgrade cards, relevant-equipped evolution rows only, exact icon-led gain-to-total attributes, generated NEW badge, pickup-art utility choices, existing reroll/skip sprite CTAs, and bright sprite-backed menu focus | Manual defeat/victory results pass and final small-screen readability review |
 | Save system | Version 2 profiles and slots | Save, migration, profile, export and World Tour session tests | Cross-platform clean-machine fixtures |
-| Landing page and repository README | Windows and macOS v0.7.1 download copy committed and pushed at `50f6421`; public deployment not configured | Home, Catalog and Builder expose stable Latest Windows ZIP and Mac DMG routes; desktop and mobile browser checks passed without overflow, broken images, or console errors | Physical-phone refresh, trailer audio check, explicit deployment destination, and `main` promotion |
+| Landing page and repository README | v0.8.0 source committed and pushed at `9fc3e3a`; public deployment not configured | Home, Catalog and Builder identify v0.8.0 and expose verified stable Latest Windows ZIP and Mac DMG routes | FTP upload/deployment approval, post-deploy browser refresh, physical-phone refresh, trailer audio check, and `main` promotion |
 | World Tour runtime atlases | Committed, pushed, source-runtime verified, and excluded from the package audit payload where appropriate | 147 transparent cells across 16 repaired atlases validate with zero edge crossings and no component reuse; runtime loader mappings remain stable | Focused physical-controller World Tour playthrough |
-| Desktop distribution | Synchronized v0.7.1 Windows x64 ZIP, universal macOS ZIP/DMG, and common `.love` published as GitHub Latest | Both desktop packages embed `.love` SHA-256 `a6f3b28f…2efcdd`; Windows PE branding, fused payload, native tests, bootstrap marker, manifests, checksums, public assets, and Latest redirects verified | Physical Windows graphical/audio/controller/SmartScreen/save-migration QA; Windows code signing; Apple notarization if required |
+| Desktop distribution | Synchronized v0.8.0 Windows x64 ZIP, universal macOS ZIP/DMG, and common `.love` published as GitHub Latest | Both desktop packages embed `.love` SHA-256 `236a48a4…79b2`; Windows PE branding, native 358-test pass, fused payload, Windows/macOS bootstrap markers, manifests, checksums, seven public assets, and Latest redirects verified | Physical Windows graphical/audio/controller/SmartScreen/save-migration QA; Windows code signing; Apple notarization if required |
 | Engine migration | Planned | Engine migration research and parity roadmap | Clean baseline and bounded target-engine spike |
 | Groove Bound skills | Installed, committed, and pushed | Eleven installed packages match repository source; structural, package, and representative helper validation passed | Fresh-agent forward tests |
 
 ## Active working state
 
-The v0.7.1 game, Windows support, runtime media, tests, documentation,
+The v0.8.0 World Tour soundtrack, routing, runtime media, tests, documentation,
 repository README, and release-specific landing-page source are committed and
-pushed on `codex/world-tour-v1` at `50f6421`. The mirrored
-`codex/windows-version` branch resolves to the same commit. GitHub Latest now
-publishes the Windows x64 ZIP, Windows manifest and checksums, refreshed Mac
-DMG/ZIP, and one common `.love` payload from that source commit. The separate
-root story/mechanics handover, banner PSD, and `promo-assets/` source folder
-remain intentionally untouched and outside the release commit.
+pushed on `codex/world-tour-v1` through `63ed503`. The synchronized
+`codex/windows-version` branch contains that canonical source. GitHub Latest
+publishes the branded Windows x64 ZIP, Windows manifest and checksums, universal
+Mac DMG/ZIP, and one common `.love` payload from that source commit. The
+separate root story/mechanics handover, banner PSD, `promo-assets/`, and all
+other pre-existing dirty workspace material remain intentionally untouched and
+outside the release commits.
 
 Current active themes include:
 
 - The two supplied MP4 files remain reference/source media and are excluded from
   distribution; their OGV derivatives are packaged runtime media.
-- Generated source candidates and the earlier opaque UI-chrome atlas remain
-  reference-only and are excluded from distribution.
+- Suno source masters and all generated source candidates remain reference-only
+  and are excluded from distribution; the 28 optimized World Tour OGG cues are
+  canonical packaged runtime media.
 - `landing-page/` is committed source, but the repository has no configured
   public homepage and no deployment has been claimed.
 - The protected original workspace and its unrelated concurrent work were not
@@ -126,18 +130,19 @@ Do not infer `main` promotion or landing-page deployment from the feature-branch
 
 | Layer | Latest state | Meaning |
 |---|---|---|
-| Automated tests | 353 passed, 0 failed on 2026-08-11 | Native Windows CI and local checks cover controller ownership/hot-plug behavior, vibration routing, save migration, release-profile safety, menu parity, and existing systems |
-| Lint | 0 warnings and 0 errors across 172 files on 2026-08-11 | Current Lua source and tests statically checked |
-| Common package | Published v0.7.1 `.love`: 168,944,047 bytes, SHA-256 `a6f3b28fae797e0cd12b9e755750a758455f73542ab58e630e71cc89aa2efcdd` | Built once on Linux and consumed unchanged by both Windows and Mac packaging jobs; release renderer rejects payload drift |
-| Windows artifact | Published v0.7.1 x64 ZIP: 173,654,466 bytes, SHA-256 `72c9b6b21c56015fd7b7741309fde4922c88fac46157b23d223bbd3383f4fe7b` | Official pinned LÖVE 11.5 runtime, Groove Bound icon/version PE metadata, intact fused payload, manifest/checksums, packaged bootstrap, and public Latest redirect verified; executable is unsigned |
-| macOS artifacts | Published synchronized v0.7.1 universal ZIP and icon-bearing DMG | ZIP: 180,043,697 bytes, SHA-256 `db4fc62b9fe22b7a554aae20e4ee8e22676e06d1588cc8e6a06f9095da56d69a`; DMG: 183,408,440 bytes, SHA-256 `68e7e3ef038bd51aa60c70bd7b5564f6e54c0f0ec063c81c923138914615f858`; GitHub digests match |
-| Packaged boot | Verified in Windows and macOS CI on 2026-08-11 | Packaged headless bootstrap validates content and writes the expected marker; this is a startup-integrity check, not full graphical/audio play |
-| Manual graphical QA | Focused v0.7.1 source captures verified | Pause, Options, Controls, Admin, level-up cards, evolution filtering, generated NEW badge, reward-card scale, and right-side mechanic safe area visually inspected; full campaign, physical controller, audio and small-screen play-feel remain open |
-| Source release commit | `50f6421` — release: publish desktop v0.7.1 | Public release notes identify the full commit `50f64218d81e5399c81412a04e141ab5bc0ac8b5` |
-| Parallel branches | `origin/codex/world-tour-v1` and `origin/codex/windows-version` both contain `50f6421` | The Windows branch is workflow-mirrored from the canonical feature branch after every push |
+| Automated tests | 358 passed, 0 failed locally, on Linux CI, and on native Windows CI on 2026-08-13 | Covers music catalog/context/router continuity plus controller, save, release-profile, menu, and existing systems |
+| Lint | 0 warnings and 0 errors across 172 files on 2026-08-13 | Current Lua source and tests statically checked |
+| Audio audit | 59 records passed; 28 new World Tour cues are 48 kHz stereo OGG Vorbis | World Tour loudness is -18.6 to -17.4 LUFS, maximum true peak is -5.1 dBFS, and maximum seam jump is 0.04253; human creative listening remains open |
+| Common package | Published v0.8.0 `.love`: 200,273,211 bytes, SHA-256 `236a48a4ddefbed62bbed750b1bfa3212269d5304ace57f56b4ddbc1a1ae79b2` | Built once and consumed unchanged by both Windows and Mac jobs; contains all 59 runtime OGGs and excludes source masters |
+| Windows artifact | Published v0.8.0 x64 ZIP: 204,991,519 bytes, SHA-256 `05a0914af3acba699530c8ad186cde146b6971055266feac60aba425b9eca52b` | Official pinned LÖVE 11.5 runtime, Groove Bound icon/version PE metadata, native tests, fused payload, manifest/checksums, packaged bootstrap, and public Latest redirect verified; executable is unsigned |
+| macOS artifacts | Published synchronized v0.8.0 universal ZIP and icon-bearing DMG | ZIP: 211,380,917 bytes, SHA-256 `0c2f6c574c4d50bb0c49564ab3463615a3605c0936d3f60fa69cb5820d3f5f66`; DMG: 214,798,572 bytes, SHA-256 `e5f53491c86b937c7769cb0e385f3b38e59ca7d224bace72c4bccc402142db97`; GitHub digests match |
+| Packaged boot | Verified in Windows and macOS CI on 2026-08-13; local macOS package smoke also passed | Packaged bootstrap validates content and writes the expected marker; this is a startup-integrity check, not full graphical/audio play |
+| Manual graphical QA | Five focused v0.8.0 game captures verified | Title, World Tour selector, Funk stage start, live combat, and level-up continuity sampled on macOS; full campaign, physical controller, human listening, and small-screen play-feel remain open |
+| Source release commit | `63ed503` — ci: align desktop packaging with v0.8.0 | Public release notes identify full commit `63ed503035719f89662a87c8dea1450ca042066b`; tag `v0.8.0` resolves to it |
+| Parallel branches | `origin/codex/world-tour-v1` at `63ed503`; `origin/codex/windows-version` contains the synchronized release source | The Windows branch is workflow-mirrored from the canonical feature branch after every push |
 | Main promotion | Not current | Verify `origin/main` independently |
-| Public release/download | v0.7.1 is published as GitHub Latest with seven synchronized desktop assets | Release body, GitHub digests, manifest, checksum ledger, Windows ZIP and Mac DMG Latest redirects verified public-live |
-| Landing download link | Windows and Mac v0.7.1 CTA source committed and pushed on the feature branch | Home, Catalog and Builder use stable Latest routes; 1440×900 and 390×844 browser QA passed on all three pages |
+| Public release/download | v0.8.0 is published as GitHub Latest with seven synchronized desktop assets | Release body, seven GitHub digests, manifest, checksum ledger, Windows ZIP, Mac DMG, and common `.love` Latest redirects verified public-live |
+| Landing download link | Windows and Mac v0.8.0 CTA source committed and pushed on the feature branch | Home, Catalog, and Builder use stable Latest routes and point to the public v0.8.0 release; source is FTP-ready but not deployed |
 | GitHub README presentation | Windows badge, CTA, install/SmartScreen guidance, version and verification counts committed on the feature branch | Default-page visibility still depends on the planned fast-forward to `main` |
 | Landing deployment | Not performed or proven | GitHub reports no configured repository homepage; source publication is not a public-site deployment |
 
@@ -154,30 +159,54 @@ For an engine migration, keep LÖVE as the golden reference. The leading researc
 - Automated checks do not prove the remaining visual, video, navigation, audio, controller, or game-feel criteria.
 - Generated and legacy assets require maintained provenance and package separation.
 - Website asset copies can drift from canonical runtime assets.
-- Signing, notarization, credentials, store submission, deployment, destructive migration, and engine cutover require explicit approval. The user explicitly approved this v0.7.1 public release and default-branch update.
+- Signing, notarization, credentials, store submission, FTP/site deployment, destructive migration, and engine cutover require explicit approval. The user explicitly approved this v0.8.0 GitHub release and desktop packaging; no FTP upload or `main` promotion was inferred.
 
 ## Next safe actions
 
-1. Manually listen to mute/unmute during every video, then verify natural chest
-   drops, low/critical-health feel, tall-object layering, results, every video,
-   and the full current-HEAD campaign.
+1. Complete a human creative listening pass across the World Tour hub and all
+   nine world packs, checking seams, world identity, menu continuity, boss
+   escalation, and music/SFX balance.
 2. Verify Circle skip on physical PlayStation hardware and cover hot-plug,
    remapping, wired, and wireless behavior.
 3. Produce the two planned 4-by-6 enemy movement atlases and wire three-frame
    animation for all sixteen enemy definitions without changing deterministic
    movement or combat timing.
-4. Fast-forward the verified source to `main` after confirming ancestry and the
-   final clean status/handover commit.
+4. Resolve the current `origin/main` divergence before any promotion; do not
+   fast-forward or merge without a separately approved main-branch decision.
 5. Keep the stable GitHub Latest Download URL in future landing-page releases;
    Apple signing/notarization and site deployment remain separate approval gates.
 6. Run the public Windows ZIP on a physical Windows x64 PC, covering graphical
    and audio play, controller hot-plug/vibration, SmartScreen, and clean-machine
    save migration; add Windows code signing when a certificate is approved.
 7. Freeze a clean migration baseline before any Godot or MonoGame spike.
-8. Deploy the landing page only when its destination and public state are
-   explicitly approved.
+8. Upload the FTP-ready landing-page source only when the destination and public
+   deployment are explicitly approved, then verify v0.8.0 labels and both
+   stable Latest download routes on the public site.
 
 ## Continuation history
+
+### 2026-08-13 — v0.8.0 unique World Tour soundtrack release
+
+- Generated 56 Suno candidates across 28 paid runs using Suno v5.5, then
+  promoted one neutral World Tour hub cue and distinct three-cue packs for all
+  nine worlds. Exact prompts, source IDs, durations, hashes, and the preserved
+  Boogie Tank alternate are recorded under `groove-bound/docs/audio/`.
+- Added 28 optimized 48 kHz stereo OGG runtime cues and routed the playable
+  Funk, Soul, and Disco stages and bosses to their own music. World Tour selector
+  and loadout retain one continuous hub cue; overlays duck and continue the
+  active context instead of chopping the music.
+- Verified 358 tests, zero lint findings across 172 files, a 59-record audio
+  audit, package exclusions, archive integrity, portability, five macOS game
+  captures, and packaged bootstrap on native Windows and macOS CI.
+- Published GitHub Latest v0.8.0 from `63ed503` with seven digest-matched assets:
+  branded Windows x64 ZIP, universal Mac ZIP and DMG, common `.love`, Windows
+  manifest, and both checksum ledgers. Stable Latest redirects return HTTP 200.
+- Updated the Home, Catalog, Builder, repository README, packaging defaults,
+  and synchronized release workflows to v0.8.0. Landing source is FTP-ready,
+  but no FTP upload, public site deployment, `main` promotion, code signing, or
+  notarization was performed.
+- Human creative listening across all cues and physical Windows graphical,
+  audio, controller, SmartScreen, and save-migration QA remain explicit gates.
 
 ### 2026-08-11 — Native Windows x64 and synchronized desktop release
 
