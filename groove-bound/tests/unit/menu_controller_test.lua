@@ -46,4 +46,27 @@ T["settings dpad stays in column vertically and crosses columns horizontally"] =
   end)
 end
 
+T["settings shoulder hold repeats until release and persists once"] = function()
+  with_dimensions(1280, 720, function()
+    local saves = 0
+    local app = {
+      profile = { options = { master_volume = 0.40 } },
+      save = { save = function() saves = saves + 1 end },
+    }
+    local screen = OptionsScreen(app)
+    screen:_layout()
+    H.is_true(screen:gamepadpressed(nil, "rightshoulder"))
+    H.near(app.profile.options.master_volume, 0.41)
+    screen:update(0.50)
+    H.is_true(app.profile.options.master_volume > 0.41)
+    H.eq(saves, 0)
+    H.is_true(screen:gamepadreleased(nil, "rightshoulder"))
+    H.eq(saves, 1)
+    H.is_nil(screen.hold)
+    local released_value = app.profile.options.master_volume
+    screen:update(0.50)
+    H.near(app.profile.options.master_volume, released_value)
+  end)
+end
+
 return T

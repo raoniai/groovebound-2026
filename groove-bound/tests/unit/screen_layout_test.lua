@@ -126,6 +126,10 @@ T["settings labels, controls, rows and guide remain disjoint at compact size"] =
     for _, row in ipairs(screen.rows) do
       H.is_true(inside(row.rect, 800, 600))
       H.is_false(overlaps(row.label_rect, row.control))
+      if row.kind == "slider" then
+        H.is_true(inside(row.track, 800, 600))
+        H.is_false(overlaps(row.minus_rect, row.plus_rect))
+      end
     end
     H.is_true(inside(screen.guide_rect, 800, 600))
     for _, row in ipairs(screen.rows) do
@@ -133,6 +137,18 @@ T["settings labels, controls, rows and guide remain disjoint at compact size"] =
         H.is_false(overlaps(row.rect, screen.guide_rect))
       end
     end
+  end)
+end
+
+T["settings remain concise and centered on widescreen canvases"] = function()
+  with_dimensions(2048, 1152, function()
+    local screen = OptionsScreen({})
+    screen:_layout()
+    H.is_true(screen.panel.w <= 980)
+    H.is_true(screen.panel.h <= 530)
+    H.near(screen.panel.x + screen.panel.w / 2, 1024)
+    H.near(screen.panel.y + screen.panel.h / 2, 576)
+    H.is_true(inside(screen.guide_rect, 2048, 1152))
   end)
 end
 

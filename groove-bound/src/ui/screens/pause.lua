@@ -25,7 +25,7 @@ end
 function PauseScreen:_button(opts)
   opts.renderer = function(button)
     MenuChrome.action(self.app.assets, button, {
-      icon = opts.menu_icon,
+      menu_cell = opts.menu_cell,
       label = opts.label,
       subtitle = opts.subtitle,
       font_size = 18,
@@ -50,13 +50,13 @@ function PauseScreen:_layout()
   local buttons = {
     self:_button({
       label = "RESUME", subtitle = "Return to the run",
-      menu_icon = { col = 1, row = 1 },
+      menu_cell = 1,
       x = x, y = y, w = bw, h = bh,
       on_press = function() self.app.states:pop() end,
     }),
     self:_button({
       label = "COPY RUN SEED", subtitle = "Save this exact run setup",
-      menu_icon = { col = 2, row = 1 },
+      menu_cell = 11,
       x = x, y = y + (bh + gap), w = bw, h = bh,
       on_press = function()
         if self.app.active_run then self.app.active_run:copy_seed() end
@@ -65,7 +65,7 @@ function PauseScreen:_layout()
     }),
     self:_button({
       label = "SETTINGS", subtitle = "Audio, display, gameplay and controls",
-      menu_icon = { col = 4, row = 1 },
+      menu_cell = 4,
       x = x, y = y + (bh + gap) * 2, w = bw, h = bh,
       on_press = function()
         local OptionsScreen = require("src.ui.screens.options")
@@ -74,7 +74,7 @@ function PauseScreen:_layout()
     }),
     self:_button({
       label = "QUIT TO TITLE", subtitle = "End this run and return to the title",
-      menu_icon = { col = 5, row = 1 },
+      menu_cell = 6,
       x = x, y = y + (bh + gap) * 3, w = bw, h = bh,
       on_press = function()
         if self.app.active_run and not self.app.active_run.finished then

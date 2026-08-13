@@ -10,10 +10,114 @@ local UIScale = require("src.ui.scale")
 
 local HUD = class()
 
-function HUD:init(ctx, player, combat)
+function HUD:init(ctx, player, combat, opts)
   self.ctx = ctx
   self.player = player
   self.combat = combat
+  self.opts = opts or {}
+  self.dismissed_alerts = {}
+  self.current_alerts = {}
+  self.alert_close_rects = {}
+  self.right_bottom = 68
+end
+
+local function contains(rect, x, y)
+  return rect and x >= rect.x and x <= rect.x + rect.w
+    and y >= rect.y and y <= rect.y + rect.h
+end
+
+function HUD:_raw_alerts(stage)
+  local alerts = {}
+  local function add(id, text, icon, color, alpha)
+    if text and text ~= "" then
+      alerts[#alerts + 1] = {
+        id = id, text = text, icon = icon, color = color,
+        alpha = math.min(1, alpha or 1), signature = id .. "\0" .. text,
+      }
+    end
+  end
+  if self.combat.xp.notification > 0 then
+    add("level", string.format("LEVEL-UP POINTS  ×%d",
+      self.combat.xp.pending_choices), 1, { 1.0, 0.76, 0.22, 1 },
+      self.combat.xp.notification)
+  end
+  if self.combat.progression.evolution_notice > 0 then
+    add("evolution", self.combat.progression.evolution_notice_text
+      or "EVOLUTION READY", 2, { 1.0, 0.76, 0.22, 1 },
+      self.combat.progression.evolution_notice)
+  end
+  local threat = self.combat:boss_threat_snapshot()
+  if threat.active and threat.player_in_range then
+    add("danger", threat.windup and threat.windup > 0
+      and "BOSS ATTACK CHARGING" or "MOVE OUT OF BOSS RANGE",
+      3, { 1.0, 0.24, 0.42, 1 }, 1)
+  end
+  if self.combat.wave_notice_time > 0 then
+    add("wave", self.combat.wave_notice, 3, { 1.0, 0.42, 0.65, 1 },
+      self.combat.wave_notice_time)
+  end
+  if self.combat.pickup_notice > 0 then
+    add("pickup", self.combat.pickup_notice_text, 4,
+      { 0.38, 1.0, 0.76, 1 }, self.combat.pickup_notice)
+  end
+  if self.combat.progression.upgrade_notice > 0 then
+    add("upgrade", self.combat.progression.upgrade_notice_text or "UPGRADED",
+      5, { 0.34, 1.0, 0.68, 1 },
+      self.combat.progression.upgrade_notice)
+  end
+  if stage.notice > 0 then
+    add("stage", stage.notice_text, 6, { 0.42, 0.92, 1.0, 1 }, stage.notice)
+  end
+  return alerts
+end
+
+function HUD:alert_entries(stage)
+  local raw = self:_raw_alerts(stage)
+  local active = {}
+  for _, alert in ipairs(raw) do active[alert.id] = alert.signature end
+  for id, signature in pairs(self.dismissed_alerts) do
+    if active[id] ~= signature then self.dismissed_alerts[id] = nil end
+  end
+  local visible = {}
+  for _, alert in ipairs(raw) do
+    if self.dismissed_alerts[alert.id] ~= alert.signature then
+      visible[#visible + 1] = alert
+    end
+  end
+  return visible
+end
+
+function HUD:dismiss_alert(alert)
+  if not alert then return false end
+  self.dismissed_alerts[alert.id] = alert.signature
+  return true
+end
+
+function HUD:dismiss_top_alert()
+  return self:dismiss_alert(self.current_alerts[1])
+end
+
+function HUD:clear_alerts()
+  if #self.current_alerts == 0 then return false end
+  for _, alert in ipairs(self.current_alerts) do self:dismiss_alert(alert) end
+  return true
+end
+
+function HUD:right_column_bottom()
+  return self.right_bottom or 68
+end
+
+function HUD:mousepressed(x, y, button)
+  if button ~= 1 then return false end
+  x, y = UIScale.point(x, y, self.ui_scale)
+  if contains(self.level_up_rect, x, y) and self.opts.on_level_up then
+    return self.opts.on_level_up() == true
+  end
+  if contains(self.clear_alerts_rect, x, y) then return self:clear_alerts() end
+  for index, rect in ipairs(self.alert_close_rects) do
+    if contains(rect, x, y) then return self:dismiss_alert(self.current_alerts[index]) end
+  end
+  return false
 end
 
 local function draw_panel(x, y, w, h, accent, alpha)
@@ -42,7 +146,8 @@ local function draw_slot(assets, x, y, size, active)
 end
 
 function HUD:draw()
-  local w = UIScale.begin()
+  local w, _, scale = UIScale.begin()
+  self.ui_scale = scale
   local assets = self.combat.assets
 
   -- Health bar, top-left.
@@ -152,6 +257,28 @@ function HUD:draw()
     end
   end
 
+  self.level_up_rect = nil
+  if self.combat.xp.pending_choices > 0 then
+    local rect = { x = 8, y = 190, w = 280, h = 54 }
+    self.level_up_rect = rect
+    local reduced = self.player.options.reduced_motion == true
+    local pulse = reduced and 1 or 0.92 + math.sin(self.ctx.time * 5) * 0.08
+    draw_panel(rect.x, rect.y, rect.w, rect.h,
+      { 1.0, 0.72, 0.20, 1 }, 0.58 * pulse)
+    self.combat.assets:draw_level_alert_icon(
+      1, rect.x + 31, rect.y + rect.h / 2, 44)
+    love.graphics.setColor(1.0, 0.84, 0.30, 1)
+    love.graphics.setFont(Fonts.get(17))
+    love.graphics.print(string.format("SPEND LEVEL POINTS  ×%d",
+      self.combat.xp.pending_choices), rect.x + 58, rect.y + 8)
+    love.graphics.setColor(0.78, 0.77, 0.88, 1)
+    love.graphics.setFont(Fonts.get(11))
+    love.graphics.print(self.combat.options.automatic_level_up == true
+      and "L / △ OPEN  •  AUTO MENU ON"
+      or "L / △ OPEN  •  PLAY WHEN READY",
+      rect.x + 58, rect.y + 33)
+  end
+
   -- Run timer, top-center.
   local minutes = math.floor(self.ctx.time / 60)
   local seconds = math.floor(self.ctx.time % 60)
@@ -179,58 +306,38 @@ function HUD:draw()
       0, 42, w, "center")
   end
 
-  if self.combat.xp.notification > 0 then
-    love.graphics.setFont(Fonts.get(30))
-    love.graphics.setColor(0.96, 0.78, 0.22, math.min(1, self.combat.xp.notification))
-    love.graphics.printf("LEVEL UP!", 0, 92, w, "center")
-  end
-
   local toast_y = 72
-  local function draw_toast(text, icon, color, alpha)
-    local toast_x, toast_w, toast_h = w - 246, 238, 34
-    draw_panel(toast_x, toast_y, toast_w, toast_h, color, 0.48 * alpha)
-    Icons.draw(icon, toast_x + 18, toast_y + toast_h / 2, 18,
-      { color[1], color[2], color[3], alpha })
-    love.graphics.setColor(color[1], color[2], color[3], alpha)
-    love.graphics.setFont(Fonts.get(13))
-    love.graphics.printf(text, toast_x + 34, toast_y + 10,
-      toast_w - 42, "left")
-    toast_y = toast_y + toast_h + 6
+  self.current_alerts = self:alert_entries(stage)
+  self.alert_close_rects = {}
+  self.clear_alerts_rect = nil
+  if #self.current_alerts > 0 then
+    love.graphics.setColor(0.66, 0.66, 0.78, 1)
+    love.graphics.setFont(Fonts.get(10))
+    love.graphics.print("ALERTS", w - 286, toast_y + 2)
+    self.clear_alerts_rect = { x = w - 78, y = toast_y, w = 70, h = 18 }
+    love.graphics.setColor(0.54, 0.88, 1.0, 1)
+    love.graphics.printf("CLEAR ALL", w - 78, toast_y + 2, 66, "right")
+    toast_y = toast_y + 22
   end
-
-  if self.combat.progression.evolution_notice > 0 then
-    local alpha = math.min(1, self.combat.progression.evolution_notice)
-    draw_toast(
-      self.combat.progression.evolution_notice_text or "YOU CAN EVOLVE NOW",
-      "combo", { 1.0, 0.76, 0.22, 1 }, alpha)
-  end
-
-  if self.combat.progression.upgrade_notice > 0 then
-    local alpha = math.min(1, self.combat.progression.upgrade_notice)
-    draw_toast(
-      self.combat.progression.upgrade_notice_text or "UPGRADED",
-      "level", { 0.34, 1.0, 0.68, 1 }, alpha)
-  end
-
-  if self.combat.wave_notice_time > 0 then
-    love.graphics.setFont(Fonts.get(28))
-    love.graphics.setColor(0.96, 0.42, 0.65, math.min(1, self.combat.wave_notice_time))
-    love.graphics.printf(self.combat.wave_notice, 0, 132, w, "center")
-  end
-
-  if self.combat.pickup_notice > 0 then
-    local alpha = math.min(1, self.combat.pickup_notice)
-    draw_toast(self.combat.pickup_notice_text,
-      "health", { 0.38, 1.0, 0.76, 1 }, alpha)
-  end
-
-  if stage.notice > 0 then
-    local alpha = math.min(1, stage.notice)
-    love.graphics.setColor(0.04, 0.02, 0.08, 0.86 * alpha)
-    love.graphics.rectangle("fill", w / 2 - 300, 164, 600, 64, 8, 8)
-    love.graphics.setColor(0.34, 1.0, 0.74, alpha)
-    love.graphics.setFont(Fonts.get(28))
-    love.graphics.printf(stage.notice_text, w / 2 - 280, 181, 560, "center")
+  for index, alert in ipairs(self.current_alerts) do
+    local toast_x, toast_w, toast_h = w - 286, 278, 34
+    draw_panel(toast_x, toast_y, toast_w, toast_h,
+      alert.color, 0.48 * alert.alpha)
+    self.combat.assets:draw_level_alert_icon(
+      alert.icon, toast_x + 19, toast_y + toast_h / 2, 26,
+      { color = { 1, 1, 1, alert.alpha } })
+    love.graphics.setColor(
+      alert.color[1], alert.color[2], alert.color[3], alert.alpha)
+    love.graphics.setFont(Fonts.get(12))
+    love.graphics.printf(alert.text, toast_x + 38, toast_y + 10,
+      toast_w - 72, "left")
+    love.graphics.setColor(0.76, 0.76, 0.86, alert.alpha)
+    love.graphics.setFont(Fonts.get(14))
+    love.graphics.printf("×", toast_x + toast_w - 28, toast_y + 8, 18, "center")
+    self.alert_close_rects[index] = {
+      x = toast_x + toast_w - 34, y = toast_y, w = 34, h = toast_h,
+    }
+    toast_y = toast_y + toast_h + 4
   end
 
   local boss
@@ -301,6 +408,7 @@ function HUD:draw()
       buff_y = buff_y + 38
     end
   end
+  self.right_bottom = buff_y
 
   if self.combat.tuning:get("test.enhanced_mode") then
     love.graphics.setColor(1.0, 0.32, 0.66, 0.94)

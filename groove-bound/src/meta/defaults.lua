@@ -14,6 +14,7 @@ Defaults.device_settings = {
     deadzone = 0.25,
     aim_assist = true,
     vibration = true,
+    automatic_level_up = false,
     screen_shake = true,
     hit_flash = true,
     reduced_flash = false,

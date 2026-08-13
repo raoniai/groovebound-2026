@@ -239,6 +239,7 @@ scaling and keyed from chroma green to RGBA with FFmpeg.
 | `campaign/menu-button-icons-atlas.png` | 5×2 main-menu actions, divider and reset-warning symbols |
 | `campaign/completion-ui-atlas.png` | 4×2 campaign/Funk completion crests and pictorial result badges |
 
+
 The chest atlas depicts a single increasingly energized vinyl selector in its
 top row and a transforming arcade reward-card stage in its bottom row. The
 Funk strip moves from dormant speaker pad through cyan/magenta warning states
@@ -526,6 +527,66 @@ nearest-neighbour sampling, keyed from chroma green to RGBA and inspected for
 cell-boundary isolation. Runtime projectile art deliberately aliases the
 matching base-weapon projectile cell; only the inventory/evolution identity
 uses the new atlas, avoiding a hidden expansion of the 6x4 projectile contract.
+
+## Accessible CTA, menu, settings and final-stat suite
+
+**Generated:** 2026-08-12 with OpenAI image generation in Codex built-in mode
+
+| Runtime file | Grid / role |
+|---|---|
+| `campaign/ui/menu-stat-icons-v1.png` (1600x1600 RGBA) | 4x4 menu-action and final-stat icon atlas |
+| `campaign/ui/settings-icons-v1.png` (1600x1600 RGBA) | 4x4 options/control icon atlas |
+| `campaign/ui/cta-frame-v1/` | Nine-slice monochrome CTA surface |
+| `campaign/ui/cta-focus-v1/` | Nine-slice focus outline derived from the same CTA source |
+
+The menu/stat prompt requested exactly sixteen isolated symbols in a 4x4 grid:
+continue, new game, World Tour, settings, perk catalog, quit, replay, back,
+stages, time, score, max combo, damage, coins, enemies cleared and bosses
+defeated. The settings prompt requested master, music, SFX, mute, fullscreen,
+deadzone, keyboard, shake, hit flash, aim assist, zoom, vibration, audio, system,
+gameplay and confirm symbols. Both explicitly require a single cyan hue family,
+strong low-noise silhouettes, equal cells, safe padding, no text, no particles,
+and a uniform green chroma background.
+
+The CTA prompt requested one empty, front-on 4.5:1 panel with a quiet dark navy
+interior, cyan outer and inner strokes, four small corner notches, repeatable
+edges, no icon, no text, no particles, and no object-like ornament. Raw 8-bit
+RGB generator outputs are preserved as
+`source-candidates/menu-stat-icons-v1-source.png`,
+`source-candidates/settings-icons-v1-source.png`, and
+`source-candidates/cta-frame-v1-source.png`; they remain package-excluded.
+
+The bundled chroma-key helper was used to validate clean alpha extraction.
+`scripts/build_accessible_ui_assets.py` then applies a deterministic cyan hue
+lock while preserving luminance depth, normalises each icon independently into
+400x400 cells with 64px safe insets, clears hidden RGB, and builds scalable CTA
+surface/focus nine-slice parts. Runtime mappings, exact dimensions, RGBA colour
+type, layout, hold-repeat input and package inclusion are regression-tested.
+
+## Level-point CTA and alert icons
+
+**Generated:** 2026-08-13 with OpenAI image generation in Codex built-in mode
+
+| Runtime file | Grid / role | SHA-256 |
+|---|---|---|
+| `campaign/ui/level-points-alert-icons-v1.png` | 3x2 atlas: level point, evolution, danger, pickup, upgrade and information | `8c8443804e9e95232b0dcb82ff78920b6e06e22de42d27b2dbf2f28293b34dec` |
+
+The primary prompt requested six isolated, text-free, chunky pixel-art symbols
+with dark navy outlines and Groove Bound's cyan, violet, gold, red and green
+accents. The symbols were arranged in equal 512x512 cells on a flat green
+chroma background. A separate magenta-key source regenerated the green upgrade
+chevrons and gold star so key removal could preserve that symbol's intended
+colour.
+
+Raw sources are preserved as
+`source-candidates/level-points-alert-icons-v1-source.png` (SHA-256
+`76a1d27c3f5e19e580efad997faa15938b09ad10bbadbceb540f5ee439fcdf76`)
+and `source-candidates/level-upgrade-icon-v1-source.png` (SHA-256
+`0b82b420ae5e4dd07a1fa270ed8b61aa4c2a13b595160e987a33641a9743a4ef`).
+They remain package-excluded. The bundled chroma helper produced alpha PNGs;
+FFmpeg then normalized the replacement icon into its 512x512 cell and rebuilt
+the exact 1536x1024 RGBA atlas. Runtime dimensions, alpha type and package
+inclusion are regression-tested.
 
 ## Level-up and reward interface sprites
 

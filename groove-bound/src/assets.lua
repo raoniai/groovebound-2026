@@ -20,6 +20,20 @@ local function source(path, volume)
   return value
 end
 
+local function nine_slice(root)
+  return {
+    top_left = image(root .. "top-left.png"),
+    top = image(root .. "top.png"),
+    top_right = image(root .. "top-right.png"),
+    left = image(root .. "left.png"),
+    center = image(root .. "center.png"),
+    right = image(root .. "right.png"),
+    bottom_left = image(root .. "bottom-left.png"),
+    bottom = image(root .. "bottom.png"),
+    bottom_right = image(root .. "bottom-right.png"),
+  }
+end
+
 local function grid_quads(value, columns, rows, inset)
   local width, height = value:getDimensions()
   local cell_w, cell_h = width / columns, height / rows
@@ -236,6 +250,11 @@ function Assets.load()
   self.completion_ui_quads,
     self.completion_ui_cell_w,
     self.completion_ui_cell_h = grid_quads(self.completion_ui, 4, 2, 2)
+  self.level_alert_icons = image(
+    "assets/generated/campaign/ui/level-points-alert-icons-v1.png")
+  self.level_alert_icon_quads,
+    self.level_alert_icon_cell_w,
+    self.level_alert_icon_cell_h = grid_quads(self.level_alert_icons, 3, 2)
   self.funk_pocket_pads = image(
     "assets/generated/campaign/funk-pocket-pad-atlas.png")
   self.funk_pocket_pad_quads,
@@ -294,6 +313,20 @@ function Assets.load()
     self.menu_category_icon_cell_w,
     self.menu_category_icon_cell_h = grid_quads(
       self.menu_category_icons, 4, 3, 12)
+  self.menu_stat_icons = image(
+    "assets/generated/campaign/ui/menu-stat-icons-v1.png")
+  self.menu_stat_icon_quads,
+    self.menu_stat_icon_cell_w,
+    self.menu_stat_icon_cell_h = grid_quads(self.menu_stat_icons, 4, 4, 24)
+  self.settings_icons = image(
+    "assets/generated/campaign/ui/settings-icons-v1.png")
+  self.settings_icon_quads,
+    self.settings_icon_cell_w,
+    self.settings_icon_cell_h = grid_quads(self.settings_icons, 4, 4, 24)
+  self.cta_frame = nine_slice(
+    "assets/generated/campaign/ui/cta-frame-v1/")
+  self.cta_focus = nine_slice(
+    "assets/generated/campaign/ui/cta-focus-v1/")
   local focus_frame_root =
     "assets/generated/campaign/ui/menu-focus-frame-v2/"
   self.menu_focus_frame = {
@@ -770,6 +803,21 @@ function Assets:draw_stage_clear_chest(x, y, size, opts)
   return true
 end
 
+function Assets:draw_level_alert_icon(index, x, y, size, opts)
+  index = math.max(1, math.min(6, index or 1))
+  local col = (index - 1) % 3 + 1
+  local row = math.floor((index - 1) / 3) + 1
+  opts = opts or {}
+  local scale = size / math.max(
+    self.level_alert_icon_cell_w, self.level_alert_icon_cell_h)
+  love.graphics.setColor(opts.color or { 1, 1, 1, 1 })
+  love.graphics.draw(
+    self.level_alert_icons, self.level_alert_icon_quads[row][col], x, y,
+    opts.rotation or 0, scale, scale,
+    self.level_alert_icon_cell_w / 2, self.level_alert_icon_cell_h / 2)
+  return true
+end
+
 local function draw_atlas_cell(atlas, quads, cell_w, cell_h,
     col, row, x, y, w, h, opts)
   opts = opts or {}
@@ -841,6 +889,18 @@ function Assets:draw_menu_focus_frame(x, y, w, h, opts)
   return draw_nine_slice(self.menu_focus_frame, x, y, w, h, opts)
 end
 
+function Assets:draw_cta_frame(x, y, w, h, opts)
+  opts = opts or {}
+  opts.corner = opts.corner or math.min(18, h * 0.30)
+  return draw_nine_slice(self.cta_frame, x, y, w, h, opts)
+end
+
+function Assets:draw_cta_focus(x, y, w, h, opts)
+  opts = opts or {}
+  opts.corner = opts.corner or math.min(20, h * 0.34)
+  return draw_nine_slice(self.cta_focus, x, y, w, h, opts)
+end
+
 function Assets:draw_new_tag(x, y, w, h, opts)
   opts = opts or {}
   local iw, ih = self.ui_new_tag:getDimensions()
@@ -868,6 +928,26 @@ function Assets:draw_menu_category_icon(cell, x, y, size, opts)
   return draw_atlas_cell(
     self.menu_category_icons, self.menu_category_icon_quads,
     self.menu_category_icon_cell_w, self.menu_category_icon_cell_h,
+    col, row, x, y, size, size, opts)
+end
+
+function Assets:draw_menu_stat_icon(cell, x, y, size, opts)
+  cell = math.max(1, math.min(16, cell or 1))
+  local col = (cell - 1) % 4 + 1
+  local row = math.floor((cell - 1) / 4) + 1
+  return draw_atlas_cell(
+    self.menu_stat_icons, self.menu_stat_icon_quads,
+    self.menu_stat_icon_cell_w, self.menu_stat_icon_cell_h,
+    col, row, x, y, size, size, opts)
+end
+
+function Assets:draw_settings_icon(cell, x, y, size, opts)
+  cell = math.max(1, math.min(16, cell or 1))
+  local col = (cell - 1) % 4 + 1
+  local row = math.floor((cell - 1) / 4) + 1
+  return draw_atlas_cell(
+    self.settings_icons, self.settings_icon_quads,
+    self.settings_icon_cell_w, self.settings_icon_cell_h,
     col, row, x, y, size, size, opts)
 end
 

@@ -104,10 +104,13 @@ function RunScreen:enter()
     opportunities = 0,
     best_chain = 0,
   }
-  self.hud = HUD(self.ctx, self.player, self.combat)
+  self.hud = HUD(self.ctx, self.player, self.combat, {
+    on_level_up = function() return self:open_level_up() end,
+  })
   self.finished = false
   self.transitioning = false
   self.choice_open = false
+  self.auto_snoozed_points = 0
   self.pending_outcome = nil
   self.seed_notice = 0
   self.music_event_serial = 0
@@ -272,16 +275,24 @@ function RunScreen:update(dt)
     self.pending_outcome = nil
     self.finished = true
     self:_show_results("defeat")
-  elseif self.combat.xp:has_pending_choice() and not self.choice_open then
-    if self.combat.progression:can_auto_select() then
-      self.combat.progression:auto_select()
-      self.combat.xp:consume_choice()
-    else
-      self.choice_open = true
-      local LevelUpScreen = require("src.ui.screens.level_up")
-      self.app.states:push(LevelUpScreen(self.app, self.combat))
-    end
+  elseif self.combat.xp:has_pending_choice() and not self.choice_open
+    and self.app.profile.options.automatic_level_up == true
+    and self.combat.xp.pending_choices > (self.auto_snoozed_points or 0)
+  then
+    self:open_level_up()
   end
+end
+
+function RunScreen:open_level_up()
+  if self.choice_open or not self.combat
+    or not self.combat.xp:has_pending_choice()
+  then
+    return false
+  end
+  self.choice_open = true
+  local LevelUpScreen = require("src.ui.screens.level_up")
+  self.app.states:push(LevelUpScreen(self.app, self.combat))
+  return true
 end
 
 function RunScreen:copy_seed()
@@ -303,6 +314,16 @@ end
 
 function RunScreen:resume(result)
   self.choice_open = false
+  if result and result.kind == "level_up_closed" then
+    self.auto_snoozed_points = self.combat.xp.pending_choices
+  elseif result and (result.kind == "level_up_complete"
+    or result.kind == "skip" or result.kind == "weapon_add"
+    or result.kind == "weapon_level" or result.kind == "passive_add"
+    or result.kind == "passive_level" or result.kind == "heal"
+    or result.kind == "guard" or result.kind == "coins")
+  then
+    self.auto_snoozed_points = 0
+  end
   if result and result.kind == "stage_complete" then
     self.music_event_serial = self.music_event_serial + 1
     self.music_event = {
@@ -418,7 +439,7 @@ function RunScreen:_draw_world_mechanic_hud()
   local panel_w = math.min(318, w - 36)
   local panel_h = 168
   local x = w - panel_w - 18
-  local y = 154
+  local y = math.max(154, self.hud:right_column_bottom() + 8)
   local boosted = snapshot.boost_remaining > 0
   self.app.assets:draw_ui_backplate(x, y, panel_w, panel_h, {
     color = { 0.82, 0.74, 1.0, 0.94 },
@@ -477,7 +498,6 @@ end
 function RunScreen:_draw_boss_warning()
   local warning = self:boss_warning_state()
   if not warning.active then return end
-  local Fonts = require("src.ui.fonts")
   local w, h = love.graphics.getDimensions()
   local reduced = self.app.profile.options.reduced_flash == true
     or self.app.profile.options.hit_flash == false
@@ -490,15 +510,8 @@ function RunScreen:_draw_boss_warning()
   love.graphics.rectangle("line", 6, 6, w - 12, h - 12, 12, 12)
   love.graphics.setLineWidth(1)
 
-  local panel_w = math.min(440, w - 48)
-  love.graphics.setColor(0.035, 0.008, 0.055, 0.94)
-  love.graphics.rectangle("fill", (w - panel_w) / 2, 22, panel_w, 64, 10, 10)
-  love.graphics.setColor(1.0, 0.30, 0.52, 1)
-  love.graphics.setFont(Fonts.get(20))
-  love.graphics.printf(warning.title, (w - panel_w) / 2, 31, panel_w, "center")
-  love.graphics.setColor(1.0, 0.88, 0.94, 1)
-  love.graphics.setFont(Fonts.get(13))
-  love.graphics.printf(warning.detail, (w - panel_w) / 2, 59, panel_w, "center")
+  -- The danger border remains immediate combat feedback. Its text is routed
+  -- through the right-side alert stack so it cannot cover the timer or playfield.
 end
 
 function RunScreen:_draw_player_feedback()
@@ -650,6 +663,12 @@ function RunScreen:keypressed(key)
     self.app.states:push(PauseScreen(self.app))
     return true
   end
+  if key == "l" then return self:open_level_up() end
+  if key == "backspace" and self.hud then
+    return self.hud:dismiss_top_alert()
+  elseif key == "delete" and self.hud then
+    return self.hud:clear_alerts()
+  end
   if key == "f3" then
     Hitboxes.toggle()
     return true
@@ -666,6 +685,17 @@ function RunScreen:gamepadpressed(_, button)
     self.app.states:push(PauseScreen(self.app))
     return true
   end
+  if button == "y" then return self:open_level_up() end
+  if button == "leftshoulder" and self.hud then
+    return self.hud:dismiss_top_alert()
+  elseif button == "rightshoulder" and self.hud then
+    return self.hud:clear_alerts()
+  end
+  return false
+end
+
+function RunScreen:mousepressed(x, y, button)
+  if self.hud and self.hud:mousepressed(x, y, button) then return true end
   return false
 end
 

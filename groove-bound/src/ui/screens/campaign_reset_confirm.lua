@@ -4,6 +4,7 @@ local settings = require("src.config.settings")
 local widgets = require("src.ui.widgets.button")
 local UIScale = require("src.ui.scale")
 local JourneyProgress = require("src.meta.journey_progress")
+local MenuChrome = require("src.ui.menu_chrome")
 
 local CampaignResetConfirm = class()
 CampaignResetConfirm.kind = "campaign_reset_confirm"
@@ -52,24 +53,29 @@ function CampaignResetConfirm:_layout()
   local button_w = math.min(230, (panel_w - 60) / 2)
   local button_y = self.panel.y + panel_h - 66
   local left_x = self.panel.x + panel_w / 2 - button_w - 8
-  local draw_icon = self.app.assets and function(icon, x, y, iw, ih, opts)
-    self.app.assets:draw_menu_button_icon(
-      icon.col, icon.row, x, y, iw, ih, opts)
-  end or nil
-  local confirm_icon = self.warning_step == 1
-    and { col = 3, row = 2 } or { col = 4, row = 2 }
+  local function button(opts)
+    opts.renderer = function(value)
+      MenuChrome.action(self.app.assets, value, {
+        menu_cell = opts.menu_cell,
+        label = opts.label,
+        font_size = opts.font_size,
+        icon_size = 38,
+      })
+    end
+    return widgets.Button(opts)
+  end
   self.buttons = widgets.ButtonList({
-    widgets.Button({
+    button({
       label = self.warning_step == 1 and "GO BACK" or "KEEP CAMPAIGN",
       x = left_x, y = button_y, w = button_w, h = 48,
-      font_size = 16, icon = { col = 5, row = 2 }, draw_icon = draw_icon,
+      font_size = 16, menu_cell = 8,
       on_press = function() self:_cancel() end,
     }),
-    widgets.Button({
+    button({
       label = self.warning_step == 1 and "SHOW FINAL WARNING" or "RESET FOREVER",
       x = left_x + button_w + 16, y = button_y,
       w = button_w, h = 48, font_size = 14,
-      icon = confirm_icon, draw_icon = draw_icon, variant = "danger",
+      menu_cell = 13, variant = "danger",
       on_press = function()
         if self.warning_step == 1 then
           self:_advance_warning()
@@ -101,10 +107,10 @@ function CampaignResetConfirm:draw()
         or { 1.0, 0.58, 0.18, 0.94 },
     })
   end
-  if self.app.assets and self.app.assets.draw_menu_button_icon then
-    local icon_col = second and 4 or 3
-    self.app.assets:draw_menu_button_icon(
-      icon_col, 2, panel.x + 28, panel.y + 34, 106, 106)
+  if self.app.assets and self.app.assets.draw_menu_stat_icon then
+    self.app.assets:draw_menu_stat_icon(
+      13, panel.x + 32, panel.y + 38, 94,
+      { color = { 1, 1, 1, 0.94 } })
   end
   love.graphics.setFont(Fonts.get(second and 30 or 27))
   love.graphics.setColor(second and { 1, 0.20, 0.28, 1 }

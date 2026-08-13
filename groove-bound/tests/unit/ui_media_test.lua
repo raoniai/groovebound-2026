@@ -61,6 +61,21 @@ T["runtime UI artwork and character logos have stable production mappings"] = fu
   H.eq(menu_h, 1200)
   H.eq(png_color_type(
     "assets/generated/campaign/ui/menu-category-icons-atlas-v2.png"), 6)
+  for _, path in ipairs({
+    "assets/generated/campaign/ui/menu-stat-icons-v1.png",
+    "assets/generated/campaign/ui/settings-icons-v1.png",
+  }) do
+    local width, height = png_dimensions(path)
+    H.eq(width, 1600)
+    H.eq(height, 1600)
+    H.eq(png_color_type(path), 6)
+  end
+  local alert_w, alert_h = png_dimensions(
+    "assets/generated/campaign/ui/level-points-alert-icons-v1.png")
+  H.eq(alert_w, 1536)
+  H.eq(alert_h, 1024)
+  H.eq(png_color_type(
+    "assets/generated/campaign/ui/level-points-alert-icons-v1.png"), 6)
   for _, name in ipairs({
     "top-left", "top", "top-right", "left", "center", "right",
     "bottom-left", "bottom", "bottom-right",
@@ -71,6 +86,19 @@ T["runtime UI artwork and character logos have stable production mappings"] = fu
     H.is_true(width > 0)
     H.is_true(height > 0)
     H.eq(png_color_type(path), 6)
+  end
+  for _, root in ipairs({ "cta-frame-v1", "cta-focus-v1" }) do
+    for _, name in ipairs({
+      "top-left", "top", "top-right", "left", "center", "right",
+      "bottom-left", "bottom", "bottom-right",
+    }) do
+      local path = "assets/generated/campaign/ui/" .. root .. "/"
+        .. name .. ".png"
+      local width, height = png_dimensions(path)
+      H.is_true(width > 0)
+      H.is_true(height > 0)
+      H.eq(png_color_type(path), 6)
+    end
   end
   local aim_w, aim_h = png_dimensions(
     "assets/generated/campaign/aim-reticle.png")

@@ -194,6 +194,51 @@ T["an evolution chest always opens its reveal even if marked automatic"] = funct
   H.is_true(screen.choice_open)
 end
 
+local function level_point_screen(automatic)
+  local pushed = {}
+  local app = {
+    profile = { options = { automatic_level_up = automatic } },
+    states = { push = function(_, state) pushed[#pushed + 1] = state.kind end },
+  }
+  local screen = RunScreen(app, {})
+  screen.pending_outcome = "hold"
+  screen.seed_notice = 0
+  screen.choice_open = false
+  screen.auto_snoozed_points = 0
+  screen.combat = {
+    take_pending_chest_reveal = function() return nil end,
+    progression = { create_offer = function() return { {}, {}, {} } end },
+    xp = {
+      pending_choices = 2,
+      has_pending_choice = function() return true end,
+    },
+  }
+  return screen, pushed
+end
+
+T["manual level-up points never interrupt the run"] = function()
+  local screen, pushed = level_point_screen(false)
+  screen:update(0.1)
+  H.eq(#pushed, 0)
+  H.is_false(screen.choice_open)
+  H.is_true(screen:keypressed("l"))
+  H.eq(pushed[1], "level_up")
+  H.is_true(screen.choice_open)
+end
+
+T["automatic mode opens only newly earned unsnoozed points"] = function()
+  local screen, pushed = level_point_screen(true)
+  screen:update(0.1)
+  H.eq(pushed[1], "level_up")
+  screen:resume({ kind = "level_up_closed" })
+  H.eq(screen.auto_snoozed_points, 2)
+  screen:update(0.1)
+  H.eq(#pushed, 1)
+  screen.combat.xp.pending_choices = 3
+  screen:update(0.1)
+  H.eq(pushed[2], "level_up")
+end
+
 T["World Tour stage confirmation advances into its second playable arena"] = function()
   local began
   local screen = RunScreen({ content = Content }, {

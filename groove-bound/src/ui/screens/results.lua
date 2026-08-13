@@ -1,20 +1,17 @@
 local class = require("src.core.class")
 local Fonts = require("src.ui.fonts")
-local Icons = require("src.ui.icons")
 local settings = require("src.config.settings")
 local widgets = require("src.ui.widgets.button")
 local UIScale = require("src.ui.scale")
+local MenuChrome = require("src.ui.menu_chrome")
 
 local ResultsScreen = class()
 ResultsScreen.kind = "results"
 
 ResultsScreen.opaque = true
 
-local function draw_chip(x, y, w, h)
-  love.graphics.setColor(0.025, 0.018, 0.06, 0.58)
-  love.graphics.rectangle("fill", x, y, w, h, 7, 7)
-  love.graphics.setColor(0.38, 0.32, 0.56, 0.72)
-  love.graphics.rectangle("line", x, y, w, h, 7, 7)
+local function draw_chip(assets, x, y, w, h)
+  MenuChrome.cta(assets, { x = x, y = y, w = w, h = h }, { alpha = 0.78 })
 end
 
 function ResultsScreen:init(app, result)
@@ -36,14 +33,21 @@ function ResultsScreen:_layout()
   local next_label = self.result.outcome == "victory"
     and (self.result.mode == "world_tour" and "WORLD TOUR CATALOG"
       or "ENTER WORLD TOUR") or "CONTINUE CAMPAIGN"
-  local draw_icon = self.app.assets and function(icon, ix, iy, iw, ih, opts)
-    self.app.assets:draw_world_interface(icon.col, icon.row, ix, iy, iw, ih, opts)
-  end or nil
+  local function button(opts)
+    opts.renderer = function(value)
+      MenuChrome.action(self.app.assets, value, {
+        menu_cell = opts.menu_cell,
+        label = opts.label,
+        font_size = opts.font_size,
+      })
+    end
+    return widgets.Button(opts)
+  end
   self.buttons = widgets.ButtonList({
-    widgets.Button({
+    button({
       label = next_label, x = x, y = y, w = bw, h = bh,
       font_size = 21,
-      icon = { col = 3, row = 2 }, draw_icon = draw_icon,
+      menu_cell = self.result.outcome == "victory" and 3 or 1,
       variant = "primary",
       on_press = function()
         if self.result.outcome == "victory" then
@@ -55,10 +59,10 @@ function ResultsScreen:_layout()
         end
       end,
     }),
-    widgets.Button({
-      label = "Return to Title", x = x, y = y + bh + gap, w = bw, h = bh,
+    button({
+      label = "RETURN TO TITLE", x = x, y = y + bh + gap, w = bw, h = bh,
       font_size = 20,
-      icon = { col = 1, row = 1 }, draw_icon = draw_icon,
+      menu_cell = 8,
       on_press = function()
         local TitleScreen = require("src.ui.screens.title")
         self.app.states:switch(TitleScreen(self.app))
@@ -100,14 +104,14 @@ function ResultsScreen:draw()
 
   local stats = self.result.stats
   local summary = {
-    { icon = "stage", label = "STAGES", value = (self.result.stages_cleared or 0)
+    { icon = 9, label = "STAGES", value = (self.result.stages_cleared or 0)
       .. "/" .. (self.result.stage_count or 2) },
-    { icon = "clock", label = "TIME", value = string.format("%02d:%02d",
+    { icon = 10, label = "TIME", value = string.format("%02d:%02d",
       math.floor(self.result.time / 60), math.floor(self.result.time % 60)) },
-    { icon = "score", label = "SCORE", value = tostring(stats.score) },
-    { icon = "combo", label = "MAX COMBO", value = "×" .. stats.max_combo },
-    { icon = "damage", label = "DAMAGE", value = tostring(math.floor(stats.damage)) },
-    { icon = "chest", label = "COINS", value = tostring(
+    { icon = 11, label = "SCORE", value = tostring(stats.score) },
+    { icon = 12, label = "MAX COMBO", value = "×" .. stats.max_combo },
+    { icon = 13, label = "DAMAGE", value = tostring(math.floor(stats.damage)) },
+    { icon = 14, label = "COINS", value = tostring(
       stats.coins + self.result.progression.coins) },
   }
   local panel_w = math.min(1040, w - 80)
@@ -117,12 +121,14 @@ function ResultsScreen:draw()
   local chip_y = h * 0.29
   for index, item in ipairs(summary) do
     local x = start_x + (index - 1) * (chip_w + gap)
-    draw_chip(x, chip_y, chip_w, 76)
+    draw_chip(self.app.assets, x, chip_y, chip_w, 76)
     local compact_chip = chip_w < 130
     local icon_x = x + (compact_chip and 18 or 28)
     local text_x = x + (compact_chip and 34 or 52)
-    Icons.draw(item.icon, icon_x, chip_y + 38, compact_chip and 22 or 28,
-      { 0.34, 0.92, 1.0, 0.92 })
+    local icon_size = compact_chip and 30 or 38
+    self.app.assets:draw_menu_stat_icon(item.icon,
+      icon_x - icon_size / 2, chip_y + (76 - icon_size) / 2,
+      icon_size, { color = { 1, 1, 1, 0.94 } })
     love.graphics.setColor(0.68, 0.72, 0.84, 1)
     love.graphics.setFont(Fonts.get(12))
     love.graphics.printf(item.label, text_x, chip_y + 15,

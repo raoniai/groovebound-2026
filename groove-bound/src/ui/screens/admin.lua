@@ -358,9 +358,9 @@ function AdminScreen:draw()
   local category = categories[self.category_index]
   self:_draw_button(self.options_tab, "OPTIONS", { 0.38, 0.82, 1.0, 1 })
   self:_draw_button(self.admin_tab, "ADMIN", category.color, true)
-  self.app.assets:draw_menu_button_icon(4, 1,
-    self.options_tab.x + 5, self.options_tab.y + 3, 32, 32)
-  self.app.assets:draw_menu_category_icon(1,
+  self.app.assets:draw_settings_icon(4,
+    self.options_tab.x + 5, self.options_tab.y + 3, 32)
+  self.app.assets:draw_settings_icon(14,
     self.admin_tab.x + 5, self.admin_tab.y + 3, 32)
   love.graphics.setColor(category.color)
   love.graphics.setFont(Fonts.get(24))

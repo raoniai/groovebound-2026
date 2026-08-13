@@ -15,29 +15,31 @@ local off_color = { 1.0, 0.42, 0.50, 1 }
 
 local sections = {
   {
-    id = "audio", title = "MUSIC & SOUND", column = 1, sprite = 10,
+    id = "audio", title = "MUSIC & SOUND", column = 1, sprite = 13,
     rows = {
-      { key = "master_volume", label = "Master volume", kind = "slider", sprite = 10 },
-      { key = "music_volume", label = "Music volume", kind = "slider", sprite = 9 },
-      { key = "sfx_volume", label = "Sound effects", kind = "slider", sprite = 10 },
-      { key = "muted", label = "Mute all audio", kind = "toggle", sprite = 10 },
+      { key = "master_volume", label = "Master volume", kind = "slider", sprite = 1 },
+      { key = "music_volume", label = "Music volume", kind = "slider", sprite = 2 },
+      { key = "sfx_volume", label = "Sound effects", kind = "slider", sprite = 3 },
+      { key = "muted", label = "Mute all audio", kind = "toggle", sprite = 4 },
     },
   },
   {
-    id = "overall", title = "SYSTEM", column = 1, sprite = 11,
+    id = "overall", title = "SYSTEM", column = 1, sprite = 14,
     rows = {
-      { key = "fullscreen", label = "Fullscreen", kind = "toggle", sprite = 11 },
-      { key = "deadzone", label = "Controller dead zone", kind = "slider", sprite = 12,
+      { key = "fullscreen", label = "Fullscreen", kind = "toggle", sprite = 5 },
+      { key = "deadzone", label = "Controller dead zone", kind = "slider", sprite = 6,
         min = 0.05, max = 0.50 },
-      { key = "controls", label = "Keyboard bindings", kind = "action", sprite = 12 },
+      { key = "controls", label = "Keyboard bindings", kind = "action", sprite = 7 },
     },
   },
   {
-    id = "gameplay", title = "GAMEPLAY", column = 2, sprite = 5,
+    id = "gameplay", title = "GAMEPLAY", column = 2, sprite = 15,
     rows = {
-      { key = "screen_shake", label = "Screen shake", kind = "toggle", sprite = 5 },
-      { key = "hit_flash", label = "Hit flash", kind = "toggle", sprite = 5 },
-      { key = "aim_assist", label = "Aim assist", kind = "toggle", sprite = 6 },
+      { key = "screen_shake", label = "Screen shake", kind = "toggle", sprite = 8 },
+      { key = "hit_flash", label = "Hit flash", kind = "toggle", sprite = 9 },
+      { key = "aim_assist", label = "Aim assist", kind = "toggle", sprite = 10 },
+      { key = "automatic_level_up", label = "Automatic level-up menu",
+        kind = "toggle", sprite = 16 },
       { key = "camera_zoom", label = "Gameplay zoom", kind = "slider", sprite = 11,
         min = 0.75, max = 1.50, step = 0.25 },
       { key = "vibration", label = "Controller vibration", kind = "toggle", sprite = 12 },
@@ -59,6 +61,7 @@ function OptionsScreen:init(app)
   self.selected = 1
   self.rows = {}
   self.dragging = nil
+  self.hold = nil
 end
 
 function OptionsScreen:enter() self:_layout() end
@@ -103,13 +106,54 @@ function OptionsScreen:_activate(row)
   end
 end
 
-function OptionsScreen:_adjust(row, direction)
+function OptionsScreen:_adjust(row, direction, persist)
   if row.kind == "slider" then
     self:_set_value(row,
-      self.app.profile.options[row.key] + direction * (row.step or 0.01))
+      self.app.profile.options[row.key] + direction * (row.step or 0.01), persist)
   elseif row.kind == "toggle" then
-    self:_set_value(row, direction > 0)
+    self:_set_value(row, direction > 0, persist)
   end
+end
+
+function OptionsScreen:_begin_hold(row, direction, source, control)
+  if not row or row.kind ~= "slider" then return false end
+  if self.hold and self.hold.source == source
+    and self.hold.control == control and self.hold.row == row
+  then
+    return true
+  end
+  if self.hold then self:_end_hold(true) end
+  self.hold = {
+    row = row, direction = direction, source = source, control = control,
+    elapsed = 0, accumulator = 0,
+  }
+  self:_adjust(row, direction, false)
+  return true
+end
+
+function OptionsScreen:_end_hold(persist)
+  if not self.hold then return false end
+  self.hold = nil
+  if persist ~= false then self:_save() end
+  return true
+end
+
+function OptionsScreen:update(dt)
+  local hold = self.hold
+  if not hold then return end
+  hold.elapsed = hold.elapsed + dt
+  if hold.elapsed < 0.26 then return end
+  hold.accumulator = hold.accumulator + dt
+  local interval = hold.elapsed > 1.0 and 0.028 or 0.055
+  while hold.accumulator >= interval do
+    hold.accumulator = hold.accumulator - interval
+    self:_adjust(hold.row, hold.direction, false)
+  end
+end
+
+function OptionsScreen:exit()
+  if self.dragging then self.dragging = nil self:_save() end
+  self:_end_hold(true)
 end
 
 function OptionsScreen:_move(direction)
@@ -125,22 +169,27 @@ end
 
 function OptionsScreen:_layout()
   local w, h = love.graphics.getDimensions()
-  self.panel = { x = 20, y = 18, w = w - 40, h = h - 36 }
+  local panel_w = math.min(980, w - 48)
+  local panel_h = math.min(530, h - 36)
+  self.panel = {
+    x = (w - panel_w) / 2, y = (h - panel_h) / 2,
+    w = panel_w, h = panel_h,
+  }
   local tab_y = self.panel.y + 54
-  self.options_tab = { x = w / 2 - 190, y = tab_y, w = 180, h = 42 }
-  self.admin_tab = { x = w / 2 + 10, y = tab_y, w = 180, h = 42 }
+  self.options_tab = { x = w / 2 - 174, y = tab_y, w = 164, h = 40 }
+  self.admin_tab = { x = w / 2 + 10, y = tab_y, w = 164, h = 40 }
 
-  local compact = h < 680
-  local content_top = tab_y + (compact and 54 or 64)
-  local row_h = compact and 43 or 50
-  local row_step = compact and 47 or 55
-  local header_step = compact and 34 or 38
-  local section_gap = compact and 10 or 16
-  local gutter = 18
-  local col_w = (self.panel.w - 56 - gutter) / 2
+  local compact = h < 680 or panel_w < 820
+  local content_top = tab_y + (compact and 50 or 58)
+  local row_h = compact and 39 or 45
+  local row_step = compact and 42 or 48
+  local header_step = compact and 28 or 32
+  local section_gap = compact and 8 or 10
+  local gutter = compact and 12 or 18
+  local col_w = (self.panel.w - 48 - gutter) / 2
   local col_x = {
-    self.panel.x + 28,
-    self.panel.x + 28 + col_w + gutter,
+    self.panel.x + 24,
+    self.panel.x + 24 + col_w + gutter,
   }
   local cursor_y = { content_top, content_top }
   self.rows = {}
@@ -159,14 +208,32 @@ function OptionsScreen:_layout()
         rect = { x = col_x[column], y = cursor_y[column], w = col_w, h = row_h },
       }
       row.control = {
-        x = row.rect.x + row.rect.w - math.min(132, row.rect.w * 0.34),
-        y = row.rect.y + 7,
-        w = math.min(116, row.rect.w * 0.30), h = row_h - 14,
+        x = row.rect.x + row.rect.w - math.min(174, row.rect.w * 0.44) - 8,
+        y = row.rect.y + 4,
+        w = math.min(174, row.rect.w * 0.44), h = row_h - 8,
       }
       row.label_rect = {
-        x = row.rect.x + 52, y = row.rect.y,
-        w = math.max(70, row.control.x - row.rect.x - 62), h = row.rect.h,
+        x = row.rect.x + 46, y = row.rect.y,
+        w = math.max(62, row.control.x - row.rect.x - 54), h = row.rect.h,
       }
+      if row.kind == "slider" then
+        row.minus_rect = {
+          x = row.control.x, y = row.rect.y + 6,
+          w = 24, h = row.rect.h - 12,
+        }
+        row.plus_rect = {
+          x = row.control.x + row.control.w - 24, y = row.rect.y + 6,
+          w = 24, h = row.rect.h - 12,
+        }
+        row.track = {
+          x = row.control.x + 29, y = row.rect.y + row.rect.h - 12,
+          w = row.control.w - 58, h = 7,
+        }
+        row.value_rect = {
+          x = row.track.x, y = row.rect.y + 4,
+          w = row.track.w, h = row.rect.h - 16,
+        }
+      end
       self.rows[#self.rows + 1] = row
       cursor_y[column] = cursor_y[column] + row_step
     end
@@ -175,24 +242,21 @@ function OptionsScreen:_layout()
   end
   self.guide_rect = {
     x = sections[3].header.x,
-    y = sections[3].bottom + (compact and 10 or 16),
-    w = sections[3].header.w, h = 86,
+    y = sections[3].bottom + (compact and 8 or 12),
+    w = sections[3].header.w, h = compact and 70 or 78,
   }
   self.selected = clamp(self.selected, 1, #self.rows)
 end
 
 function OptionsScreen:resize() self:_layout() end
 
-function OptionsScreen:_draw_tab(rect, label, active, icon, category_cell)
+function OptionsScreen:_draw_tab(rect, label, active, icon_cell, menu_icon)
   MenuChrome.panel(self.app.assets, rect, { corner = 18, alpha = active and 1 or 0.66 })
   if active then MenuChrome.focus(self.app.assets, rect, { inset = -2, corner = 18 }) end
-  if icon then
-    self.app.assets:draw_menu_button_icon(icon.col, icon.row,
-      rect.x + 8, rect.y + 4, 34, 34,
-      { color = { 1, 1, 1, active and 1 or 0.64 } })
-  elseif category_cell then
-    self.app.assets:draw_menu_category_icon(category_cell,
-      rect.x + 8, rect.y + 4, 34,
+  if icon_cell then
+    local draw = menu_icon and self.app.assets.draw_menu_stat_icon
+      or self.app.assets.draw_settings_icon
+    draw(self.app.assets, icon_cell, rect.x + 8, rect.y + 4, 34,
       { color = { 1, 1, 1, active and 1 or 0.64 } })
   end
   love.graphics.setFont(Fonts.heading(15))
@@ -201,7 +265,7 @@ function OptionsScreen:_draw_tab(rect, label, active, icon, category_cell)
 end
 
 function OptionsScreen:_draw_section(section)
-  self.app.assets:draw_menu_category_icon(section.sprite,
+  self.app.assets:draw_settings_icon(section.sprite,
     section.header.x, section.header.y - 2, 30, { color = { 1, 1, 1, 0.92 } })
   love.graphics.setColor(0.42, 0.94, 1.0, 1)
   love.graphics.setFont(Fonts.heading(16))
@@ -214,7 +278,7 @@ function OptionsScreen:_draw_row(row)
     corner = 18, alpha = selected and 1 or 0.70,
   })
   if selected then MenuChrome.focus(self.app.assets, row.rect, { corner = 19 }) end
-  self.app.assets:draw_menu_category_icon(row.sprite,
+  self.app.assets:draw_settings_icon(row.sprite,
     row.rect.x + 8, row.rect.y + 5, row.rect.h - 10,
     { color = { 1, 1, 1, selected and 1 or 0.68 } })
   love.graphics.setFont(Fonts.body(row.rect.w < 400 and 14 or 16))
@@ -235,10 +299,39 @@ function OptionsScreen:_draw_row(row)
   else
     value, color = "OPEN", accent
   end
-  love.graphics.setFont(Fonts.heading(15))
+  love.graphics.setFont(Fonts.heading(14))
   love.graphics.setColor(color)
-  love.graphics.printf(value, row.control.x, row.control.y + 7,
-    row.control.w, "right")
+  if row.kind == "slider" then
+    local minimum, maximum = row.min or 0, row.max or 1
+    local fraction = clamp((options[row.key] - minimum) / (maximum - minimum), 0, 1)
+    love.graphics.printf(value, row.value_rect.x, row.value_rect.y,
+      row.value_rect.w, "center")
+
+    love.graphics.setColor(0.015, 0.045, 0.075, 0.98)
+    love.graphics.rectangle("fill", row.track.x, row.track.y,
+      row.track.w, row.track.h, 3, 3)
+    love.graphics.setColor(0.22, 0.82, 0.96, 0.92)
+    love.graphics.setLineWidth(1)
+    love.graphics.rectangle("line", row.track.x, row.track.y,
+      row.track.w, row.track.h, 3, 3)
+    local fill_w = math.max(2, row.track.w * fraction)
+    love.graphics.rectangle("fill", row.track.x + 1, row.track.y + 1,
+      math.max(1, fill_w - 2), row.track.h - 2, 2, 2)
+    local thumb_x = row.track.x + row.track.w * fraction
+    love.graphics.setColor(0.82, 0.98, 1.0, 1)
+    love.graphics.rectangle("fill", thumb_x - 2, row.track.y - 3,
+      4, row.track.h + 6, 2, 2)
+
+    love.graphics.setFont(Fonts.heading(17))
+    love.graphics.setColor(0.58, 0.94, 1.0, 1)
+    love.graphics.printf("−", row.minus_rect.x, row.minus_rect.y + 1,
+      row.minus_rect.w, "center")
+    love.graphics.printf("+", row.plus_rect.x, row.plus_rect.y + 1,
+      row.plus_rect.w, "center")
+  else
+    love.graphics.printf(value, row.control.x, row.control.y + 5,
+      row.control.w, "right")
+  end
 end
 
 function OptionsScreen:draw()
@@ -249,9 +342,9 @@ function OptionsScreen:draw()
   love.graphics.setFont(Fonts.heading(30))
   love.graphics.setColor(settings.ui.accent_color)
   love.graphics.printf("SETTINGS", 0, self.panel.y + 13, w, "center")
-  self:_draw_tab(self.options_tab, "OPTIONS", true, { col = 4, row = 1 })
+  self:_draw_tab(self.options_tab, "OPTIONS", true, 4, true)
   if settings.debug.admin.enabled then
-    self:_draw_tab(self.admin_tab, "ADMIN", false, nil, 1)
+    self:_draw_tab(self.admin_tab, "ADMIN", false, 14)
   end
   for _, section in ipairs(sections) do self:_draw_section(section) end
   for _, row in ipairs(self.rows) do self:_draw_row(row) end
@@ -259,16 +352,17 @@ function OptionsScreen:draw()
   MenuChrome.panel(self.app.assets, self.guide_rect, { corner = 24, alpha = 0.72 })
   love.graphics.setFont(Fonts.body(13))
   love.graphics.setColor(0.74, 0.76, 0.86, 1)
-  love.graphics.printf("D-PAD MOVES IN FOUR DIRECTIONS",
-    self.guide_rect.x + 12, self.guide_rect.y + 13,
+  love.graphics.printf("HOLD TO ADJUST  •  DRAG THE COLOURED BAR",
+    self.guide_rect.x + 12, self.guide_rect.y + 10,
     self.guide_rect.w - 24, "center")
   Hints.draw({
-    { symbol = "cross", label = "Use / +" },
-    { symbol = "square", label = "-" },
+    { symbol = "dpad", label = "Move" },
+    { symbol = "square", label = "Hold -" },
+    { symbol = "options", label = "R1 Hold +" },
     { symbol = "triangle", label = "Admin" },
     { symbol = "circle", label = "Back" },
-  }, self.guide_rect.y + 55, self.guide_rect.w,
-    { x = self.guide_rect.x, font_size = 11, glyph_size = 15, gap = 10 })
+  }, self.guide_rect.y + self.guide_rect.h - 22, self.guide_rect.w,
+    { x = self.guide_rect.x, font_size = 10, glyph_size = 14, gap = 8 })
 end
 
 function OptionsScreen:keypressed(key)
@@ -279,13 +373,22 @@ function OptionsScreen:keypressed(key)
   }
   if directions[key] then self:_move(directions[key]) return true end
   if key == "-" or key == "kp-" then
-    self:_adjust(self.rows[self.selected], -1) return true
+    return self:_begin_hold(self.rows[self.selected], -1, "keyboard", key)
   elseif key == "=" or key == "+" or key == "kp+" then
-    self:_adjust(self.rows[self.selected], 1) return true
+    return self:_begin_hold(self.rows[self.selected], 1, "keyboard", key)
   elseif key == "return" or key == "space" then
     self:_activate(self.rows[self.selected]) return true
   elseif key == "]" and settings.debug.admin.enabled then
     self:_open_admin() return true
+  end
+  return false
+end
+
+function OptionsScreen:keyreleased(key)
+  if self.hold and self.hold.source == "keyboard"
+    and self.hold.control == key
+  then
+    return self:_end_hold(true)
   end
   return false
 end
@@ -298,13 +401,22 @@ function OptionsScreen:gamepadpressed(_, button)
   if directions[button] then self:_move(directions[button]) return true end
   if button == "a" then self:_activate(self.rows[self.selected]) return true end
   if button == "x" or button == "leftshoulder" then
-    self:_adjust(self.rows[self.selected], -1) return true
+    return self:_begin_hold(self.rows[self.selected], -1, "gamepad", button)
   end
   if button == "rightshoulder" then
-    self:_adjust(self.rows[self.selected], 1) return true
+    return self:_begin_hold(self.rows[self.selected], 1, "gamepad", button)
   end
   if button == "y" and settings.debug.admin.enabled then
     self:_open_admin() return true
+  end
+  return false
+end
+
+function OptionsScreen:gamepadreleased(_, button)
+  if self.hold and self.hold.source == "gamepad"
+    and self.hold.control == button
+  then
+    return self:_end_hold(true)
   end
   return false
 end
@@ -315,7 +427,7 @@ function OptionsScreen:mousemoved(x, y)
   end
   if self.dragging then
     local row = self.dragging
-    local fraction = clamp((x - row.control.x) / row.control.w, 0, 1)
+    local fraction = clamp((x - row.track.x) / row.track.w, 0, 1)
     local minimum, maximum = row.min or 0, row.max or 1
     self:_set_value(row, minimum + fraction * (maximum - minimum), false)
   end
@@ -330,8 +442,14 @@ function OptionsScreen:mousepressed(x, y, button)
     if contains(row.rect, x, y) then
       self.selected = row.focus
       if row.kind == "slider" then
-        self.dragging = row
-        self:mousemoved(x, y)
+        if contains(row.minus_rect, x, y) then
+          return self:_begin_hold(row, -1, "mouse", "minus")
+        elseif contains(row.plus_rect, x, y) then
+          return self:_begin_hold(row, 1, "mouse", "plus")
+        elseif contains(row.track, x, y) then
+          self.dragging = row
+          self:mousemoved(x, y)
+        end
       else
         self:_activate(row)
       end
@@ -342,10 +460,18 @@ function OptionsScreen:mousepressed(x, y, button)
 end
 
 function OptionsScreen:mousereleased(_, _, button)
-  if button == 1 and self.dragging then
-    self.dragging = nil
-    self:_save()
-    return true
+  if button == 1 then
+    local handled = false
+    if self.dragging then
+      self.dragging = nil
+      self:_save()
+      handled = true
+    end
+    if self.hold and self.hold.source == "mouse" then
+      self:_end_hold(true)
+      handled = true
+    end
+    return handled
   end
   return false
 end
