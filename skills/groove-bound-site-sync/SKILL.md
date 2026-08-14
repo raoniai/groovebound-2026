@@ -17,9 +17,10 @@ Keep the site a faithful public presentation of the game without making it the a
 6. Run `node scripts/update-status.mjs` from `landing-page/` after material game or site changes.
 7. Check JavaScript syntax, local references, failed assets, inspector data, status filters, and screenshot aspect ratios.
 8. Verify Home, Catalog, and Builder on desktop and mobile, including horizontal overflow and reduced-motion behavior.
-9. Distinguish local preview, committed site, pushed site, deployment, and public-live verification.
-10. When the user has authorized the standard new-world delivery loop, publish the FTP release and verify the public site; leave it local-only only when deployment is explicitly withheld.
-11. Update the handover with material accepted site state.
+9. Before deployment, run `$groove-bound-version-sync --scope landing`; after an approved upload, run `--scope public` and stop on any GitHub Latest or live-page mismatch.
+10. Distinguish local preview, committed site, pushed site, deployment, and public-live verification.
+11. When the user has authorized the standard new-world delivery loop, publish the FTP release and verify the public site; leave it local-only only when deployment is explicitly withheld.
+12. Update the handover with material accepted site state.
 
 ## Guardrails
 
