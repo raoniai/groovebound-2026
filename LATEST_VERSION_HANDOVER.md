@@ -14,20 +14,20 @@ This document answers four questions: what is authoritative, what the latest ver
 
 <!-- LIVE-SNAPSHOT:START -->
 
-_Generated from live repository evidence: 2026-08-14 13:25 AEST_
+_Generated from live repository evidence: 2026-08-14 13:51 AEST_
 
 | Field | Live value |
 |---|---|
-| Branch | `codex/release-v0.8.4` |
-| HEAD | `59ca969` — feat: catalog the complete Jazz world art |
+| Branch | `codex/ui-catalog-v0.8.5` |
+| HEAD | `cf38e19` — feat: catalog every playable scenario asset |
 | Upstream | `origin/codex/world-tour-v1` |
-| Compared with `origin/main` | 15 ahead, 1 behind |
-| Working changes | 2 files: 0 game, 1 site, 0 skills/package |
-| Lua source/test files | 117 source, 61 test |
-| Game tree excluding `dist/` | 647.4 MiB |
+| Compared with `origin/main` | 19 ahead, 1 behind |
+| Working changes | 28 files: 27 game, 0 site, 0 skills/package |
+| Lua source/test files | 119 source, 64 test |
+| Game tree excluding `dist/` | 660.5 MiB |
 | Current `.love` artifact | 199.9 MiB |
-| Test suite | not run by this refresh |
-| Lint | not run by this refresh |
+| Test suite | passed: 390 tests, 0 failures |
+| Lint | passed: 0 warnings / 0 errors in 185 files |
 | Skill packages | 12 |
 
 <!-- LIVE-SNAPSHOT:END -->
