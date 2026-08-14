@@ -2,6 +2,13 @@
 
 This file is the local implementation record. Add a new entry at the top after every material site pass.
 
+## 2026-08-14 | SITE-049 | Jazz Home selector emblem correction
+
+Replaced the duplicated Jazz wordmark in the Home World Tour selector with the
+canonical 512px transparent Jazz emblem. The selector now pairs one emblem with
+the existing Jazz wordmark, matching the visual structure of Funk, Soul, and
+Disco while preserving the accessible Jazz label.
+
 ## 2026-08-14 | SITE-048 | Public v0.8.5 catalog release
 
 Published the verified 420-file v0.8.5 site through encrypted FTPS after saving
