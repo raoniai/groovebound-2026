@@ -60,7 +60,8 @@ T["Funk victory writes visual grade pillars and best record"] = function()
   }
   JourneyProgress.record_result(app, result)
   local record = app.slot.records.worlds.funk
-  H.is_true(record.score > 0)
+  H.eq(record.score, 79)
+  H.eq(record.grade, "B")
   H.is_true(record.pillars.groove > 0)
   H.is_true(record.pillars.mastery > 0)
   H.eq(app.slot.worlds.funk.clears, 1)

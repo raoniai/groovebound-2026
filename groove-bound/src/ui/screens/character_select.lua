@@ -4,6 +4,7 @@ local Icons = require("src.ui.icons")
 local settings = require("src.config.settings")
 local UIScale = require("src.ui.scale")
 local JourneyProgress = require("src.meta.journey_progress")
+local MenuChrome = require("src.ui.menu_chrome")
 
 local CharacterSelectScreen = class()
 CharacterSelectScreen.kind = "character_select"
@@ -69,54 +70,55 @@ function CharacterSelectScreen:_confirm()
   }))
 end
 
-local function draw_stat(stat, value, x, y, width, selected)
+local function draw_stat(assets, stat, value, x, y, width, selected)
   Icons.draw(stat.icon, x + 11, y + 8, 19,
     selected and { 0.30, 0.92, 1.0, 0.94 }
       or { 0.62, 0.54, 0.78, 0.72 })
   love.graphics.setFont(Fonts.get(12))
   love.graphics.setColor(0.78, 0.76, 0.86, 1)
   love.graphics.print(stat.label, x + 27, y + 2)
-  love.graphics.setColor(0.07, 0.055, 0.12, 1)
-  love.graphics.rectangle("fill", x + 93, y + 5, width - 93, 10, 4, 4)
-  love.graphics.setColor(selected and { 0.22, 0.92, 1.0, 1 }
-    or { 0.54, 0.36, 0.78, 1 })
   local fraction = math.max(0.1, math.min(1, (value - 0.75) / 0.55))
-  love.graphics.rectangle("fill", x + 93, y + 5,
-    (width - 93) * fraction, 10, 4, 4)
+  assets:draw_segmented_bar(x + 91, y + 2, width - 91, 14, fraction, {
+    frame_color = selected and { 0.54, 0.94, 1.0, 0.94 }
+      or { 0.66, 0.56, 0.84, 0.78 },
+    fill_color = selected and { 0.22, 0.92, 1.0, 1 }
+      or { 0.54, 0.36, 0.78, 1 },
+  })
 end
 
 function CharacterSelectScreen:draw()
   local screen_w, screen_h = love.graphics.getDimensions()
-  love.graphics.setColor(settings.ui.background_color)
-  love.graphics.rectangle("fill", 0, 0, screen_w, screen_h)
-  love.graphics.setColor(0.12, 0.02, 0.18, 0.55)
-  for index = 1, 14 do
-    local x = (index * 173) % screen_w
-    love.graphics.circle("fill", x, (index * 97) % screen_h, 3 + index % 5)
+  local campaign = self.app.assets.campaign
+  if campaign and campaign.title_background then
+    local background = campaign.title_background
+    local scale = math.max(screen_w / background:getWidth(),
+      screen_h / background:getHeight())
+    love.graphics.setColor(1, 1, 1, 0.38)
+    love.graphics.draw(background, screen_w / 2, screen_h / 2, 0,
+      scale, scale, background:getWidth() / 2, background:getHeight() / 2)
   end
+  love.graphics.setColor(0.008, 0.004, 0.028, 0.78)
+  love.graphics.rectangle("fill", 0, 0, screen_w, screen_h)
 
-  local w, h = UIScale.begin()
+  local w = UIScale.begin()
 
   love.graphics.setFont(Fonts.get(34))
   love.graphics.setColor(settings.ui.accent_color)
   love.graphics.printf("CHOOSE YOUR RESONANT", 0, 18, w, "center")
-  love.graphics.setFont(Fonts.get(17))
-  love.graphics.setColor(0.72, 0.70, 0.82, 1)
-  love.graphics.printf(
-    "Shared story. Different rhythm. Your complete build carries into Stage 2.",
-    0, 57, w, "center")
-
   for index, id in ipairs(self.ids) do
     local character = self.app.content.characters[id]
     local card = self.cards[index]
     local selected = index == self.selected
-    love.graphics.setColor(selected and { 0.13, 0.10, 0.24, 1 }
+    love.graphics.setColor(selected and { 0.13, 0.10, 0.24, 0.94 }
       or { 0.075, 0.06, 0.13, 1 })
-    love.graphics.rectangle("fill", card.x, card.y, card.w, card.h, 10, 10)
-    love.graphics.setColor(selected and settings.ui.accent_color
-      or { 0.32, 0.28, 0.46, 1 })
-    love.graphics.setLineWidth(selected and 4 or 2)
-    love.graphics.rectangle("line", card.x, card.y, card.w, card.h, 10, 10)
+    love.graphics.rectangle("fill", card.x + 4, card.y + 4,
+      card.w - 8, card.h - 8, 8, 8)
+    MenuChrome.panel(self.app.assets, card, {
+      corner = 42,
+      color = selected and { 1, 0.78, 0.24, 1 }
+        or { 0.58, 0.54, 0.76, 0.72 },
+    })
+    if selected then MenuChrome.focus(self.app.assets, card, { inset = -3 }) end
 
     local portrait_h = math.min(300, card.h * 0.44)
     self.app.assets:draw_portrait(
@@ -148,7 +150,7 @@ function CharacterSelectScreen:draw()
       local column = (stat_index - 1) % 2
       local row = math.floor((stat_index - 1) / 2)
       draw_stat(
-        stat, character.stats[stat.id],
+        self.app.assets, stat, character.stats[stat.id],
         card.x + 26 + column * (stat_w + stat_gap),
         stats_y + row * 27, stat_w, selected)
     end
@@ -158,11 +160,14 @@ function CharacterSelectScreen:draw()
     local info_h = math.min(98, card.y + card.h - info_y - 14)
     love.graphics.setColor(0.035, 0.025, 0.08, 0.90)
     love.graphics.rectangle("fill",
-      card.x + 20, info_y, card.w - 40, info_h, 8, 8)
-    love.graphics.setColor(selected and settings.ui.accent_color
-      or { 0.32, 0.28, 0.46, 1 })
-    love.graphics.rectangle("line",
-      card.x + 20, info_y, card.w - 40, info_h, 8, 8)
+      card.x + 22, info_y + 2, card.w - 44, info_h - 4, 6, 6)
+    MenuChrome.panel(self.app.assets, {
+      x = card.x + 20, y = info_y, w = card.w - 40, h = info_h,
+    }, {
+      corner = 24,
+      color = selected and { 1, 0.78, 0.24, 0.92 }
+        or { 0.50, 0.46, 0.68, 0.62 },
+    })
     self.app.assets:draw_weapon_icon(
       weapon.icon, card.x + 61, info_y + 41, 70)
     love.graphics.setFont(Fonts.get(13))
@@ -181,11 +186,6 @@ function CharacterSelectScreen:draw()
       card.w - 141, "left")
   end
 
-  love.graphics.setFont(Fonts.get(17))
-  love.graphics.setColor(settings.ui.text_color)
-  love.graphics.printf(
-    "← / → SELECT     •     ENTER START     •     ESC BACK",
-    0, h - 34, w, "center")
   UIScale.finish()
 end
 

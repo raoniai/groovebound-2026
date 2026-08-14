@@ -20,8 +20,8 @@ end
 function GlobalAudioControl:_rect()
   local w, h = love.graphics.getDimensions()
   local scale = UIScale.factor(w, h)
-  local size, margin = 44 * scale, 14 * scale
-  return { x = w - size - margin, y = h - size - margin,
+  local size, margin = 36 * scale, 12 * scale
+  return { x = margin, y = h - size - margin,
     w = size, h = size, scale = scale }
 end
 
@@ -58,19 +58,19 @@ function GlobalAudioControl:draw()
       or { 0.72, 0.96, 1.0, self.hovered and 1 or 0.88 },
   })
   Icons.draw(muted and "speaker_off" or "speaker",
-    r.x + r.w / 2, r.y + r.h / 2, 20 * r.scale,
+    r.x + r.w / 2, r.y + r.h / 2, 17 * r.scale,
     muted and { 1.0, 0.38, 0.50, 1 } or { 0.88, 0.96, 1.0, 1 })
   if self.hovered then
     local label = muted and "UNMUTE" or "MUTE"
     local font = Fonts.get(math.floor(13 * r.scale + 0.5))
     local tw = font:getWidth(label) + 18 * r.scale
-    self.app.assets:draw_cta_frame(r.x - tw - 8 * r.scale,
+    self.app.assets:draw_cta_frame(r.x + r.w + 8 * r.scale,
       r.y + 7 * r.scale, tw, 30 * r.scale, {
         corner = 8 * r.scale, color = { 0.74, 0.94, 1.0, 0.96 },
       })
     love.graphics.setFont(font)
     love.graphics.setColor(0.92, 0.92, 0.97, 1)
-    love.graphics.printf(label, r.x - tw - 8 * r.scale,
+    love.graphics.printf(label, r.x + r.w + 8 * r.scale,
       r.y + 14 * r.scale, tw, "center")
   end
 end

@@ -101,7 +101,7 @@ local function merge_statistics(slot, result)
   end
 end
 
-local function calculate_world_record(result)
+local function calculate_world_record(result, profile, thresholds)
   local stats = result.stats or {}
   local mechanic = result.world_mechanic or {}
   local opportunities = math.max(1, mechanic.opportunities or 1)
@@ -114,10 +114,20 @@ local function calculate_world_record(result)
     craft = math.min(100, math.floor((result.level or 1) * 9)),
     mastery = math.min(100, (mechanic.best_chain or 0) * 14),
   }
-  local score = math.floor((pillars.groove + pillars.impact + pillars.control
-    + pillars.craft + pillars.mastery) / 5 + 0.5)
-  local grade = score >= 90 and "S" or score >= 75 and "A"
-    or score >= 58 and "B" or score >= 40 and "C" or "D"
+  profile = profile or {
+    groove = 20, impact = 20, control = 20, craft = 20, world_mastery = 20,
+  }
+  local score = math.floor((
+    pillars.groove * (profile.groove or 0)
+    + pillars.impact * (profile.impact or 0)
+    + pillars.control * (profile.control or 0)
+    + pillars.craft * (profile.craft or 0)
+    + pillars.mastery * (profile.world_mastery or 0)
+  ) / 100 + 0.5)
+  local grade = "D"
+  for _, entry in ipairs(thresholds or {}) do
+    if score >= entry.minimum then grade = entry.grade end
+  end
   return { score = score, grade = grade, pillars = pillars }
 end
 
@@ -138,7 +148,11 @@ function JourneyProgress.record_result(app, result)
     local world_id = assert(result.world_id)
     local world = ensure_world(slot, world_id)
     if result.outcome == "victory" then
-      local record = calculate_world_record(result)
+      local definition = content.world_tour[world_id]
+      local profile = definition and content.grade_profiles.profiles[
+        definition.grade_profile]
+      local record = calculate_world_record(
+        result, profile, content.grade_profiles.thresholds)
       world.clears = world.clears + 1
       if record.score > (world.best_score or 0) then
         world.best_score = record.score

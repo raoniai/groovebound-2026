@@ -19,4 +19,15 @@ T["global mute stays off live run overlays and remains on cutscenes and menus"] 
   end
 end
 
+T["global mute is compact and anchored to the lower left"] = function()
+  local previous = _G.love
+  _G.love = { graphics = { getDimensions = function() return 1280, 720 end } }
+  local rect = control_for("title"):_rect()
+  _G.love = previous
+  H.eq(rect.x, 12)
+  H.eq(rect.w, 36)
+  H.eq(rect.h, 36)
+  H.eq(rect.y, 672)
+end
+
 return T

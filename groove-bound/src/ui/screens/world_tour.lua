@@ -13,11 +13,11 @@ local WorldTourScreen = class()
 WorldTourScreen.kind = "world_tour"
 
 local pillar_order = {
-  { id = "groove", label = "GROOVE" },
-  { id = "impact", label = "IMPACT" },
-  { id = "control", label = "CONTROL" },
-  { id = "craft", label = "CRAFT" },
-  { id = "mastery", label = "MASTERY" },
+  { id = "groove", label = "GROOVE", hint = "MECHANIC ACTIVATIONS" },
+  { id = "impact", label = "IMPACT", hint = "ENEMIES DEFEATED" },
+  { id = "control", label = "CONTROL", hint = "HEALTH REMAINING" },
+  { id = "craft", label = "CRAFT", hint = "BUILD LEVEL" },
+  { id = "mastery", label = "MASTERY", hint = "BEST MECHANIC CHAIN" },
 }
 
 local grade_cells = { D = 1, C = 2, B = 3, A = 4, S = 5 }
@@ -98,19 +98,19 @@ end
 function WorldTourScreen:_layout()
   local w, h, scale = UIScale.dimensions()
   self.ui_scale = scale
-  local left_w = math.min(470, w * 0.43)
-  self.catalog_rect = { x = 24, y = 100, w = left_w - 36, h = h - 202 }
+  local left_w = math.floor(w * 0.65)
+  self.catalog_rect = { x = 24, y = 100, w = left_w - 40, h = h - 202 }
   local gap = 8
-  local size = math.min(122,
-    (self.catalog_rect.w - gap * 2) / 3,
-    (self.catalog_rect.h - gap * 2) / 3)
+  local cell_w = (self.catalog_rect.w - gap * 2) / 3
+  local cell_h = (self.catalog_rect.h - gap * 2) / 3
   self.slot_rects = {}
   for index = 1, 9 do
     local col = (index - 1) % 3
     local row = math.floor((index - 1) / 3)
     self.slot_rects[index] = {
-      x = self.catalog_rect.x + col * (size + gap),
-      y = self.catalog_rect.y + row * (size + gap), w = size, h = size,
+      x = self.catalog_rect.x + col * (cell_w + gap),
+      y = self.catalog_rect.y + row * (cell_h + gap),
+      w = cell_w, h = cell_h,
     }
   end
   self.detail_rect = {
@@ -183,7 +183,7 @@ function WorldTourScreen:_draw_world_slot(world, rect, selected)
   local col = world.id == "funk" and 2 or world.id == "soul" and 3 or 4
   if available then
     self.app.assets:draw_world_identity(world.id, col, 1,
-      rect.x + rect.w * 0.16, rect.y + 5, rect.w * 0.68, rect.h * 0.68)
+      rect.x + rect.w * 0.10, rect.y + 4, rect.w * 0.80, rect.h * 0.74)
   else
     self.app.assets:draw_world_lock(rect.x + rect.w * 0.25, rect.y + 13,
       rect.w * 0.50, rect.h * 0.54, { color = { 0.66, 0.62, 0.76, 0.52 } })
@@ -194,13 +194,24 @@ function WorldTourScreen:_draw_world_slot(world, rect, selected)
   love.graphics.printf(string.upper(world.genre), rect.x + 4,
     rect.y + rect.h - 30, rect.w - 8, "center")
   if saved.best_grade and saved.best_grade ~= "" then
-    local cell = grade_cells[saved.best_grade] or 1
-    self.app.assets:draw_world_tour_icon(cell, 2,
-      rect.x + rect.w - 39, rect.y + 5, 34, 34)
-    love.graphics.setFont(Fonts.get(12)); love.graphics.setColor(1, 1, 1, 1)
-    love.graphics.printf(saved.best_grade, rect.x + rect.w - 37,
-      rect.y + 15, 30, "center")
+    self:_draw_grade_badge(saved.best_grade,
+      rect.x + rect.w - 49, rect.y + 7, 42)
   end
+end
+
+function WorldTourScreen:_draw_grade_badge(grade, x, y, size)
+  local cell = grade_cells[grade] or 1
+  self.app.assets:draw_world_tour_icon(cell, 2,
+    x + 4, y + 5, size, size, { color = { 0, 0, 0, 0.72 } })
+  self.app.assets:draw_world_tour_icon(cell, 2,
+    x, y, size, size, { color = { 1, 1, 1, 1 } })
+  local font = Fonts.heading(math.max(12, math.floor(size * 0.36)))
+  local text_y = y + (size - font:getHeight()) / 2 - 1
+  love.graphics.setFont(font)
+  love.graphics.setColor(0, 0, 0, 0.94)
+  love.graphics.printf(grade, x + 2, text_y + 3, size, "center")
+  love.graphics.setColor(1, 0.98, 1, 1)
+  love.graphics.printf(grade, x, text_y, size, "center")
 end
 
 function WorldTourScreen:_draw_record(world, rect)
@@ -216,59 +227,56 @@ function WorldTourScreen:_draw_record(world, rect)
       or { 0.42, 0.38, 0.52, 0.46 } })
 
   local icon_col = world.id == "funk" and 2 or world.id == "soul" and 3 or 4
+  local header_icon = math.min(96, rect.w * 0.25)
   if available then
     self.app.assets:draw_world_identity(world.id, icon_col, 1,
-      rect.x + 18, rect.y + 12, 112, 112)
+      rect.x + 14, rect.y + 12, header_icon, header_icon)
   else
     self.app.assets:draw_world_lock(rect.x + 36, rect.y + 25, 76, 76,
       { color = { 0.62, 0.58, 0.72, 0.50 } })
   end
-  love.graphics.setFont(Fonts.get(26))
+  love.graphics.setFont(Fonts.get(math.max(17, math.min(24, rect.w * 0.055))))
   love.graphics.setColor(available and { 1, 0.76, 0.22, 1 }
     or { 0.58, 0.55, 0.68, 1 })
-  love.graphics.printf(string.upper(world.name), rect.x + 134, rect.y + 20,
-    rect.w - 154, "left")
-  love.graphics.setFont(Fonts.get(14))
+  local title_x = rect.x + 24 + header_icon
+  love.graphics.printf(string.upper(world.name), title_x, rect.y + 20,
+    rect.w - (title_x - rect.x) - 98, "left")
+  love.graphics.setFont(Fonts.get(12))
   love.graphics.setColor(0.72, 0.72, 0.84, 1)
   love.graphics.printf(self.catalog_only and "CATALOG PREVIEW  •  START A CAMPAIGN TO PLAY"
     or unlocked and (world.implementation_status == "playable"
       and "PLAYABLE  •  WORLD MECHANIC ACTIVE" or "CATALOGED  •  COMING NEXT")
       or "LOCKED  •  CLEAR THE PREVIOUS WORLD",
-    rect.x + 134, rect.y + 59, rect.w - 154, "left")
+    title_x, rect.y + 57, rect.w - (title_x - rect.x) - 18, "left")
 
-  local badge_col = grade_cells[grade] or 1
-  self.app.assets:draw_world_tour_icon(badge_col, 2,
-    rect.x + rect.w - 112, rect.y + 82, 92, 92,
-    { color = grade ~= "" and { 1, 1, 1, 1 } or { 0.48, 0.45, 0.58, 0.42 } })
-  local badge_x, badge_y, badge_w, badge_h =
-    rect.x + rect.w - 112, rect.y + 82, 92, 92
-  local grade_font = Fonts.get(34)
-  local grade_text = grade ~= "" and grade or "—"
-  local text_y = badge_y + (badge_h - grade_font:getHeight()) / 2 - 1
-  love.graphics.setFont(grade_font)
-  love.graphics.setColor(0.005, 0.002, 0.018, grade ~= "" and 0.95 or 0.65)
-  love.graphics.printf(grade_text, badge_x + 3, text_y + 4, badge_w, "center")
-  love.graphics.setColor(grade ~= "" and { 1, 0.96, 1, 1 }
-    or { 0.55, 0.52, 0.64, 0.8 })
-  love.graphics.printf(grade_text, badge_x, text_y, badge_w, "center")
+  if grade ~= "" then
+    self:_draw_grade_badge(grade, rect.x + rect.w - 86, rect.y + 12, 70)
+  end
 
-  local bar_x, bar_y = rect.x + 28, rect.y + 154
-  local bar_w = math.max(120, rect.w - 168)
+  local bar_x, bar_y = rect.x + 18, rect.y + 116
+  local guide_h = rect.h < 450 and 142 or 166
+  local bar_area_h = math.max(128, rect.h - 116 - guide_h)
+  local bar_gap = bar_area_h / 5
+  local bar_w = rect.w - 36
   for index, pillar in ipairs(pillar_order) do
-    local y = bar_y + (index - 1) * 39
+    local y = bar_y + (index - 1) * bar_gap
     local value = record.pillars[pillar.id] or 0
-    love.graphics.setFont(Fonts.get(12))
+    love.graphics.setFont(Fonts.get(11))
     love.graphics.setColor(0.76, 0.74, 0.86, 1)
     love.graphics.print(pillar.label, bar_x, y)
-    love.graphics.setColor(0.055, 0.032, 0.10, 1)
-    love.graphics.rectangle("fill", bar_x + 82, y + 3, bar_w, 14, 7, 7)
-    love.graphics.setColor(index == 1 and { 1.0, 0.66, 0.18, 1 }
-      or { 0.28, 0.88, 1.0, 1 })
-    love.graphics.rectangle("fill", bar_x + 82, y + 3,
-      bar_w * math.min(1, value / 100), 14, 7, 7)
+    if rect.w >= 320 then
+      love.graphics.setFont(Fonts.get(8))
+      love.graphics.setColor(0.52, 0.58, 0.72, 1)
+      love.graphics.print(pillar.hint, bar_x + 62, y + 2)
+    end
     love.graphics.setColor(0.92, 0.92, 1, 1)
-    love.graphics.printf(tostring(value), bar_x + 88 + bar_w, y,
-      38, "right")
+    love.graphics.printf(tostring(value), bar_x, y, bar_w, "right")
+    self.app.assets:draw_segmented_bar(bar_x, y + 14, bar_w, 12,
+      math.min(1, value / 100), {
+        frame_color = { 0.66, 0.80, 1.0, 0.78 },
+        fill_color = index == 1 and { 1.0, 0.66, 0.18, 1 }
+          or { 0.28, 0.88, 1.0, 1 },
+      })
   end
   local profile = self.app.content.grade_profiles.profiles[world.grade_profile] or {}
   local focus = {}
@@ -276,26 +284,28 @@ function WorldTourScreen:_draw_record(world, rect)
     focus[#focus + 1] = { label = pillar.label, value = profile[pillar.id] or 0 }
   end
   table.sort(focus, function(a, b) return a.value > b.value end)
-  local guide_y = rect.y + rect.h - 100
-  love.graphics.setFont(Fonts.get(10)); love.graphics.setColor(0.34, 0.90, 1, 1)
+  local guide_y = rect.y + rect.h - guide_h + 8
+  love.graphics.setFont(Fonts.get(13)); love.graphics.setColor(0.34, 0.90, 1, 1)
   love.graphics.print("RANK GUIDE", rect.x + 24, guide_y)
-  love.graphics.setColor(0.74, 0.76, 0.86, 1)
-  love.graphics.printf("BUILD " .. focus[1].label .. " " .. focus[1].value
-      .. "%  •  " .. focus[2].label .. " " .. focus[2].value .. "%",
-    rect.x + 108, guide_y, rect.w - 132, "left")
+  love.graphics.setFont(Fonts.get(9)); love.graphics.setColor(0.74, 0.76, 0.86, 1)
+  love.graphics.printf("FOCUS: " .. focus[1].label .. " " .. focus[1].value
+      .. "%  +  " .. focus[2].label .. " " .. focus[2].value .. "%",
+    rect.x + 24, guide_y + 18, rect.w - 48, "left")
   local thresholds = self.app.content.grade_profiles.thresholds
   for index, entry in ipairs(thresholds) do
-    local x = rect.x + 24 + (index - 1) * math.min(72, (rect.w - 52) / 5)
-    self.app.assets:draw_world_tour_icon(grade_cells[entry.grade] or 1, 2,
-      x, guide_y + 18, 28, 28, { color = { 1, 1, 1, 0.88 } })
-    love.graphics.setFont(Fonts.get(9)); love.graphics.setColor(0.90, 0.90, 0.97, 1)
-    love.graphics.print(entry.grade .. " " .. entry.minimum, x + 31, guide_y + 27)
+    local row = math.floor((index - 1) / 3)
+    local col = (index - 1) % 3
+    local cell_w = (rect.w - 48) / 3
+    local x, y = rect.x + 24 + col * cell_w, guide_y + 39 + row * 40
+    self:_draw_grade_badge(entry.grade, x, y, 34)
+    love.graphics.setFont(Fonts.get(13)); love.graphics.setColor(0.92, 0.92, 0.99, 1)
+    love.graphics.print(entry.minimum .. "+", x + 38, y + 9)
   end
-  love.graphics.setFont(Fonts.get(14))
+  love.graphics.setFont(Fonts.get(10))
   love.graphics.setColor(0.68, 0.66, 0.78, 1)
   love.graphics.printf("BEST SCORE " .. NumberFormat.integer(saved.best_score or 0)
       .. "  •  CLEARS " .. tostring(saved.clears or 0),
-    rect.x + 24, rect.y + rect.h - 39, rect.w - 48, "center")
+    rect.x + 24, rect.y + rect.h - 22, rect.w - 48, "center")
 end
 
 function WorldTourScreen:draw()

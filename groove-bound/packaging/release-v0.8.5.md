@@ -9,7 +9,11 @@ shared desktop build identity synchronized across every public surface.
 - The Perk Catalog adds readable perk summaries, rank-safe cards, disabled max
   states, side-by-side actions, and an aggregate owned-perk/stat panel.
 - World Tour adds themed route emblems, lock identities for unavailable worlds,
-  sprite-backed grades, and a concise grade guide.
+  shadowed sprite-backed grades, weighted performance scoring, a clearer rank
+  guide, and a larger two-thirds route grid.
+- HP, Guard, XP, boss, character-stat, and World Tour bars share the same
+  mirrored sprite caps; character selection now uses the same sprite panels.
+- The global menu mute control is smaller and anchored to the lower left.
 - Starting-loadout selection now previews current-versus-selected combat stats
   and the exact evolution combination for the hovered gear.
 - Remaining player actions use the shared sprite-backed CTA presentation.

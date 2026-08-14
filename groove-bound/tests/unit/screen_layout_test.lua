@@ -41,6 +41,7 @@ T["World Tour slots, records and campaign actions fit supported canvases"] = fun
       screen:_layout()
       H.is_true(inside(screen.catalog_rect, dimensions[1], dimensions[2]))
       H.is_true(inside(screen.detail_rect, dimensions[1], dimensions[2]))
+      H.is_true(screen.catalog_rect.w > screen.detail_rect.w)
       H.is_false(overlaps(screen.catalog_rect, screen.detail_rect))
       for _, rect in ipairs(screen.slot_rects) do
         H.is_true(inside(rect, dimensions[1], dimensions[2]))

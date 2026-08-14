@@ -563,16 +563,17 @@ function Assets:draw_segmented_bar(x, y, w, h, fraction, opts)
 
   love.graphics.setColor(opts.frame_color or { 1, 1, 1, 1 })
   local left = self.hud_interface.bar_left
-  local right = self.hud_interface.bar_right
   local left_w, left_h = left:getDimensions()
-  local right_w, right_h = right:getDimensions()
   love.graphics.draw(left, x, y, 0, cap_w / left_w, h / left_h)
   -- The one-pixel overlap hides sampling seams between the fixed corner
   -- sprites and the repeated centre rail at fractional UI scales.
   draw_horizontal_tiles(
     self.hud_interface.bar_middle, x + cap_w - 1, y, middle_w + 2, h)
-  love.graphics.draw(right, x + w - cap_w, y, 0,
-    cap_w / right_w, h / right_h)
+  -- Mirror the proven left cap for the right edge. Both ends now share the
+  -- exact silhouette and connection point instead of relying on a mismatched
+  -- prototype right-cap crop.
+  love.graphics.draw(left, x + w, y, 0,
+    -cap_w / left_w, h / left_h)
 
   local inset_x, inset_y = math.max(3, h * 0.18), h * 0.27
   local fill_w = math.max(0, (w - inset_x * 2) * fraction)
