@@ -98,7 +98,7 @@ T["playable World Tour selection asks for a character before starting"] = functi
   H.is_true(type(switched.opts.on_back) == "function")
 end
 
-T["Perk database CTAs remain inside the detail panel and above hints"] = function()
+T["Perk database CTAs sit side by side inside the detail panel"] = function()
   for _, dimensions in ipairs({ { 800, 600 }, { 1280, 720 } }) do
     with_dimensions(dimensions[1], dimensions[2], function()
       local screen = PerkDatabase({ content = Content })
@@ -112,6 +112,7 @@ T["Perk database CTAs remain inside the detail panel and above hints"] = functio
         H.is_true(button.y + button.h <= dimensions[2] - 38)
       end
       H.is_false(overlaps(screen.buttons.buttons[1], screen.buttons.buttons[2]))
+      H.eq(screen.buttons.buttons[1].y, screen.buttons.buttons[2].y)
     end)
   end
 end

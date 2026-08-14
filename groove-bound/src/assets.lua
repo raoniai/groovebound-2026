@@ -267,8 +267,14 @@ function Assets.load()
     self.world_tour_ui_cell_h = grid_quads(self.world_tour_ui, 5, 2, 8)
   self.world_interface = image(
     "assets/generated/campaign/world-interface-atlas.png")
-  self.jazz_world_logo = image(
-    "assets/generated/campaign/jazz-world-logo.png")
+  self.world_emblems = {}
+  for _, id in ipairs({ "jazz", "house", "techno", "cosmic-boogie",
+    "soulful-garage", "future-funk" }) do
+    self.world_emblems[id:gsub("-", "_")] = image(
+      "assets/generated/campaign/world-emblems/" .. id .. ".png")
+  end
+  self.world_lock = image(
+    "assets/generated/campaign/world-tour-sprites/ui/world-tour/locked-world.png")
   self.world_interface_quads,
     self.world_interface_cell_w,
     self.world_interface_cell_h = grid_quads(self.world_interface, 5, 2, 8)
@@ -1055,15 +1061,21 @@ function Assets:draw_world_interface(col, row, x, y, w, h, opts)
 end
 
 function Assets:draw_world_identity(world_id, col, row, x, y, w, h, opts)
-  if world_id ~= "jazz" then
+  local emblem = self.world_emblems and self.world_emblems[world_id]
+  if not emblem then
     return self:draw_world_interface(col, row, x, y, w, h, opts)
   end
   opts = opts or {}
-  local source_w, source_h = self.jazz_world_logo:getDimensions()
+  local source_w, source_h = emblem:getDimensions()
   local scale = math.min(w / source_w, h / source_h)
   love.graphics.setColor(opts.color or { 1, 1, 1, 1 })
-  love.graphics.draw(self.jazz_world_logo,
+  love.graphics.draw(emblem,
     x + w / 2, y + h / 2, 0, scale, scale, source_w / 2, source_h / 2)
+  return true
+end
+
+function Assets:draw_world_lock(x, y, w, h, opts)
+  draw_centered_fit(self.world_lock, x, y, w, h, opts)
   return true
 end
 

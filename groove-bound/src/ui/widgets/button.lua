@@ -23,6 +23,7 @@ function Button:init(opts)
   self.draw_icon = opts.draw_icon
   self.icon_size = opts.icon_size
   self.renderer = opts.renderer
+  self.disabled = opts.disabled == true
 end
 
 function Button:contains(px, py)
@@ -120,7 +121,7 @@ end
 
 function ButtonList:confirm()
   local b = self.buttons[self.focus_index]
-  if b then b.on_press() end
+  if b and not b.disabled then b.on_press() end
 end
 
 function ButtonList:keypressed(key)
@@ -171,6 +172,7 @@ function ButtonList:mousepressed(x, y, mouse_button)
   if mouse_button ~= 1 then return false end
   for _, b in ipairs(self.buttons) do
     if b:contains(x, y) then
+      if b.disabled then return true end
       b.on_press()
       return true
     end

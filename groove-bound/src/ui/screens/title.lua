@@ -1,6 +1,5 @@
 local class = require("src.core.class")
 local Fonts = require("src.ui.fonts")
-local Hints = require("src.ui.controller_hints")
 local settings = require("src.config.settings")
 local widgets = require("src.ui.widgets.button")
 local UIScale = require("src.ui.scale")
@@ -267,11 +266,6 @@ function TitleScreen:draw()
       scale, scale, logo:getWidth() / 2, 0)
   end
 
-  love.graphics.setFont(Fonts.get(16))
-  love.graphics.setColor(0.88, 0.92, 1.0, 0.94)
-  love.graphics.printf("RESTORE RHYTHM TO THE UNIVERSE",
-    0, math.max(320, h * 0.465), w, "center")
-
   self.button_list:draw()
 
   love.graphics.setColor(0.22, 0.78, 0.92, 0.52)
@@ -280,16 +274,9 @@ function TitleScreen:draw()
       divider.w, 1)
   end
 
-  love.graphics.setColor(0.01, 0.005, 0.035, 0.78)
-  love.graphics.rectangle("fill", 0, h - 48, w, 48)
-  Hints.draw({
-    { symbol = "dpad", label = "Navigate" },
-    { symbol = "cross", label = "Select" },
-    { symbol = "options", label = "Pause in game" },
-  }, h - 34, w)
   love.graphics.setFont(Fonts.get(10))
-  love.graphics.setColor(0.68, 0.72, 0.82, 0.78)
-  love.graphics.print(BuildInfo.label(), 12, h - 18)
+  love.graphics.setColor(0.68, 0.72, 0.82, 0.62)
+  love.graphics.print(BuildInfo.label(), 12, h - 14)
   UIScale.finish()
 end
 

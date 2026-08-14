@@ -178,6 +178,17 @@ T["runtime UI artwork and character logos have stable production mappings"] = fu
   H.is_true(jazz_logo_w >= 1000)
   H.is_true(jazz_logo_h >= 500)
   H.eq(png_color_type("assets/generated/campaign/jazz-world-logo.png"), 6)
+  for _, world_id in ipairs({
+    "jazz", "house", "techno", "cosmic-boogie",
+    "soulful-garage", "future-funk",
+  }) do
+    local path = "assets/generated/campaign/world-emblems/"
+      .. world_id .. ".png"
+    local width, height = png_dimensions(path)
+    H.eq(width, 512)
+    H.eq(height, 512)
+    H.eq(png_color_type(path), 6)
+  end
 end
 
 T["World Tour atlas repair keeps every isolated sprite auditable"] = function()

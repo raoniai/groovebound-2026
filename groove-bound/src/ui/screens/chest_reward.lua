@@ -3,6 +3,7 @@ local Fonts = require("src.ui.fonts")
 local settings = require("src.config.settings")
 local Hints = require("src.ui.controller_hints")
 local UIScale = require("src.ui.scale")
+local MenuChrome = require("src.ui.menu_chrome")
 
 local ChestRewardScreen = class()
 ChestRewardScreen.kind = "chest_reward"
@@ -484,16 +485,12 @@ function ChestRewardScreen:draw()
 
   if self.complete then
     local rect = self.continue_rect
-    local pulse = 0.88 + math.sin(self.elapsed * 4) * 0.10
-    love.graphics.setColor(0.035, 0.012, 0.08, 0.98)
-    love.graphics.rectangle("fill", rect.x, rect.y, rect.w, rect.h, 8, 8)
-    love.graphics.setColor(1.0, 0.76, 0.22, pulse)
-    love.graphics.setLineWidth(3)
-    love.graphics.rectangle("line", rect.x, rect.y, rect.w, rect.h, 8, 8)
-    love.graphics.setLineWidth(1)
-    love.graphics.setColor(settings.ui.text_color)
-    love.graphics.setFont(Fonts.get(20))
-    love.graphics.printf("CONTINUE", rect.x, rect.y + 14, rect.w, "center")
+    MenuChrome.action(self.app.assets, {
+      x = rect.x, y = rect.y, w = rect.w, h = rect.h,
+      focused = true, hovered = false, variant = "primary",
+    }, {
+      label = "CONTINUE", menu_cell = 1, font_size = 20, icon_size = 42,
+    })
   end
 
   love.graphics.setColor(0.012, 0.006, 0.04, 0.96)

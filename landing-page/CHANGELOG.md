@@ -2,6 +2,12 @@
 
 This file is the local implementation record. Add a new entry at the top after every material site pass.
 
+## 2026-08-14 | SITE-046 | v0.8.5 catalog and interface release sync
+
+Updated the Home, Catalog, and Builder release identity for the v0.8.5 desktop
+packages. Stable macOS and Windows actions continue to use GitHub Latest and
+will resolve to the synchronized catalog-polish build after publication.
+
 ## 2026-08-14 | SITE-045 | Complete scenario archive and world-card correction
 
 Removed the standalone General category and moved the Jazz emblem into the Jazz

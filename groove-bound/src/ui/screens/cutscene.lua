@@ -3,6 +3,7 @@ local Fonts = require("src.ui.fonts")
 local settings = require("src.config.settings")
 local Hints = require("src.ui.controller_hints")
 local UIScale = require("src.ui.scale")
+local MenuChrome = require("src.ui.menu_chrome")
 
 local CutsceneScreen = class()
 CutsceneScreen.kind = "cutscene"
@@ -282,19 +283,15 @@ function CutsceneScreen:_draw_video(w, h)
     self.video_replay_rect = nil
     self.video_next_rect = nil
     self.video_skip_rect = self:video_skip_layout(w, h)
-    love.graphics.setColor(0.03, 0.015, 0.08, 0.88)
-    love.graphics.rectangle("fill", self.video_skip_rect.x,
-      self.video_skip_rect.y, self.video_skip_rect.w,
-      self.video_skip_rect.h, 8 * ui_scale, 8 * ui_scale)
-    love.graphics.setColor(1.0, 0.72, 0.20, 1)
-    love.graphics.setLineWidth(2)
-    love.graphics.rectangle("line", self.video_skip_rect.x,
-      self.video_skip_rect.y, self.video_skip_rect.w,
-      self.video_skip_rect.h, 8 * ui_scale, 8 * ui_scale)
-    love.graphics.printf("SKIP", self.video_skip_rect.x,
-      self.video_skip_rect.y + 11 * ui_scale,
-      self.video_skip_rect.w, "center")
-    love.graphics.setLineWidth(1)
+    MenuChrome.action(self.app.assets, {
+      x = self.video_skip_rect.x, y = self.video_skip_rect.y,
+      w = self.video_skip_rect.w, h = self.video_skip_rect.h,
+      focused = false, hovered = false, variant = "default",
+    }, {
+      label = "SKIP", menu_cell = 8,
+      font_size = math.floor(17 * ui_scale + 0.5),
+      icon_size = 34 * ui_scale,
+    })
     love.graphics.setFont(Fonts.get(math.floor(13 * ui_scale + 0.5)))
     love.graphics.setColor(0.78, 0.76, 0.86, 0.90)
     love.graphics.printf(self.video_paused

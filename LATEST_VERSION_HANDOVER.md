@@ -14,20 +14,20 @@ This document answers four questions: what is authoritative, what the latest ver
 
 <!-- LIVE-SNAPSHOT:START -->
 
-_Generated from live repository evidence: 2026-08-14 13:51 AEST_
+_Generated from live repository evidence: 2026-08-14 14:05 AEST_
 
 | Field | Live value |
 |---|---|
 | Branch | `codex/ui-catalog-v0.8.5` |
-| HEAD | `cf38e19` — feat: catalog every playable scenario asset |
+| HEAD | `63c0432` — docs: record complete catalog deployment |
 | Upstream | `origin/codex/world-tour-v1` |
-| Compared with `origin/main` | 19 ahead, 1 behind |
-| Working changes | 28 files: 27 game, 0 site, 0 skills/package |
+| Compared with `origin/main` | 20 ahead, 1 behind |
+| Working changes | 40 files: 33 game, 7 site, 0 skills/package |
 | Lua source/test files | 119 source, 64 test |
 | Game tree excluding `dist/` | 660.5 MiB |
 | Current `.love` artifact | 199.9 MiB |
-| Test suite | passed: 390 tests, 0 failures |
-| Lint | passed: 0 warnings / 0 errors in 185 files |
+| Test suite | not run by this refresh |
+| Lint | not run by this refresh |
 | Skill packages | 12 |
 
 <!-- LIVE-SNAPSHOT:END -->

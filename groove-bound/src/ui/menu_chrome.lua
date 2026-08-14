@@ -34,7 +34,7 @@ function MenuChrome.cta(assets, rect, opts)
   local focused = opts.focused == true
   assets:draw_cta_frame(rect.x, rect.y, rect.w, rect.h, {
     corner = opts.corner or math.min(18, rect.h * 0.30),
-    color = { 1, 1, 1, opts.alpha or (focused and 1 or 0.82) },
+    color = opts.color or { 1, 1, 1, opts.alpha or (focused and 1 or 0.82) },
   })
   if focused then
     local inset = opts.inset or -3
@@ -58,14 +58,29 @@ function MenuChrome.action(assets, button, opts)
   opts = opts or {}
   MenuChrome.cta(assets, button, {
     focused = button.focused or button.hovered,
-    alpha = button.variant == "primary" and 1 or 0.84,
+    alpha = button.disabled and 0.34 or button.variant == "primary" and 1 or 0.84,
+    color = button.variant == "danger"
+      and { 1.0, 0.08, 0.13, button.focused and 1 or 0.92 } or nil,
   })
+  if button.variant == "danger" then
+    love.graphics.setColor(1.0, 0.01, 0.04,
+      button.focused and 0.42 or 0.32)
+    love.graphics.rectangle("fill", button.x + 6, button.y + 6,
+      button.w - 12, button.h - 12, 4, 4)
+    assets:draw_cta_focus(button.x - 2, button.y - 2,
+      button.w + 4, button.h + 4, {
+        corner = math.min(18, button.h * 0.34),
+        color = { 1.0, 0.04, 0.08, button.focused and 1 or 0.88 },
+      })
+  end
 
   local icon_size = math.min(button.h - 8, opts.icon_size or 52)
   if opts.menu_cell then
     assets:draw_menu_stat_icon(opts.menu_cell,
       button.x + 8, button.y + (button.h - icon_size) / 2,
-      icon_size, { color = { 1, 1, 1, button.focused and 1 or 0.82 } })
+      icon_size, { color = button.variant == "danger"
+        and { 1, 0.18, 0.22, 1 }
+        or { 1, 1, 1, button.disabled and 0.34 or button.focused and 1 or 0.82 } })
   elseif opts.settings_cell then
     assets:draw_settings_icon(opts.settings_cell,
       button.x + 8, button.y + (button.h - icon_size) / 2,
@@ -88,7 +103,8 @@ function MenuChrome.action(assets, button, opts)
   local text_w = button.w - (text_x - button.x) - 14
   love.graphics.setFont(Fonts.heading(opts.font_size or 18))
   love.graphics.setColor(button.variant == "danger"
-    and { 1.0, 0.58, 0.62, 1 }
+    and { 1.0, 0.12, 0.18, 1 }
+    or button.disabled and { 0.62, 0.66, 0.74, 0.42 }
     or button.focused and { 1.0, 0.90, 0.52, 1 }
     or settings.ui.text_color)
   love.graphics.printf(opts.label or button.label, text_x,

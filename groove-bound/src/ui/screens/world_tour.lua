@@ -7,6 +7,7 @@ local NumberFormat = require("src.ui.number_format")
 local JourneyProgress = require("src.meta.journey_progress")
 local WorldTourSession = require("src.meta.world_tour_session")
 local SpatialNavigation = require("src.ui.spatial_navigation")
+local MenuChrome = require("src.ui.menu_chrome")
 
 local WorldTourScreen = class()
 WorldTourScreen.kind = "world_tour"
@@ -119,18 +120,28 @@ function WorldTourScreen:_layout()
   local total = bw * 2 + button_gap
   local button_y = h - 82
   local buttons = {}
+  local function button(opts)
+    opts.renderer = function(value)
+      MenuChrome.action(self.app.assets, value, {
+        menu_cell = opts.menu_cell, label = value.label,
+        font_size = opts.font_size, icon_size = 42,
+      })
+    end
+    return widgets.Button(opts)
+  end
   if not self.catalog_only then
-    buttons[#buttons + 1] = widgets.Button({
+    buttons[#buttons + 1] = button({
       label = "PLAY SELECTED WORLD", x = (w - total) / 2, y = button_y,
       w = bw, h = bh, font_size = 19, variant = "primary",
+      menu_cell = 3,
       on_press = function() self:_play_selected() end,
     })
   end
-  buttons[#buttons + 1] = widgets.Button({
+  buttons[#buttons + 1] = button({
       label = "RETURN TO TITLE",
       x = self.catalog_only and (w - bw) / 2
         or (w - total) / 2 + bw + button_gap,
-      y = button_y, w = bw, h = bh, font_size = 18,
+      y = button_y, w = bw, h = bh, font_size = 18, menu_cell = 8,
       on_press = function()
         local TitleScreen = require("src.ui.screens.title")
         self.app.states:switch(TitleScreen(self.app))
@@ -161,45 +172,59 @@ end
 
 function WorldTourScreen:_draw_world_slot(world, rect, selected)
   local saved, unlocked = self:_world_state(world)
+  local available = unlocked and world.implementation_status == "playable"
   love.graphics.setColor(selected and { 0.12, 0.06, 0.20, 0.98 }
     or { 0.025, 0.016, 0.06, 0.94 })
   love.graphics.rectangle("fill", rect.x, rect.y, rect.w, rect.h, 10, 10)
   self.app.assets:draw_hud_frame(rect.x, rect.y, rect.w, rect.h, {
     color = selected and { 1, 0.74, 0.20, 1 }
-      or unlocked and { 0.36, 0.92, 1, 0.78 } or { 0.42, 0.38, 0.52, 0.42 },
+      or available and { 0.36, 0.92, 1, 0.78 } or { 0.42, 0.38, 0.52, 0.42 },
   })
   local col = world.id == "funk" and 2 or world.id == "soul" and 3 or 4
-  self.app.assets:draw_world_identity(world.id, col, 1,
-    rect.x + rect.w * 0.16, rect.y + 5, rect.w * 0.68, rect.h * 0.68,
-    { color = unlocked and { 1, 1, 1, 1 } or { 0.52, 0.48, 0.62, 0.48 } })
+  if available then
+    self.app.assets:draw_world_identity(world.id, col, 1,
+      rect.x + rect.w * 0.16, rect.y + 5, rect.w * 0.68, rect.h * 0.68)
+  else
+    self.app.assets:draw_world_lock(rect.x + rect.w * 0.25, rect.y + 13,
+      rect.w * 0.50, rect.h * 0.54, { color = { 0.66, 0.62, 0.76, 0.52 } })
+  end
   love.graphics.setFont(Fonts.get(math.max(10, math.min(14, rect.w * 0.12))))
-  love.graphics.setColor(unlocked and settings.ui.text_color
+  love.graphics.setColor(available and settings.ui.text_color
     or { 0.55, 0.52, 0.64, 1 })
   love.graphics.printf(string.upper(world.genre), rect.x + 4,
     rect.y + rect.h - 30, rect.w - 8, "center")
   if saved.best_grade and saved.best_grade ~= "" then
-    love.graphics.setColor(1, 0.78, 0.22, 1)
-    love.graphics.printf(saved.best_grade, rect.x + rect.w - 30,
-      rect.y + 8, 22, "center")
+    local cell = grade_cells[saved.best_grade] or 1
+    self.app.assets:draw_world_tour_icon(cell, 2,
+      rect.x + rect.w - 39, rect.y + 5, 34, 34)
+    love.graphics.setFont(Fonts.get(12)); love.graphics.setColor(1, 1, 1, 1)
+    love.graphics.printf(saved.best_grade, rect.x + rect.w - 37,
+      rect.y + 15, 30, "center")
   end
 end
 
 function WorldTourScreen:_draw_record(world, rect)
   local saved, unlocked = self:_world_state(world)
+  local available = unlocked and world.implementation_status == "playable"
   local record = self.app.slot and self.app.slot.records.worlds[world.id]
     or { pillars = {} }
   local grade = saved.best_grade or ""
   love.graphics.setColor(0.022, 0.012, 0.058, 0.96)
   love.graphics.rectangle("fill", rect.x, rect.y, rect.w, rect.h, 14, 14)
   self.app.assets:draw_hud_frame(rect.x, rect.y, rect.w, rect.h,
-    { color = unlocked and { 0.36, 0.92, 1, 0.78 } or { 0.42, 0.38, 0.52, 0.46 } })
+    { color = available and { 0.36, 0.92, 1, 0.78 }
+      or { 0.42, 0.38, 0.52, 0.46 } })
 
   local icon_col = world.id == "funk" and 2 or world.id == "soul" and 3 or 4
-  self.app.assets:draw_world_identity(world.id, icon_col, 1,
-    rect.x + 18, rect.y + 12, 112, 112,
-    { color = unlocked and { 1, 1, 1, 1 } or { 0.48, 0.45, 0.58, 0.48 } })
+  if available then
+    self.app.assets:draw_world_identity(world.id, icon_col, 1,
+      rect.x + 18, rect.y + 12, 112, 112)
+  else
+    self.app.assets:draw_world_lock(rect.x + 36, rect.y + 25, 76, 76,
+      { color = { 0.62, 0.58, 0.72, 0.50 } })
+  end
   love.graphics.setFont(Fonts.get(26))
-  love.graphics.setColor(unlocked and { 1, 0.76, 0.22, 1 }
+  love.graphics.setColor(available and { 1, 0.76, 0.22, 1 }
     or { 0.58, 0.55, 0.68, 1 })
   love.graphics.printf(string.upper(world.name), rect.x + 134, rect.y + 20,
     rect.w - 154, "left")
@@ -245,6 +270,27 @@ function WorldTourScreen:_draw_record(world, rect)
     love.graphics.printf(tostring(value), bar_x + 88 + bar_w, y,
       38, "right")
   end
+  local profile = self.app.content.grade_profiles.profiles[world.grade_profile] or {}
+  local focus = {}
+  for _, pillar in ipairs(pillar_order) do
+    focus[#focus + 1] = { label = pillar.label, value = profile[pillar.id] or 0 }
+  end
+  table.sort(focus, function(a, b) return a.value > b.value end)
+  local guide_y = rect.y + rect.h - 100
+  love.graphics.setFont(Fonts.get(10)); love.graphics.setColor(0.34, 0.90, 1, 1)
+  love.graphics.print("RANK GUIDE", rect.x + 24, guide_y)
+  love.graphics.setColor(0.74, 0.76, 0.86, 1)
+  love.graphics.printf("BUILD " .. focus[1].label .. " " .. focus[1].value
+      .. "%  •  " .. focus[2].label .. " " .. focus[2].value .. "%",
+    rect.x + 108, guide_y, rect.w - 132, "left")
+  local thresholds = self.app.content.grade_profiles.thresholds
+  for index, entry in ipairs(thresholds) do
+    local x = rect.x + 24 + (index - 1) * math.min(72, (rect.w - 52) / 5)
+    self.app.assets:draw_world_tour_icon(grade_cells[entry.grade] or 1, 2,
+      x, guide_y + 18, 28, 28, { color = { 1, 1, 1, 0.88 } })
+    love.graphics.setFont(Fonts.get(9)); love.graphics.setColor(0.90, 0.90, 0.97, 1)
+    love.graphics.print(entry.grade .. " " .. entry.minimum, x + 31, guide_y + 27)
+  end
   love.graphics.setFont(Fonts.get(14))
   love.graphics.setColor(0.68, 0.66, 0.78, 1)
   love.graphics.printf("BEST SCORE " .. NumberFormat.integer(saved.best_score or 0)
@@ -267,13 +313,10 @@ function WorldTourScreen:draw()
   love.graphics.setColor(0.008, 0.004, 0.028, 0.78)
   love.graphics.rectangle("fill", 0, 0, screen_w, screen_h)
   local w, h = UIScale.begin()
-  self.app.assets:draw_world_tour_icon(1, 1, 24, 10, 82, 82)
+  self.app.assets:draw_menu_stat_icon(3, 24, 10, 76)
   love.graphics.setFont(Fonts.get(36))
   love.graphics.setColor(1, 0.76, 0.22, 1)
   love.graphics.print("WORLD TOUR", 108, 18)
-  love.graphics.setFont(Fonts.get(14))
-  love.graphics.setColor(0.76, 0.76, 0.88, 1)
-  love.graphics.print("CAMPAIGN CATALOG  •  RECORDS  •  RANKS", 110, 59)
 
   for index, world in ipairs(self.worlds) do
     self:_draw_world_slot(world, self.slot_rects[index], index == self.selected)

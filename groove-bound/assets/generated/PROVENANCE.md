@@ -314,6 +314,32 @@ despill and one-pixel contraction helper. The floor atlas was normalized to
 four opaque 512x512 cells. Runtime dimensions, color types and cell mappings
 are regression-tested.
 
+## World Tour catalog emblem suite
+
+**Generated:** 2026-08-14 with OpenAI image generation in Codex built-in mode
+
+| Runtime file | World identity | SHA-256 |
+|---|---|---|
+| `campaign/world-emblems/jazz.png` | Jazz brass-and-piano crest | `f1ba475c274c69832ccf493cc89df31f702a44aaa73fb3936daba7bc586d7a9a` |
+| `campaign/world-emblems/house.png` | House club-speaker crest | `5e5f3a7e960ec5ccd9f93c2be8a77dc2d46eb2498dc009fd1a71a6d017da6634` |
+| `campaign/world-emblems/techno.png` | Techno synth-circuit crest | `169e7e40c2ff1160b0983c4d57e191fde705add9878c47853f84ba553c0e6d7f` |
+| `campaign/world-emblems/cosmic-boogie.png` | Cosmic Boogie rocket-dancer crest | `d28dbe864713285ddafa90e9726b6c16806a49dc1fca0cf554baf0f21860699b` |
+| `campaign/world-emblems/soulful-garage.png` | Soulful Garage shutter-and-heart crest | `41e8995de0df7b33790e5667d04196f4b3c37da96975b80d95891cd049bde94a` |
+| `campaign/world-emblems/future-funk.png` | Future Funk neon-bass crest | `16060b13b564fc362e66a6850736c06a2fd3ec63c2d61ce8e5f2dc00ca0a2623` |
+
+Each prompt requested one centered, text-free world emblem in the established
+Groove Bound dense pixel-painted style, with gold bevels, cyan-magenta edge
+light, generous isolation and a uniform chroma-green background. The existing
+`world-interface-atlas.png` was supplied as the visual reference; the subject
+brief then specified the instrument, architecture or cosmic motif unique to
+each world.
+
+Untouched 1536-pixel chroma sources are retained below
+`source-candidates/2026-08-14-world-emblems/` and excluded from packages. The
+bundled soft-matte/despill helper removed the green background, and macOS image
+tools normalized each runtime emblem to a 512x512 RGBA PNG. Runtime dimensions,
+alpha support and loader mappings are regression-tested.
+
 ## Jazz World catalog emblem
 
 **Generated:** 2026-08-14 with OpenAI image generation in Codex built-in mode

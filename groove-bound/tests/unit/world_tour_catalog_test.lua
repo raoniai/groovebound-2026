@@ -18,6 +18,8 @@ T["World Tour catalog has nine stable worlds and four playable routes"] = functi
   H.eq(content.world_tour.jazz.order, 4)
   H.eq(content.world_tour.jazz.implementation_status, "playable")
   H.eq(content.world_tour.jazz.first_clear_unlock, "house")
+  H.eq(content.world_tour.house.genre, "House")
+  H.eq(content.world_tour.techno.genre, "Techno")
   H.is_true(#content.world_tour_waves.funk >= 5)
   H.is_true(#content.world_tour_waves.soul >= 5)
   H.is_true(#content.world_tour_waves.disco >= 5)

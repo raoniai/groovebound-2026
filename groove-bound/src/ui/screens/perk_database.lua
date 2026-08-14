@@ -1,9 +1,9 @@
 local class = require("src.core.class")
 local Fonts = require("src.ui.fonts")
-local Hints = require("src.ui.controller_hints")
 local widgets = require("src.ui.widgets.button")
 local UIScale = require("src.ui.scale")
 local PerkProgress = require("src.meta.perk_progress")
+local PerkSummary = require("src.ui.perk_summary")
 local RankBadge = require("src.ui.rank_badge")
 local MenuChrome = require("src.ui.menu_chrome")
 
@@ -15,7 +15,9 @@ function PerkDatabase:init(app, opts)
   self.catalog_only = self.opts.catalog_only == true
   self.selected, self.notice, self.notice_kind = 1, "", "neutral"
   self.perks = {}
-  for _, perk in pairs(app.content.meta_perks) do self.perks[#self.perks + 1] = perk end
+  for _, perk in pairs(app.content.meta_perks) do
+    self.perks[#self.perks + 1] = perk
+  end
   table.sort(self.perks, function(a, b) return a.sprite.cell < b.sprite.cell end)
 end
 
@@ -23,16 +25,17 @@ function PerkDatabase:enter() self:_layout() end
 function PerkDatabase:resize() self:_layout() end
 
 function PerkDatabase:_owned(perk)
-  return self.app.slot and self.app.slot.perks and self.app.slot.perks[perk.id]
+  return self.app.slot and self.app.slot.perks
+    and self.app.slot.perks[perk.id]
 end
 
 function PerkDatabase:_buy()
   local perk = self.perks[self.selected]
   local owned, err = PerkProgress.purchase(self.app, perk.id)
-  self.notice = owned and ("PURCHASE COMPLETE  •  " .. perk.name .. " UPGRADED")
-    or ({ locked = "CLEAR ITS SOURCE WORLD TO UNLOCK", max_rank = "MAX RANK REACHED",
-      insufficient_funds = "NOT ENOUGH TOUR COINS", no_campaign = "START A CAMPAIGN FIRST" })[err]
-      or "PURCHASE UNAVAILABLE"
+  self.notice = owned and (string.upper(perk.name) .. " UPGRADED")
+    or ({ locked = "CONTINUE THE WORLD TOUR TO UNLOCK",
+      max_rank = "MAX RANK REACHED", insufficient_funds = "NOT ENOUGH TOUR COINS",
+      no_campaign = "START A CAMPAIGN FIRST" })[err] or "PURCHASE UNAVAILABLE"
   self.notice_kind = owned and "success" or "error"
 end
 
@@ -44,170 +47,231 @@ end
 function PerkDatabase:_layout()
   local w, h, scale = UIScale.dimensions()
   self.ui_scale = scale
-  local grid_w = math.min(700, w * 0.58)
-  self.grid = { x = 28, y = 112, w = grid_w, h = h - 160 }
-  self.detail = { x = self.grid.x + grid_w + 18, y = 112,
-    w = w - grid_w - 74, h = h - 160 }
-  local gap, cols = 8, w < 980 and 4 or 5
-  local cw = (grid_w - gap * (cols - 1)) / cols
-  local rows = math.ceil(#self.perks / cols)
-  local ch = math.min(88, (self.grid.h - gap * (rows - 1)) / rows)
+  local margin, gap = 24, 14
+  local grid_w = math.floor((w - margin * 2 - gap) * 0.66)
+  self.grid = { x = margin, y = 96, w = grid_w, h = h - 120 }
+  self.detail = { x = margin + grid_w + gap, y = 96,
+    w = w - margin * 2 - grid_w - gap, h = h - 120 }
+  self.columns = w < 980 and 3 or 4
+  local card_gap = h < 680 and 5 or 7
+  local cw = (grid_w - card_gap * (self.columns - 1)) / self.columns
+  local rows = math.ceil(#self.perks / self.columns)
+  local ch = (self.grid.h - card_gap * (rows - 1)) / rows
   self.card_rects = {}
   for i = 1, #self.perks do
-    local col, row = (i - 1) % cols, math.floor((i - 1) / cols)
-    self.card_rects[i] = { x = self.grid.x + col * (cw + gap),
-      y = self.grid.y + row * (ch + gap), w = cw, h = ch }
+    local col, row = (i - 1) % self.columns, math.floor((i - 1) / self.columns)
+    self.card_rects[i] = { x = self.grid.x + col * (cw + card_gap),
+      y = self.grid.y + row * (ch + card_gap), w = cw, h = ch }
   end
-  local bw = math.min(230, self.detail.w - 20)
-  local purchase_y = self.detail.y + self.detail.h - 108
+  local cta_gap = 8
+  local cta_w = (self.detail.w - 20 - cta_gap) / 2
+  local cta_y = self.detail.y + self.detail.h - 60
   local function button(opts)
     opts.renderer = function(value)
       MenuChrome.action(self.app.assets, value, {
-        menu_cell = opts.menu_cell,
-        label = value.label,
-        font_size = opts.font_size,
+        menu_cell = opts.menu_cell, label = value.label,
+        font_size = opts.font_size, icon_size = 34,
       })
     end
     return widgets.Button(opts)
   end
   self.buttons = widgets.ButtonList({
-    button({ label = "UPGRADE PERK", x = self.detail.x + (self.detail.w - bw) / 2,
-      y = purchase_y, w = bw, h = 46, variant = "primary", font_size = 15,
-      menu_cell = 5,
+    button({ label = "UPGRADE", x = self.detail.x + 6, y = cta_y,
+      w = cta_w, h = 46, variant = "primary", font_size = 12, menu_cell = 5,
       on_press = function() self:_buy() end }),
-    button({ label = "RETURN TO TITLE", x = self.detail.x + (self.detail.w - bw) / 2,
-      y = purchase_y + 52, w = bw, h = 42, font_size = 14,
-      menu_cell = 8,
+    button({ label = "BACK", x = self.detail.x + 6 + cta_w + cta_gap,
+      y = cta_y, w = cta_w, h = 46, font_size = 12, menu_cell = 8,
       on_press = function() self:_back() end }),
   })
 end
 
-local function draw_rank_device(assets, x, y, width, rank, max_rank, size)
-  size = math.min(size or 28, width)
-  RankBadge.draw(assets, x + (width - size) / 2, y - size / 2,
-    size, rank, { maxed = rank >= max_rank })
+local function source_label(source)
+  if source.type == "prologue_clear" then return "COMPLETE THE PROLOGUE" end
+  return "REACH " .. string.upper((source.world_id or "WORLD"):gsub("_", " "))
+    .. " GRADE " .. (source.grade or "?")
 end
 
-local function source_label(source)
-  if source.type == "prologue_clear" then return "PROLOGUE CLEAR" end
-  return string.upper((source.world_id or "WORLD") .. "  •  GRADE " .. (source.grade or "?"))
+local function draw_device(assets, x, y, size, value, maxed)
+  RankBadge.draw(assets, x, y, size, value, { maxed = maxed })
+end
+
+function PerkDatabase:_draw_card(index, perk)
+  local r, owned = self.card_rects[index], self:_owned(perk)
+  local selected = index == self.selected
+  love.graphics.setColor(selected and { 0.17, 0.065, 0.24, 0.90 }
+    or { 0.035, 0.018, 0.075, 0.84 })
+  love.graphics.rectangle("fill", r.x + 3, r.y + 3, r.w - 6, r.h - 6, 4, 4)
+  self.app.assets:draw_upgrade_card_frame(r.x, r.y, r.w, r.h, {
+    corner = math.min(14, r.h * 0.22),
+    color = selected and { 1, 0.76, 0.22, 0.98 }
+      or owned and { 0.32, 0.92, 1, 0.72 } or { 0.48, 0.44, 0.62, 0.40 },
+  })
+  local icon_size = math.min(48, r.h - 10, r.w * 0.28)
+  local icon_x, icon_y = r.x + 7, r.y + (r.h - icon_size) / 2
+  self.app.assets:draw_meta_perk(owned and perk.sprite.cell or 20,
+    icon_x, icon_y, icon_size, icon_size,
+    { color = owned and { 1, 1, 1, 1 } or { 0.50, 0.46, 0.60, 0.56 } })
+  local badge_size = math.min(25, r.h * 0.32)
+  local text_x = icon_x + icon_size + 7
+  if owned then
+    draw_device(self.app.assets, text_x, r.y + (r.h - badge_size) / 2,
+      badge_size, owned.rank, owned.rank >= perk.max_rank)
+    text_x = text_x + badge_size + 6
+  end
+  local text_w = r.x + r.w - text_x - 7
+  local name_font = Fonts.get(math.max(8, math.min(11, r.w * 0.062)))
+  love.graphics.setFont(name_font)
+  love.graphics.setColor(owned and { 0.94, 0.96, 1, 1 }
+    or { 0.56, 0.53, 0.65, 1 })
+  local name = owned and string.upper(perk.name) or "UNKNOWN"
+  local block_y = r.y + (r.h - name_font:getHeight()) / 2
+  if owned then block_y = block_y - 8 end
+  love.graphics.printf(name, text_x, block_y, text_w, "left")
+  if owned then
+    love.graphics.setFont(Fonts.get(math.max(7, math.min(9, r.w * 0.05))))
+    love.graphics.setColor(0.40, 0.88, 0.98, 0.92)
+    love.graphics.printf(string.upper(PerkSummary.attribute(perk)),
+      text_x, block_y + 17, text_w, "left")
+  end
+end
+
+function PerkDatabase:_draw_summary(d, top)
+  local summary = PerkSummary.collect(self.app.content, self.app.slot)
+  love.graphics.setFont(Fonts.get(12))
+  love.graphics.setColor(0.38, 0.90, 1, 1)
+  love.graphics.print("YOUR PERK LOADOUT", d.x + 14, top)
+  local device_size = 38
+  draw_device(self.app.assets, d.x + 14, top + 24, device_size,
+    summary.owned, summary.owned >= summary.total)
+  love.graphics.setFont(Fonts.get(11)); love.graphics.setColor(0.88, 0.90, 0.97, 1)
+  love.graphics.print(summary.owned .. " / " .. summary.total .. " PERKS",
+    d.x + 58, top + 29)
+  love.graphics.setColor(0.72, 0.75, 0.86, 1)
+  love.graphics.print(summary.ranks .. " TOTAL RANKS", d.x + 58, top + 45)
+
+  local list_y = top + 70
+  local col_w = (d.w - 28) / 2
+  for index, entry in ipairs(summary.entries) do
+    local col = (index - 1) % 2
+    local row = math.floor((index - 1) / 2)
+    local y = list_y + row * 18
+    if y > self.buttons.buttons[1].y - 72 then break end
+    local x = d.x + 14 + col * col_w
+    self.app.assets:draw_meta_perk(entry.perk.sprite.cell, x, y, 15, 15)
+    love.graphics.setFont(Fonts.get(8))
+    love.graphics.setColor(0.83, 0.85, 0.94, 1)
+    love.graphics.printf(string.upper(entry.perk.name), x + 19, y + 1,
+      col_w - 62, "left")
+    love.graphics.setColor(0.40, 1.0, 0.70, 1)
+    love.graphics.printf(entry.value, x + col_w - 42, y + 1, 38, "right")
+  end
 end
 
 function PerkDatabase:draw()
   local sw, sh = love.graphics.getDimensions()
-  love.graphics.setColor(0.008, 0.004, 0.025, 1); love.graphics.rectangle("fill", 0, 0, sw, sh)
+  love.graphics.setColor(0.008, 0.004, 0.025, 1)
+  love.graphics.rectangle("fill", 0, 0, sw, sh)
   local w, h = UIScale.begin()
-  love.graphics.setColor(0.035, 0.014, 0.075, 0.96); love.graphics.rectangle("fill", 0, 0, w, h)
-  self.app.assets:draw_world_interface(5, 1, 24, 12, 92, 86)
-  love.graphics.setFont(Fonts.get(30)); love.graphics.setColor(1, 0.76, 0.2, 1)
-  love.graphics.print("PERK DATABASE", 122, 27)
-  love.graphics.setFont(Fonts.get(13)); love.graphics.setColor(0.48, 0.9, 1, 1)
-  love.graphics.print("PERMANENT WORLD TOUR LOADOUT", 124, 65)
+  love.graphics.setColor(0.035, 0.014, 0.075, 0.96)
+  love.graphics.rectangle("fill", 0, 0, w, h)
+  self.app.assets:draw_world_interface(5, 1, 20, 9, 78, 74)
+  love.graphics.setFont(Fonts.get(28)); love.graphics.setColor(1, 0.76, 0.2, 1)
+  love.graphics.print("PERK DATABASE", 104, 22)
+  love.graphics.setFont(Fonts.get(11)); love.graphics.setColor(0.48, 0.9, 1, 1)
+  love.graphics.print("PERMANENT WORLD TOUR LOADOUT", 106, 57)
   local wallet = self.app.slot and self.app.slot.wallet and self.app.slot.wallet.coins or 0
-  self.app.assets:draw_world_interface(4, 2, w - 160, 20, 48, 48)
-  love.graphics.setFont(Fonts.get(20)); love.graphics.setColor(1, 0.82, 0.3, 1)
-  love.graphics.printf(tostring(wallet), w - 110, 34, 82, "left")
+  self.app.assets:draw_world_interface(4, 2, w - 142, 17, 42, 42)
+  love.graphics.setFont(Fonts.get(18)); love.graphics.setColor(1, 0.82, 0.3, 1)
+  love.graphics.printf(tostring(wallet), w - 94, 28, 70, "left")
 
-  for i, perk in ipairs(self.perks) do
-    local r, owned = self.card_rects[i], self:_owned(perk)
-    local selected = i == self.selected
-    love.graphics.setColor(selected and { 0.17, 0.065, 0.24, 0.82 }
-      or { 0.035, 0.018, 0.075, 0.78 })
-    love.graphics.rectangle("fill", r.x + 3, r.y + 3, r.w - 6, r.h - 6, 6, 6)
-    self.app.assets:draw_upgrade_card_frame(r.x, r.y, r.w, r.h, {
-      corner = math.min(16, r.h * 0.28),
-      color = selected and { 1, 0.76, 0.22, 0.96 }
-        or owned and { 0.32, 0.92, 1, 0.72 } or { 0.48, 0.44, 0.62, 0.44 },
-    })
-    self.app.assets:draw_meta_perk(owned and perk.sprite.cell or 20,
-      r.x + 5, r.y + 5, math.min(54, r.w * 0.48), r.h - 10,
-      { color = owned and { 1, 1, 1, 1 } or { 0.55, 0.5, 0.68, 0.58 } })
-    love.graphics.setFont(Fonts.get(math.max(9, math.min(12, r.w * 0.1))))
-    love.graphics.setColor(owned and { 0.9, 0.94, 1, 1 } or { 0.55, 0.52, 0.64, 1 })
-    love.graphics.printf(owned and string.upper(perk.name) or "UNKNOWN",
-      r.x + math.min(55, r.w * 0.47), r.y + (owned and 13 or 28),
-      r.w - math.min(61, r.w * 0.47), "center")
-    if owned then
-      RankBadge.draw(self.app.assets, r.x + r.w - 31, r.y + 6, 25,
-        owned.rank, { maxed = owned.rank >= perk.max_rank })
-    end
-  end
+  for i, perk in ipairs(self.perks) do self:_draw_card(i, perk) end
 
   local perk, owned = self.perks[self.selected], self:_owned(self.perks[self.selected])
   local d = self.detail
-  love.graphics.setColor(0.025, 0.012, 0.06, 0.98); love.graphics.rectangle("fill", d.x, d.y, d.w, d.h, 12, 12)
-  self.app.assets:draw_hud_frame(d.x, d.y, d.w, d.h, { color = { 0.68, 0.42, 1, 0.65 } })
-  self.app.assets:draw_meta_perk(owned and perk.sprite.cell or 20, d.x + d.w/2 - 66, d.y + 20, 132, 132)
-  love.graphics.setFont(Fonts.get(23)); love.graphics.setColor(1, 0.76, 0.2, 1)
-  love.graphics.printf(owned and string.upper(perk.name) or "SEALED PERK", d.x + 16, d.y + 160, d.w - 32, "center")
-  love.graphics.setFont(Fonts.get(14)); love.graphics.setColor(0.78, 0.8, 0.9, 1)
-  love.graphics.printf(owned and perk.description or "Its identity remains hidden until you meet the unlock condition.",
-    d.x + 28, d.y + 204, d.w - 56, "center")
-  love.graphics.setColor(0.3, 0.9, 1, 1)
-  love.graphics.printf(owned and source_label(perk.source)
-      or "KEEP TOURING TO REVEAL ITS SOURCE",
-    d.x + 20, d.y + 274, d.w - 40, "center")
-  local price = owned and perk.prices[owned.rank + 1]
-  local purchase_button = self.buttons.buttons[1]
-  if not owned then
-    purchase_button.label = "LOCKED"
-  elseif not price then
-    purchase_button.label = "MAX RANK"
-  elseif wallet < price then
-    purchase_button.label = "NEED " .. price .. " COINS"
-  else
-    purchase_button.label = "UPGRADE  •  " .. price .. " COINS"
-  end
-  love.graphics.setColor(1, 0.78, 0.24, 1)
-  love.graphics.printf(owned and (price and ("NEXT RANK  •  " .. price .. " COINS") or "MAX RANK") or "LOCKED",
-    d.x + 20, d.y + 315, d.w - 40, "center")
+  love.graphics.setColor(0.025, 0.012, 0.06, 0.98)
+  love.graphics.rectangle("fill", d.x, d.y, d.w, d.h, 10, 10)
+  MenuChrome.panel(self.app.assets, d, { corner = 36, alpha = 0.86 })
+  local icon_size = math.min(76, d.w * 0.24)
+  self.app.assets:draw_meta_perk(owned and perk.sprite.cell or 20,
+    d.x + 14, d.y + 14, icon_size, icon_size)
+  local title_x = d.x + 24 + icon_size
+  love.graphics.setFont(Fonts.get(
+    math.max(14, math.min(20, d.w * 0.055))))
+  love.graphics.setColor(1, 0.76, 0.2, 1)
+  love.graphics.printf(owned and string.upper(perk.name) or "SEALED PERK",
+    title_x, d.y + 20, d.w - (title_x - d.x) - 16, "left")
   if owned then
-    draw_rank_device(self.app.assets, d.x + 40, d.y + 350, d.w - 80,
-      owned.rank, perk.max_rank, 48)
+    draw_device(self.app.assets, title_x, d.y + 52, 34, owned.rank,
+      owned.rank >= perk.max_rank)
+    love.graphics.setFont(Fonts.get(10)); love.graphics.setColor(0.40, 0.90, 1, 1)
+    love.graphics.print(string.upper(PerkSummary.attribute(perk)), title_x + 42, d.y + 60)
   end
+  love.graphics.setFont(Fonts.get(11)); love.graphics.setColor(0.78, 0.80, 0.90, 1)
+  love.graphics.printf(owned and perk.description
+      or "Continue the World Tour to unlock this perk.",
+    d.x + 14, d.y + 98, d.w - 28, "left")
+  love.graphics.setColor(0.34, 0.92, 1, 1)
+  love.graphics.printf(source_label(perk.source), d.x + 14, d.y + 125, d.w - 28, "left")
+
+  local price = owned and perk.prices[owned.rank + 1]
+  local purchase = self.buttons.buttons[1]
+  purchase.disabled = not owned or not price or wallet < price
+  purchase.label = not owned and "LOCKED" or not price and "MAX RANK"
+    or wallet < price and ("NEED " .. price) or ("UPGRADE  " .. price)
+  self:_draw_summary(d, d.y + 160)
+
   if self.notice ~= "" then
-    local notice_y = self.buttons.buttons[1].y - 38
+    local notice_y = purchase.y - 30
     love.graphics.setColor(self.notice_kind == "success"
       and { 0.08, 0.30, 0.22, 0.98 } or { 0.30, 0.06, 0.13, 0.98 })
-    love.graphics.rectangle("fill", d.x + 16, notice_y,
-      d.w - 32, 30, 7, 7)
+    love.graphics.rectangle("fill", d.x + 8, notice_y, d.w - 16, 24, 4, 4)
+    love.graphics.setFont(Fonts.get(9))
     love.graphics.setColor(self.notice_kind == "success"
       and { 0.40, 1.0, 0.70, 1 } or { 1.0, 0.48, 0.58, 1 })
-    love.graphics.printf(self.notice, d.x+20, notice_y + 8, d.w-40, "center")
+    love.graphics.printf(self.notice, d.x + 12, notice_y + 7, d.w - 24, "center")
   end
   self.buttons:draw()
-  Hints.draw({ { symbol="dpad", label="Browse" },
-    { symbol="cross", label="Upgrade" },
-    { symbol="circle", label="Back" } }, h-24, w)
   UIScale.finish()
 end
 
 function PerkDatabase:keypressed(key)
   if key == "escape" then self:_back(); return true end
-  local cols = UIScale.dimensions() < 980 and 4 or 5
   if key == "left" or key == "a" then self.selected = math.max(1, self.selected - 1); return true end
   if key == "right" or key == "d" then self.selected = math.min(#self.perks, self.selected + 1); return true end
-  if key == "up" or key == "w" then self.selected = math.max(1, self.selected - cols); return true end
-  if key == "down" or key == "s" then self.selected = math.min(#self.perks, self.selected + cols); return true end
-  if key == "return" or key == "space" then self:_buy(); return true end
+  if key == "up" or key == "w" then self.selected = math.max(1, self.selected - self.columns); return true end
+  if key == "down" or key == "s" then
+    self.selected = math.min(#self.perks, self.selected + self.columns)
+    return true
+  end
+  if key == "return" or key == "space" then
+    if not self.buttons.buttons[1].disabled then self:_buy() end
+    return true
+  end
   return false
 end
-function PerkDatabase:gamepadpressed(_, b)
-  local map = { dpleft="left", dpright="right", dpup="up", dpdown="down", a="return", b="escape" }
-  return map[b] and self:keypressed(map[b]) or false
+
+function PerkDatabase:gamepadpressed(_, button)
+  local map = { dpleft="left", dpright="right", dpup="up", dpdown="down",
+    a="return", b="escape" }
+  return map[button] and self:keypressed(map[button]) or false
 end
-function PerkDatabase:mousepressed(x, y, b)
+
+function PerkDatabase:mousepressed(x, y, button)
   x, y = UIScale.point(x, y, self.ui_scale)
-  if b == 1 then
+  if button == 1 then
     for i, r in ipairs(self.card_rects) do
-      if x>=r.x and x<=r.x+r.w and y>=r.y and y<=r.y+r.h then
-        self.selected=i
+      if x >= r.x and x <= r.x + r.w and y >= r.y and y <= r.y + r.h then
+        self.selected = i
         return true
       end
     end
   end
-  return self.buttons:mousepressed(x, y, b)
+  return self.buttons:mousepressed(x, y, button)
 end
-function PerkDatabase:mousemoved(x, y) x,y=UIScale.point(x,y,self.ui_scale); self.buttons:mousemoved(x,y) end
+
+function PerkDatabase:mousemoved(x, y)
+  x, y = UIScale.point(x, y, self.ui_scale)
+  self.buttons:mousemoved(x, y)
+end
 
 return PerkDatabase
