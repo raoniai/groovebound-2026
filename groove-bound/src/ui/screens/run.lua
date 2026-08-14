@@ -11,7 +11,7 @@ local Input = require("src.game.input")
 local Player = require("src.game.entities.player")
 local RunContext = require("src.game.run_context")
 local CombatSystem = require("src.game.systems.combat_system")
-local FunkPocketSystem = require("src.game.systems.funk_pocket_system")
+local WorldMechanicSystem = require("src.game.systems.world_mechanic_system")
 local JourneyProgress = require("src.meta.journey_progress")
 local WorldTourSession = require("src.meta.world_tour_session")
 
@@ -54,6 +54,7 @@ function RunScreen:enter()
 
   self.arena = Arena({
     assets = self.app.assets,
+    reduced_motion = self.app.profile and self.app.profile.options.reduced_motion,
     stage = self.stages[1],
   })
   self.input = Input({ deadzone = self.app.profile.options.deadzone })
@@ -95,14 +96,16 @@ function RunScreen:enter()
     self.combat.progression:grant_starter_loadout(self.opts.starter_loadout)
   end
   self.world_mechanic = self.stages[1].mechanic
-    and FunkPocketSystem({
+    and WorldMechanicSystem({
       definition = self.stages[1].mechanic,
       player = self.player,
+      combat = self.combat,
     }) or nil
   self.world_mechanic_totals = {
     activations = 0,
     opportunities = 0,
     best_chain = 0,
+    encores = 0,
   }
   self.hud = HUD(self.ctx, self.player, self.combat, {
     on_level_up = function() return self:open_level_up() end,
@@ -135,6 +138,7 @@ function RunScreen:_world_mechanic_snapshot()
       self.world_mechanic_totals.best_chain, current.best_chain),
     chain = current.chain,
     boost_remaining = current.boost_remaining,
+    encores = self.world_mechanic_totals.encores + (current.encores or 0),
   }
 end
 
@@ -147,21 +151,25 @@ function RunScreen:_capture_world_mechanic()
     self.world_mechanic_totals.opportunities + current.opportunities
   self.world_mechanic_totals.best_chain = math.max(
     self.world_mechanic_totals.best_chain, current.best_chain)
+  self.world_mechanic_totals.encores = self.world_mechanic_totals.encores
+    + (current.encores or 0)
 end
 
 function RunScreen:_begin_world_stage(index)
   self:_capture_world_mechanic()
   self.arena = Arena({
     assets = self.app.assets,
+    reduced_motion = self.app.profile and self.app.profile.options.reduced_motion,
     stage = self.stages[index],
   })
   self.camera:set_bounds(self.arena.width, self.arena.height)
   self.combat:begin_stage(index, self.arena)
   self.camera:snap(self.player.x, self.player.y)
   self.world_mechanic = self.stages[index].mechanic
-    and FunkPocketSystem({
+    and WorldMechanicSystem({
       definition = self.stages[index].mechanic,
       player = self.player,
+      combat = self.combat,
     }) or nil
   self.transitioning = false
   self.finished = false
@@ -224,6 +232,7 @@ function RunScreen:update(dt)
       self.world_mechanic:update(sim_dt, self.ctx.time)
       if self.world_mechanic.activations > previous_activations then
         local snapshot = self.world_mechanic:snapshot()
+        self.combat:on_world_mechanic_success(self.world_mechanic.definition)
         local pad = self.world_mechanic.definition.pads[snapshot.success_index]
         if pad then
           self.combat.vfx:spawn("hit", pad.x, pad.y, {
@@ -372,6 +381,7 @@ function RunScreen:resume(result)
     self.music_event = nil
     self.arena = Arena({
       assets = self.app.assets,
+      reduced_motion = self.app.profile and self.app.profile.options.reduced_motion,
       stage = self.stages[2],
     })
     self.camera:set_bounds(self.arena.width, self.arena.height)
@@ -429,21 +439,22 @@ function RunScreen:_draw_world_mechanic()
     local success_pulse = succeeded and not reduced
       and (1 + math.sin(self.ctx.time * 16) * 0.08) or 1
     local size = (active and 230 or 185) * success_pulse
-    local mechanic_id = definition.id
-    if mechanic_id == "soul_resonance_reserve" then
-      frame = active and math.max(1, math.min(5,
-        math.floor((snapshot.charge or 0) / definition.charge_seconds * 4) + 1)) or 1
+    if succeeded then
+      frame = snapshot.encore_remaining > 0 and 7 or 5
+    elseif active and (definition.kind == "charge"
+        or definition.kind == "call_response") then
+      frame = math.max(2, math.min(4, math.floor(
+        (snapshot.charge or 0) / definition.charge_seconds * 3) + 2))
+    elseif active and (definition.kind == "relay"
+        or definition.kind == "prism_relay") then
+      frame = 6
+    elseif snapshot.boost_remaining > 0 then
+      frame = 8
     end
-    local row = mechanic_id == "soul_resonance_reserve" and 1 or 2
     local color = succeeded and { 1, 0.94, 0.38, 1 }
       or active and { 1, 1, 1, 0.96 } or { 0.52, 0.44, 0.68, 0.38 }
-    if mechanic_id == "funk_hold_the_pocket" then
-      self.app.assets:draw_funk_pad(frame, pad.x-size/2, pad.y-size/2,
-        size, size, { color=color })
-    else
-      self.app.assets:draw_world_mechanic(frame, row,
-        pad.x-size/2, pad.y-size/2, size, size, { color=color })
-    end
+    self.app.assets:draw_world_mechanic_variant(definition.world_id,
+      frame, pad.x-size/2, pad.y-size/2, size, size, { color=color })
   end
 end
 
@@ -463,7 +474,8 @@ function RunScreen:_draw_world_mechanic_hud()
   })
   local mechanic_id = self.world_mechanic.definition.id
   local icon_col = mechanic_id == "funk_hold_the_pocket" and 2
-    or mechanic_id == "soul_resonance_reserve" and 3 or 4
+    or mechanic_id == "soul_resonance_reserve" and 3
+    or mechanic_id == "disco_spotlight_flow" and 4 or 5
   self.app.assets:draw_world_interface(icon_col, 1,
     x + 14, y + (panel_h - icon_size) / 2, icon_size, icon_size)
   local success = snapshot.notice > 0
@@ -478,6 +490,9 @@ function RunScreen:_draw_world_mechanic_hud()
     or mechanic_id == "disco_spotlight_flow"
       and (boosted and ("SPOTLIGHT FLOW  •  CHAIN ×" .. snapshot.chain)
         or "STEP INTO THE MOVING SPOTLIGHT")
+    or mechanic_id == "jazz_improvisation"
+      and (boosted and ("CHANGES RESOLVED  •  CHAIN ×" .. snapshot.chain)
+        or "LAND THE LIT CHORD CHANGE")
     or boosted and ("POCKET BOOST  •  CHAIN ×" .. snapshot.chain)
       or "MOVE TO THE LIT BASS PAD"
   local text_x = x + icon_size + 20
@@ -485,15 +500,24 @@ function RunScreen:_draw_world_mechanic_hud()
   love.graphics.printf(title, text_x, y + 14, text_w, "left")
   love.graphics.setColor(0.80, 0.78, 0.90, 1)
   love.graphics.setFont(Fonts.body(9))
-  local detail = success and "REWARD SECURED"
+  local detail = success and (snapshot.encore_remaining > 0
+      and "ENCORE ACTIVE  •  BOSS BREAK CHARGED" or "REWARD SECURED")
     or boosted and ("CHAIN ×" .. snapshot.chain)
+    or self.world_mechanic.definition.kind == "charge" and "HOLD TO CHARGE"
+    or self.world_mechanic.definition.kind == "call_response"
+      and "CHARGE, THEN ANSWER"
+    or self.world_mechanic.definition.kind == "relay" and "FOLLOW THE RELAY"
+    or self.world_mechanic.definition.kind == "prism_relay"
+      and "KEEP THE FLOW MOVING"
+    or self.world_mechanic.definition.kind == "changes"
+      and "ADAPT TO EACH CHANGE"
     or "ENTER THE HIGHLIGHT"
   love.graphics.printf(detail, text_x, y + 38, text_w, "left")
 end
 
 function RunScreen:world_mechanic_hud_rect(width)
   local panel_w = math.min(264, math.max(220, width * 0.22))
-  return { x = width - panel_w - 8, y = 70, w = panel_w, h = 64 }
+  return { x = width - panel_w - 8, y = 76, w = panel_w, h = 64 }
 end
 
 function RunScreen:boss_warning_state()
@@ -515,13 +539,11 @@ function RunScreen:_draw_boss_warning()
   local w, h = love.graphics.getDimensions()
   local reduced = self.app.profile.options.reduced_flash == true
     or self.app.profile.options.hit_flash == false
-  local pulse = reduced and 0.72
-    or (0.55 + 0.45 * math.sin(self.ctx.time * 13))
-  love.graphics.setColor(1.0, 0.05, 0.24, 0.10 + pulse * 0.12)
-  love.graphics.rectangle("fill", 0, 0, w, h)
-  love.graphics.setColor(1.0, 0.22, 0.46, 0.72 + pulse * 0.24)
-  love.graphics.setLineWidth(6)
-  love.graphics.rectangle("line", 6, 6, w - 12, h - 12, 12, 12)
+  local pulse = reduced and 0.55
+    or (0.45 + 0.18 * math.sin(self.ctx.time * 7))
+  love.graphics.setColor(1.0, 0.22, 0.46, 0.20 + pulse * 0.18)
+  love.graphics.setLineWidth(reduced and 2 or 3)
+  love.graphics.rectangle("line", 10, 10, w - 20, h - 20, 12, 12)
   love.graphics.setLineWidth(1)
 
   -- The danger border remains immediate combat feedback. Its text is routed

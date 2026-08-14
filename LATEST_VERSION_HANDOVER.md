@@ -14,20 +14,20 @@ This document answers four questions: what is authoritative, what the latest ver
 
 <!-- LIVE-SNAPSHOT:START -->
 
-_Generated from live repository evidence: 2026-08-14 15:56 AEST_
+_Generated from live repository evidence: 2026-08-14 17:28 AEST_
 
 | Field | Live value |
 |---|---|
-| Branch | `codex/ui-catalog-v0.8.5-final` |
-| HEAD | `17d135f` — fix: pair Jazz emblem with Home wordmark |
-| Upstream | `origin/codex/world-tour-v1` |
-| Compared with `origin/main` | 26 ahead, 1 behind |
-| Working changes | 1 files: 0 game, 0 site, 0 skills/package |
-| Lua source/test files | 119 source, 64 test |
-| Game tree excluding `dist/` | 660.4 MiB |
-| Current `.love` artifact | 202.1 MiB |
-| Test suite | passed: 391 tests, 0 failures |
-| Lint | passed: 0 warnings / 0 errors in 185 files |
+| Branch | `codex/world-overhaul-v090` |
+| HEAD | `2badd17` — fix: consolidate World Tour tabs |
+| Upstream | `unavailable` |
+| Compared with `origin/main` | 28 ahead, 1 behind |
+| Working changes | 80 files: 69 game, 6 site, 0 skills/package |
+| Lua source/test files | 120 source, 64 test |
+| Game tree excluding `dist/` | 692.5 MiB |
+| Current `.love` artifact | not present |
+| Test suite | passed: 398 tests, 0 failures |
+| Lint | passed: 0 warnings / 0 errors in 186 files |
 | Skill packages | 12 |
 
 <!-- LIVE-SNAPSHOT:END -->

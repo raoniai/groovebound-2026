@@ -19,7 +19,7 @@ jobs:
       - name: Check out canonical source
         uses: actions/checkout@v4
         with:
-          ref: codex/world-tour-v1
+          ref: codex/world-overhaul-v090
 
       - name: Set up Python
         uses: actions/setup-python@v5

@@ -17,9 +17,23 @@ function EnemyProjectile:reset(opts)
   self.radius = opts.radius or 8
   self.lifetime = opts.lifetime or 4
   self.color = opts.color or { 1.0, 0.30, 0.72, 1 }
+  self.projectile_class = opts.projectile_class or "light"
+  self.cancel_health = self.projectile_class == "heavy"
+    and (opts.cancel_health or 3) or self.projectile_class == "environmental"
+    and math.huge or 1
   self.anim_time = 0
   self.anim_phase = ((math.floor(self.x * 5 + self.y * 3)) % 628) / 100
   self.dead = false
+end
+
+function EnemyProjectile:register_cancel_hit()
+  if self.projectile_class == "environmental" then return false end
+  self.cancel_health = self.cancel_health - 1
+  if self.cancel_health <= 0 then
+    self.dead = true
+    return true
+  end
+  return false
 end
 
 function EnemyProjectile:update(dt, arena)

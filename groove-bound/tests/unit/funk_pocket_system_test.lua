@@ -85,4 +85,60 @@ T["successful mechanics expose an animated reward alert"] = function()
   H.is_true(#snapshot.reward_text > 0)
 end
 
+T["four consecutive mechanic hits trigger one bounded Encore"] = function()
+  local player = { x=100, y=100, world_speed_multiplier=1 }
+  local effects
+  local system = FunkPocketSystem({ player=player, combat={
+    set_world_mechanic_effects=function(_, value) effects=value end,
+  }, definition={
+    id="funk_hold_the_pocket", kind="timed_zone",
+    cycle_seconds=1, active_window=.5, boost_seconds=2,
+    boost_multiplier=1.2, damage_multiplier=1.16,
+    cadence_multiplier=1.18, encore_threshold=4, encore_seconds=5,
+    radius=40, pads={{x=100,y=100}},
+  } })
+  for cycle=0,3 do system:update(.1, cycle + .6) end
+  local snapshot = system:snapshot()
+  H.eq(snapshot.chain, 4)
+  H.eq(snapshot.encores, 1)
+  H.is_true(snapshot.encore_remaining > 0)
+  H.near(effects.damage, 1.16)
+  H.near(effects.cadence, 1.18)
+end
+
+T["Soul overflow becomes bounded Guard"] = function()
+  local player = {
+    x=100, y=100, hp=98, max_hp=100, guard=0, world_speed_multiplier=1,
+  }
+  local system = FunkPocketSystem({ player=player, definition={
+    id="soul_resonance_reserve", kind="charge",
+    cycle_seconds=4, active_window=.7, charge_seconds=.2,
+    boost_seconds=1, boost_multiplier=1.05, heal_fraction=.08,
+    guard_fraction=.18, radius=40, pads={{x=100,y=100}},
+  } })
+  system:update(.2, .2)
+  H.near(player.hp, 100)
+  H.near(player.guard, 6)
+end
+
+T["Soul Stage 2 charges a call before answering on the next pad"] = function()
+  local player = {
+    x=100, y=100, hp=80, max_hp=100, guard=0, world_speed_multiplier=1,
+  }
+  local system = FunkPocketSystem({ player=player, definition={
+    id="soul_resonance_reserve", kind="call_response",
+    cycle_seconds=2, active_window=.25, charge_seconds=.2,
+    boost_seconds=1, boost_multiplier=1.05, heal_fraction=.08,
+    guard_fraction=.18, radius=40,
+    pads={{x=100,y=100},{x=300,y=100}},
+  } })
+  system:update(.2, .2)
+  H.eq(system:snapshot().activations, 0)
+  H.eq(system:snapshot().active_index, 2)
+  player.x = 300
+  system:update(.1, 1.6)
+  H.eq(system:snapshot().activations, 1)
+  H.near(player.hp, 88)
+end
+
 return T

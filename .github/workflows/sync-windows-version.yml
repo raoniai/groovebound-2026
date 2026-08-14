@@ -3,7 +3,7 @@ name: Sync Windows version branch
 on:
   push:
     branches:
-      - codex/world-tour-v1
+      - codex/world-overhaul-v090
   workflow_dispatch:
 
 permissions:
@@ -14,7 +14,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  CANONICAL_BRANCH: codex/world-tour-v1
+  CANONICAL_BRANCH: codex/world-overhaul-v090
   WINDOWS_BRANCH: codex/windows-version
 
 jobs:
@@ -68,7 +68,7 @@ jobs:
       - name: Check out canonical source
         uses: actions/checkout@v4
         with:
-          ref: codex/world-tour-v1
+          ref: codex/world-overhaul-v090
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -120,7 +120,7 @@ jobs:
       - name: Check out release metadata
         uses: actions/checkout@v4
         with:
-          ref: codex/world-tour-v1
+          ref: codex/world-overhaul-v090
 
       - name: Load canonical version
         run: echo "RELEASE_VERSION=$(tr -d '[:space:]' < groove-bound/VERSION)" >> "$GITHUB_ENV"

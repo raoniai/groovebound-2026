@@ -126,7 +126,10 @@ function StageCompleteScreen:draw()
   for index, status in ipairs({
     { kind = "chest", text = "ENCORE CHEST CLAIMED",
       color = { 1.0, 0.70, 0.20, 0.95 } },
-    { kind = "mechanic", text = "WORLD MECHANIC SECURED",
+    { kind = "mechanic", text = string.format(
+      "BEST CHAIN ×%d  •  ENCORE ×%d",
+      (self.payload.world_mechanic or {}).best_chain or 0,
+      (self.payload.world_mechanic or {}).encores or 0),
       color = { 0.28, 0.90, 1.0, 0.95 } },
   }) do
     local x = status_start + (index - 1) * (status_w + status_gap)
@@ -137,12 +140,8 @@ function StageCompleteScreen:draw()
     if status.kind == "chest" then
       self.app.assets:draw_stage_clear_chest(
         x + 30, status_y + 29, 50, { color = { 1, 1, 1, eased } })
-    elseif self.payload.world_id == "funk" then
-      self.app.assets:draw_funk_pad(5, x + 5, status_y + 4, 50, 50,
-        { color = { 1, 1, 1, eased } })
     else
-      local row = self.payload.world_id == "soul" and 1 or 2
-      self.app.assets:draw_world_mechanic(5, row,
+      self.app.assets:draw_world_mechanic_variant(self.payload.world_id, 7,
         x + 5, status_y + 4, 50, 50,
         { color = { 1, 1, 1, eased } })
     end

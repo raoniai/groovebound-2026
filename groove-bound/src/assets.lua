@@ -287,6 +287,15 @@ function Assets.load()
   self.world_mechanic_quads,
     self.world_mechanic_cell_w,
     self.world_mechanic_cell_h = grid_quads(self.world_mechanics, 5, 2, 4)
+  self.world_mechanic_atlases = {}
+  for _, id in ipairs({ "funk", "soul", "disco", "jazz" }) do
+    local atlas = image(
+      "assets/generated/campaign/" .. id .. "-mechanic-atlas.png")
+    local quads, cell_w, cell_h = grid_quads(atlas, 4, 2, 6)
+    self.world_mechanic_atlases[id] = {
+      image = atlas, quads = quads, cell_w = cell_w, cell_h = cell_h,
+    }
+  end
   self.menu_button_icons = image(
     "assets/generated/campaign/menu-button-icons-atlas.png")
   self.menu_button_icon_quads,
@@ -447,6 +456,15 @@ function Assets.load()
       self["environment_" .. id .. "_cell_w"],
       self["environment_" .. id .. "_cell_h"] = grid_quads(
         self["environment_" .. id], 4, 2, 8)
+  end
+  for _, id in ipairs({ "funk", "soul", "disco", "jazz" }) do
+    local key = id .. "_stage2"
+    self["environment_" .. key] = image(
+      "assets/generated/campaign/" .. id .. "-stage2-environment-atlas.png")
+    self["environment_" .. key .. "_quads"],
+      self["environment_" .. key .. "_cell_w"],
+      self["environment_" .. key .. "_cell_h"] = grid_quads(
+        self["environment_" .. key], 4, 2, 6)
   end
   self.environment_upper_quads = {}
 
@@ -701,7 +719,9 @@ local function environment_source(self, icon, atlas_id)
     quad = self.environment_funk_quads[icon.row][icon.col]
     cell_w, cell_h = self.environment_funk_cell_w,
       self.environment_funk_cell_h
-  elseif atlas_id == "soul" or atlas_id == "disco" or atlas_id == "jazz" then
+  elseif atlas_id == "soul" or atlas_id == "disco" or atlas_id == "jazz"
+      or atlas_id == "funk_stage2" or atlas_id == "soul_stage2"
+      or atlas_id == "disco_stage2" or atlas_id == "jazz_stage2" then
     atlas = self["environment_" .. atlas_id]
     quad = self["environment_" .. atlas_id .. "_quads"][icon.row][icon.col]
     cell_w, cell_h = self["environment_" .. atlas_id .. "_cell_w"],
@@ -716,7 +736,11 @@ function Assets:draw_environment(icon, x, y, size, opts)
     self, icon, opts.atlas)
   local origin_x, origin_y = cell_w / 2, cell_h / 2
   local cell_size = math.max(cell_w, cell_h)
-  local scale = size / cell_size
+  local motion = opts.animated and not opts.reduced_motion
+    and math.sin((opts.time or love.timer.getTime()) * 2.2
+      + icon.col * 1.7 + icon.row * .9) or 0
+  y = y + motion * math.min(5, size * .025)
+  local scale = size / cell_size * (1 + motion * .012)
   love.graphics.setColor(opts.color or { 1, 1, 1, 1 })
   love.graphics.draw(atlas, quad, x, y, 0, scale, scale, origin_x, origin_y)
 end
@@ -737,7 +761,11 @@ function Assets:draw_environment_upper(icon, x, y, size, opts)
       viewport_x, viewport_y, cell_w, upper_h, atlas:getDimensions())
     self.environment_upper_quads[cache_key] = upper
   end
-  local scale = size / math.max(cell_w, cell_h)
+  local motion = opts.animated and not opts.reduced_motion
+    and math.sin((opts.time or love.timer.getTime()) * 2.2
+      + icon.col * 1.7 + icon.row * .9) or 0
+  y = y + motion * math.min(5, size * .025)
+  local scale = size / math.max(cell_w, cell_h) * (1 + motion * .012)
   love.graphics.setColor(opts.color or { 1, 1, 1, 1 })
   love.graphics.draw(
     atlas, upper, x, y, 0, scale, scale, cell_w / 2, cell_h / 2)
@@ -1093,6 +1121,16 @@ function Assets:draw_world_mechanic(frame, row, x, y, w, h, opts)
     self.world_mechanic_cell_w, self.world_mechanic_cell_h,
     math.max(1, math.min(5, frame or 1)), math.max(1, math.min(2, row or 1)),
     x, y, w, h, opts)
+end
+
+function Assets:draw_world_mechanic_variant(world_id, frame, x, y, w, h, opts)
+  local atlas = self.world_mechanic_atlases[world_id]
+  if not atlas then return false end
+  frame = math.max(1, math.min(8, frame or 1))
+  local col = (frame - 1) % 4 + 1
+  local row = math.floor((frame - 1) / 4) + 1
+  return draw_atlas_cell(atlas.image, atlas.quads,
+    atlas.cell_w, atlas.cell_h, col, row, x, y, w, h, opts)
 end
 
 function Assets:draw_menu_button_icon(col, row, x, y, w, h, opts)

@@ -3,7 +3,7 @@ name: Windows x64 package
 on:
   push:
     branches:
-      - codex/world-tour-v1
+      - codex/world-overhaul-v090
   workflow_dispatch:
   workflow_call:
 
@@ -28,7 +28,7 @@ jobs:
       - name: Check out synchronized source
         uses: actions/checkout@v4
         with:
-          ref: codex/world-tour-v1
+          ref: codex/world-overhaul-v090
 
       - name: Set up Python
         uses: actions/setup-python@v5

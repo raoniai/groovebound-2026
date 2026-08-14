@@ -310,6 +310,15 @@ local function check_world_stages(errors, stage_catalog, content)
           check_field(errors, where .. ".mechanic.id", stage.mechanic.id, {
             type = "string",
           })
+          check_field(errors, where .. ".mechanic.stage_variant",
+            stage.mechanic.stage_variant, { type = "string" })
+          check_field(errors, where .. ".mechanic.kind", stage.mechanic.kind, {
+            type = "string",
+            one_of = { "timed_zone", "relay", "charge", "call_response",
+              "flow", "prism_relay", "phrase", "changes" },
+          })
+          check_field(errors, where .. ".mechanic.encore_threshold",
+            stage.mechanic.encore_threshold, { type = "number", min = 2, max = 8 })
           check_field(
             errors, where .. ".mechanic.cycle_seconds",
             stage.mechanic.cycle_seconds, { type = "number", min = 0.2 })
@@ -318,6 +327,10 @@ local function check_world_stages(errors, stage_catalog, content)
           then
             errors[#errors + 1] = where
               .. ".mechanic.pads: expected at least three pads"
+          end
+          if stage.mechanic.stage_variant ~= stage.id then
+            errors[#errors + 1] = where
+              .. ".mechanic.stage_variant: must match stage id"
           end
         end
       end

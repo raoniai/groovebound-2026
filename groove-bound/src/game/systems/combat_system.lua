@@ -118,6 +118,7 @@ function CombatSystem:init(opts)
   self.pickup_notice_text = nil
   self.pending_chest_reveals = {}
   self.buffs = { damage = 0, defense = 0, speed = 0 }
+  self.world_mechanic_effects = { damage = 1, cadence = 1, encore = false }
   self.stages = opts.stages or self.content.stages
   self.stage_index = 0
   self.stage_started_at = 0
@@ -126,6 +127,24 @@ function CombatSystem:init(opts)
   self.stage_clear_reported = false
   self.overtime_latched = false
   self:begin_stage(1, self.arena, true)
+end
+
+function CombatSystem:set_world_mechanic_effects(effects)
+  self.world_mechanic_effects = effects or { damage = 1, cadence = 1 }
+end
+
+function CombatSystem:on_world_mechanic_success(definition)
+  local broken = false
+  self.ctx.world:each("enemy", function(enemy)
+    if enemy.definition.boss_type == "final" then
+      broken = enemy:apply_world_break(definition.boss_break or 1) or broken
+    end
+  end)
+  if broken then
+    self.wave_notice = "ENCORE BREAK  •  BOSS CORE EXPOSED"
+    self.wave_notice_time = 3.5
+  end
+  return broken
 end
 
 function CombatSystem:_stage_duration(stage)
@@ -382,7 +401,8 @@ function CombatSystem:_update_weapons(dt)
 
   for slot = 1, self.inventory:count() do
     local emitter = self.weapon_runtime:get(slot)
-    emitter.cooldown_remaining = emitter.cooldown_remaining - dt
+    emitter.cooldown_remaining = emitter.cooldown_remaining
+      - dt * (self.world_mechanic_effects.cadence or 1)
     local activations = 0
     while emitter.cooldown_remaining <= 0 and activations < 3 do
       local snapshot = self.weapon_runtime:projectile_snapshot(slot)
@@ -422,12 +442,38 @@ function CombatSystem:_update_weapons(dt)
   end
 end
 
-function CombatSystem:_spawn_static_wave(enemy, damage_multiplier)
-  local count = enemy.definition.projectile_count or 16
+function CombatSystem:_spawn_static_wave(enemy, damage_multiplier, action)
+  action = action or {}
+  local phase = action.phase or 1
+  local count = (action.count or enemy.definition.projectile_count or 16)
+    + (phase - 1) * 4
   for index = 1, count do
     local angle = (index - 1) / count * math.pi * 2
     self:_spawn_enemy_projectile(enemy, {
       kind = "static_wave",
+      projectile_class = index % (phase == 3 and 3 or 4) == 0
+        and "heavy" or "light",
+      dx = math.cos(angle),
+      dy = math.sin(angle),
+    }, damage_multiplier)
+  end
+end
+
+function CombatSystem:_spawn_pattern(enemy, action, damage_multiplier)
+  if action.kind == "static_wave" then
+    return self:_spawn_static_wave(enemy, damage_multiplier, action)
+  end
+  local count = action.count or (action.kind == "cross_wave" and 8 or 7)
+  local base = math.atan2(action.dy, action.dx)
+  local spread = math.rad(action.spread or 14)
+  for index = 1, count do
+    local angle = action.kind == "cross_wave"
+      and (index - 1) / count * math.pi * 2
+      or base + (index - (count + 1) / 2) * spread
+    self:_spawn_enemy_projectile(enemy, {
+      kind = action.kind,
+      projectile_class = action.projectile_class or "light",
+      phase = action.phase,
       dx = math.cos(angle),
       dy = math.sin(angle),
     }, damage_multiplier)
@@ -669,7 +715,8 @@ function CombatSystem:_update_buffs(dt)
     self.buffs[kind] = math.max(0, remaining - dt)
   end
   self.weapon_runtime:set_temporary_damage_multiplier(
-    self.buffs.damage > 0 and 1.5 or 1)
+    (self.buffs.damage > 0 and 1.5 or 1)
+      * (self.world_mechanic_effects.damage or 1))
   self.player.temporary_defense_multiplier = self.buffs.defense > 0 and 1.5 or 1
   self.player.temporary_speed_multiplier = self.buffs.speed > 0 and 1.35 or 1
 end
@@ -702,9 +749,12 @@ function CombatSystem:_update_projectiles(dt)
             and not projectile.dead
           then
             projectile.dead = true
-            candidate.dead = true
-            self.stats.enemy_shots_cancelled =
-              self.stats.enemy_shots_cancelled + 1
+            local cancelled = candidate.register_cancel_hit
+              and candidate:register_cancel_hit() or false
+            if cancelled then
+              self.stats.enemy_shots_cancelled =
+                self.stats.enemy_shots_cancelled + 1
+            end
             self.vfx:spawn("hit", projectile.x, projectile.y, {
               scale = 0.22,
               rotation = math.atan2(projectile.dy, projectile.dx),
@@ -782,8 +832,10 @@ function CombatSystem:_update_enemies(dt)
     end
     if action and action.kind == "note_bolt" then
       self:_spawn_enemy_projectile(enemy, action, damage_multiplier)
-    elseif action and action.kind == "static_wave" then
-      self:_spawn_static_wave(enemy, damage_multiplier)
+    elseif action and (action.kind == "static_wave"
+      or action.kind == "aimed_fan" or action.kind == "cross_wave")
+    then
+      self:_spawn_pattern(enemy, action, damage_multiplier)
     elseif action and action.kind == "resonance_pulse" then
       local range = enemy.definition.attack_range or 160
       if distance_sq(self.player.x, self.player.y, enemy.x, enemy.y)
@@ -817,10 +869,13 @@ function CombatSystem:_spawn_enemy_projectile(enemy, action, damage_multiplier)
     y = enemy.y,
     dx = action.dx,
     dy = action.dy,
-    speed = enemy.definition.projectile_speed or 270,
+    speed = (enemy.definition.projectile_speed or 270)
+      * (1 + ((action.phase or 1) - 1) * .10),
     damage = enemy.definition.damage * damage_multiplier * enemy.overtime_multiplier,
     radius = action.kind == "static_wave" and 15
       or enemy.definition.boss_type and 11 or 8,
+    projectile_class = action.projectile_class,
+    cancel_health = action.projectile_class == "heavy" and 3 or 1,
     color = enemy.definition.color,
   })
   self.ctx.world:add("enemy_projectile", projectile)

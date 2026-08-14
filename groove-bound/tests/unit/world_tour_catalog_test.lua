@@ -56,7 +56,7 @@ T["Jazz world owns a complete visual roster and escalating second stage"] = func
   local first = content.world_stages.jazz[1]
   local second = content.world_stages.jazz[2]
   H.eq(first.floor_style, "jazz")
-  H.eq(second.environment_atlas, "jazz")
+  H.eq(second.environment_atlas, "jazz_stage2")
   H.eq(first.mechanic.id, "jazz_improvisation")
   H.is_true(second.width > first.width)
   H.is_true(second.mechanic.cycle_seconds < first.mechanic.cycle_seconds)
@@ -75,7 +75,7 @@ T["Funk world has an authored visual roster and escalating second stage"] = func
   local first = content.world_stages.funk[1]
   local second = content.world_stages.funk[2]
   H.eq(first.floor_style, "funk")
-  H.eq(second.environment_atlas, "funk")
+  H.eq(second.environment_atlas, "funk_stage2")
   H.is_true(second.width > first.width)
   H.is_true(second.mechanic.cycle_seconds < first.mechanic.cycle_seconds)
   H.is_true(#second.waves[#second.waves].enemies >= 4)

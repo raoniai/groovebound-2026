@@ -14,6 +14,7 @@ function Arena:init(opts)
   self.height = opts.height or self.stage.height or cfg.height
   self.wall = opts.wall or cfg.wall
   self.assets = opts.assets
+  self.reduced_motion = opts.reduced_motion == true
   self.obstacles = opts.obstacles or self.stage.obstacles or {
     { x = 420, y = 360, w = 120, h = 180, icon = { col = 1, row = 1 } },
     { x = 910, y = 280, w = 150, h = 120, icon = { col = 2, row = 1 } },
@@ -328,6 +329,8 @@ function Arena:draw()
         {
           color = { 1, 1, 1, 0.72 },
           atlas = decoration.atlas or environment_atlas,
+          animated = environment_atlas:match("_stage2$") ~= nil,
+          reduced_motion = self.reduced_motion,
         })
     end
   end
@@ -339,7 +342,11 @@ function Arena:draw()
         obstacle.x + obstacle.w / 2,
         obstacle.y + obstacle.h / 2,
         math.max(obstacle.w, obstacle.h),
-        { atlas = obstacle.atlas or environment_atlas })
+        {
+          atlas = obstacle.atlas or environment_atlas,
+          animated = environment_atlas:match("_stage2$") ~= nil,
+          reduced_motion = self.reduced_motion,
+        })
     end
   end
 
@@ -361,6 +368,8 @@ function Arena:draw_overlays()
         color = { 1, 1, 1, 1 },
         atlas = decoration.atlas or environment_atlas,
         fraction = decoration.overlay_fraction or 1,
+        animated = environment_atlas:match("_stage2$") ~= nil,
+        reduced_motion = self.reduced_motion,
       })
   end
   for _, obstacle in ipairs(self.obstacles) do
@@ -373,6 +382,8 @@ function Arena:draw_overlays()
         {
           atlas = obstacle.atlas or environment_atlas,
           fraction = obstacle.overlay_fraction or 1,
+          animated = environment_atlas:match("_stage2$") ~= nil,
+          reduced_motion = self.reduced_motion,
         })
     end
   end

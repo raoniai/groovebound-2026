@@ -104,7 +104,8 @@ T["mechanic explainer sits under score without touching the timer"] = function()
     H.is_true(mechanic.y >= timer.y + timer.h)
     H.is_true(mechanic.x >= timer.x + timer.w)
     H.eq(mechanic.x + mechanic.w, width - 8)
-    H.eq(mechanic.y, 70)
+    H.eq(mechanic.y, 76)
+    H.is_true(mechanic.y >= 8 + 56 + 12)
   end
 end
 
