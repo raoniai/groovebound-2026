@@ -97,7 +97,7 @@ The public landing site is a separate static presentation under `landing-page/`.
 | Combat readability and HUD | Published in v0.8.2, tests passed, and manual QA verified for the changed states | HP/XP bars and persistent panels use sprite-backed pieces; the timer keeps stage and remaining time on one line; World Tour mechanic guidance is centred beneath it; score grouping, shared rank/MAX badges, concise pause actions, integrated gameplay mute, and removed bottom controls were verified at reference and minimum supported sizes | Full combat-feel pass with flash/reduced-flash options and physical controller |
 | Character, upgrade, and results interface | Published in v0.7.1, tests passed, and visually sampled | Anton/Oswald typography, modular nine-slice upgrade cards, relevant-equipped evolution rows only, exact icon-led gain-to-total attributes, generated NEW badge, pickup-art utility choices, existing reroll/skip sprite CTAs, and bright sprite-backed menu focus | Manual defeat/victory results pass and final small-screen readability review |
 | Save system | Version 2 profiles and slots | Save, migration, profile, export and World Tour session tests | Cross-platform clean-machine fixtures |
-| Landing page and repository README | v0.8.4 deployed and public-live verified | The 375-file public bundle is byte-matched on all core pages and scripts; the 137-record Catalog includes one Jazz General emblem, 12 Jazz scenario assets, and eight Jazz enemy sprites; both stable desktop CTAs resolve to v0.8.4 | Physical-phone refresh, audio listening, and `main` promotion remain separate checks |
+| Landing page and repository README | v0.8.4 deployed and public-live verified | The 415-file public bundle is byte-matched on all core pages and scripts; the 212-record Catalog keeps the Jazz emblem in its World card and includes all 88 Prologue and playable World Tour scenario assets; both stable desktop CTAs resolve to v0.8.4 | Physical-phone refresh, audio listening, and `main` promotion remain separate checks |
 | World Tour runtime atlases | Jazz released in v0.8.4 | Jazz adds exact 4x2 enemy and environment RGBA atlases, a 2x2 floor atlas, and its project-owned identity mark; release packaging and site derivatives pass parity checks | Jazz visual/readability pass and focused physical-controller World Tour playthrough |
 | Desktop distribution | GitHub Latest publishes synchronized v0.8.4 Mac and Windows assets | Seven digest-bearing assets were built from one common payload; macOS and Windows package boot markers passed in release CI | Physical Windows QA, unlocked-Mac visual check, signing, and notarization if required |
 | Engine migration | Planned | Engine migration research and parity roadmap | Clean baseline and bounded target-engine spike |
@@ -129,12 +129,13 @@ Current active themes include:
   Prologue and World Tour marks, stage wordmarks, and Jazz public route are
   committed, pushed, and deployed. The Orbit logo remains exactly `ORBIT LINE`.
   All three public pages display v0.8.4 and retain stable Latest download URLs.
-- The Catalog has 137 rendered records. Its one-card General category carries
-  the new transparent Jazz emblem; Scenario backgrounds contains all eight Jazz
-  environment sprites and four floor surfaces; Enemy retains all eight Jazz
-  enemy sprites. The durable site-sync rule now requires this catalog and FTPS
-  loop for every future playable world or game/playable asset unless deployment
-  is explicitly withheld.
+- The Catalog has 212 rendered records across 10 focused categories. Jazz now
+  carries its emblem directly in the World Tour world card; all five locked
+  routes use the chained lock sprite. Scenario Backgrounds contains 88 authentic
+  environment, expansion, floor, and background assets across both Prologue
+  stages and Funk, Soul, Disco, and Jazz. The durable site-sync rule now requires
+  this catalog and FTPS loop for every future playable world or game/playable
+  asset unless deployment is explicitly withheld.
 - This handover remains the canonical delivery record after release work.
 
 Do not infer `main` promotion from the feature-branch push, GitHub release, or landing deployment.
@@ -156,7 +157,7 @@ Do not infer `main` promotion from the feature-branch push, GitHub release, or l
 | Public release/download | v0.8.4 is published as GitHub Latest with seven synchronized desktop assets | GitHub API confirms every required asset and SHA-256 digest; stable Latest routes resolve to v0.8.4 |
 | Landing download links | Stable macOS and Windows CTAs are public-live verified against v0.8.4 | Home, Catalog, and Builder display v0.8.4 and link to the stable Latest routes |
 | GitHub README presentation | Landing-styled rewrite committed and pushed at `f96acf9` | GitHub Markdown API rendered 21,124 bytes with 28 images, 50 links, and 3 tables; all 29 local references and 7 navigation anchors resolve; default-page visibility still depends on merging to `main` |
-| Landing deployment | v0.8.4 375-file bundle deployed and public-live verified | Final parity rollback captured at `20260814-132629-v0.8.4`; six core files, directory index, representative assets, the Jazz emblem, a Jazz environment sprite, a Jazz floor surface, badges, and desktop routes passed public parity |
+| Landing deployment | v0.8.4 415-file bundle deployed and public-live verified | Rollback captured at `20260814-134555-v0.8.4`; six core files, directory index, representative assets, badges, GitHub Latest, and stable desktop routes passed public parity after the complete 212-record Catalog upload |
 
 ## Desktop and engine portability
 

@@ -10,8 +10,9 @@ After every material game or landing-page change:
 3. Verify Home, Catalog, Builder, the integrated story route, media sound controls, catalog search and filters, the item inspector, screenshot lightboxes, drag interactions, and mobile layouts.
 
 Every new playable world or game/playable asset must update the Catalog in the
-same delivery pass. Include the world identity/emblem, scenario backgrounds and
-floors, environment sprites, enemy sprites, and other newly playable inventory;
+same delivery pass. Keep each world identity or emblem in its World Tour record,
+never in a separate General category. Include scenario backgrounds and floors,
+environment sprites, enemy sprites, and other newly playable inventory;
 refresh category and total counts; verify inspector data and asset references;
 then publish and public-live verify the approved FTP release. Leave the site
 local-only only when the user explicitly withholds deployment.

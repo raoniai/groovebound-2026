@@ -7,6 +7,7 @@
   const header = document.querySelector("[data-header]");
   const allVideos = () => [...document.querySelectorAll("video")];
   const fileSlug = (value) => String(value).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  const titleFromFile = (value) => String(value).replace(/-/g, " ").replace(/\b\w/g, (letter) => letter.toUpperCase());
 
   if (body.dataset.page === "home") {
     const main = document.querySelector("main");
@@ -55,10 +56,16 @@
   const numberedFiles = (prefix, count) => Array.from({ length: count }, (_, index) => `${prefix}-${String(index + 1).padStart(2, "0")}`);
   const collection = (root, files) => ({ root: `assets/world-tour/sprites/${root}`, files });
   const spriteCollections = {
+    "backbeat-environments": collection("environments/backbeat/base", numberedFiles("base", 8)),
+    "backbeat-expansions": collection("environments/backbeat/expansion", numberedFiles("expansion", 8)),
+    "orbit-environments": collection("environments/orbit/base", numberedFiles("base", 8)),
+    "orbit-expansions": collection("environments/orbit/expansion", numberedFiles("expansion", 8)),
     "funk-environments": collection("environments/funk", ["boombox-barricade", "record-kiosk", "amp-wall", "turntable-console", "disco-palm", "talkbox-streetlight", "vinyl-stack", "hologram-dancer"]),
     "soul-environments": collection("environments/soul", numberedFiles("prop", 8)),
     "disco-environments": collection("environments/disco", numberedFiles("prop", 8)),
     "jazz-environments": collection("environments/jazz", numberedFiles("prop", 8)),
+    "backbeat-floors": collection("floors/backbeat", numberedFiles("surface", 4)),
+    "orbit-floors": collection("floors/orbit", numberedFiles("surface", 4)),
     "funk-enemies": collection("enemies/funk", ["pocket-gremlin", "slapback-hound", "groove-guard", "talkbox-oracle", "boogie-tank", "funkadelic-wasp", "mothership-of-funk", "pocket-phantom"]),
     "soul-enemies": collection("enemies/soul", ["choir-automaton", "string-sentinel", "organ-walker", "harmony-linker", "gospel-moth", "velvet-knight", "organ-colossus", "velvet-titan"]),
     "disco-enemies": collection("enemies/disco", ["prism-roller", "mirror-drone", "laser-fan", "reflection-twin", "platform-pouncer", "glitter-guard", "laser-conductor", "prism-monarch"]),
@@ -501,12 +508,12 @@
     ["funk","Funk","The Pocket District","Mothership of Funk","Playable","Stand on the active downbeat pad to build a Pocket chain and gain a damage boost.","assets/world-tour/sprites/ui/interface/funk.png","Core world"],
     ["soul","Soul","Velvet Chapel","Velvet Titan","Playable","Charge a shared reserve in combat, then spend it to recover health.","assets/world-tour/sprites/ui/interface/soul.png","Core world"],
     ["disco","Disco","Mirrorball Metro","Prism Monarch","Playable","Follow the moving spotlight to gain a speed boost.","assets/world-tour/sprites/ui/interface/disco.png","Core world"],
-    ["jazz","Jazz","Blue Note Borough","Midnight Maestro","Playable","Catch each blue-note improvisation window to gain a temporary speed boost.","assets/world-tour/logos/jazz.png","Core world"],
+    ["jazz","Jazz","Blue Note Borough","Midnight Maestro","Playable","Catch each blue-note improvisation window to gain a temporary speed boost.","assets/world-tour/emblems/jazz.png","Core world"],
     ["house","House","Beyond the tour map","Signal locked","Coming soon","A relentless pulse waits behind the next gate.","assets/world-tour/sprites/ui/world-tour/locked-world.png","Core world"],
     ["techno","Techno","Beyond the tour map","Signal locked","Coming soon","A machine rhythm waits behind the next gate.","assets/world-tour/sprites/ui/world-tour/locked-world.png","Core world"],
-    ["cosmic-boogie","Cosmic Boogie","Orbital Dance Deck","Celestial Selector","Secret route","Find the hidden connection between Funk and Disco.","assets/world-tour/sprites/ui/world-tour/portal.png","Secret world"],
-    ["soulful-garage","Soulful Garage","Midnight Garage","Night Shift Conductor","Secret route","Find the hidden connection between Soul and House.","assets/world-tour/sprites/ui/world-tour/portal.png","Secret world"],
-    ["future-funk","Future Funk","Tomorrow Mall","The Recompiler","Secret route","Find the hidden connection between Jazz and Techno.","assets/world-tour/sprites/ui/world-tour/portal.png","Secret world"]
+    ["cosmic-boogie","Cosmic Boogie","Orbital Dance Deck","Celestial Selector","Secret route","Find the hidden connection between Funk and Disco.","assets/world-tour/sprites/ui/world-tour/locked-world.png","Secret world"],
+    ["soulful-garage","Soulful Garage","Midnight Garage","Night Shift Conductor","Secret route","Find the hidden connection between Soul and House.","assets/world-tour/sprites/ui/world-tour/locked-world.png","Secret world"],
+    ["future-funk","Future Funk","Tomorrow Mall","The Recompiler","Secret route","Find the hidden connection between Jazz and Techno.","assets/world-tour/sprites/ui/world-tour/locked-world.png","Secret world"]
   ].map(([id,name,location,boss,status,mechanic,image,kind]) => ({
     key: `world-${id}`, name, type: "World", rarity: kind, role: location, image,
     description: status === "Playable" ? `${name} opens into two connected stages with its own route, enemies, bosses, and musical identity.` : `${name} waits beyond the tour map, its signal already pulsing behind the gate.`,
@@ -516,50 +523,57 @@
   }));
   worlds.forEach((world) => inspectionCatalog.set(world.key, world));
 
-  const generalRecords = [{
-    key: "general-jazz-emblem",
-    name: "Jazz World Emblem",
-    type: "General asset",
-    rarity: "Jazz World",
-    role: "World identity emblem",
-    image: "assets/world-tour/emblems/jazz.png",
-    description: "A midnight-vinyl crest built around a golden saxophone, electric-blue note, brass trim, and a cosmic violet gem.",
-    strength: "Identifies Jazz World clearly from compact catalog filters through large campaign panels.",
-    weakness: "Identity artwork only; it does not change gameplay.",
-    facts: ["Jazz World", "Vinyl crest", "Saxophone and blue note"]
-  }];
-  generalRecords.forEach((item) => inspectionCatalog.set(item.key, item));
-
-  const jazzScenarioRows = [
-    ["prop-01", "Blue Note Club Entrance", "Environment prop", "The brass-and-blue entrance to the Jazz World night circuit."],
-    ["prop-02", "Midnight Note Lamp", "Environment prop", "A street lamp crowned by a glowing blue note."],
-    ["prop-03", "Walking Bass Stack", "Environment prop", "A speaker and upright-bass stack for the borough's live corners."],
-    ["prop-04", "Improvisation Kiosk", "Environment prop", "A compact illuminated kiosk built into the midnight streetscape."],
-    ["prop-05", "Saxophone Moon Fountain", "Environment prop", "A gold saxophone fountain framed by a blue crescent basin."],
-    ["prop-06", "Blue Palm Planter", "Environment prop", "A neon-blue palm rising from a brass-trimmed planter."],
-    ["prop-07", "Equalizer Bench", "Environment prop", "A street bench backed by a compact blue equalizer display."],
-    ["prop-08", "Blue Note Spotlight", "Environment prop", "A stage spotlight that throws a blue-note beam across the route."],
-    ["surface-01", "Midnight Inlay", "Scenario background", "Dark wood and tile crossed by warm brass inlay."],
-    ["surface-02", "Blue Note Grid", "Scenario background", "An illuminated blue club grid for high-contrast combat lanes."],
-    ["surface-03", "Brass Solo Mosaic", "Scenario background", "A tiled brass saxophone motif for the Jazz World floor."],
-    ["surface-04", "Cosmic Club Diamond", "Scenario background", "A violet-and-blue diamond floor with luminous midnight trim."]
+  const numberedLabels = (prefix, count) => Array.from({ length: count }, (_, index) => `${prefix} ${String(index + 1).padStart(2, "0")}`);
+  const funkFiles = ["boombox-barricade", "record-kiosk", "amp-wall", "turntable-console", "disco-palm", "talkbox-streetlight", "vinyl-stack", "hologram-dancer"];
+  const jazzEnvironmentNames = ["Blue Note Club Entrance", "Midnight Note Lamp", "Walking Bass Stack", "Improvisation Kiosk", "Saxophone Moon Fountain", "Blue Palm Planter", "Equalizer Bench", "Blue Note Spotlight"];
+  const jazzFloorNames = ["Midnight Inlay", "Blue Note Grid", "Brass Solo Mosaic", "Cosmic Club Diamond"];
+  const scenarioEnvironmentSets = [
+    { id: "backbeat-base", world: "Backbeat Streets", location: "The Prologue", root: "backbeat/base", files: numberedFiles("base", 8), names: numberedLabels("Backbeat Streets Prop", 8) },
+    { id: "backbeat-expansion", world: "Backbeat Streets", location: "The Prologue", root: "backbeat/expansion", files: numberedFiles("expansion", 8), names: numberedLabels("Backbeat Streets Expansion", 8) },
+    { id: "orbit-base", world: "The Orbit Line", location: "The Prologue", root: "orbit/base", files: numberedFiles("base", 8), names: numberedLabels("Orbit Line Prop", 8) },
+    { id: "orbit-expansion", world: "The Orbit Line", location: "The Prologue", root: "orbit/expansion", files: numberedFiles("expansion", 8), names: numberedLabels("Orbit Line Expansion", 8) },
+    { id: "funk", world: "Funk World", location: "The Pocket District", root: "funk", files: funkFiles, names: funkFiles.map(titleFromFile), worldKey: "world-funk" },
+    { id: "soul", world: "Soul World", location: "Velvet Chapel", root: "soul", files: numberedFiles("prop", 8), names: numberedLabels("Velvet Chapel Prop", 8), worldKey: "world-soul" },
+    { id: "disco", world: "Disco World", location: "Mirrorball Metro", root: "disco", files: numberedFiles("prop", 8), names: numberedLabels("Mirrorball Metro Prop", 8), worldKey: "world-disco" },
+    { id: "jazz", world: "Jazz World", location: "Blue Note Borough", root: "jazz", files: numberedFiles("prop", 8), names: jazzEnvironmentNames, worldKey: "world-jazz" }
   ];
-  const jazzScenarios = jazzScenarioRows.map(([file, name, role, description], index) => {
-    const isFloor = file.startsWith("surface");
-    return {
-      key: `scenario-jazz-${file}`,
-      name,
+  const scenarioFloorSets = [
+    { id: "backbeat", world: "Backbeat Streets", location: "The Prologue", names: numberedLabels("Backbeat Surface", 4) },
+    { id: "orbit", world: "The Orbit Line", location: "The Prologue", names: numberedLabels("Orbit Surface", 4) },
+    { id: "funk", world: "Funk World", location: "The Pocket District", names: numberedLabels("Funk Surface", 4), worldKey: "world-funk" },
+    { id: "soul", world: "Soul World", location: "Velvet Chapel", names: numberedLabels("Soul Surface", 4), worldKey: "world-soul" },
+    { id: "disco", world: "Disco World", location: "Mirrorball Metro", names: numberedLabels("Disco Surface", 4), worldKey: "world-disco" },
+    { id: "jazz", world: "Jazz World", location: "Blue Note Borough and Midnight Changes", names: jazzFloorNames, worldKey: "world-jazz" }
+  ];
+  const scenarioRecords = [
+    ...scenarioEnvironmentSets.flatMap((set) => set.files.map((file, index) => ({
+      key: `scenario-${set.id}-${file}`,
+      name: set.names[index],
       type: "Scenario asset",
-      rarity: "Jazz World",
-      role,
-      image: `assets/world-tour/sprites/${isFloor ? "floors" : "environments"}/jazz/${file}.png`,
-      description,
-      strength: isFloor ? "Defines the playable route's floor language without obscuring combat silhouettes." : "Builds Jazz World's readable street-and-club scenario vocabulary.",
+      rarity: set.world,
+      role: "Environment prop",
+      image: `assets/world-tour/sprites/environments/${set.root}/${file}.png`,
+      description: `${set.names[index]} is an authentic environment sprite used in ${set.location}.`,
+      strength: `Builds ${set.world}'s readable scenario vocabulary.`,
       weakness: "Visual scenario asset; it has no direct gameplay effect.",
-      facts: ["Jazz World", role, index < 8 ? "Blue Note Borough" : "Blue Note Borough and Midnight Changes"]
-    };
-  });
-  jazzScenarios.forEach((item) => inspectionCatalog.set(item.key, item));
+      facts: [set.world, "Environment prop", set.location],
+      worldKey: set.worldKey
+    }))),
+    ...scenarioFloorSets.flatMap((set) => numberedFiles("surface", 4).map((file, index) => ({
+      key: `scenario-${set.id}-${file}`,
+      name: set.names[index],
+      type: "Scenario asset",
+      rarity: set.world,
+      role: "Scenario background",
+      image: `assets/world-tour/sprites/floors/${set.id}/${file}.png`,
+      description: `${set.names[index]} is an authored floor and background surface used across ${set.location}.`,
+      strength: "Defines the playable route's floor language without obscuring combat silhouettes.",
+      weakness: "Visual scenario asset; it has no direct gameplay effect.",
+      facts: [set.world, "Scenario background", set.location],
+      worldKey: set.worldKey
+    })))
+  ];
+  scenarioRecords.forEach((item) => inspectionCatalog.set(item.key, item));
 
   const perkRows = [
     ["open-ears","Open Ears",5,"Clear the Prologue","Increase pickup radius."],
@@ -598,7 +612,6 @@
   chests.forEach((chest) => inspectionCatalog.set(chest.key, chest));
 
   const categoryMeta = {
-    general: { label: "General", icon: "assets/world-tour/emblems/jazz.png" },
     weapon: { label: "Weapon", icon: "assets/sprites/weapons/weapon-1.png" },
     support: { label: "Passive", icon: "assets/sprites/supports/support-3.png" },
     evolution: { label: "Evolution", icon: "assets/sprites/evolved/evolved-1.png" },
@@ -606,12 +619,11 @@
     enemy: { label: "Enemy", icon: "assets/sprites/enemies/orbit-3.png?v=site005" },
     gem: { label: "Gem", icon: "assets/sprites/gems/gem-2.png?v=site005" },
     world: { label: "World", icon: "assets/world-tour/sprites/ui/interface/global-tour.png" },
-    scenario: { label: "Scenario asset", icon: "assets/world-tour/sprites/environments/jazz/prop-01.png" },
+    scenario: { label: "Scenario asset", icon: "assets/world-tour/sprites/environments/backbeat/base/base-01.png" },
     perk: { label: "Permanent perk", icon: "assets/world-tour/sprites/ui/interface/perk-database.png" },
     chest: { label: "Chest", icon: "assets/world-tour/sprites/chests/encore-gate.png" }
   };
   const categoryFor = (item) => {
-    if (item.type === "General asset") return "general";
     if (item.type === "Base weapon") return "weapon";
     if (item.type === "Support") return "support";
     if (item.type === "Evolved weapon") return "evolution";
@@ -667,11 +679,8 @@
     connectRecord(enemy.key, `world-${enemy.world}`, "World");
     connectRecord(enemy.key, gemKey, "Resonance drop");
   });
-  connectRecord("general-jazz-emblem", "world-jazz", "World");
-  connectRecord("world-jazz", "general-jazz-emblem", "Emblem");
-  jazzScenarios.forEach((scenario) => {
-    connectRecord(scenario.key, "world-jazz", "World");
-    connectRecord(scenario.key, "general-jazz-emblem", "Emblem");
+  scenarioRecords.forEach((scenario) => {
+    if (scenario.worldKey) connectRecord(scenario.key, scenario.worldKey, "World");
   });
 
   const catalogGroups = document.querySelector("[data-catalog-groups]");
@@ -680,8 +689,8 @@
   const catalogCount = document.querySelector("[data-catalog-count]");
   const catalogEmpty = document.querySelector("[data-catalog-empty]");
   if (catalogGroups && catalogFilters) {
-    const catalogOrder = ["general", "character", "weapon", "support", "evolution", "gem", "enemy", "world", "scenario", "perk", "chest"];
-    const pluralLabels = { general: "General", character: "Characters", weapon: "Weapons", support: "Supports", evolution: "Fusions", gem: "Resonance gems", enemy: "Enemies", world: "World Tour worlds", scenario: "Scenario backgrounds", perk: "Permanent perks", chest: "Chests" };
+    const catalogOrder = ["character", "weapon", "support", "evolution", "gem", "enemy", "world", "scenario", "perk", "chest"];
+    const pluralLabels = { character: "Characters", weapon: "Weapons", support: "Supports", evolution: "Fusions", gem: "Resonance gems", enemy: "Enemies", world: "World Tour worlds", scenario: "Scenario backgrounds", perk: "Permanent perks", chest: "Chests" };
     let activeCategory = "all";
     const allItems = Array.from(inspectionCatalog.values());
     const makeFilter = (category, label, icon, count) => {
@@ -712,7 +721,6 @@
       const section = document.createElement("section");
       section.className = "catalog-group";
       section.dataset.catalogGroup = category;
-      if (category === "general") section.classList.add("catalog-group--general");
       const header = document.createElement("div");
       header.className = "catalog-group__header";
       const icon = document.createElement("img");
@@ -747,13 +755,6 @@
         plus.textContent = "+";
         plus.setAttribute("aria-hidden", "true");
         copy.append(name);
-        if (item.category === "general") {
-          const role = document.createElement("small");
-          role.textContent = item.role;
-          const description = document.createElement("em");
-          description.textContent = item.description;
-          copy.append(role, description);
-        }
         card.append(image, copy, plus);
         if (item.category === "enemy" && (item.rank === "Miniboss" || item.rank === "Final boss")) {
           const bossTag = document.createElement("span");
@@ -995,8 +996,8 @@
     if (item.category === "world") {
       return `${renderAnalysis(item, ["World mechanic", "Availability"])}<div class="inspect-character-signals">${(item.facts || []).map((fact) => `<div><span aria-hidden="true">◆</span><strong>${escapeHTML(fact)}</strong></div>`).join("")}</div>`;
     }
-    if (item.category === "general" || item.category === "scenario") {
-      return `${renderAnalysis(item, [item.category === "general" ? "Identity role" : "Scenario role", "Gameplay scope"])}<div class="inspect-character-signals">${(item.facts || []).map((fact) => `<div><span aria-hidden="true">◆</span><strong>${escapeHTML(fact)}</strong></div>`).join("")}</div>`;
+    if (item.category === "scenario") {
+      return `${renderAnalysis(item, ["Scenario role", "Gameplay scope"])}<div class="inspect-character-signals">${(item.facts || []).map((fact) => `<div><span aria-hidden="true">◆</span><strong>${escapeHTML(fact)}</strong></div>`).join("")}</div>`;
     }
     if (item.category === "perk") {
       return `<div class="inspect-support-core"><div><strong>${escapeHTML(String(item.max))}</strong><span>Maximum rank</span></div><div><strong>${escapeHTML(item.source)}</strong><span>Unlock source</span></div></div>${renderAnalysis(item, ["Permanent effect", "Limit"])}`;
@@ -1021,7 +1022,6 @@
     const category = categoryMeta[item.category] || categoryMeta.gem;
     inspector.querySelector("[data-inspect-category]").textContent = category.label;
     const metaByCategory = {
-      general: [item.rarity],
       weapon: [item.rarity, item.pattern],
       support: [],
       evolution: [item.rarity, item.pattern],

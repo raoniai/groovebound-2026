@@ -2,6 +2,16 @@
 
 This file is the local implementation record. Add a new entry at the top after every material site pass.
 
+## 2026-08-14 | SITE-045 | Complete scenario archive and world-card correction
+
+Removed the standalone General category and moved the Jazz emblem into the Jazz
+World record. Replaced all three winged secret-route placeholders with the
+authentic chained lock sprite, matching the locked House and Techno routes.
+Expanded Scenario Backgrounds from 12 Jazz-only records to 88 authentic assets:
+all environment props, expansion props, floors, and background surfaces from
+both Prologue stages and every currently playable World Tour world. The complete
+Catalog now contains 212 records across 10 focused categories.
+
 ## 2026-08-14 | SITE-044 | Jazz asset catalog expansion
 
 Expanded the Resonance Archive with 13 new records and corrected its visible

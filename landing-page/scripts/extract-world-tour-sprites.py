@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Extract isolated, tightly bounded website sprites from World Tour atlases.
+"""Extract isolated, tightly bounded website sprites from game atlases.
 
-The runtime atlases remain untouched. Each website derivative is cropped to its
+The runtime atlases remain untouched. Prologue and World Tour website derivatives are cropped to their
 authored grid cell and then trimmed to the exact non-transparent alpha bounds.
 Disconnected fragments entering through a shared cell edge are removed before
 the trim. Opaque floor tiles keep their full cell because every edge is artwork.
@@ -36,6 +36,18 @@ class AtlasSpec:
 
 
 SPECS = (
+    AtlasSpec("../environment-atlas.png", "environments/backbeat/base", 4, 2,
+              numbered("base", 8)),
+    AtlasSpec("backbeat-environment-expansion-atlas.png", "environments/backbeat/expansion", 4, 2,
+              numbered("expansion", 8)),
+    AtlasSpec("stage2-environment-atlas.png", "environments/orbit/base", 4, 2,
+              numbered("base", 8)),
+    AtlasSpec("orbit-environment-expansion-atlas.png", "environments/orbit/expansion", 4, 2,
+              numbered("expansion", 8)),
+    AtlasSpec("backbeat-floor-atlas.png", "floors/backbeat", 2, 2,
+              numbered("surface", 4)),
+    AtlasSpec("orbit-floor-atlas.png", "floors/orbit", 2, 2,
+              numbered("surface", 4)),
     AtlasSpec("funk-enemies-atlas.png", "enemies/funk", 4, 2, (
         "pocket-gremlin", "slapback-hound", "groove-guard", "talkbox-oracle",
         "boogie-tank", "funkadelic-wasp", "mothership-of-funk", "pocket-phantom",
@@ -387,7 +399,8 @@ def main() -> None:
             "Assign atlas-wide connected alpha components to their nearest authored "
             "sprite, recover complete subjects across nominal cell lines, discard isolated "
             "pixel noise, and trim to visible alpha bounds without resizing. Opaque floor "
-            "textures retain their exact authored cells."
+            "textures retain their exact authored cells. Prologue and World Tour sources "
+            "share this extraction contract."
         ),
         "source_root": str(SOURCE_ROOT.relative_to(ROOT)),
         "output_root": str(OUTPUT_ROOT.relative_to(ROOT)),
@@ -398,7 +411,7 @@ def main() -> None:
     manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
     component_outputs = sum(record["isolation"] == "global-alpha-components" for record in records)
     extended_outputs = sum(bool(record["extends_beyond_cell"]) for record in records)
-    print(f"Extracted {len(records)} isolated World Tour sprites.")
+    print(f"Extracted {len(records)} isolated game sprites.")
     print(f"Segmented {component_outputs} sprites globally; recovered {extended_outputs} across cell edges.")
     print(f"Manifest: {manifest_path}")
 

@@ -1,9 +1,2009 @@
 {
-  "policy": "Assign atlas-wide connected alpha components to their nearest authored sprite, recover complete subjects across nominal cell lines, discard isolated pixel noise, and trim to visible alpha bounds without resizing. Opaque floor textures retain their exact authored cells.",
+  "policy": "Assign atlas-wide connected alpha components to their nearest authored sprite, recover complete subjects across nominal cell lines, discard isolated pixel noise, and trim to visible alpha bounds without resizing. Opaque floor textures retain their exact authored cells. Prologue and World Tour sources share this extraction contract.",
   "source_root": "groove-bound/assets/generated/campaign",
   "output_root": "landing-page/assets/world-tour/sprites",
-  "count": 180,
+  "count": 220,
   "records": [
+    {
+      "source": "groove-bound/assets/generated/environment-atlas.png",
+      "source_sha256": "e289d02d5107ae251474ac8ae80ac4a4185188c03cd2db7838fce1fa0ed26e8a",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 1,
+      "cell_size": [
+        256,
+        256
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        59,
+        19,
+        187,
+        255
+      ],
+      "authored_cell_bounds": [
+        0,
+        0,
+        256,
+        256
+      ],
+      "primary_component_id": 0,
+      "source_component_ids": [
+        0
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
+      "alpha_bounds": [
+        0,
+        0,
+        128,
+        236
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/backbeat/base/base-01.png",
+      "output_size": [
+        128,
+        236
+      ],
+      "output_sha256": "7a27f17cac20589a7b291a8a942779f7b5e070f1207c9f74989b723841b9f885"
+    },
+    {
+      "source": "groove-bound/assets/generated/environment-atlas.png",
+      "source_sha256": "e289d02d5107ae251474ac8ae80ac4a4185188c03cd2db7838fce1fa0ed26e8a",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 2,
+      "cell_size": [
+        256,
+        256
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        274,
+        45,
+        472,
+        253
+      ],
+      "authored_cell_bounds": [
+        256,
+        0,
+        512,
+        256
+      ],
+      "primary_component_id": 1,
+      "source_component_ids": [
+        1
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
+      "alpha_bounds": [
+        0,
+        0,
+        198,
+        208
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/backbeat/base/base-02.png",
+      "output_size": [
+        198,
+        208
+      ],
+      "output_sha256": "4656f49d2022ae724ac0e53b95c3f5f7a6b4f933abd36c68008aa59cf5b414df"
+    },
+    {
+      "source": "groove-bound/assets/generated/environment-atlas.png",
+      "source_sha256": "e289d02d5107ae251474ac8ae80ac4a4185188c03cd2db7838fce1fa0ed26e8a",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 3,
+      "cell_size": [
+        256,
+        256
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        529,
+        59,
+        718,
+        246
+      ],
+      "authored_cell_bounds": [
+        512,
+        0,
+        768,
+        256
+      ],
+      "primary_component_id": 2,
+      "source_component_ids": [
+        2
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
+      "alpha_bounds": [
+        0,
+        0,
+        189,
+        187
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/backbeat/base/base-03.png",
+      "output_size": [
+        189,
+        187
+      ],
+      "output_sha256": "cf39b078282403ce43cd391c8ed34e32fb9487e6c373aa5dee540534ef15d0e8"
+    },
+    {
+      "source": "groove-bound/assets/generated/environment-atlas.png",
+      "source_sha256": "e289d02d5107ae251474ac8ae80ac4a4185188c03cd2db7838fce1fa0ed26e8a",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 4,
+      "cell_size": [
+        256,
+        256
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        771,
+        80,
+        999,
+        253
+      ],
+      "authored_cell_bounds": [
+        768,
+        0,
+        1024,
+        256
+      ],
+      "primary_component_id": 3,
+      "source_component_ids": [
+        3
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
+      "alpha_bounds": [
+        0,
+        0,
+        228,
+        173
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/backbeat/base/base-04.png",
+      "output_size": [
+        228,
+        173
+      ],
+      "output_sha256": "2348408c1516a7e535c8ae9ba39048b9a4fbae54905ea497f6d9027af77bb3c3"
+    },
+    {
+      "source": "groove-bound/assets/generated/environment-atlas.png",
+      "source_sha256": "e289d02d5107ae251474ac8ae80ac4a4185188c03cd2db7838fce1fa0ed26e8a",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 5,
+      "cell_size": [
+        256,
+        256
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        31,
+        301,
+        226,
+        454
+      ],
+      "authored_cell_bounds": [
+        0,
+        256,
+        256,
+        512
+      ],
+      "primary_component_id": 4,
+      "source_component_ids": [
+        4
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
+      "alpha_bounds": [
+        0,
+        0,
+        195,
+        153
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/backbeat/base/base-05.png",
+      "output_size": [
+        195,
+        153
+      ],
+      "output_sha256": "61a5c6cefa8a13751dbe2f33d09f79c6cdff630d6e9ccce4569dc115890fbdb3"
+    },
+    {
+      "source": "groove-bound/assets/generated/environment-atlas.png",
+      "source_sha256": "e289d02d5107ae251474ac8ae80ac4a4185188c03cd2db7838fce1fa0ed26e8a",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 6,
+      "cell_size": [
+        256,
+        256
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        278,
+        312,
+        465,
+        466
+      ],
+      "authored_cell_bounds": [
+        256,
+        256,
+        512,
+        512
+      ],
+      "primary_component_id": 5,
+      "source_component_ids": [
+        5
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
+      "alpha_bounds": [
+        0,
+        0,
+        187,
+        154
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/backbeat/base/base-06.png",
+      "output_size": [
+        187,
+        154
+      ],
+      "output_sha256": "adcd91fcb05dd69f5854c93df34eb2352b2e9300816210c579a2173116ea1958"
+    },
+    {
+      "source": "groove-bound/assets/generated/environment-atlas.png",
+      "source_sha256": "e289d02d5107ae251474ac8ae80ac4a4185188c03cd2db7838fce1fa0ed26e8a",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 7,
+      "cell_size": [
+        256,
+        256
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        502,
+        312,
+        746,
+        452
+      ],
+      "authored_cell_bounds": [
+        512,
+        256,
+        768,
+        512
+      ],
+      "primary_component_id": 6,
+      "source_component_ids": [
+        6
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [
+        "left"
+      ],
+      "discarded_noise_pixels": 0,
+      "alpha_bounds": [
+        0,
+        0,
+        244,
+        140
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/backbeat/base/base-07.png",
+      "output_size": [
+        244,
+        140
+      ],
+      "output_sha256": "08fb72f45791ba19c48d938ed565d57f89d43601a02255b96e39b4d21f04c917"
+    },
+    {
+      "source": "groove-bound/assets/generated/environment-atlas.png",
+      "source_sha256": "e289d02d5107ae251474ac8ae80ac4a4185188c03cd2db7838fce1fa0ed26e8a",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 8,
+      "cell_size": [
+        256,
+        256
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        796,
+        314,
+        974,
+        464
+      ],
+      "authored_cell_bounds": [
+        768,
+        256,
+        1024,
+        512
+      ],
+      "primary_component_id": 7,
+      "source_component_ids": [
+        7
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
+      "alpha_bounds": [
+        0,
+        0,
+        178,
+        150
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/backbeat/base/base-08.png",
+      "output_size": [
+        178,
+        150
+      ],
+      "output_sha256": "be67152397bd95f7b5e5bf48fb058c34598f43e176af08b76b76a7d991daedcd"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/backbeat-environment-expansion-atlas.png",
+      "source_sha256": "20fb6a4e67cc2ff7fa92748d987e17cac796f700798a002d9e6394b62e40ee61",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 1,
+      "cell_size": [
+        384,
+        512
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        34,
+        30,
+        391,
+        517
+      ],
+      "authored_cell_bounds": [
+        0,
+        0,
+        384,
+        512
+      ],
+      "primary_component_id": 1,
+      "source_component_ids": [
+        1
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [
+        "right",
+        "bottom"
+      ],
+      "discarded_noise_pixels": 14,
+      "alpha_bounds": [
+        0,
+        0,
+        357,
+        487
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/backbeat/expansion/expansion-01.png",
+      "output_size": [
+        357,
+        487
+      ],
+      "output_sha256": "6f490893352389c6969d194585c15a8e4f2bafa60976e9ffdf0abeb9581679a3"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/backbeat-environment-expansion-atlas.png",
+      "source_sha256": "20fb6a4e67cc2ff7fa92748d987e17cac796f700798a002d9e6394b62e40ee61",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 2,
+      "cell_size": [
+        384,
+        512
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        422,
+        107,
+        763,
+        493
+      ],
+      "authored_cell_bounds": [
+        384,
+        0,
+        768,
+        512
+      ],
+      "primary_component_id": 2,
+      "source_component_ids": [
+        2
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 14,
+      "alpha_bounds": [
+        0,
+        0,
+        341,
+        386
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/backbeat/expansion/expansion-02.png",
+      "output_size": [
+        341,
+        386
+      ],
+      "output_sha256": "406d694244282a62666152b8b63884130d38572a3c75f143f05c68c00e34b435"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/backbeat-environment-expansion-atlas.png",
+      "source_sha256": "20fb6a4e67cc2ff7fa92748d987e17cac796f700798a002d9e6394b62e40ee61",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 3,
+      "cell_size": [
+        384,
+        512
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        791,
+        213,
+        1178,
+        542
+      ],
+      "authored_cell_bounds": [
+        768,
+        0,
+        1152,
+        512
+      ],
+      "primary_component_id": 3,
+      "source_component_ids": [
+        3
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [
+        "right",
+        "bottom"
+      ],
+      "discarded_noise_pixels": 14,
+      "alpha_bounds": [
+        0,
+        0,
+        387,
+        329
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/backbeat/expansion/expansion-03.png",
+      "output_size": [
+        387,
+        329
+      ],
+      "output_sha256": "ec5fc01889840a9e29a1ef4cfa4681774c86eb4a66c608a9f41b31fe18fccc3e"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/backbeat-environment-expansion-atlas.png",
+      "source_sha256": "20fb6a4e67cc2ff7fa92748d987e17cac796f700798a002d9e6394b62e40ee61",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 4,
+      "cell_size": [
+        384,
+        512
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        1207,
+        26,
+        1417,
+        525
+      ],
+      "authored_cell_bounds": [
+        1152,
+        0,
+        1536,
+        512
+      ],
+      "primary_component_id": 0,
+      "source_component_ids": [
+        0
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [
+        "bottom"
+      ],
+      "discarded_noise_pixels": 14,
+      "alpha_bounds": [
+        0,
+        0,
+        210,
+        499
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/backbeat/expansion/expansion-04.png",
+      "output_size": [
+        210,
+        499
+      ],
+      "output_sha256": "5783ad16568d2fd3e83673cea0aeed542ae5ffd2361a7fc7a36d68aab9cfb6e9"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/backbeat-environment-expansion-atlas.png",
+      "source_sha256": "20fb6a4e67cc2ff7fa92748d987e17cac796f700798a002d9e6394b62e40ee61",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 5,
+      "cell_size": [
+        384,
+        512
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        86,
+        566,
+        322,
+        939
+      ],
+      "authored_cell_bounds": [
+        0,
+        512,
+        384,
+        1024
+      ],
+      "primary_component_id": 5,
+      "source_component_ids": [
+        5
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 14,
+      "alpha_bounds": [
+        0,
+        0,
+        236,
+        373
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/backbeat/expansion/expansion-05.png",
+      "output_size": [
+        236,
+        373
+      ],
+      "output_sha256": "940e63bbf3cfd5b14d28311a1c35467f01b5df71de4d4131a4e5ac97a6e0c434"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/backbeat-environment-expansion-atlas.png",
+      "source_sha256": "20fb6a4e67cc2ff7fa92748d987e17cac796f700798a002d9e6394b62e40ee61",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 6,
+      "cell_size": [
+        384,
+        512
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        433,
+        527,
+        623,
+        945
+      ],
+      "authored_cell_bounds": [
+        384,
+        512,
+        768,
+        1024
+      ],
+      "primary_component_id": 4,
+      "source_component_ids": [
+        4
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 14,
+      "alpha_bounds": [
+        0,
+        0,
+        190,
+        418
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/backbeat/expansion/expansion-06.png",
+      "output_size": [
+        190,
+        418
+      ],
+      "output_sha256": "e3c7deec8f98e077177968a787854dd2bf3c48c5bdaafb3b02729317a40c19df"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/backbeat-environment-expansion-atlas.png",
+      "source_sha256": "20fb6a4e67cc2ff7fa92748d987e17cac796f700798a002d9e6394b62e40ee61",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 7,
+      "cell_size": [
+        384,
+        512
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        670,
+        680,
+        1051,
+        934
+      ],
+      "authored_cell_bounds": [
+        768,
+        512,
+        1152,
+        1024
+      ],
+      "primary_component_id": 7,
+      "source_component_ids": [
+        7,
+        8,
+        9
+      ],
+      "assigned_components": 3,
+      "extends_beyond_cell": [
+        "left"
+      ],
+      "discarded_noise_pixels": 14,
+      "alpha_bounds": [
+        0,
+        0,
+        381,
+        254
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/backbeat/expansion/expansion-07.png",
+      "output_size": [
+        381,
+        254
+      ],
+      "output_sha256": "565cb3a1ee10100e3f1d6b38d104599a1056575b4d2ca6f300f58f2114b1cf1d"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/backbeat-environment-expansion-atlas.png",
+      "source_sha256": "20fb6a4e67cc2ff7fa92748d987e17cac796f700798a002d9e6394b62e40ee61",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 8,
+      "cell_size": [
+        384,
+        512
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        1101,
+        612,
+        1442,
+        952
+      ],
+      "authored_cell_bounds": [
+        1152,
+        512,
+        1536,
+        1024
+      ],
+      "primary_component_id": 6,
+      "source_component_ids": [
+        6
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [
+        "left"
+      ],
+      "discarded_noise_pixels": 14,
+      "alpha_bounds": [
+        0,
+        0,
+        341,
+        340
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/backbeat/expansion/expansion-08.png",
+      "output_size": [
+        341,
+        340
+      ],
+      "output_sha256": "daa9e3a323889b2e3ed020dcc2d40ee1a78e6625507b844b0d7d982cc29818f5"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/stage2-environment-atlas.png",
+      "source_sha256": "eb5723382b8dc517049b8ee45e127501ff4190bb2c310a56d0c8bfce150e045b",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 1,
+      "cell_size": [
+        415,
+        474
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        55,
+        54,
+        366,
+        429
+      ],
+      "authored_cell_bounds": [
+        0,
+        0,
+        415,
+        474
+      ],
+      "primary_component_id": 5,
+      "source_component_ids": [
+        2,
+        3,
+        4,
+        5,
+        9,
+        12,
+        14,
+        15,
+        16,
+        17,
+        19,
+        22,
+        23,
+        26,
+        27,
+        29,
+        30,
+        31,
+        32,
+        35,
+        38,
+        42,
+        46,
+        49,
+        65
+      ],
+      "assigned_components": 25,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 9,
+      "alpha_bounds": [
+        0,
+        0,
+        311,
+        375
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/orbit/base/base-01.png",
+      "output_size": [
+        311,
+        375
+      ],
+      "output_sha256": "d1895bd343368c385df615a5490da156e70828d621bc63f2c72aeb1f7c3733c9"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/stage2-environment-atlas.png",
+      "source_sha256": "eb5723382b8dc517049b8ee45e127501ff4190bb2c310a56d0c8bfce150e045b",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 2,
+      "cell_size": [
+        415,
+        474
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        502,
+        23,
+        696,
+        438
+      ],
+      "authored_cell_bounds": [
+        415,
+        0,
+        830,
+        474
+      ],
+      "primary_component_id": 0,
+      "source_component_ids": [
+        0
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 9,
+      "alpha_bounds": [
+        0,
+        0,
+        194,
+        415
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/orbit/base/base-02.png",
+      "output_size": [
+        194,
+        415
+      ],
+      "output_sha256": "273d45bd7171d9d0d897abc096d54f2936ce0db2e41d0414c8484d94d78e282c"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/stage2-environment-atlas.png",
+      "source_sha256": "eb5723382b8dc517049b8ee45e127501ff4190bb2c310a56d0c8bfce150e045b",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 3,
+      "cell_size": [
+        415,
+        474
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        845,
+        80,
+        1145,
+        422
+      ],
+      "authored_cell_bounds": [
+        830,
+        0,
+        1245,
+        474
+      ],
+      "primary_component_id": 7,
+      "source_component_ids": [
+        7,
+        40,
+        45,
+        51,
+        52,
+        53,
+        54,
+        55,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64
+      ],
+      "assigned_components": 16,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 9,
+      "alpha_bounds": [
+        0,
+        0,
+        300,
+        342
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/orbit/base/base-03.png",
+      "output_size": [
+        300,
+        342
+      ],
+      "output_sha256": "dddbe17ea2c4a151dd7cf2e48cb5dbf15bdaedae6b408d8f8386b6557657475a"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/stage2-environment-atlas.png",
+      "source_sha256": "eb5723382b8dc517049b8ee45e127501ff4190bb2c310a56d0c8bfce150e045b",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 4,
+      "cell_size": [
+        415,
+        474
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        1280,
+        39,
+        1558,
+        433
+      ],
+      "authored_cell_bounds": [
+        1245,
+        0,
+        1660,
+        474
+      ],
+      "primary_component_id": 1,
+      "source_component_ids": [
+        1,
+        6,
+        8,
+        10,
+        11,
+        13,
+        18,
+        20,
+        21,
+        24,
+        25,
+        28,
+        33,
+        34,
+        36,
+        37,
+        39,
+        41,
+        43,
+        44,
+        47,
+        48,
+        50,
+        56
+      ],
+      "assigned_components": 24,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 9,
+      "alpha_bounds": [
+        0,
+        0,
+        278,
+        394
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/orbit/base/base-04.png",
+      "output_size": [
+        278,
+        394
+      ],
+      "output_sha256": "f6d19868fc0db84574026e663d926e995e341c271a3b98b966f6e8e240bc1dc4"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/stage2-environment-atlas.png",
+      "source_sha256": "eb5723382b8dc517049b8ee45e127501ff4190bb2c310a56d0c8bfce150e045b",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 5,
+      "cell_size": [
+        415,
+        474
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        42,
+        468,
+        370,
+        860
+      ],
+      "authored_cell_bounds": [
+        0,
+        474,
+        415,
+        948
+      ],
+      "primary_component_id": 66,
+      "source_component_ids": [
+        66,
+        109,
+        111,
+        114,
+        117,
+        118,
+        119
+      ],
+      "assigned_components": 7,
+      "extends_beyond_cell": [
+        "top"
+      ],
+      "discarded_noise_pixels": 9,
+      "alpha_bounds": [
+        0,
+        0,
+        328,
+        392
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/orbit/base/base-05.png",
+      "output_size": [
+        328,
+        392
+      ],
+      "output_sha256": "136a9d0404b4d8f64cd6e6ec71c8914983ac43209b0703c0b9b10c8ca97e6436"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/stage2-environment-atlas.png",
+      "source_sha256": "eb5723382b8dc517049b8ee45e127501ff4190bb2c310a56d0c8bfce150e045b",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 6,
+      "cell_size": [
+        415,
+        474
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        413,
+        572,
+        793,
+        837
+      ],
+      "authored_cell_bounds": [
+        415,
+        474,
+        830,
+        948
+      ],
+      "primary_component_id": 88,
+      "source_component_ids": [
+        88,
+        120,
+        121
+      ],
+      "assigned_components": 3,
+      "extends_beyond_cell": [
+        "left"
+      ],
+      "discarded_noise_pixels": 9,
+      "alpha_bounds": [
+        0,
+        0,
+        380,
+        265
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/orbit/base/base-06.png",
+      "output_size": [
+        380,
+        265
+      ],
+      "output_sha256": "722e0b00929c75ff4c82da12b9ac47c102534cfcb24d8ea7e9d6f35e294e020e"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/stage2-environment-atlas.png",
+      "source_sha256": "eb5723382b8dc517049b8ee45e127501ff4190bb2c310a56d0c8bfce150e045b",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 7,
+      "cell_size": [
+        415,
+        474
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        863,
+        506,
+        1152,
+        874
+      ],
+      "authored_cell_bounds": [
+        830,
+        474,
+        1245,
+        948
+      ],
+      "primary_component_id": 68,
+      "source_component_ids": [
+        67,
+        68,
+        72,
+        77,
+        81,
+        82,
+        87,
+        91,
+        110,
+        112,
+        113,
+        115,
+        116
+      ],
+      "assigned_components": 13,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 9,
+      "alpha_bounds": [
+        0,
+        0,
+        289,
+        368
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/orbit/base/base-07.png",
+      "output_size": [
+        289,
+        368
+      ],
+      "output_sha256": "de65013f0fb0b4ae29bc9cb3587ea297523bb771109442b1724c5ddbe0ec3dca"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/stage2-environment-atlas.png",
+      "source_sha256": "eb5723382b8dc517049b8ee45e127501ff4190bb2c310a56d0c8bfce150e045b",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 8,
+      "cell_size": [
+        415,
+        474
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        1249,
+        510,
+        1614,
+        870
+      ],
+      "authored_cell_bounds": [
+        1245,
+        474,
+        1660,
+        948
+      ],
+      "primary_component_id": 71,
+      "source_component_ids": [
+        69,
+        70,
+        71,
+        73,
+        74,
+        75,
+        76,
+        78,
+        79,
+        80,
+        83,
+        84,
+        85,
+        86,
+        89,
+        90,
+        92,
+        93,
+        94,
+        95,
+        96,
+        97,
+        98,
+        99,
+        100,
+        101,
+        102,
+        103,
+        104,
+        105,
+        106,
+        107,
+        108
+      ],
+      "assigned_components": 33,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 9,
+      "alpha_bounds": [
+        0,
+        0,
+        365,
+        360
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/orbit/base/base-08.png",
+      "output_size": [
+        365,
+        360
+      ],
+      "output_sha256": "733f4e106cbe071553a32b7b3c3116761ee903985e57853ce9b4eb5227523fef"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/orbit-environment-expansion-atlas.png",
+      "source_sha256": "2ae329542cbeddb3c66d657ef32da220f93df46e8d3ced89e022451c2d84e8b2",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 1,
+      "cell_size": [
+        415,
+        474
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        80,
+        14,
+        333,
+        447
+      ],
+      "authored_cell_bounds": [
+        0,
+        0,
+        415,
+        474
+      ],
+      "primary_component_id": 0,
+      "source_component_ids": [
+        0,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        24,
+        25,
+        26,
+        28,
+        35,
+        38,
+        39
+      ],
+      "assigned_components": 26,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 5,
+      "alpha_bounds": [
+        0,
+        0,
+        253,
+        433
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/orbit/expansion/expansion-01.png",
+      "output_size": [
+        253,
+        433
+      ],
+      "output_sha256": "f2cecde6c2980ef1e212933c524747b58ab4a08dc876ceeab653d649e708bb9e"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/orbit-environment-expansion-atlas.png",
+      "source_sha256": "2ae329542cbeddb3c66d657ef32da220f93df46e8d3ced89e022451c2d84e8b2",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 2,
+      "cell_size": [
+        415,
+        474
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        438,
+        166,
+        818,
+        454
+      ],
+      "authored_cell_bounds": [
+        415,
+        0,
+        830,
+        474
+      ],
+      "primary_component_id": 9,
+      "source_component_ids": [
+        9,
+        22,
+        23,
+        27,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        36,
+        37
+      ],
+      "assigned_components": 12,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 5,
+      "alpha_bounds": [
+        0,
+        0,
+        380,
+        288
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/orbit/expansion/expansion-02.png",
+      "output_size": [
+        380,
+        288
+      ],
+      "output_sha256": "1e50b0ff562cd6ac145c9793d625ba98ca1b702adfa1659adffba7df9d161653"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/orbit-environment-expansion-atlas.png",
+      "source_sha256": "2ae329542cbeddb3c66d657ef32da220f93df46e8d3ced89e022451c2d84e8b2",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 3,
+      "cell_size": [
+        415,
+        474
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        897,
+        49,
+        1178,
+        456
+      ],
+      "authored_cell_bounds": [
+        830,
+        0,
+        1245,
+        474
+      ],
+      "primary_component_id": 2,
+      "source_component_ids": [
+        2
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 5,
+      "alpha_bounds": [
+        0,
+        0,
+        281,
+        407
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/orbit/expansion/expansion-03.png",
+      "output_size": [
+        281,
+        407
+      ],
+      "output_sha256": "ad30fb2ecc703365ba3fb0b48c2f196b72c1ae4e4535393f152e9dd3065ea4a6"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/orbit-environment-expansion-atlas.png",
+      "source_sha256": "2ae329542cbeddb3c66d657ef32da220f93df46e8d3ced89e022451c2d84e8b2",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 4,
+      "cell_size": [
+        415,
+        474
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        1294,
+        38,
+        1543,
+        449
+      ],
+      "authored_cell_bounds": [
+        1245,
+        0,
+        1660,
+        474
+      ],
+      "primary_component_id": 1,
+      "source_component_ids": [
+        1
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 5,
+      "alpha_bounds": [
+        0,
+        0,
+        249,
+        411
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/orbit/expansion/expansion-04.png",
+      "output_size": [
+        249,
+        411
+      ],
+      "output_sha256": "d85ea18740fdbf73635052435bb4ef03dde98506d3d24f66399ad827b60bd4cb"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/orbit-environment-expansion-atlas.png",
+      "source_sha256": "2ae329542cbeddb3c66d657ef32da220f93df46e8d3ced89e022451c2d84e8b2",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 5,
+      "cell_size": [
+        415,
+        474
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        90,
+        524,
+        312,
+        858
+      ],
+      "authored_cell_bounds": [
+        0,
+        474,
+        415,
+        948
+      ],
+      "primary_component_id": 43,
+      "source_component_ids": [
+        42,
+        43,
+        44,
+        45,
+        46,
+        48,
+        51,
+        52,
+        55,
+        57,
+        60,
+        62,
+        63,
+        65,
+        66,
+        69,
+        70
+      ],
+      "assigned_components": 17,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 5,
+      "alpha_bounds": [
+        0,
+        0,
+        222,
+        334
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/orbit/expansion/expansion-05.png",
+      "output_size": [
+        222,
+        334
+      ],
+      "output_sha256": "28b2abc1588cb39d36782d83d9bdc21f413c0ddbac430a5dae04b727b0446c79"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/orbit-environment-expansion-atlas.png",
+      "source_sha256": "2ae329542cbeddb3c66d657ef32da220f93df46e8d3ced89e022451c2d84e8b2",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 6,
+      "cell_size": [
+        415,
+        474
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        446,
+        494,
+        717,
+        875
+      ],
+      "authored_cell_bounds": [
+        415,
+        474,
+        830,
+        948
+      ],
+      "primary_component_id": 40,
+      "source_component_ids": [
+        40,
+        78,
+        85
+      ],
+      "assigned_components": 3,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 5,
+      "alpha_bounds": [
+        0,
+        0,
+        271,
+        381
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/orbit/expansion/expansion-06.png",
+      "output_size": [
+        271,
+        381
+      ],
+      "output_sha256": "2246b8e3ca5fee4dea93f15eb42cdea86c048169c0dfdce40b491d09b9495cba"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/orbit-environment-expansion-atlas.png",
+      "source_sha256": "2ae329542cbeddb3c66d657ef32da220f93df46e8d3ced89e022451c2d84e8b2",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 7,
+      "cell_size": [
+        415,
+        474
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        827,
+        565,
+        1111,
+        850
+      ],
+      "authored_cell_bounds": [
+        830,
+        474,
+        1245,
+        948
+      ],
+      "primary_component_id": 47,
+      "source_component_ids": [
+        47,
+        49,
+        50,
+        53,
+        54,
+        56,
+        58,
+        59,
+        61,
+        64,
+        67,
+        68,
+        71,
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        79,
+        80,
+        81,
+        82,
+        83,
+        84
+      ],
+      "assigned_components": 25,
+      "extends_beyond_cell": [
+        "left"
+      ],
+      "discarded_noise_pixels": 5,
+      "alpha_bounds": [
+        0,
+        0,
+        284,
+        285
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/orbit/expansion/expansion-07.png",
+      "output_size": [
+        284,
+        285
+      ],
+      "output_sha256": "4429faf923ce78080165d54cc7927a6bee183fb140fdfab3908af4aa5df48105"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/orbit-environment-expansion-atlas.png",
+      "source_sha256": "2ae329542cbeddb3c66d657ef32da220f93df46e8d3ced89e022451c2d84e8b2",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 8,
+      "cell_size": [
+        415,
+        474
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        1232,
+        501,
+        1593,
+        881
+      ],
+      "authored_cell_bounds": [
+        1245,
+        474,
+        1660,
+        948
+      ],
+      "primary_component_id": 41,
+      "source_component_ids": [
+        41
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [
+        "left"
+      ],
+      "discarded_noise_pixels": 5,
+      "alpha_bounds": [
+        0,
+        0,
+        361,
+        380
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/orbit/expansion/expansion-08.png",
+      "output_size": [
+        361,
+        380
+      ],
+      "output_sha256": "47ffd9e40699acceac6020506e6d50ec62fc755b124f8a6a8bad934fe26e0935"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/backbeat-floor-atlas.png",
+      "source_sha256": "8eff9132b7ae9190eecd31728d11c024e4871b4779723c00d586816c455ab945",
+      "grid": [
+        2,
+        2
+      ],
+      "cell": 1,
+      "cell_size": [
+        627,
+        627
+      ],
+      "isolation": "opaque-grid-cell",
+      "source_bounds": [
+        0,
+        0,
+        627,
+        627
+      ],
+      "authored_cell_bounds": [
+        0,
+        0,
+        627,
+        627
+      ],
+      "primary_component_id": null,
+      "source_component_ids": null,
+      "assigned_components": null,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
+      "alpha_bounds": [
+        0,
+        0,
+        627,
+        627
+      ],
+      "output": "landing-page/assets/world-tour/sprites/floors/backbeat/surface-01.png",
+      "output_size": [
+        627,
+        627
+      ],
+      "output_sha256": "e25019389777bbc46cc4ad1f33f536b3a9ba5a166bd8d3e7a24c2c8d06553839"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/backbeat-floor-atlas.png",
+      "source_sha256": "8eff9132b7ae9190eecd31728d11c024e4871b4779723c00d586816c455ab945",
+      "grid": [
+        2,
+        2
+      ],
+      "cell": 2,
+      "cell_size": [
+        627,
+        627
+      ],
+      "isolation": "opaque-grid-cell",
+      "source_bounds": [
+        627,
+        0,
+        1254,
+        627
+      ],
+      "authored_cell_bounds": [
+        627,
+        0,
+        1254,
+        627
+      ],
+      "primary_component_id": null,
+      "source_component_ids": null,
+      "assigned_components": null,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
+      "alpha_bounds": [
+        0,
+        0,
+        627,
+        627
+      ],
+      "output": "landing-page/assets/world-tour/sprites/floors/backbeat/surface-02.png",
+      "output_size": [
+        627,
+        627
+      ],
+      "output_sha256": "2b4d7b51b6a9301bf1dc5ba74e995a9a4d46027f92cb870a1a71d7ba39cee59f"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/backbeat-floor-atlas.png",
+      "source_sha256": "8eff9132b7ae9190eecd31728d11c024e4871b4779723c00d586816c455ab945",
+      "grid": [
+        2,
+        2
+      ],
+      "cell": 3,
+      "cell_size": [
+        627,
+        627
+      ],
+      "isolation": "opaque-grid-cell",
+      "source_bounds": [
+        0,
+        627,
+        627,
+        1254
+      ],
+      "authored_cell_bounds": [
+        0,
+        627,
+        627,
+        1254
+      ],
+      "primary_component_id": null,
+      "source_component_ids": null,
+      "assigned_components": null,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
+      "alpha_bounds": [
+        0,
+        0,
+        627,
+        627
+      ],
+      "output": "landing-page/assets/world-tour/sprites/floors/backbeat/surface-03.png",
+      "output_size": [
+        627,
+        627
+      ],
+      "output_sha256": "efefaf674389b819e809cd9fe0bcb868f272dde381e62005a16eb07ff48d59f9"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/backbeat-floor-atlas.png",
+      "source_sha256": "8eff9132b7ae9190eecd31728d11c024e4871b4779723c00d586816c455ab945",
+      "grid": [
+        2,
+        2
+      ],
+      "cell": 4,
+      "cell_size": [
+        627,
+        627
+      ],
+      "isolation": "opaque-grid-cell",
+      "source_bounds": [
+        627,
+        627,
+        1254,
+        1254
+      ],
+      "authored_cell_bounds": [
+        627,
+        627,
+        1254,
+        1254
+      ],
+      "primary_component_id": null,
+      "source_component_ids": null,
+      "assigned_components": null,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
+      "alpha_bounds": [
+        0,
+        0,
+        627,
+        627
+      ],
+      "output": "landing-page/assets/world-tour/sprites/floors/backbeat/surface-04.png",
+      "output_size": [
+        627,
+        627
+      ],
+      "output_sha256": "bb1e0cac2acfb0835ef17a5c354378b85bcf29ac9067ac17db41cc5422f0c1c0"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/orbit-floor-atlas.png",
+      "source_sha256": "b05e3ef24a9ba54075c61ee8be7821591a1c88edd2ba9957a03a82c63751fc5f",
+      "grid": [
+        2,
+        2
+      ],
+      "cell": 1,
+      "cell_size": [
+        627,
+        627
+      ],
+      "isolation": "opaque-grid-cell",
+      "source_bounds": [
+        0,
+        0,
+        627,
+        627
+      ],
+      "authored_cell_bounds": [
+        0,
+        0,
+        627,
+        627
+      ],
+      "primary_component_id": null,
+      "source_component_ids": null,
+      "assigned_components": null,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
+      "alpha_bounds": [
+        0,
+        0,
+        627,
+        627
+      ],
+      "output": "landing-page/assets/world-tour/sprites/floors/orbit/surface-01.png",
+      "output_size": [
+        627,
+        627
+      ],
+      "output_sha256": "97daea0f73d357e8ce96a1f8671321f172c05cea64772cc6af721037bfe0a8bd"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/orbit-floor-atlas.png",
+      "source_sha256": "b05e3ef24a9ba54075c61ee8be7821591a1c88edd2ba9957a03a82c63751fc5f",
+      "grid": [
+        2,
+        2
+      ],
+      "cell": 2,
+      "cell_size": [
+        627,
+        627
+      ],
+      "isolation": "opaque-grid-cell",
+      "source_bounds": [
+        627,
+        0,
+        1254,
+        627
+      ],
+      "authored_cell_bounds": [
+        627,
+        0,
+        1254,
+        627
+      ],
+      "primary_component_id": null,
+      "source_component_ids": null,
+      "assigned_components": null,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
+      "alpha_bounds": [
+        0,
+        0,
+        627,
+        627
+      ],
+      "output": "landing-page/assets/world-tour/sprites/floors/orbit/surface-02.png",
+      "output_size": [
+        627,
+        627
+      ],
+      "output_sha256": "df153552cffdfe807281bfa05334d065f511b9f668ca4458cfe2d22cdd16d38f"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/orbit-floor-atlas.png",
+      "source_sha256": "b05e3ef24a9ba54075c61ee8be7821591a1c88edd2ba9957a03a82c63751fc5f",
+      "grid": [
+        2,
+        2
+      ],
+      "cell": 3,
+      "cell_size": [
+        627,
+        627
+      ],
+      "isolation": "opaque-grid-cell",
+      "source_bounds": [
+        0,
+        627,
+        627,
+        1254
+      ],
+      "authored_cell_bounds": [
+        0,
+        627,
+        627,
+        1254
+      ],
+      "primary_component_id": null,
+      "source_component_ids": null,
+      "assigned_components": null,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
+      "alpha_bounds": [
+        0,
+        0,
+        627,
+        627
+      ],
+      "output": "landing-page/assets/world-tour/sprites/floors/orbit/surface-03.png",
+      "output_size": [
+        627,
+        627
+      ],
+      "output_sha256": "21de96b1529075dffa13db1fc2cbd62ccf06320ec3e981eba5ca0d4641ba4a29"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/orbit-floor-atlas.png",
+      "source_sha256": "b05e3ef24a9ba54075c61ee8be7821591a1c88edd2ba9957a03a82c63751fc5f",
+      "grid": [
+        2,
+        2
+      ],
+      "cell": 4,
+      "cell_size": [
+        627,
+        627
+      ],
+      "isolation": "opaque-grid-cell",
+      "source_bounds": [
+        627,
+        627,
+        1254,
+        1254
+      ],
+      "authored_cell_bounds": [
+        627,
+        627,
+        1254,
+        1254
+      ],
+      "primary_component_id": null,
+      "source_component_ids": null,
+      "assigned_components": null,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
+      "alpha_bounds": [
+        0,
+        0,
+        627,
+        627
+      ],
+      "output": "landing-page/assets/world-tour/sprites/floors/orbit/surface-04.png",
+      "output_size": [
+        627,
+        627
+      ],
+      "output_sha256": "39db2e99adcd9ef5037b6a2692a44ba51d5b3ebc1eeb0f229811766ab2b6d3f9"
+    },
     {
       "source": "groove-bound/assets/generated/campaign/funk-enemies-atlas.png",
       "source_sha256": "1e6748bc7c5d8d49272e7dd60be7743b60abd18c6f6ec3ab9265523224e3d207",
