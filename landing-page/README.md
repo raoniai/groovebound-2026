@@ -9,6 +9,13 @@ After every material game or landing-page change:
 2. Refresh the local preview.
 3. Verify Home, Catalog, Builder, the integrated story route, media sound controls, catalog search and filters, the item inspector, screenshot lightboxes, drag interactions, and mobile layouts.
 
+Every new playable world or game/playable asset must update the Catalog in the
+same delivery pass. Include the world identity/emblem, scenario backgrounds and
+floors, environment sprites, enemy sprites, and other newly playable inventory;
+refresh category and total counts; verify inspector data and asset references;
+then publish and public-live verify the approved FTP release. Leave the site
+local-only only when the user explicitly withholds deployment.
+
 All public desktop download buttons use GitHub's stable Latest-release routes:
 the universal macOS DMG and the Windows x64 portable ZIP. The exact version is
 shown only in the top navigation badge; public page copy remains evergreen and

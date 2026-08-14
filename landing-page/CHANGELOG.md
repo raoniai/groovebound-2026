@@ -2,6 +2,17 @@
 
 This file is the local implementation record. Add a new entry at the top after every material site pass.
 
+## 2026-08-14 | SITE-044 | Jazz asset catalog expansion
+
+Expanded the Resonance Archive with 13 new records and corrected its visible
+total from the stale pre-Jazz count of 116 to the live inventory of 137. Added a dedicated
+one-block General category led by a new transparent Jazz World emblem, cataloged
+all eight Jazz environment sprites and all four floor/background surfaces as
+inspectable scenario records, and retained the complete eight-enemy Jazz roster.
+Added world/emblem/scenario relationships and responsive category presentation.
+The Jazz emblem has a preserved source candidate, canonical generated derivative,
+byte-identical website copy, and recorded generation and transparency provenance.
+
 ## 2026-08-14 | SITE-043 | v0.8.4 Jazz release sync
 
 Published the Home, Catalog, and Builder for v0.8.4. Promoted Jazz to the fourth

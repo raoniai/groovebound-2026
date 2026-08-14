@@ -314,6 +314,27 @@ despill and one-pixel contraction helper. The floor atlas was normalized to
 four opaque 512x512 cells. Runtime dimensions, color types and cell mappings
 are regression-tested.
 
+## Jazz World catalog emblem
+
+**Generated:** 2026-08-14 with OpenAI image generation in Codex built-in mode
+
+| File | Classification | Dimensions | SHA-256 |
+|---|---|---:|---|
+| `source-candidates/2026-08-14-jazz-catalog/jazz-emblem-source.png` | Untouched generated source; reference-only and package-excluded | 1254×1254 RGB | `6b915e769dfb0f272aec26a923913fe6f9062aef7b99fd24c97d6fd4b2ae7afd` |
+| `../../../landing-page/assets/world-tour/emblems/jazz.png` | Transparent public Catalog identity; excluded from the desktop game payload | 1254×1254 RGBA | `e24d914100af6ab042acd2b774c0689f15bbe6dca173ce544492e36772a76826` |
+
+The prompt requested a standalone, text-free Jazz World emblem: a central
+golden saxophone and luminous blue note inside a circular midnight-vinyl crest,
+with brass mechanical trim and a violet cosmic gem in detailed Groove Bound
+pixel art. It required a flat `#ff00ff` chroma background, no magenta in the
+subject, and no robots, crowns, weapons, watermark, or lettering.
+
+The bundled media-pipeline chroma helper removed the flat background and edge
+spill. The final file was visually inspected, confirmed RGBA with transparent
+corners and alpha bounds `(78, 63, 1176, 1203)`, then saved to the public
+Catalog path above. It is deliberately outside the runtime campaign directory,
+so this site-only addition cannot silently mutate the released v0.8.4 payload.
+
 ## Application icon
 
 **Current files:** `source-candidates/app-icon-character-source.png`

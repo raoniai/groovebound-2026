@@ -58,12 +58,15 @@
     "funk-environments": collection("environments/funk", ["boombox-barricade", "record-kiosk", "amp-wall", "turntable-console", "disco-palm", "talkbox-streetlight", "vinyl-stack", "hologram-dancer"]),
     "soul-environments": collection("environments/soul", numberedFiles("prop", 8)),
     "disco-environments": collection("environments/disco", numberedFiles("prop", 8)),
+    "jazz-environments": collection("environments/jazz", numberedFiles("prop", 8)),
     "funk-enemies": collection("enemies/funk", ["pocket-gremlin", "slapback-hound", "groove-guard", "talkbox-oracle", "boogie-tank", "funkadelic-wasp", "mothership-of-funk", "pocket-phantom"]),
     "soul-enemies": collection("enemies/soul", ["choir-automaton", "string-sentinel", "organ-walker", "harmony-linker", "gospel-moth", "velvet-knight", "organ-colossus", "velvet-titan"]),
     "disco-enemies": collection("enemies/disco", ["prism-roller", "mirror-drone", "laser-fan", "reflection-twin", "platform-pouncer", "glitter-guard", "laser-conductor", "prism-monarch"]),
+    "jazz-enemies": collection("enemies/jazz", ["syncopated-imp", "blue-note-bat", "walking-bass-bot", "scat-cannon", "bebop-behemoth", "brushfire-skitter", "brass-regent", "midnight-maestro"]),
     "funk-floors": collection("floors/funk", numberedFiles("surface", 4)),
     "soul-floors": collection("floors/soul", numberedFiles("surface", 4)),
     "disco-floors": collection("floors/disco", numberedFiles("surface", 4)),
+    "jazz-floors": collection("floors/jazz", numberedFiles("surface", 4)),
     "world-mechanics": collection("mechanics", ["funk-pocket-05", "disco-spotlight-05"]),
     "world-tour-ui": collection("ui/world-tour", ["campaign", "funk", "soul", "locked-world", "portal", "grade-d", "grade-c", "grade-b", "grade-a", "grade-s"]),
     "world-interface": collection("ui/interface", ["global-tour", "funk", "soul", "disco", "perk-database", "remix", "encore-gate", "world-route", "encore-coin", "mastery"]),
@@ -513,6 +516,51 @@
   }));
   worlds.forEach((world) => inspectionCatalog.set(world.key, world));
 
+  const generalRecords = [{
+    key: "general-jazz-emblem",
+    name: "Jazz World Emblem",
+    type: "General asset",
+    rarity: "Jazz World",
+    role: "World identity emblem",
+    image: "assets/world-tour/emblems/jazz.png",
+    description: "A midnight-vinyl crest built around a golden saxophone, electric-blue note, brass trim, and a cosmic violet gem.",
+    strength: "Identifies Jazz World clearly from compact catalog filters through large campaign panels.",
+    weakness: "Identity artwork only; it does not change gameplay.",
+    facts: ["Jazz World", "Vinyl crest", "Saxophone and blue note"]
+  }];
+  generalRecords.forEach((item) => inspectionCatalog.set(item.key, item));
+
+  const jazzScenarioRows = [
+    ["prop-01", "Blue Note Club Entrance", "Environment prop", "The brass-and-blue entrance to the Jazz World night circuit."],
+    ["prop-02", "Midnight Note Lamp", "Environment prop", "A street lamp crowned by a glowing blue note."],
+    ["prop-03", "Walking Bass Stack", "Environment prop", "A speaker and upright-bass stack for the borough's live corners."],
+    ["prop-04", "Improvisation Kiosk", "Environment prop", "A compact illuminated kiosk built into the midnight streetscape."],
+    ["prop-05", "Saxophone Moon Fountain", "Environment prop", "A gold saxophone fountain framed by a blue crescent basin."],
+    ["prop-06", "Blue Palm Planter", "Environment prop", "A neon-blue palm rising from a brass-trimmed planter."],
+    ["prop-07", "Equalizer Bench", "Environment prop", "A street bench backed by a compact blue equalizer display."],
+    ["prop-08", "Blue Note Spotlight", "Environment prop", "A stage spotlight that throws a blue-note beam across the route."],
+    ["surface-01", "Midnight Inlay", "Scenario background", "Dark wood and tile crossed by warm brass inlay."],
+    ["surface-02", "Blue Note Grid", "Scenario background", "An illuminated blue club grid for high-contrast combat lanes."],
+    ["surface-03", "Brass Solo Mosaic", "Scenario background", "A tiled brass saxophone motif for the Jazz World floor."],
+    ["surface-04", "Cosmic Club Diamond", "Scenario background", "A violet-and-blue diamond floor with luminous midnight trim."]
+  ];
+  const jazzScenarios = jazzScenarioRows.map(([file, name, role, description], index) => {
+    const isFloor = file.startsWith("surface");
+    return {
+      key: `scenario-jazz-${file}`,
+      name,
+      type: "Scenario asset",
+      rarity: "Jazz World",
+      role,
+      image: `assets/world-tour/sprites/${isFloor ? "floors" : "environments"}/jazz/${file}.png`,
+      description,
+      strength: isFloor ? "Defines the playable route's floor language without obscuring combat silhouettes." : "Builds Jazz World's readable street-and-club scenario vocabulary.",
+      weakness: "Visual scenario asset; it has no direct gameplay effect.",
+      facts: ["Jazz World", role, index < 8 ? "Blue Note Borough" : "Blue Note Borough and Midnight Changes"]
+    };
+  });
+  jazzScenarios.forEach((item) => inspectionCatalog.set(item.key, item));
+
   const perkRows = [
     ["open-ears","Open Ears",5,"Clear the Prologue","Increase pickup radius."],
     ["pocket-drive","Pocket Drive",5,"Funk grade C","Increase base damage."],
@@ -550,6 +598,7 @@
   chests.forEach((chest) => inspectionCatalog.set(chest.key, chest));
 
   const categoryMeta = {
+    general: { label: "General", icon: "assets/world-tour/emblems/jazz.png" },
     weapon: { label: "Weapon", icon: "assets/sprites/weapons/weapon-1.png" },
     support: { label: "Passive", icon: "assets/sprites/supports/support-3.png" },
     evolution: { label: "Evolution", icon: "assets/sprites/evolved/evolved-1.png" },
@@ -557,16 +606,19 @@
     enemy: { label: "Enemy", icon: "assets/sprites/enemies/orbit-3.png?v=site005" },
     gem: { label: "Gem", icon: "assets/sprites/gems/gem-2.png?v=site005" },
     world: { label: "World", icon: "assets/world-tour/sprites/ui/interface/global-tour.png" },
+    scenario: { label: "Scenario asset", icon: "assets/world-tour/sprites/environments/jazz/prop-01.png" },
     perk: { label: "Permanent perk", icon: "assets/world-tour/sprites/ui/interface/perk-database.png" },
     chest: { label: "Chest", icon: "assets/world-tour/sprites/chests/encore-gate.png" }
   };
   const categoryFor = (item) => {
+    if (item.type === "General asset") return "general";
     if (item.type === "Base weapon") return "weapon";
     if (item.type === "Support") return "support";
     if (item.type === "Evolved weapon") return "evolution";
     if (item.type === "Playable Resonant") return "character";
     if (item.type === "Enemy") return "enemy";
     if (item.type === "World") return "world";
+    if (item.type === "Scenario asset") return "scenario";
     if (item.type === "Permanent perk") return "perk";
     if (item.type === "Chest") return "chest";
     return "gem";
@@ -615,6 +667,12 @@
     connectRecord(enemy.key, `world-${enemy.world}`, "World");
     connectRecord(enemy.key, gemKey, "Resonance drop");
   });
+  connectRecord("general-jazz-emblem", "world-jazz", "World");
+  connectRecord("world-jazz", "general-jazz-emblem", "Emblem");
+  jazzScenarios.forEach((scenario) => {
+    connectRecord(scenario.key, "world-jazz", "World");
+    connectRecord(scenario.key, "general-jazz-emblem", "Emblem");
+  });
 
   const catalogGroups = document.querySelector("[data-catalog-groups]");
   const catalogFilters = document.querySelector("[data-catalog-filters]");
@@ -622,8 +680,8 @@
   const catalogCount = document.querySelector("[data-catalog-count]");
   const catalogEmpty = document.querySelector("[data-catalog-empty]");
   if (catalogGroups && catalogFilters) {
-    const catalogOrder = ["character", "weapon", "support", "evolution", "gem", "enemy", "world", "perk", "chest"];
-    const pluralLabels = { character: "Characters", weapon: "Weapons", support: "Supports", evolution: "Fusions", gem: "Resonance gems", enemy: "Enemies", world: "World Tour worlds", perk: "Permanent perks", chest: "Chests" };
+    const catalogOrder = ["general", "character", "weapon", "support", "evolution", "gem", "enemy", "world", "scenario", "perk", "chest"];
+    const pluralLabels = { general: "General", character: "Characters", weapon: "Weapons", support: "Supports", evolution: "Fusions", gem: "Resonance gems", enemy: "Enemies", world: "World Tour worlds", scenario: "Scenario backgrounds", perk: "Permanent perks", chest: "Chests" };
     let activeCategory = "all";
     const allItems = Array.from(inspectionCatalog.values());
     const makeFilter = (category, label, icon, count) => {
@@ -654,6 +712,7 @@
       const section = document.createElement("section");
       section.className = "catalog-group";
       section.dataset.catalogGroup = category;
+      if (category === "general") section.classList.add("catalog-group--general");
       const header = document.createElement("div");
       header.className = "catalog-group__header";
       const icon = document.createElement("img");
@@ -688,6 +747,13 @@
         plus.textContent = "+";
         plus.setAttribute("aria-hidden", "true");
         copy.append(name);
+        if (item.category === "general") {
+          const role = document.createElement("small");
+          role.textContent = item.role;
+          const description = document.createElement("em");
+          description.textContent = item.description;
+          copy.append(role, description);
+        }
         card.append(image, copy, plus);
         if (item.category === "enemy" && (item.rank === "Miniboss" || item.rank === "Final boss")) {
           const bossTag = document.createElement("span");
@@ -929,6 +995,9 @@
     if (item.category === "world") {
       return `${renderAnalysis(item, ["World mechanic", "Availability"])}<div class="inspect-character-signals">${(item.facts || []).map((fact) => `<div><span aria-hidden="true">◆</span><strong>${escapeHTML(fact)}</strong></div>`).join("")}</div>`;
     }
+    if (item.category === "general" || item.category === "scenario") {
+      return `${renderAnalysis(item, [item.category === "general" ? "Identity role" : "Scenario role", "Gameplay scope"])}<div class="inspect-character-signals">${(item.facts || []).map((fact) => `<div><span aria-hidden="true">◆</span><strong>${escapeHTML(fact)}</strong></div>`).join("")}</div>`;
+    }
     if (item.category === "perk") {
       return `<div class="inspect-support-core"><div><strong>${escapeHTML(String(item.max))}</strong><span>Maximum rank</span></div><div><strong>${escapeHTML(item.source)}</strong><span>Unlock source</span></div></div>${renderAnalysis(item, ["Permanent effect", "Limit"])}`;
     }
@@ -952,6 +1021,7 @@
     const category = categoryMeta[item.category] || categoryMeta.gem;
     inspector.querySelector("[data-inspect-category]").textContent = category.label;
     const metaByCategory = {
+      general: [item.rarity],
       weapon: [item.rarity, item.pattern],
       support: [],
       evolution: [item.rarity, item.pattern],
@@ -959,6 +1029,7 @@
       enemy: [item.rank],
       gem: [item.rarity],
       world: [item.rarity, item.facts?.[0]],
+      scenario: [item.rarity, item.role],
       perk: [item.rarity],
       chest: [item.rarity]
     };
