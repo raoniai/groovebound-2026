@@ -2,6 +2,13 @@
 
 This file is the local implementation record. Add a new entry at the top after every material site pass.
 
+## 2026-08-14 | SITE-050 | Consolidated World Tour selector
+
+Removed the duplicate six-world route strip and the redundant playable-world
+heading and helper copy from Home. The centered selector is now the single World
+Tour menu: Funk, Soul, Disco, and Jazz remain interactive, while House and
+Techno have moved into the same grid as clearly disabled Coming soon cards.
+
 ## 2026-08-14 | SITE-049 | Jazz Home selector emblem correction
 
 Replaced the duplicated Jazz wordmark in the Home World Tour selector with the
