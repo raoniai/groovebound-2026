@@ -14,20 +14,20 @@ This document answers four questions: what is authoritative, what the latest ver
 
 <!-- LIVE-SNAPSHOT:START -->
 
-_Generated from live repository evidence: 2026-08-14 14:05 AEST_
+_Generated from live repository evidence: 2026-08-14 14:38 AEST_
 
 | Field | Live value |
 |---|---|
-| Branch | `codex/ui-catalog-v0.8.5` |
-| HEAD | `63c0432` — docs: record complete catalog deployment |
+| Branch | `codex/ui-catalog-v0.8.5-final` |
+| HEAD | `377edb0` — feat: streamline catalog filtering |
 | Upstream | `origin/codex/world-tour-v1` |
-| Compared with `origin/main` | 20 ahead, 1 behind |
-| Working changes | 40 files: 33 game, 7 site, 0 skills/package |
+| Compared with `origin/main` | 23 ahead, 1 behind |
+| Working changes | 3 files: 0 game, 2 site, 0 skills/package |
 | Lua source/test files | 119 source, 64 test |
-| Game tree excluding `dist/` | 660.5 MiB |
-| Current `.love` artifact | 199.9 MiB |
-| Test suite | not run by this refresh |
-| Lint | not run by this refresh |
+| Game tree excluding `dist/` | 660.4 MiB |
+| Current `.love` artifact | 202.1 MiB |
+| Test suite | passed: 391 tests, 0 failures |
+| Lint | passed: 0 warnings / 0 errors in 185 files |
 | Skill packages | 12 |
 
 <!-- LIVE-SNAPSHOT:END -->
@@ -36,10 +36,10 @@ _Generated from live repository evidence: 2026-08-14 14:05 AEST_
 
 Groove Bound is a bright urban-supernatural survival roguelike built in Lua with LÖVE 11.5. Its current development preview follows:
 
-The current release is **v0.8.4**. Loose-folder play displays `v0.8.4-dev`;
-packaged builds display `v0.8.4`. GitHub Latest, all seven desktop assets, the
+The current release is **v0.8.5**. Loose-folder play displays `v0.8.5-dev`;
+packaged builds display `v0.8.5`. GitHub Latest, all seven desktop assets, the
 Home, Catalog, Builder, and stable Mac/Windows download routes are published
-and public-live verified at v0.8.4.
+and public-live verified at v0.8.5.
 
 **Title → Prologue → Character Selection → Character Intro → Backbeat Streets → The Orbit Line → World Tour → playable Funk, Soul, Disco, and Jazz routes**
 
@@ -97,20 +97,20 @@ The public landing site is a separate static presentation under `landing-page/`.
 | Combat readability and HUD | Published in v0.8.2, tests passed, and manual QA verified for the changed states | HP/XP bars and persistent panels use sprite-backed pieces; the timer keeps stage and remaining time on one line; World Tour mechanic guidance is centred beneath it; score grouping, shared rank/MAX badges, concise pause actions, integrated gameplay mute, and removed bottom controls were verified at reference and minimum supported sizes | Full combat-feel pass with flash/reduced-flash options and physical controller |
 | Character, upgrade, and results interface | Published in v0.7.1, tests passed, and visually sampled | Anton/Oswald typography, modular nine-slice upgrade cards, relevant-equipped evolution rows only, exact icon-led gain-to-total attributes, generated NEW badge, pickup-art utility choices, existing reroll/skip sprite CTAs, and bright sprite-backed menu focus | Manual defeat/victory results pass and final small-screen readability review |
 | Save system | Version 2 profiles and slots | Save, migration, profile, export and World Tour session tests | Cross-platform clean-machine fixtures |
-| Landing page and repository README | v0.8.4 deployed and public-live verified | The 415-file public bundle is byte-matched on all core pages and scripts; the 212-record Catalog keeps the Jazz emblem in its World card and includes all 88 Prologue and playable World Tour scenario assets; both stable desktop CTAs resolve to v0.8.4 | Physical-phone refresh, audio listening, and `main` promotion remain separate checks |
-| World Tour runtime atlases | Jazz released in v0.8.4 | Jazz adds exact 4x2 enemy and environment RGBA atlases, a 2x2 floor atlas, and its project-owned identity mark; release packaging and site derivatives pass parity checks | Jazz visual/readability pass and focused physical-controller World Tour playthrough |
-| Desktop distribution | GitHub Latest publishes synchronized v0.8.4 Mac and Windows assets | Seven digest-bearing assets were built from one common payload; macOS and Windows package boot markers passed in release CI | Physical Windows QA, unlocked-Mac visual check, signing, and notarization if required |
+| Landing page and repository README | v0.8.5 deployed and public-live verified | The 420-file public bundle is byte-matched on all core pages and scripts; the 212-record Catalog has compact combinable filters, clear/search controls, text-only section headings, category outlines, no pointer-following Inspect cue, all 88 scenario assets, and the six canonical World Tour emblems; both stable desktop CTAs resolve to v0.8.5 | Physical-phone refresh, audio listening, and `main` promotion remain separate checks |
+| World Tour runtime atlases | Jazz and the six-world emblem suite released in v0.8.5 | Jazz retains its exact enemy, environment, and floor atlases; all six World Tour emblems have canonical 512px transparent runtime sources and byte-identical Catalog copies | Jazz visual/readability pass and focused physical-controller World Tour playthrough |
+| Desktop distribution | GitHub Latest publishes synchronized v0.8.5 Mac and Windows assets | Seven digest-bearing assets were built from one common payload; macOS and Windows package boot markers passed in release CI | Physical Windows QA, unlocked-Mac visual check, signing, and notarization if required |
 | Engine migration | Planned | Engine migration research and parity roadmap | Clean baseline and bounded target-engine spike |
 | Groove Bound skills | Twelve repository skills validated; version-sync skill committed and pushed | The fail-closed checker is wired into source, local/candidate, GitHub, landing, and public phases; repository package validation passes 12 of 12 | Unlocked-Mac visual forward test remains open |
 
 ## Active working state
 
-GitHub release `v0.8.4` is public as Latest and tag `v0.8.4` resolves to clean
-release commit `b62d1d069173b50819f76f008ae1a54db4319caa`. Its seven desktop
-assets expose GitHub SHA-256 digests. Release workflow `31763025903` completed
+GitHub release `v0.8.5` is public as Latest and tag `v0.8.5` resolves to clean
+release commit `5830e102077474c6d6e6f60ee8865e85ba75dbc2`. Its seven desktop
+assets expose GitHub SHA-256 digests. Release workflow `31769888475` completed
 source sync, common packaging, macOS and Windows native packaging, candidate
 parity, boot markers, publication, and GitHub Latest verification. The current
-375-file landing bundle was deployed by FTPS with a rollback capture and passed
+420-file landing bundle was deployed by FTPS with a rollback capture and passed
 byte-for-byte public verification. The original protected workspace remains on
 its pre-release local branch with unrelated dirty material intact; release work
 was isolated so those files were neither overwritten nor included.
@@ -128,10 +128,13 @@ Current active themes include:
 - The campaign identity, Builder redesign, Round 2 Home refinements, transparent
   Prologue and World Tour marks, stage wordmarks, and Jazz public route are
   committed, pushed, and deployed. The Orbit logo remains exactly `ORBIT LINE`.
-  All three public pages display v0.8.4 and retain stable Latest download URLs.
-- The Catalog has 212 rendered records across 10 focused categories. Jazz now
-  carries its emblem directly in the World Tour world card; all five locked
-  routes use the chained lock sprite. Scenario Backgrounds contains 88 authentic
+  All three public pages display v0.8.5 and retain stable Latest download URLs.
+- The Catalog has 212 rendered records across 10 focused categories. Category
+  filters combine independently and clear together; search is compact and
+  magnifier-led; section headings are text-only; record counts and the
+  pointer-following Inspect cue are removed; every card uses a category-colored
+  outline. Six unlocked and future World cards use their canonical emblem art.
+  Scenario Backgrounds contains 88 authentic
   environment, expansion, floor, and background assets across both Prologue
   stages and Funk, Soul, Disco, and Jazz. The durable site-sync rule now requires
   this catalog and FTPS loop for every future playable world or game/playable
@@ -144,20 +147,20 @@ Do not infer `main` promotion from the feature-branch push, GitHub release, or l
 
 | Layer | Latest state | Meaning |
 |---|---|---|
-| Automated tests | v0.8.4: 386 passed, 0 failed locally and in release CI on 2026-08-14 | Current Jazz, version identity, gameplay, progression, and platform behaviors are covered |
-| Lint | 0 warnings and 0 errors across 180 files on 2026-08-14 | Current Lua source and tests statically checked |
-| Common package | Published v0.8.4 `.love`: 209,627,657 bytes, SHA-256 `b21a780913773bb906378ff368ac12920ccfddb89bfb26422ae3886a692005fc` | Clean payload embeds commit `b62d1d069173`, exact VERSION, release marker, and no forbidden entries |
-| macOS artifacts | v0.8.4 universal ZIP and icon-bearing DMG released | ZIP SHA-256 `8ee574ad2fa928aa9f9d1ab7158903242cb02b8dbc5af63e0dc148c60ae3985c`; DMG SHA-256 `acb63aa4f0ea55ed8e0f4af8100fc3a0a70980829b7d74fb414d64402195c1ff`; same common payload; ad-hoc signed, not notarized |
-| Windows artifact | v0.8.4 branded x64 portable ZIP released | ZIP SHA-256 `9afcabae1e6fab00d61d0904a494981fd11179aa5d990e234c9e9432bce80caf`; manifest SHA-256 `d0353065727ffd942dc5d316928227058b6d008ab5435e554a4d5a01a8b52839`; unsigned |
+| Automated tests | v0.8.5: 391 passed, 0 failed locally; release CI passed on 2026-08-14 | Current Jazz, version identity, gameplay, progression, and platform behaviors are covered |
+| Lint | 0 warnings and 0 errors across 185 files on 2026-08-14 | Current Lua source and tests statically checked |
+| Common package | Published v0.8.5 `.love`: 211,877,825 bytes, SHA-256 `4d56a17ff8e25210637023639b0bf05cb0d0a02e624b0cb580c363b107df23f7` | Clean payload embeds release commit `5830e1020774`, exact VERSION, release marker, and no forbidden entries |
+| macOS artifacts | v0.8.5 universal ZIP and icon-bearing DMG released | ZIP SHA-256 `52193b8b86dc9fa9a4c269053f27dbcda18e23596fdd3010afa1e107672772a3`; DMG SHA-256 `c1ecc51c287457a26226b53f613c5d3f6a84e1c6613b4b6c34be0cb9e42c2034`; same common payload; ad-hoc signed, not notarized |
+| Windows artifact | v0.8.5 branded x64 portable ZIP released | ZIP SHA-256 `87fced2420daac58e0ea042c2de9b49d70407f30874d1067f20490a43d7fbcbe`; manifest SHA-256 `4ae60317ac84c5e71af0b2e40620e410fc72f6ff2a7e3f5ec106843e54a01b76`; unsigned |
 | Packaged boot | Verified in Windows and macOS release CI on 2026-08-14 | Both packages reached the validated boot-complete marker; this is a startup-integrity check, not full graphical/audio play |
 | Manual graphical QA | v0.8.2 changed interface states verified at 1280 x 720 and 800 x 600 | Active World Tour mechanic, timer, HP/XP, build slots, level-point CTA, pause, level-up, results, title, and settings were visually inspected; full campaign, physical controller, audio and prolonged play-feel remain open |
-| Source release commit | `b62d1d0` — release: publish desktop v0.8.4 | Tag `v0.8.4` resolves to full commit `b62d1d069173b50819f76f008ae1a54db4319caa` |
-| Feature-branch push | `origin/codex/world-tour-v1` includes Jazz Catalog commit `59ca969` after the v0.8.4 release commit | `main` remains independently unpromoted; original local dirty work is preserved |
+| Source release commit | `5830e10` — release: publish desktop v0.8.5 | Tag `v0.8.5` resolves to full commit `5830e102077474c6d6e6f60ee8865e85ba75dbc2` |
+| Feature-branch push | `origin/codex/world-tour-v1` includes Catalog interface commit `377edb0` after the v0.8.5 release commit | `main` remains independently unpromoted; original local dirty work is preserved |
 | Main promotion | Not current | Verify `origin/main` independently |
-| Public release/download | v0.8.4 is published as GitHub Latest with seven synchronized desktop assets | GitHub API confirms every required asset and SHA-256 digest; stable Latest routes resolve to v0.8.4 |
-| Landing download links | Stable macOS and Windows CTAs are public-live verified against v0.8.4 | Home, Catalog, and Builder display v0.8.4 and link to the stable Latest routes |
+| Public release/download | v0.8.5 is published as GitHub Latest with seven synchronized desktop assets | GitHub API confirms every required asset and SHA-256 digest; stable Latest routes resolve to v0.8.5 |
+| Landing download links | Stable macOS and Windows CTAs are public-live verified against v0.8.5 | Home, Catalog, and Builder display v0.8.5 and link to the stable Latest routes |
 | GitHub README presentation | Landing-styled rewrite committed and pushed at `f96acf9` | GitHub Markdown API rendered 21,124 bytes with 28 images, 50 links, and 3 tables; all 29 local references and 7 navigation anchors resolve; default-page visibility still depends on merging to `main` |
-| Landing deployment | v0.8.4 415-file bundle deployed and public-live verified | Rollback captured at `20260814-134555-v0.8.4`; six core files, directory index, representative assets, badges, GitHub Latest, and stable desktop routes passed public parity after the complete 212-record Catalog upload |
+| Landing deployment | v0.8.5 420-file bundle deployed and public-live verified | Rollback captured at `20260814-143511-v0.8.5`; six core files, directory index, representative assets, badges, GitHub Latest, and stable desktop routes passed public parity after the complete 212-record Catalog upload |
 
 ## Desktop and engine portability
 
@@ -200,6 +203,29 @@ For an engine migration, keep LÖVE as the golden reference. The leading researc
    a separate, reviewed pass; do not overwrite its unrelated dirty material.
 
 ## Continuation history
+
+### 2026-08-14 — Compact combinable Catalog filters and canonical world emblems
+
+- Removed decorative icons and record counts from Catalog section headings and
+  removed the global pointer-following Inspect cue while retaining semantic
+  keyboard and click inspection behavior.
+- Rebuilt category filtering as a compact multi-select union with independent
+  pressed states, a magnifier-led search field, and one X Clear filters control.
+  Empty selection restores the full ten-category, 212-record Catalog.
+- Added persistent category-colored outlines to every asset card and replaced
+  the six World card graphics with byte-identical copies of the canonical 512px
+  transparent runtime emblems.
+- Verified JavaScript syntax, clean diff whitespace, 420 allowlisted public
+  files, 229 rendered local image references with zero missing files, 212 cards,
+  ten text-only section headings, zero Inspect cues, multi-filter/clear behavior,
+  responsive width, and zero media-pipeline risks without opening the game.
+- Committed the Catalog change at `377edb0`, pushed it to
+  `origin/codex/world-tour-v1`, deployed the 420-file v0.8.5 site by FTPS with
+  rollback `20260814-143511-v0.8.5`, and passed byte/public version checks for
+  all core pages, scripts, representative assets, both stable desktop routes,
+  and GitHub Latest v0.8.5.
+- Delivery state: committed, pushed, deployed, and public-live verified. `main`
+  promotion and physical-phone review remain separate.
 
 ### 2026-08-14 — Jazz Catalog emblem and complete scenario inventory
 

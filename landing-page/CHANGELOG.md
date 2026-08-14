@@ -2,6 +2,14 @@
 
 This file is the local implementation record. Add a new entry at the top after every material site pass.
 
+## 2026-08-14 | SITE-048 | Public v0.8.5 catalog release
+
+Published the verified 420-file v0.8.5 site through encrypted FTPS after saving
+a local rollback bundle. Public byte checks passed for Home, Catalog, Builder,
+shared styles, scripts, status data, and representative campaign assets. GitHub
+Latest is v0.8.5 with all seven required desktop assets and SHA-256 digests; the
+stable macOS and Windows actions resolve to the new release packages.
+
 ## 2026-08-14 | SITE-047 | Compact multi-filter Catalog controls
 
 Rebuilt the Catalog toolbar around compact text-and-count category chips that
