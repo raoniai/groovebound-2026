@@ -13,6 +13,9 @@ from pathlib import Path, PurePosixPath
 GAME_ROOT = Path(__file__).resolve().parents[1]
 VERSION_FILE = GAME_ROOT / "VERSION"
 FIXED_ZIP_TIME = (1980, 1, 1, 0, 0, 0)
+PACKAGED_WORLD_TOUR_SPRITES = {
+    "assets/generated/campaign/world-tour-sprites/ui/world-tour/locked-world.png",
+}
 
 
 def git(*args: str) -> str:
@@ -39,7 +42,10 @@ def excluded(relative: PurePosixPath) -> bool:
     joined = relative.as_posix()
     if "/source-candidates/" in f"/{joined}":
         return True
-    if joined.startswith("assets/generated/campaign/world-tour-sprites/"):
+    if (
+        joined.startswith("assets/generated/campaign/world-tour-sprites/")
+        and joined not in PACKAGED_WORLD_TOUR_SPRITES
+    ):
         return True
     if joined.startswith("assets/video/") and relative.suffix.lower() == ".mp4":
         return True

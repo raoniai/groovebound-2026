@@ -2,6 +2,13 @@
 
 This file is the local implementation record. Add a new entry at the top after every material site pass.
 
+## 2026-08-14 | SITE-052 | v0.9.1 desktop package hotfix
+
+Updated the public release badge to v0.9.1 while preserving the stable Latest
+desktop download routes. The patch restores the World Tour lock sprite omitted
+from v0.9.0 and adds a package gate that rejects missing runtime-referenced
+assets before publication.
+
 ## 2026-08-14 | SITE-051 | v0.9.0 world overhaul sync
 
 Published the verified 420-file v0.9.0 site through encrypted FTPS after saving
