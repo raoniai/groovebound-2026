@@ -509,11 +509,11 @@
     ["soul","Soul","Velvet Chapel","Velvet Titan","Playable","Charge a shared reserve in combat, then spend it to recover health.","assets/world-tour/sprites/ui/interface/soul.png","Core world"],
     ["disco","Disco","Mirrorball Metro","Prism Monarch","Playable","Follow the moving spotlight to gain a speed boost.","assets/world-tour/sprites/ui/interface/disco.png","Core world"],
     ["jazz","Jazz","Blue Note Borough","Midnight Maestro","Playable","Catch each blue-note improvisation window to gain a temporary speed boost.","assets/world-tour/emblems/jazz.png","Core world"],
-    ["house","House","Beyond the tour map","Signal locked","Coming soon","A relentless pulse waits behind the next gate.","assets/world-tour/sprites/ui/world-tour/locked-world.png","Core world"],
-    ["techno","Techno","Beyond the tour map","Signal locked","Coming soon","A machine rhythm waits behind the next gate.","assets/world-tour/sprites/ui/world-tour/locked-world.png","Core world"],
-    ["cosmic-boogie","Cosmic Boogie","Orbital Dance Deck","Celestial Selector","Secret route","Find the hidden connection between Funk and Disco.","assets/world-tour/sprites/ui/world-tour/locked-world.png","Secret world"],
-    ["soulful-garage","Soulful Garage","Midnight Garage","Night Shift Conductor","Secret route","Find the hidden connection between Soul and House.","assets/world-tour/sprites/ui/world-tour/locked-world.png","Secret world"],
-    ["future-funk","Future Funk","Tomorrow Mall","The Recompiler","Secret route","Find the hidden connection between Jazz and Techno.","assets/world-tour/sprites/ui/world-tour/locked-world.png","Secret world"]
+    ["house","House","Beyond the tour map","Signal locked","Coming soon","A relentless pulse waits behind the next gate.","assets/world-tour/emblems/house.png","Core world"],
+    ["techno","Techno","Beyond the tour map","Signal locked","Coming soon","A machine rhythm waits behind the next gate.","assets/world-tour/emblems/techno.png","Core world"],
+    ["cosmic-boogie","Cosmic Boogie","Orbital Dance Deck","Celestial Selector","Secret route","Find the hidden connection between Funk and Disco.","assets/world-tour/emblems/cosmic-boogie.png","Secret world"],
+    ["soulful-garage","Soulful Garage","Midnight Garage","Night Shift Conductor","Secret route","Find the hidden connection between Soul and House.","assets/world-tour/emblems/soulful-garage.png","Secret world"],
+    ["future-funk","Future Funk","Tomorrow Mall","The Recompiler","Secret route","Find the hidden connection between Jazz and Techno.","assets/world-tour/emblems/future-funk.png","Secret world"]
   ].map(([id,name,location,boss,status,mechanic,image,kind]) => ({
     key: `world-${id}`, name, type: "World", rarity: kind, role: location, image,
     description: status === "Playable" ? `${name} opens into two connected stages with its own route, enemies, bosses, and musical identity.` : `${name} waits beyond the tour map, its signal already pulsing behind the gate.`,
@@ -686,24 +686,21 @@
   const catalogGroups = document.querySelector("[data-catalog-groups]");
   const catalogFilters = document.querySelector("[data-catalog-filters]");
   const catalogSearch = document.querySelector("[data-catalog-search]");
-  const catalogCount = document.querySelector("[data-catalog-count]");
+  const catalogClear = document.querySelector("[data-catalog-clear]");
+  const catalogStatus = document.querySelector("[data-catalog-status]");
   const catalogEmpty = document.querySelector("[data-catalog-empty]");
   if (catalogGroups && catalogFilters) {
     const catalogOrder = ["character", "weapon", "support", "evolution", "gem", "enemy", "world", "scenario", "perk", "chest"];
     const pluralLabels = { character: "Characters", weapon: "Weapons", support: "Supports", evolution: "Fusions", gem: "Resonance gems", enemy: "Enemies", world: "World Tour worlds", scenario: "Scenario backgrounds", perk: "Permanent perks", chest: "Chests" };
-    let activeCategory = "all";
+    const filterLabels = { character: "Characters", weapon: "Weapons", support: "Supports", evolution: "Fusions", gem: "Gems", enemy: "Enemies", world: "Worlds", scenario: "Scenarios", perk: "Perks", chest: "Chests" };
+    const activeCategories = new Set();
     const allItems = Array.from(inspectionCatalog.values());
-    const makeFilter = (category, label, icon, count) => {
+    const makeFilter = (category, label, count) => {
       const button = document.createElement("button");
       button.type = "button";
       button.dataset.catalogFilter = category;
-      button.setAttribute("aria-pressed", String(category === "all"));
-      if (icon) {
-        const image = document.createElement("img");
-        image.src = icon;
-        image.alt = "";
-        button.append(image);
-      }
+      button.dataset.category = category;
+      button.setAttribute("aria-pressed", "false");
       const name = document.createElement("span");
       name.textContent = label;
       const amount = document.createElement("strong");
@@ -711,10 +708,9 @@
       button.append(name, amount);
       return button;
     };
-    catalogFilters.append(makeFilter("all", "All records", "assets/gb-icon.png?v=20260813-02", allItems.length));
     catalogOrder.forEach((category) => {
       const items = allItems.filter((item) => item.category === category);
-      catalogFilters.append(makeFilter(category, pluralLabels[category], categoryMeta[category].icon, items.length));
+      catalogFilters.append(makeFilter(category, filterLabels[category], items.length));
     });
     catalogOrder.forEach((category) => {
       const items = allItems.filter((item) => item.category === category);
@@ -723,14 +719,9 @@
       section.dataset.catalogGroup = category;
       const header = document.createElement("div");
       header.className = "catalog-group__header";
-      const icon = document.createElement("img");
-      icon.src = categoryMeta[category].icon;
-      icon.alt = "";
       const title = document.createElement("h2");
       title.textContent = pluralLabels[category];
-      const total = document.createElement("span");
-      total.textContent = `${items.length} records`;
-      header.append(icon, title, total);
+      header.append(title);
       const grid = document.createElement("div");
       grid.className = "catalog-grid";
       items.forEach((item) => {
@@ -773,21 +764,27 @@
       catalogGroups.querySelectorAll("[data-catalog-group]").forEach((group) => {
         let groupCount = 0;
         group.querySelectorAll("[data-catalog-card]").forEach((card) => {
-          const matchesCategory = activeCategory === "all" || group.dataset.catalogGroup === activeCategory;
+          const matchesCategory = activeCategories.size === 0 || activeCategories.has(group.dataset.catalogGroup);
           const matchesQuery = !query || card.dataset.search.includes(query);
           card.hidden = !(matchesCategory && matchesQuery);
           if (!card.hidden) { visibleCount += 1; groupCount += 1; }
         });
         group.hidden = groupCount === 0;
       });
-      catalogFilters.querySelectorAll("[data-catalog-filter]").forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.catalogFilter === activeCategory)));
-      if (catalogCount) catalogCount.textContent = String(visibleCount);
+      catalogFilters.querySelectorAll("[data-catalog-filter]").forEach((button) => button.setAttribute("aria-pressed", String(activeCategories.has(button.dataset.catalogFilter))));
+      if (catalogClear) catalogClear.disabled = activeCategories.size === 0;
+      if (catalogStatus) catalogStatus.textContent = `${visibleCount} records shown${activeCategories.size ? ` across ${activeCategories.size} selected categories` : ""}.`;
       if (catalogEmpty) catalogEmpty.hidden = visibleCount !== 0;
     };
     catalogFilters.addEventListener("click", (event) => {
       const button = event.target.closest("[data-catalog-filter]");
       if (!button) return;
-      activeCategory = button.dataset.catalogFilter;
+      const category = button.dataset.catalogFilter;
+      if (activeCategories.has(category)) activeCategories.delete(category); else activeCategories.add(category);
+      applyCatalogFilter();
+    });
+    catalogClear?.addEventListener("click", () => {
+      activeCategories.clear();
       applyCatalogFilter();
     });
     catalogSearch?.addEventListener("input", applyCatalogFilter);
@@ -1085,31 +1082,6 @@
     element.classList.add("is-inspectable");
     element.dataset.category = item?.category || "gem";
     element.dataset.categoryLabel = category.label;
-    const hasVisual = Boolean(element.querySelector(":scope > img")) || element.matches(".fusion-piece, .fusion-result, .character-profile__visual");
-    if (hasVisual && !element.querySelector(":scope > .inspect-cue")) {
-      const cue = document.createElement("span");
-      cue.className = "inspect-cue";
-      cue.textContent = "Inspect";
-      element.append(cue);
-      let pointerFrame = 0;
-      element.addEventListener("pointermove", (event) => {
-        if (event.pointerType && event.pointerType !== "mouse") return;
-        if (pointerFrame) cancelAnimationFrame(pointerFrame);
-        pointerFrame = requestAnimationFrame(() => {
-          const rect = element.getBoundingClientRect();
-          const cueRect = cue.getBoundingClientRect();
-          const x = Math.max(8, Math.min(rect.width - cueRect.width - 8, event.clientX - rect.left + 18));
-          const y = Math.max(cueRect.height / 2 + 8, Math.min(rect.height - cueRect.height / 2 - 8, event.clientY - rect.top));
-          element.style.setProperty("--inspect-x", `${x}px`);
-          element.style.setProperty("--inspect-y", `${y}px`);
-          pointerFrame = 0;
-        });
-      });
-      element.addEventListener("pointerleave", () => {
-        if (pointerFrame) cancelAnimationFrame(pointerFrame);
-        pointerFrame = 0;
-      });
-    }
     if (!element.matches("button, a")) {
       element.tabIndex = 0;
       element.setAttribute("role", "button");

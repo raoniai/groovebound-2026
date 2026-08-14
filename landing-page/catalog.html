@@ -39,10 +39,14 @@
       </section>
 
       <section id="archive" class="catalog-shell section-pad" aria-labelledby="archive-title">
-        <div class="catalog-intro reveal"><div><h2 id="archive-title">Browse the full game.</h2><p>Search by name, role, mechanic, recipe, world, scenario, or reward. Select a category to narrow the list, then open any record for details.</p></div><div class="catalog-count" aria-live="polite"><strong data-catalog-count>212</strong><span>records visible</span></div></div>
+        <div class="catalog-intro reveal"><div><h2 id="archive-title">Browse the full game.</h2><p>Search by name, role, mechanic, recipe, world, scenario, or reward. Combine any category filters, then open a record for details.</p></div></div>
         <div class="catalog-toolbar reveal">
-          <label class="catalog-search"><span>Search archive</span><input type="search" data-catalog-search placeholder="Try Keytar, boss, radial..." autocomplete="off"></label>
+          <div class="catalog-controls">
+            <label class="catalog-search"><span class="catalog-search__label">Search archive</span><span class="catalog-search__icon" aria-hidden="true"></span><input type="search" data-catalog-search placeholder="Search records..." autocomplete="off"></label>
+            <button class="catalog-filter-clear" type="button" data-catalog-clear disabled><span aria-hidden="true">×</span> Clear filters</button>
+          </div>
           <div class="catalog-filters" data-catalog-filters aria-label="Filter catalog by category"></div>
+          <p class="catalog-filter-status" data-catalog-status aria-live="polite"></p>
         </div>
         <div class="catalog-groups" data-catalog-groups></div>
         <p class="catalog-empty" data-catalog-empty hidden>No signal matches that search. Try another name, role, or category.</p>

@@ -2210,3 +2210,165 @@ body main section[class] h2 { max-width: none; }
   .prologue-route__card > small { font-size: clamp(1.35rem,6.5vw,2rem); }
   .prologue-panel__logo { width: min(92vw,430px); }
 }
+
+/* SITE-047: compact combinable Catalog filters and quieter inspection affordance. */
+:root {
+  --category-world: #ffc43d;
+  --category-perk: #66e2ff;
+  --category-chest: #ef73c8;
+}
+.is-inspectable[data-category="world"], .inspect-dialog[data-category="world"] { --category: var(--category-world); }
+.is-inspectable[data-category="perk"], .inspect-dialog[data-category="perk"] { --category: var(--category-perk); }
+.is-inspectable[data-category="chest"], .inspect-dialog[data-category="chest"] { --category: var(--category-chest); }
+.inspect-cue { display: none !important; }
+
+.catalog-intro { display: block; margin-bottom: 2rem; }
+.catalog-intro p { max-width: 62ch; }
+.catalog-toolbar {
+  grid-template-columns: 1fr;
+  align-items: stretch;
+  gap: .75rem;
+  margin-bottom: clamp(3rem,5vw,5rem);
+  padding: .75rem;
+}
+.catalog-controls { display: flex; align-items: center; gap: .65rem; }
+.catalog-search { position: relative; display: block; width: min(100%,340px); }
+.catalog-search__label,
+.catalog-filter-status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.catalog-search__icon {
+  position: absolute;
+  left: .85rem;
+  top: 50%;
+  z-index: 2;
+  width: 13px;
+  height: 13px;
+  border: 2px solid var(--muted);
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translateY(-58%);
+}
+.catalog-search__icon::after {
+  position: absolute;
+  right: -6px;
+  bottom: -4px;
+  width: 7px;
+  height: 2px;
+  background: var(--muted);
+  content: "";
+  transform: rotate(45deg);
+  transform-origin: left center;
+}
+.catalog-search input {
+  min-height: 44px;
+  padding: .58rem 2.2rem .58rem 2.55rem;
+  font-size: .96rem;
+}
+.catalog-search:focus-within .catalog-search__icon { border-color: var(--accent); }
+.catalog-search:focus-within .catalog-search__icon::after { background: var(--accent); }
+.catalog-filter-clear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .4rem;
+  min-height: 44px;
+  padding: .55rem .75rem;
+  border: 1px solid var(--line-soft);
+  background: rgba(5,3,11,.7);
+  color: var(--text);
+  cursor: pointer;
+  font: .62rem/1 var(--pixel);
+  text-transform: uppercase;
+}
+.catalog-filter-clear span { color: var(--accent); font: 1.2rem/1 var(--body); }
+.catalog-filter-clear:hover:not(:disabled),
+.catalog-filter-clear:focus-visible { border-color: var(--accent); }
+.catalog-filter-clear:disabled { cursor: default; opacity: .38; }
+
+.catalog-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+  overflow: visible;
+  padding: 0;
+}
+.catalog-filters button {
+  --filter-color: var(--accent);
+  display: inline-flex;
+  flex: 0 0 auto;
+  grid-template-columns: none;
+  align-items: center;
+  gap: .45rem;
+  min-width: 0;
+  min-height: 36px;
+  padding: .42rem .62rem;
+  border-color: color-mix(in srgb,var(--filter-color) 48%,var(--line-soft));
+  background: color-mix(in srgb,var(--filter-color) 5%,var(--surface));
+  font-size: .62rem;
+  line-height: 1;
+}
+.catalog-filters button[data-category="character"] { --filter-color: var(--category-character); }
+.catalog-filters button[data-category="weapon"] { --filter-color: var(--category-weapon); }
+.catalog-filters button[data-category="support"] { --filter-color: var(--category-support); }
+.catalog-filters button[data-category="evolution"] { --filter-color: var(--category-evolution); }
+.catalog-filters button[data-category="gem"] { --filter-color: var(--category-gem); }
+.catalog-filters button[data-category="enemy"] { --filter-color: var(--category-enemy); }
+.catalog-filters button[data-category="world"] { --filter-color: var(--category-world); }
+.catalog-filters button[data-category="scenario"] { --filter-color: var(--category-scenario); }
+.catalog-filters button[data-category="perk"] { --filter-color: var(--category-perk); }
+.catalog-filters button[data-category="chest"] { --filter-color: var(--category-chest); }
+.catalog-filters button strong {
+  min-width: 1.45rem;
+  padding: .18rem .28rem;
+  border-radius: 999px;
+  background: color-mix(in srgb,var(--filter-color) 16%,transparent);
+  color: var(--filter-color);
+  font-size: .58rem;
+  text-align: center;
+}
+.catalog-filters button[aria-pressed="true"] {
+  border-color: var(--filter-color);
+  background: var(--filter-color);
+  color: #08040f;
+  box-shadow: 0 0 18px color-mix(in srgb,var(--filter-color) 24%,transparent);
+}
+.catalog-filters button[aria-pressed="true"] strong { background: rgba(8,4,15,.16); color: #08040f; }
+.catalog-filters button:focus-visible,
+.catalog-filter-clear:focus-visible,
+.catalog-search input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.catalog-group__header {
+  display: block;
+  margin-bottom: 1rem;
+  padding-bottom: .8rem;
+}
+.catalog-group__header h2 { margin: 0; font-size: clamp(2.8rem,4.7vw,5rem); }
+.catalog-card {
+  border-color: color-mix(in srgb,var(--category) 68%,transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb,var(--category) 15%,transparent),0 10px 24px rgba(5,3,11,.24);
+}
+.catalog-card:hover,
+.catalog-card:focus-visible {
+  border-color: var(--category);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb,var(--category) 48%,transparent),0 14px 30px color-mix(in srgb,var(--category) 16%,rgba(5,3,11,.7));
+}
+
+@media (max-width: 820px) {
+  .catalog-toolbar { grid-template-columns: 1fr; }
+  .catalog-filters { display: flex; grid-template-columns: none; }
+}
+@media (max-width: 560px) {
+  .catalog-toolbar { margin-inline: 0; padding: .65rem; }
+  .catalog-controls { align-items: stretch; flex-direction: column; }
+  .catalog-search { width: 100%; }
+  .catalog-filter-clear { align-self: flex-start; min-height: 40px; }
+  .catalog-filters { display: flex; grid-template-columns: none; margin-inline: 0; padding-inline: 0; }
+  .catalog-filters button { grid-template-columns: none; min-height: 34px; padding: .4rem .55rem; font-size: .58rem; }
+}

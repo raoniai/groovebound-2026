@@ -2,6 +2,16 @@
 
 This file is the local implementation record. Add a new entry at the top after every material site pass.
 
+## 2026-08-14 | SITE-047 | Compact multi-filter Catalog controls
+
+Rebuilt the Catalog toolbar around compact text-and-count category chips that
+can be combined, independently toggled, and reset with one accessible X clear
+control. Removed the visible result counter, section-heading icons and counts,
+and every mouse-following Inspect cue across the site. Added a compact magnified
+search field, persistent category-colour outlines for all Catalog assets, and
+replaced the Jazz, House, Techno, Cosmic Boogie, Soulful Garage, and Future Funk
+world-card art with byte-identical copies of the canonical v0.8.5 emblems.
+
 ## 2026-08-14 | SITE-046 | v0.8.5 catalog and interface release sync
 
 Updated the Home, Catalog, and Builder release identity for the v0.8.5 desktop
