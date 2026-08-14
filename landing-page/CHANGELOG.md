@@ -4,11 +4,12 @@ This file is the local implementation record. Add a new entry at the top after e
 
 ## 2026-08-14 | SITE-043 | v0.8.4 Jazz release sync
 
-Prepared the Home, Catalog, and Builder for v0.8.4. Promoted Jazz to the fourth
+Published the Home, Catalog, and Builder for v0.8.4. Promoted Jazz to the fourth
 playable World Tour route, added its two-stage path and full eight-enemy roster,
 generated isolated website sprites from the canonical Jazz atlases, and updated
-the public version badge and deployment contract. GitHub publication and public
-FTP verification remain separate release gates until their checks pass.
+the public version badge and deployment contract. The 374-file FTPS release was
+uploaded after rollback capture; core pages, scripts, representative assets,
+GitHub Latest, and stable Mac/Windows routes are public-live verified.
 
 ## 2026-08-13 | SITE-042 | Local v0.8.3 badge reconciliation
 

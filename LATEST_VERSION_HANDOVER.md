@@ -14,21 +14,21 @@ This document answers four questions: what is authoritative, what the latest ver
 
 <!-- LIVE-SNAPSHOT:START -->
 
-_Generated from live repository evidence: 2026-08-13 15:38 AEST_
+_Generated from live repository evidence: 2026-08-14 12:23 AEST_
 
 | Field | Live value |
 |---|---|
-| Branch | `codex/ui-polish-v0.8.2` |
-| HEAD | `63496c7` — release: publish desktop v0.8.3 |
+| Branch | `codex/release-v0.8.4` |
+| HEAD | `b62d1d0` — release: publish desktop v0.8.4 |
 | Upstream | `origin/codex/world-tour-v1` |
-| Compared with `origin/main` | 11 ahead, 1 behind |
-| Working changes | 0 files: 0 game, 0 site, 0 skills/package |
-| Lua source/test files | 114 source, 60 test |
-| Game tree excluding `dist/` | 632.9 MiB |
-| Current `.love` artifact | 193.5 MiB |
-| Test suite | passed: 380 tests, 0 failures |
-| Lint | passed: 0 warnings / 0 errors in 176 files |
-| Skill packages | 11 |
+| Compared with `origin/main` | 13 ahead, 1 behind |
+| Working changes | 2 files: 0 game, 1 site, 0 skills/package |
+| Lua source/test files | 117 source, 61 test |
+| Game tree excluding `dist/` | 645.8 MiB |
+| Current `.love` artifact | 199.9 MiB |
+| Test suite | passed: 386 tests, 0 failures |
+| Lint | passed: 0 warnings / 0 errors in 180 files |
+| Skill packages | 12 |
 
 <!-- LIVE-SNAPSHOT:END -->
 
@@ -36,31 +36,26 @@ _Generated from live repository evidence: 2026-08-13 15:38 AEST_
 
 Groove Bound is a bright urban-supernatural survival roguelike built in Lua with LÖVE 11.5. Its current development preview follows:
 
-**Title → Prologue → Character Selection → Character Intro → Backbeat Streets → The Orbit Line → World Tour → playable Funk, Soul, and Disco routes**
+The current release is **v0.8.4**. Loose-folder play displays `v0.8.4-dev`;
+packaged builds display `v0.8.4`. GitHub Latest, all seven desktop assets, the
+Home, Catalog, Builder, and stable Mac/Windows download routes are published
+and public-live verified at v0.8.4.
 
-The player selects Joe or Lyra Vex, keeps one build across both stages, levels through seeded three-card offers, combines up to six weapons and four supports, and claims musical chests for reward reels and eligible fusions.
+**Title → Prologue → Character Selection → Character Intro → Backbeat Streets → The Orbit Line → World Tour → playable Funk, Soul, Disco, and Jazz routes**
+
+The player selects Joe or Lyra Vex, keeps one build across both stages, banks level-up points for seeded three-card offers, combines up to six weapons and four supports, and claims musical chests for reward reels and eligible fusions.
 
 ### Current content surface
 
 - Two playable characters with differentiated stats, traits, weapons, logos,
   single-frame idle poses, and movement-speed-driven run animation.
-- The complete two-stage Prologue plus six playable World Tour stages across
-  Funk, Soul, and Disco; six later routes remain defined future scope.
+- The complete two-stage Prologue plus eight playable World Tour stages across
+  Funk, Soul, Disco, and Jazz; five later routes remain defined future scope.
 - Sixteen base weapons, eight supports, and sixteen documented fusions.
-- Two enemy families with normal enemies, elites, midbosses, and stage bosses.
+- Six authored enemy families across the Prologue and playable World Tour,
+  including Jazz's eight-enemy ensemble and two stage bosses.
 - Persistent options, keyboard/mouse/gamepad controls, rebindings, deadzone, aim assistance, four camera zoom levels, vibration, flash, shake, fullscreen, and volume controls.
-- Banked level-up points that can be spent from a voluntary paused menu, with a
-  persistent manual/automatic mode toggle in both Settings and the level-up menu.
-- A compact sprite-backed level-point CTA below the current build and a
-  non-overlapping, timed, individually dismissible right-side alert stack with
-  Clear All.
-- The published v0.8.3 HUD refinement separates HP, Guard, and XP into clean
-  sprite-segmented rows; fits all six weapon slots inside their panel; uses
-  dedicated sprite devices for score and combo; and keeps boss, mechanic, and
-  alert information in non-competing regions.
-- Adaptive music routing, 59 runtime OGG music assets including a continuous
-  World Tour hub cue and distinct three-cue packs for all nine worlds, runtime
-  OGV cutscenes, and storyboard fallbacks.
+- Adaptive music routing, runtime OGG music, runtime OGV cutscenes, and storyboard fallbacks.
 - Arsenal, Admin, results, level-up, pause, options, character selection, cutscene, run, and chest-reward screens.
 
 The public landing site is a separate static presentation under `landing-page/`. It is not authoritative for gameplay or release state.
@@ -91,71 +86,71 @@ The public landing site is a separate static presentation under `landing-page/`.
 |---|---|---|---|
 | Campaign flow | Committed and pushed preview on `GPT/stage-2-cutscenes` | Source, campaign tests, upstream branch | Full current-HEAD campaign playthrough |
 | Deterministic simulation | Tests passed | Named RNG streams and seeded full-run tests | Replay-file format for engine differential testing |
-| Progression and fusion | Published in v0.8.3; tests and packaged bootstrap passed | Level gains bank spendable points without interrupting play by default; after a fully capped build chooses HP, Tip, or Guard, queued and future level points repeat that utility independently of Auto Menu until a legal build choice reappears; seeded offers, anti-repeat, capacity and evolution tests remain green | Ongoing balance/play-feel evidence and a full physical-controller run |
+| Progression and fusion | Published in v0.8.2 and tests passed | Level gains bank spendable points without interrupting play by default; the green Triangle level-point CTA shows its balance in the shared rank badge and is mouse-clickable; every spend advances to a new seeded offer; seeded offers, anti-repeat, capacity and evolution tests remain green | Ongoing balance/play-feel evidence and a full physical-controller run |
 | Chest rewards | Published in v0.7.1, tests passed, visually sampled, and package verified | Five large spinning chests converge without number cycling, flash the centre chest, reveal large sprite-backed rewards, and accept Esc/Circle animation skip; capped builds auto-apply the selected utility reward unless an eligible evolution must be shown | Physical-controller timing and reward-feel playthrough with naturally dropped chests |
 | Arena collision and navigation | Published in v0.7.0 and tests passed | Tall props now block 90% of their height and redraw their complete opaque sprite above actors; deterministic safe-drop and navigation tests remain green | Confirm every authored tall prop in a full playthrough |
 | Enemy projectiles | Committed, pushed, and tests passed | Sprite mapping, attack tuning, content and entity tests | Confirm readability, rate, and boss pressure in play |
 | Cutscene video | Six runtime videos published in v0.6.0 and package verified | Both new MP4s converted to packaged OGV; scene-ID discovery; Circle/`b` skip tests; global mute now drives video-source volume; skip/mute separation visually verified | Physical PlayStation controller check; listening check for mute during each video; full-video fade, pause, final-frame, fallback, and campaign-order playthrough |
-| Music system | Published in v0.8.0, tests and audio audit passed, focused macOS play sampled | 28 new World Tour OGG cues; one continuous hub plus unique Funk, Soul, Disco, House, Electro, Techno, Cosmic Boogie, Soulful Garage, and Future Funk packs; route/boss routing live for playable worlds; 59-record audio audit and five game captures | Human creative listening across all cues; physical Windows audio play; future-stage pressure/finale activation; BeatClock, latency calibration, groove scoring, and accessibility remain future work |
+| Music system | Published in v0.8.0; tests and release media checks passed | One continuous World Tour hub theme, nine world-specific soundtrack packs, and 28 optimized route, pressure or boss, and finale cues; connected menu overlays preserve or duck the current musical context | Final creative listening pass across all cues; BeatClock, latency calibration, groove scoring, and accessibility remain future work |
 | Application icon | Published in the v0.6.0 macOS app; tests passed, package verified, and manual small-size QA verified | Commit `097c883`; Joe/Lyra adventure emblem at 512px RGBA; native `GrooveBound.icns` present and referenced in the verified app bundle | Confirm the rebuilt native app icon in the macOS Dock on another clean Mac |
 | Generic controller and camera support | Published in v0.8.1 and tests passed | Level-up navigation uses strict spatial rows for D-pad, arrow keys, and WASD: left/right never wrap into another row, while up/down selects the nearest aligned item; existing right-stick aim and controller parity remain intact | Physical PlayStation controller check; hot-plug identity, glyphs/remapping, wired/wireless matrix |
-| Combat readability and HUD | Published in v0.8.3; tests and package gates passed | HP, Guard, and XP have separate labeled sprite bars; critical HP flashes with reduced-flash fallback; six weapon slots remain bounded; level-point Triangle and L tips are independently clickable; score/combo have dedicated sprite devices; the compact mechanic reserves the right rail; Boss HP is directly below timing | Full combat-feel visual pass with normal/reduced flash and physical controller |
-| Character, upgrade, and results interface | Published in v0.8.3; tests and package gates passed | Perk cards and CTAs use sprite-led chrome with tighter rank/unknown treatment; results remove Final Setlist, Evolved, shots, and bosses copy, promote Level/Kills/XP, and raise CTAs; World Tour confirmation now asks for a player before starting the selected world | Manual defeat/victory, Perk Database, and World Tour character-flow pass |
+| Combat readability and HUD | Published in v0.8.2, tests passed, and manual QA verified for the changed states | HP/XP bars and persistent panels use sprite-backed pieces; the timer keeps stage and remaining time on one line; World Tour mechanic guidance is centred beneath it; score grouping, shared rank/MAX badges, concise pause actions, integrated gameplay mute, and removed bottom controls were verified at reference and minimum supported sizes | Full combat-feel pass with flash/reduced-flash options and physical controller |
+| Character, upgrade, and results interface | Published in v0.7.1, tests passed, and visually sampled | Anton/Oswald typography, modular nine-slice upgrade cards, relevant-equipped evolution rows only, exact icon-led gain-to-total attributes, generated NEW badge, pickup-art utility choices, existing reroll/skip sprite CTAs, and bright sprite-backed menu focus | Manual defeat/victory results pass and final small-screen readability review |
 | Save system | Version 2 profiles and slots | Save, migration, profile, export and World Tour session tests | Cross-platform clean-machine fixtures |
-| Landing page and repository README | v0.8.0 source committed and pushed at `9fc3e3a`; public deployment not configured | Home, Catalog and Builder identify v0.8.0 and expose verified stable Latest Windows ZIP and Mac DMG routes | FTP upload/deployment approval, post-deploy browser refresh, physical-phone refresh, trailer audio check, and `main` promotion |
-| World Tour runtime atlases | Committed, pushed, source-runtime verified, and excluded from the package audit payload where appropriate | 147 transparent cells across 16 repaired atlases validate with zero edge crossings and no component reuse; runtime loader mappings remain stable | Focused physical-controller World Tour playthrough |
-| Desktop distribution | Synchronized v0.8.3 Windows x64 ZIP, universal macOS ZIP/DMG, and common `.love` published as GitHub Latest | Both desktop packages embed `.love` SHA-256 `c2a4d998…4830`; Windows PE branding, native 380-test pass, fused payload, Windows/macOS bootstrap markers, manifests, checksums, seven public assets, and Latest redirects verified | Physical Windows graphical/audio/controller/SmartScreen/save-migration QA; Windows code signing; Apple notarization if required |
+| Landing page and repository README | v0.8.4 deployed and public-live verified | The 374-file public bundle is byte-matched on all core pages and scripts; Jazz is presented as the fourth playable route; both stable desktop CTAs resolve to v0.8.4 | Physical-phone refresh, audio listening, and `main` promotion remain separate checks |
+| World Tour runtime atlases | Jazz released in v0.8.4 | Jazz adds exact 4x2 enemy and environment RGBA atlases, a 2x2 floor atlas, and its project-owned identity mark; release packaging and site derivatives pass parity checks | Jazz visual/readability pass and focused physical-controller World Tour playthrough |
+| Desktop distribution | GitHub Latest publishes synchronized v0.8.4 Mac and Windows assets | Seven digest-bearing assets were built from one common payload; macOS and Windows package boot markers passed in release CI | Physical Windows QA, unlocked-Mac visual check, signing, and notarization if required |
 | Engine migration | Planned | Engine migration research and parity roadmap | Clean baseline and bounded target-engine spike |
-| Groove Bound skills | Installed, committed, and pushed | Eleven installed packages match repository source; structural, package, and representative helper validation passed | Fresh-agent forward tests |
+| Groove Bound skills | Twelve repository skills validated; version-sync skill committed and pushed | The fail-closed checker is wired into source, local/candidate, GitHub, landing, and public phases; repository package validation passes 12 of 12 | Unlocked-Mac visual forward test remains open |
 
 ## Active working state
 
-The v0.8.3 HUD, capped utility loop, Perk Database, results, and World Tour
-character-flow refinements are committed and pushed on `codex/world-tour-v1`
-through `63496c7`. The synchronized `codex/windows-version` branch contains the
-same canonical source. GitHub Latest publishes the branded Windows x64 ZIP,
-Windows manifest and checksums, universal Mac DMG/ZIP, and one common `.love`
-payload from that source commit. The landing-page source identifies v0.8.3 and
-retains stable Latest asset routes; unrelated dirty workspace material remains
-untouched.
+GitHub release `v0.8.4` is public as Latest and tag `v0.8.4` resolves to clean
+release commit `b62d1d069173b50819f76f008ae1a54db4319caa`. Its seven desktop
+assets expose GitHub SHA-256 digests. Release workflow `31763025903` completed
+source sync, common packaging, macOS and Windows native packaging, candidate
+parity, boot markers, publication, and GitHub Latest verification. The 374-file
+landing bundle was then deployed by FTPS with a rollback capture and passed
+byte-for-byte public verification. The original protected workspace remains on
+its pre-release local branch with unrelated dirty material intact; release work
+was isolated so those files were neither overwritten nor included.
 
 Current active themes include:
 
-- The isolated `codex/ui-polish-v0.8.2` worktree is clean at the v0.8.3 release
-  source. It was used to protect the unrelated active workspace changes.
-
 - The two supplied MP4 files remain reference/source media and are excluded from
   distribution; their OGV derivatives are packaged runtime media.
-- Suno source masters and all generated source candidates remain reference-only
-  and are excluded from distribution; the 28 optimized World Tour OGG cues are
-  canonical packaged runtime media.
-- `landing-page/` is committed source, but the repository has no configured
-  public homepage and no deployment has been claimed.
-- The protected original workspace and its unrelated concurrent work were not
-  edited; Windows implementation and release work used an isolated clean clone.
+- Generated source candidates and the earlier opaque UI-chrome atlas remain
+  reference-only and are excluded from distribution.
+- `landing-page/` is the canonical public-site source. The server supports FTPS
+  and the confirmed remote root is `/public_html/raoni.ai/groovebound`. The
+  dedicated `groove-bound-ftp` credential is stored in macOS Keychain; no secret
+  is stored in the repository.
+- The campaign identity, Builder redesign, Round 2 Home refinements, transparent
+  Prologue and World Tour marks, stage wordmarks, and Jazz public route are
+  committed, pushed, and deployed. The Orbit logo remains exactly `ORBIT LINE`.
+  All three public pages display v0.8.4 and retain stable Latest download URLs.
 - This handover remains the canonical delivery record after release work.
 
-Do not infer `main` promotion or landing-page deployment from the feature-branch push and GitHub release.
+Do not infer `main` promotion from the feature-branch push, GitHub release, or landing deployment.
 
 ## Verification and delivery ledger
 
 | Layer | Latest state | Meaning |
 |---|---|---|
-| Automated tests | 380 passed, 0 failed locally, in Linux CI, and in native Windows packaging CI on 2026-08-13 | Adds six-slot containment, dual clickable level tips, capped utility repetition, mechanic rail separation, and World Tour character-selection coverage |
-| Lint | 0 warnings and 0 errors across 176 files locally and in CI on 2026-08-13 | Current release Lua source and tests statically checked |
-| Audio audit | 59 records passed; 28 new World Tour cues are 48 kHz stereo OGG Vorbis | World Tour loudness is -18.6 to -17.4 LUFS, maximum true peak is -5.1 dBFS, and maximum seam jump is 0.04253; human creative listening remains open |
-| Common package | Published v0.8.3 `.love`: 202,861,735 bytes, SHA-256 `c2a4d9981ef4da20e76d2ec32ea4166cf940e43809301dcd7d936eae45ea4830` | Built once and consumed unchanged by both Windows and Mac jobs; archive integrity, release marker, runtime assets, and exclusions verified |
-| Windows artifact | Published v0.8.3 x64 ZIP: 207,576,571 bytes, SHA-256 `29d374af5cd9985a4016c8e4082919f3173bb94de705c49b50e20bc18b8ac73e` | Official pinned LÖVE 11.5 runtime, Groove Bound icon/version PE metadata, native tests, fused payload, manifest/checksums, packaged bootstrap, and public Latest redirect verified; executable is unsigned |
-| macOS artifacts | Published synchronized v0.8.3 universal ZIP and icon-bearing DMG | ZIP: 213,966,176 bytes, SHA-256 `973e6fe9f72111da116bbcc0bf5507657731cfb538e37bc3f460c068f628d0f7`; DMG: 217,445,165 bytes, SHA-256 `5e5832d175150bc89323d9cf50fa7a3532ee4392d11c22914914483a7fd019d1`; GitHub digests match |
-| Packaged boot | Verified in Windows and macOS CI on 2026-08-13; local macOS package smoke also passed | Packaged bootstrap validates content and writes the expected marker; this is a startup-integrity check, not full graphical/audio play |
-| Manual graphical QA | Earlier five focused v0.8.0 captures remain verified; current refinement launch smoke passed, but current-screen capture was unavailable | Full current HUD, results, Perk Database, low/critical HP, boss, and physical-controller visual review remains open |
-| Source release commit | `63496c7` — release: publish desktop v0.8.3 | Public release notes identify full commit `63496c72903167b2460190f497fd9d29857d8b1b`; tag `v0.8.3` resolves to it |
-| Parallel branches | `origin/codex/world-tour-v1` and `origin/codex/windows-version` both at `63496c7` | The Windows branch is workflow-mirrored from the canonical feature branch after every push |
+| Automated tests | v0.8.4: 386 passed, 0 failed locally and in release CI on 2026-08-14 | Current Jazz, version identity, gameplay, progression, and platform behaviors are covered |
+| Lint | 0 warnings and 0 errors across 180 files on 2026-08-14 | Current Lua source and tests statically checked |
+| Common package | Published v0.8.4 `.love`: 209,627,657 bytes, SHA-256 `b21a780913773bb906378ff368ac12920ccfddb89bfb26422ae3886a692005fc` | Clean payload embeds commit `b62d1d069173`, exact VERSION, release marker, and no forbidden entries |
+| macOS artifacts | v0.8.4 universal ZIP and icon-bearing DMG released | ZIP SHA-256 `8ee574ad2fa928aa9f9d1ab7158903242cb02b8dbc5af63e0dc148c60ae3985c`; DMG SHA-256 `acb63aa4f0ea55ed8e0f4af8100fc3a0a70980829b7d74fb414d64402195c1ff`; same common payload; ad-hoc signed, not notarized |
+| Windows artifact | v0.8.4 branded x64 portable ZIP released | ZIP SHA-256 `9afcabae1e6fab00d61d0904a494981fd11179aa5d990e234c9e9432bce80caf`; manifest SHA-256 `d0353065727ffd942dc5d316928227058b6d008ab5435e554a4d5a01a8b52839`; unsigned |
+| Packaged boot | Verified in Windows and macOS release CI on 2026-08-14 | Both packages reached the validated boot-complete marker; this is a startup-integrity check, not full graphical/audio play |
+| Manual graphical QA | v0.8.2 changed interface states verified at 1280 x 720 and 800 x 600 | Active World Tour mechanic, timer, HP/XP, build slots, level-point CTA, pause, level-up, results, title, and settings were visually inspected; full campaign, physical controller, audio and prolonged play-feel remain open |
+| Source release commit | `b62d1d0` — release: publish desktop v0.8.4 | Tag `v0.8.4` resolves to full commit `b62d1d069173b50819f76f008ae1a54db4319caa` |
+| Feature-branch push | `origin/codex/world-tour-v1` records the v0.8.4 release commit | `main` remains independently unpromoted; original local dirty work is preserved |
 | Main promotion | Not current | Verify `origin/main` independently |
-| Public release/download | v0.8.3 is published as GitHub Latest with seven synchronized desktop assets | Release body, seven GitHub digests, manifest, checksum ledger, Windows ZIP, Mac DMG, and common `.love` Latest redirects verified public-live |
-| Landing download link | Windows and Mac v0.8.3 CTA source committed and pushed on the feature branch | Home, Catalog, and Builder use stable Latest routes; all three asset routes returned HTTP 200 for v0.8.3. Site source is not separately deployed here |
-| GitHub README presentation | Windows badge, CTA, install/SmartScreen guidance, version and verification counts committed on the feature branch | Default-page visibility still depends on the planned fast-forward to `main` |
-| Landing deployment | Not performed or proven | GitHub reports no configured repository homepage; source publication is not a public-site deployment |
+| Public release/download | v0.8.4 is published as GitHub Latest with seven synchronized desktop assets | GitHub API confirms every required asset and SHA-256 digest; stable Latest routes resolve to v0.8.4 |
+| Landing download links | Stable macOS and Windows CTAs are public-live verified against v0.8.4 | Home, Catalog, and Builder display v0.8.4 and link to the stable Latest routes |
+| GitHub README presentation | Landing-styled rewrite committed and pushed at `f96acf9` | GitHub Markdown API rendered 21,124 bytes with 28 images, 50 links, and 3 tables; all 29 local references and 7 navigation anchors resolve; default-page visibility still depends on merging to `main` |
+| Landing deployment | v0.8.4 374-file bundle deployed and public-live verified | Rollback captured at `20260814-121933-v0.8.4`; six core files, directory index, representative assets, badges, and desktop routes passed public parity |
 
 ## Desktop and engine portability
 
@@ -170,121 +165,352 @@ For an engine migration, keep LÖVE as the golden reference. The leading researc
 - Automated checks do not prove the remaining visual, video, navigation, audio, controller, or game-feel criteria.
 - Generated and legacy assets require maintained provenance and package separation.
 - Website asset copies can drift from canonical runtime assets.
-- Signing, notarization, credentials, store submission, FTP/site deployment, destructive migration, and engine cutover require explicit approval. The user explicitly approved this v0.8.3 GitHub release and desktop packaging; no FTP upload or `main` promotion was inferred.
+- Signing, notarization, credentials, store submission, public release, deployment, destructive migration, and engine cutover require explicit approval.
 
 ## Next safe actions
 
-1. Complete a human creative listening pass across the World Tour hub and all
-   nine world packs, checking seams, world identity, menu continuity, boss
-   escalation, and music/SFX balance.
-2. Verify Circle skip on physical PlayStation hardware and cover hot-plug,
+1. Manually listen to mute/unmute during every video, then verify natural chest
+   drops, low/critical-health feel, tall-object layering, results, every video,
+   and the full current-HEAD campaign.
+2. Play both Jazz stages with Joe and Lyra; verify enemy/boss readability,
+   blue-note mechanic timing, prop collision/layering, floor contrast and the
+   temporary Electro-derived music fallback before commissioning Jazz audio.
+3. Verify Circle skip on physical PlayStation hardware and cover hot-plug,
    remapping, wired, and wireless behavior.
-3. Produce the two planned 4-by-6 enemy movement atlases and wire three-frame
+4. Produce the two planned 4-by-6 enemy movement atlases and wire three-frame
    animation for all sixteen enemy definitions without changing deterministic
    movement or combat timing.
-4. Resolve the current `origin/main` divergence before any promotion; do not
-   fast-forward or merge without a separately approved main-branch decision.
-5. Keep the stable GitHub Latest Download URL in future landing-page releases;
-   Apple signing/notarization and site deployment remain separate approval gates.
-6. Run the public Windows ZIP on a physical Windows x64 PC, covering graphical
-   and audio play, controller hot-plug/vibration, SmartScreen, and clean-machine
-   save migration; add Windows code signing when a certificate is approved.
-7. Freeze a clean migration baseline before any Godot or MonoGame spike.
-8. Upload the FTP-ready landing-page source only when the destination and public
-   deployment are explicitly approved, then verify v0.8.3 labels and both
-   stable Latest download routes on the public site.
+5. Promote the verified source to `main` only through a separately approved
+   merge after reviewing the feature-branch delta and CI state.
+6. Keep the stable GitHub Latest Download URL in future landing-page releases;
+   run the dry-run and public-verification commands around each approved FTPS
+   deployment. Apple signing/notarization remains a separate approval gate.
+7. Complete native Windows 10/11 acceptance for the published x64 ZIP, and
+   extend the desktop matrix with a native Linux artifact from the same verified
+   `.love` candidate.
+8. Freeze a clean migration baseline before any Godot or MonoGame spike.
+9. Reconcile the original protected workspace with the released branch only in
+   a separate, reviewed pass; do not overwrite its unrelated dirty material.
 
 ## Continuation history
 
-### 2026-08-13 — v0.8.3 HUD, capped utility, and campaign-flow release
+### 2026-08-14 — v0.8.4 Jazz desktop and landing release
 
-- Separated HP, Guard, and XP into compact sprite-segmented bars with labels
-  above the rails, subtle low/critical warning icons, critical-bar flashing,
-  corrected centre-rail seams, and reduced-flash behavior.
-- Reflowed the top HUD so six weapon slots stay inside their sprite panel,
-  score and combo use separate sprite devices, the compact mechanic sits under
-  them with reserved alert space, and Boss HP stays directly below timing.
-- Rebuilt the level-point prompt around centered copy, a rank device, and tiny
-  independently clickable Triangle and L tips. Fully capped builds remember
-  HP, Tip, or Guard and repeat it until a build choice becomes legal again.
-- Tightened sprite-led Perk Database cards/CTAs, simplified completion results,
-  promoted Level/Kills/XP, raised the CTA group, and inserted character choice
-  between World Tour selection and starting a run.
-- Verified 380 tests and zero lint findings across 176 files locally and in CI.
-  Published seven synchronized public assets from `63496c7`; both platform
-  packages share `.love` SHA-256 `c2a4d998…4830`, both packaged boot markers
-  passed, and the stable Latest routes returned HTTP 200. Main promotion,
-  signing/notarization, physical Windows QA, and site deployment remain open.
+- Created clean release commit `b62d1d0` from the current canonical game and
+  site surfaces while preserving unrelated archives, promo assets, PSD work,
+  generated screenshot folders, and the original dirty workspace.
+- Published Jazz as the fourth playable World Tour route with Blue Note Borough,
+  Midnight Changes, eight enemies, two bosses, canonical runtime atlases, and
+  matching isolated website sprites.
+- Release workflow `31763025903` passed 386 tests, clean lint, portability,
+  deterministic common-payload parity, native Windows regression and branding,
+  Mac and Windows boot markers, complete candidate checks, and GitHub Latest.
+- Published seven digest-bearing v0.8.4 GitHub assets. The common payload is
+  209,627,657 bytes with SHA-256
+  `b21a780913773bb906378ff368ac12920ccfddb89bfb26422ae3886a692005fc`.
+- Deployed the 374-file landing bundle to the configured FTPS destination after
+  capturing a rollback. Home, Catalog, Builder, core scripts, representative
+  assets, public badges, and stable Mac/Windows routes are public-live verified.
+- Delivery state: committed, pushed, released, deployed, and public-live
+  verified. `main` promotion, code signing/notarization, physical Windows and
+  controller QA, and manual Jazz visual/audio/play-feel acceptance remain open.
 
-### 2026-08-13 — v0.8.1 optional level-up and interface release
+### 2026-08-13 — Jazz World local activation and runtime art suite
 
-- Replaced forced level-up interruptions with banked level-up points by default.
-  Players can open the paused menu voluntarily, spend one or many points, receive
-  a fresh seeded offer after every choice, close the menu, and keep the rest.
-- Added a persistent automatic/manual preference in Settings and the level-up
-  menu, plus strict controller, arrow-key, and WASD spatial navigation that never
-  wraps a horizontal edge into another row.
-- Added a compact sprite-backed point CTA below the current build and a clean
-  right alert stack with timed expiry, relevant icons, individual dismissal,
-  Clear All, and collision-free placement.
-- Verified 372 tests, zero lint findings across 173 files, deterministic package
-  integrity, native Windows and macOS packaged bootstrap, platform parity, and
-  public stable download routes.
-- Published GitHub Latest v0.8.1 from `66b58bb` with seven digest-matched assets:
-  branded Windows x64 ZIP, universal Mac ZIP and DMG, common `.love`, Windows
-  manifest, and both checksum ledgers.
-- Physical-controller feel, full Windows graphical/audio play, Windows signing,
-  Apple notarization, `main` promotion, and landing-page deployment remain open.
+- Activated Jazz as the fourth core route after Disco, with House following it,
+  while preserving the nine-world cap and the existing 19-perk economy. Added
+  Blue Note Borough and Midnight Changes, eight stable enemy IDs, two bosses,
+  two deterministic wave sets and the `jazz_improvisation` blue-note mechanic.
+- Generated and integrated exact runtime enemy, environment and floor atlases;
+  promoted the existing project-owned Jazz identity mark; preserved generator
+  sources outside the package; and recorded prompts, mappings, transforms and
+  hashes in generated-asset provenance.
+- Verified 386 tests including three seeded Jazz routes, zero lint findings in
+  180 files, clean diff whitespace, zero media-audit risks, content validation,
+  common archive integrity and exact Jazz package inclusion. Rebuilt `.love`:
+  209,627,657 bytes, SHA-256
+  `910005215c3ffca01783233314d2cc7f762d096c4cb05a9f5c55b4054a389071`.
+- The game was deliberately not launched because the user was using the
+  computer. Manual visual, audio, controller and play-feel acceptance remains
+  open. Jazz temporarily routes through the existing Electro soundtrack pack;
+  dedicated Jazz music remains a creative follow-up.
+- Delivery state: locally implemented, tests passed, media audited and common
+  package verified; uncommitted, unpushed, unreleased and undeployed.
 
-### 2026-08-13 — v0.8.0 unique World Tour soundtrack release
+### 2026-08-13 — v0.8.4 visible build identity and version-sync gate
 
-- Generated 56 Suno candidates across 28 paid runs using Suno v5.5, then
-  promoted one neutral World Tour hub cue and distinct three-cue packs for all
-  nine worlds. Exact prompts, source IDs, durations, hashes, and the preserved
-  Boogie Tank alternate are recorded under `groove-bound/docs/audio/`.
-- Added 28 optimized 48 kHz stereo OGG runtime cues and routed the playable
-  Funk, Soul, and Disco stages and bosses to their own music. World Tour selector
-  and loadout retain one continuous hub cue; overlays duck and continue the
-  active context instead of chopping the music.
-- Verified 358 tests, zero lint findings across 172 files, a 59-record audio
-  audit, package exclusions, archive integrity, portability, five macOS game
-  captures, and packaged bootstrap on native Windows and macOS CI.
-- Published GitHub Latest v0.8.0 from `63ed503` with seven digest-matched assets:
-  branded Windows x64 ZIP, universal Mac ZIP and DMG, common `.love`, Windows
-  manifest, and both checksum ledgers. Stable Latest redirects return HTTP 200.
-- Updated the Home, Catalog, Builder, repository README, packaging defaults,
-  and synchronized release workflows to v0.8.0. Landing source is FTP-ready,
-  but no FTP upload, public site deployment, `main` promotion, code signing, or
-  notarization was performed.
-- Human creative listening across all cues and physical Windows graphical,
-  audio, controller, SmartScreen, and save-migration QA remain explicit gates.
+- Reconciled the tracked game folder to the published v0.8.3 source line, then
+  established `groove-bound/VERSION` as the single v0.8.4 candidate source.
+  Loose source displays `v0.8.4-dev`; release payloads display `v0.8.4`.
+- Added tiny build text to the title-screen lower corner and pause-panel corner,
+  plus unit coverage for source, packaged, and mismatch states.
+- Rebuilt the common `.love`, universal macOS ZIP, and DMG from one payload.
+  The local gate passes archive integrity, marker/version parity, Mac bundle
+  metadata, control-character exclusions, and embedded-payload hash parity.
+- Added and installed `$groove-bound-version-sync`; wired it into release CI,
+  desktop packaging, and the landing publisher before and after public changes.
+  Removed hard-coded release defaults and stale landing download digests.
+- Verified 383 tests, zero lint findings across 178 files, portability, the
+  12-skill package, a 354-file site dry run, and local v0.8.3 badge parity.
+  Manual title/pause inspection remains unverified because the Mac was locked.
+- GitHub Latest v0.8.3 is healthy, but all three live landing badges remain at
+  v0.8.2. Local source is corrected; deployment and any v0.8.4 publication are
+  explicit approval gates.
 
-### 2026-08-11 — Native Windows x64 and synchronized desktop release
+### 2026-08-13 — v0.8.2 gameplay interface and synchronized desktop release
 
-- Added release-safe packaging with a fused Windows executable, Groove Bound
-  icon and PE metadata, pinned official LÖVE 11.5 runtime, deterministic ZIP,
-  machine-readable manifest, checksums, and unsigned-build disclosure.
-- Centralized active-controller ownership and vibration, added hot-plug handling,
-  and implemented validated read-only migration from the earlier Windows LÖVE
-  save location into the fused executable identity.
-- Added native Windows CI for 353 tests, lint, PE metadata, fused-ZIP integrity,
-  package contents, and a headless packaged bootstrap marker. Full GUI, audio,
-  controller, SmartScreen, and save-migration behavior remains physical-PC QA.
-- Built the `.love` once and supplied that exact payload to both Windows and Mac
-  packaging. The release publication gate verifies Windows manifest parity
-  against the Mac/common payload before replacing any public desktop assets.
-- Updated the repository README and landing Home, Catalog, and Builder surfaces
-  with Windows CTAs, installation guidance, v0.7.1 status, and stable Latest
-  routes. Desktop/mobile browser QA found no overflow, broken images, or console
-  errors; the repository still has no configured landing-page deployment.
-- Published seven synchronized assets on GitHub Latest from `50f6421`, including
-  Windows ZIP SHA-256 `72c9b6b2…f4fe7b` and common `.love` SHA-256
-  `a6f3b28f…2efcdd`. `codex/windows-version` mirrors
-  `codex/world-tour-v1` at the same commit.
-- Delivery state: source committed and pushed, native Windows/macOS CI passed,
-  and v0.7.1 public assets and stable redirects verified. Default-branch
-  promotion is the next gated step; site deployment, signing/notarization, and
-  physical Windows hardware QA remain open.
+- Reworked the live run HUD and pause/level-up presentation: removed Run Seed,
+  supporting menu copy, pause subhead, and bottom gameplay controls; moved
+  gameplay mute into Pause; centred the sprite-framed World Tour mechanic card
+  below the timer; consolidated stage/remaining timing; formatted score groups;
+  and introduced shared sprite rank, level-point, MAX, HP, and XP devices.
+- Manual QA covered title, settings, active campaign and World Tour runs, pause,
+  level-up, results, and the supported 800 x 600 minimum. The release integration
+  passes 376 tests, zero Luacheck findings across 176 files, Linux CI, native
+  Windows packaging tests, both packaged boot smokes, and payload parity.
+- Published GitHub Latest v0.8.2 from clean commit `693885a` with seven
+  digest-matched assets. The common payload SHA-256 is `73b5e4ad…fd07`; Windows
+  ZIP is `5fee0bfc…e360`; Mac DMG is `0233c053…30e9`.
+- Deployed the v0.8.2 landing badge over FTPS and verified all 354 public files,
+  representative assets, directory index, and both stable Latest downloads
+  byte-for-byte. Rollback: `20260813-142316-v0.8.2`.
+- Remaining acceptance is physical Windows/PlayStation/audio/SmartScreen and a
+  complete long-form campaign run. Windows is unsigned; macOS is ad-hoc signed
+  and not notarized. `main` remains unpromoted, and dirty site/reference work in
+  the active workspace remains uncommitted.
+
+### 2026-08-13 — Evergreen public-facing landing presentation
+
+- Kept v0.8.1 only in the top navigation badge on Home, Catalog, and Builder.
+  Removed the footer version and release-notes links plus build-difference,
+  development-status, and update-summary copy from visible and interactive
+  public content.
+- Reframed the Prologue, World Tour, screenshots, Catalog, download scenes, and
+  Builder page around characters, musical combat, progression, worlds, and
+  player experience. Locked worlds now use coming-soon and secret-route teasers.
+- Rebuilt and uploaded 354 allowlisted files totalling 246,537,891 bytes through
+  FTPS. Home, Catalog, Builder, shared code, directory index, representative
+  logos, and both digest-matched GitHub Latest routes passed public verification.
+- A live 1280-pixel browser audit found no broken images or horizontal overflow,
+  no version outside the header, and no remaining Public build or Release notes
+  copy. Physical-phone refresh and audio listening remain open. Delivery state:
+  deployed and public-live verified; source remains uncommitted and unpushed.
+
+### 2026-08-13 — v0.8.1 synchronized desktop release and landing deployment
+
+- Published player-controlled banked level-up points, strict directional
+  navigation, persistent automatic/manual preference, the sprite-backed point
+  CTA, and the compact dismissible alert stack from clean commit `66b58bb`.
+- Verified 372 tests, zero lint findings across 173 files, portability, common
+  archive exclusions, payload parity, native Windows packaging, universal Mac
+  packaging, and boot-complete markers on both platform runners.
+- Published GitHub Latest v0.8.1 with seven digest-matched assets. Full public
+  downloads of the 217,229,739-byte DMG and 207,443,365-byte Windows ZIP match
+  GitHub's SHA-256 values and both embed `version=0.8.1`, commit `66b58bb678ae`,
+  and `dirty=false`.
+- Updated and deployed the 354-file landing site over FTPS. Home, Catalog,
+  Builder, shared code, representative assets, visible v0.8.1 labels, and both
+  stable Latest routes are public-live verified. The active local workspace was
+  preserved on its divergent dirty branch and was not force-updated.
+- Physical Windows graphical/audio/controller/SmartScreen/save-migration QA,
+  Windows signing, Apple notarization, full campaign play, and `main` promotion
+  remain open.
+
+### 2026-08-13 — Transparent game icon refresh
+
+- Preserved the two supplied 512-by-512 RGBA promo sources and replaced the
+  flattened website identity with their transparent derivatives. The GB
+  monogram now serves navigation, footer, catalog filter, and favicon use; the
+  Joe and Lyra Vex artwork serves the desktop download scene and touch icon.
+- Added cache-versioned references across Home, Catalog, and Builder, then
+  recorded exact source-to-website mappings and hashes in promo provenance.
+- Built and uploaded 354 allowlisted public files totaling 246,537,439 bytes.
+  Public Home, Catalog, Builder, shared code, directory index, and both stable
+  v0.8.0 downloads passed automated verification.
+- Downloaded all three public icon derivatives after deployment; their SHA-256
+  hashes match the approved local website copies. Delivery state: public-live
+  verified; source remains uncommitted and unpushed. The rollback bundle is at
+  `landing-page/.deployment/rollbacks/20260813-132514-v0.8.0`.
+
+### 2026-08-13 — Automated FTPS publisher and public v0.8.0 deployment
+
+- Implemented a clean release builder, dedicated macOS Keychain setup, FTPS
+  connection helper, dry-run manifest, read-only remote inspection, rollback
+  capture, atomic dependency-ordered uploader, and verification-only mode.
+- Confirmed encrypted FTPS and the exact remote root
+  `/public_html/raoni.ai/groovebound`; copied the existing host credential into
+  the dedicated `groove-bound-ftp` Keychain service without exposing it.
+- Built and uploaded 353 allowlisted public files totaling 245,956,798 bytes.
+  Source candidates, research, scripts, notes, credentials, and development
+  files were excluded. Existing unrelated remote entries were not deleted.
+- Public verification matched Home, Catalog, Builder, CSS, JavaScript, status
+  data, the directory index, and representative campaign assets byte-for-byte.
+  GitHub Latest still resolves to the exact v0.8.0 DMG and Windows ZIP.
+- Browser checks at 1440 by 1000 and 390 by 844 found no failed images or
+  horizontal overflow. Home shows four paired platform CTAs; Catalog and Builder
+  each show three, with the v0.8.0 music copy present throughout.
+- Delivery state: deployment public-live verified; automation locally
+  implemented and Keychain-configured; source uncommitted and unpushed. The
+  rollback bundle is stored under ignored `landing-page/.deployment/`.
+
+### 2026-08-13 — v0.8.0 landing sync and FTP automation plan
+
+- Updated Home, Catalog, and Builder to the exact public v0.8.0 release and
+  added the continuous World Tour hub theme, nine world soundtrack packs, and
+  28-cue music story without changing the established module order.
+- Triple-checked both stable GitHub Latest downloads against the public v0.8.0
+  assets: the DMG returns HTTP 200 and 214,798,572 bytes; the Windows x64 ZIP
+  returns HTTP 200 and 204,991,519 bytes.
+- Resolved every local HTML and JavaScript asset reference, restored the missing
+  World Tour header logo and other archived public assets, confirmed Home,
+  Catalog, and Builder return HTTP 200, and passed JavaScript syntax, diff
+  whitespace, 355 game tests, and Lua lint.
+- Added an approval-gated FTP plan with an allowlisted release package, macOS
+  Keychain credential storage, dry-run manifest, asset-first/HTML-last upload,
+  rollback bundle, no-delete default, and post-upload HTTPS verification. The
+  first connection must confirm FTPS support and the remote root read-only.
+- Delivery state: locally implemented and FTP-ready; uncommitted, unpushed, and
+  not uploaded. The public raoni.ai page still shows v0.7.1. Current rendered-
+  browser regression was blocked by the app's local-URL safety policy and
+  remains open with physical-phone and listening checks.
+
+### 2026-08-12 — Direct World Tour-to-screenshots flow
+
+- Removed the complete Home World Tour mechanics presentation: gameplay sprites,
+  selection and grade menus, World Tour interface, menu controls, extra evolution
+  and perk galleries, and the musical/Encore chest subsection.
+- Moved the screenshot section directly after World Tour in the source HTML and
+  retained the same adjacency in the enhanced module order. Tightened the visual
+  handoff to 158 pixels at 1440 by 1000 and 104 pixels at 390 by 844.
+- Browser checks confirm zero removed blocks, four current-build screenshots,
+  exact World Tour-to-screenshots adjacency, and zero horizontal overflow at both
+  breakpoints. JavaScript syntax, 227 local references, `git diff --check`, 350
+  game tests, and Lua lint pass.
+- Delivery state: locally implemented and responsive-browser verified;
+  uncommitted, unpushed, and undeployed. Physical-phone refresh and any commit,
+  push, main promotion, or deployment remain separate actions.
+
+### 2026-08-12 — Simplified Home hero actions
+
+- Removed the secondary `Start with the Prologue` hero link and its unused CSS.
+  The hero now ends with the macOS, Windows, and repository actions; the primary
+  navigation continues to provide the direct Prologue route.
+- Browser checks confirmed three remaining actions, no stale CTA text, no
+  horizontal overflow at 1440 by 1000 or 390 by 844, and equal 343-pixel mobile
+  action widths. JavaScript syntax, local references, `git diff --check`, and the
+  refreshed 350-test handover snapshot pass.
+- Delivery state: locally implemented and responsive-browser verified;
+  uncommitted, unpushed, and undeployed.
+
+### 2026-08-12 — Inspectable campaign enemy rosters
+
+- Connected the ten pictured Backbeat and Orbit enemies and bosses plus all 24
+  pictured Funk, Soul, and Disco enemies and bosses to their existing inspector
+  and Catalog records. The figures now expose an Inspect cue, pointer cursor,
+  visible focus treatment, semantic button role, and descriptive accessible name.
+- Verified click, Enter, and Space activation; the shared detail dialog returns
+  focus to the originating figure when closed. Its View in full catalog action
+  routes to and focuses the exact record. World enemy inspectors additionally
+  expose the matching World and Resonance-drop records; the Catalog continues to
+  contain all 40 enemy records.
+- Browser checks passed at 1440 by 1000 and 390 by 844 with 34 unique focusable
+  roster controls, zero page overflow, and zero mobile dialog overflow. JavaScript
+  syntax, local references, `git diff --check`, and the refreshed 350-test handover
+  snapshot pass.
+- Delivery state: locally implemented and responsive-browser verified;
+  uncommitted, unpushed, and undeployed. Physical-phone interaction remains open.
+
+### 2026-08-12 — Equal evolution selector aspect ratios
+
+- Fixed intrinsic tall evolution sprites stretching individual recipe controls.
+  All sixteen buttons now use one enforced square box with the artwork removed
+  from grid sizing and contained inside a consistent inset; the existing balanced
+  desktop row offsets and mobile four-column order remain unchanged.
+- Before the fix, buttons 10, 14, and 16 measured at approximately 0.808, 0.823,
+  and 0.896 width-to-height. Browser verification now reports a 1.000 ratio for
+  every control: 70 by 70 pixels at the desktop check and approximately 79 by 79
+  pixels at 390 by 844, with zero horizontal overflow at both breakpoints.
+- JavaScript syntax, local references, `git diff --check`, and the refreshed 350-
+  test handover snapshot pass. Delivery remains locally implemented and responsive-
+  browser verified; uncommitted, unpushed, and undeployed.
+
+### 2026-08-12 — Horizontal Prologue stage wordmarks
+
+- Created one transparent, wide, font-led wordmark variation for each Prologue
+  stage while preserving the existing circular emblems. Backbeat Streets uses
+  distressed stencil lettering, speaker hardware, waveform graffiti, road-case
+  metal, and hazard accents grounded in its street-defense play. Orbit Line uses
+  exactly two words with no `THE`, plus vinyl grooves, broadcast rails, orbital
+  signals, purple energy, cyan, magenta, and brass grounded in Stage 2.
+- Preserved both chroma generation sources and recorded prompt summaries and
+  SHA-256 provenance. The final PNGs are RGBA, have zero-alpha corners and full
+  opaque interiors, and are integrated into both selector cards and panel headers.
+- Browser verification confirmed equal 190-pixel desktop cards and 158-pixel
+  mobile cards, matching logo sizes, correct Orbit tab switching, complete natural
+  image dimensions, and zero horizontal overflow at 1440 by 1000 and 390 by 844.
+  JavaScript syntax, local references, `git diff --check`, and the refreshed 350-
+  test handover snapshot pass.
+- Delivery state: locally implemented and responsive-browser verified;
+  uncommitted, unpushed, and undeployed. A physical-phone refresh and any commit,
+  push, main promotion, or deployment remain separate actions.
+
+### 2026-08-12 — Prologue stage video players
+
+- Added a native-control 16:9 player to each selectable Prologue stage panel:
+  `assets/video/prologue.mp4` for Backbeat Streets and
+  `assets/video/stage2-transition.mp4` for The Orbit Line.
+- Verified both website MP4s are byte-identical to canonical source files. The
+  Prologue is 1280 by 720 H.264/AAC at 30.04 seconds; the Stage 2 transition is
+  1280 by 720 H.264/AAC at 30.08 seconds.
+- Kept both players manual rather than intersection-autoplayed, and pause videos
+  when their stage panel is hidden. Browser verification confirmed correct
+  source mapping, native controls, loaded metadata, tab switching, 16:9 sizing,
+  and zero horizontal overflow at 1440 by 1000 and 390 by 844.
+- Delivery state: locally implemented and responsive-browser verified;
+  uncommitted, unpushed, and undeployed. A manual listening/playback pass remains
+  open; unrelated game and campaign-source changes remain protected.
+
+### 2026-08-12 — Windows download CTA parity
+
+- Verified the existing public v0.7.1 Windows x64 portable ZIP, release manifest,
+  checksum file, 173,654,466-byte size, GitHub SHA-256 digest, and stable Latest-
+  release redirect against the live GitHub release. No asset was uploaded or
+  replaced during this pass.
+- Added Windows beside every active macOS download CTA across Home, Catalog,
+  Builder, shared headers, shared footers, and the repository README. Replaced
+  obsolete Mac-only language with macOS-universal and Windows-x64 availability.
+- Added a CSS Windows mark and balanced three-action desktop groups; verified
+  equal Mac/Windows link counts, one-row desktop actions, stacked phone actions,
+  and zero horizontal overflow across all three pages at 1440 by 1000 and 390 by
+  844. JavaScript syntax, local references, and `git diff --check` pass.
+- Delivery state: site and README changes are locally implemented and responsive-
+  browser verified; uncommitted, unpushed, and undeployed. The Windows release
+  asset itself was already public before this task; native Windows acceptance
+  remains a separate platform check.
+
+### 2026-08-12 — Landing-page refinements round 2
+
+- Reordered Home after the hero to trailer, character selection, one fluid
+  two-stage Prologue, World Tour, current game captures, weapon evolution,
+  Arsenal, and the remaining catalog modules.
+- Replaced flattened campaign art with transparent Prologue and first-option
+  World Tour festival marks, then isolated Backbeat Streets and The Orbit Line
+  emblems for both the Prologue selector and stage headers. Recorded source,
+  prompt, transformation, and SHA-256 provenance for each derivative.
+- Removed the World Tour number-stat row and public-tour version disclaimer;
+  tightened the six world cards, removed lock sprites, and added a small CSS
+  padlock beside the three `In development` labels.
+- Renamed the fusion chapter to `Evolve Your Weapons`, enlarged its sixteen
+  selectors into balanced desktop rows of 5, 5, and 6, shortened the fusion loop
+  to 4.8 seconds, and added converging pulses plus rapid white collision flashes.
+- Verified Home at 1440 by 1000 and 390 by 844 with zero horizontal overflow,
+  keyboard Prologue selection, the requested module order, deep-link alignment,
+  compact world cards, and transparent logos in context. Home, Catalog, and
+  Builder report zero missing static local references; JavaScript syntax,
+  `git diff --check`, 347 game tests, and Lua lint pass.
+- Delivery state: locally implemented and responsive-browser verified;
+  uncommitted, unpushed, and undeployed. Existing unrelated game, root-document,
+  campaign-source, and promotional changes remain protected.
 
 ### 2026-08-11 — v0.7.1 menu, controller, and World Tour release
 
@@ -309,6 +535,27 @@ For an engine migration, keep LÖVE as the golden reference. The leading researc
   public-live verified. `main` promotion, landing deployment, Apple notarization,
   and a physical-controller hardware pass remain open. The separate uncommitted
   campaign-identity/Builder redesign and protected root assets remain untouched.
+
+### 2026-08-11 — World Tour campaign identity and Builder refocus
+
+- Added a reusable landing-page campaign lockup plus generated transparent
+  wordmarks for World Tour, Funk, Soul, Disco, Jazz, House, and Techno. House was
+  explicitly regenerated as a communal dancefloor mark; Techno was regenerated
+  with a darker underground modular-club identity.
+- Rebuilt the Home World Tour chapter around the ordered six-world route, a
+  keyboard-accessible large-icon selector for playable Funk, Soul, and Disco,
+  authentic floor-tile backgrounds, individual enemy sprites, and larger boss
+  presentations. Multi-frame atlas presentations now use representative open
+  states.
+- Stripped Builder to a short Groove Bound-first creator introduction, current
+  game captures, authentic RAOVERSE and Subjekt artwork, and two optimized
+  first-party RAOVERSE films. Removed the curriculum-style professional profile
+  and external experiment-project cards. Restored the supplied AI Raoni V2
+  portrait beneath the creator name using its uncropped square composition.
+- Added source, prompt, transform, and hash provenance for the new campaign
+  marks and web video derivatives.
+- Delivery state: locally implemented and responsive-browser verified;
+  uncommitted, unpushed, and undeployed.
 
 ### 2026-08-11 — World Tour game-atlas isolation repair
 
