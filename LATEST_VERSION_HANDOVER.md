@@ -14,15 +14,15 @@ This document answers four questions: what is authoritative, what the latest ver
 
 <!-- LIVE-SNAPSHOT:START -->
 
-_Generated from live repository evidence: 2026-08-14 17:43 AEST_
+_Generated from live repository evidence: 2026-08-14 17:47 AEST_
 
 | Field | Live value |
 |---|---|
 | Branch | `codex/world-overhaul-v090` |
-| HEAD | `d24887e` — release: publish desktop v0.9.0 workflow fix |
+| HEAD | `2011b0d` — docs: record v0.9.0 public release |
 | Upstream | `origin/codex/world-overhaul-v090` |
-| Compared with `origin/main` | 30 ahead, 1 behind |
-| Working changes | 2 files: 0 game, 2 site, 0 skills/package |
+| Compared with `origin/main` | 31 ahead, 1 behind |
+| Working changes | 0 files: 0 game, 0 site, 0 skills/package |
 | Lua source/test files | 120 source, 64 test |
 | Game tree excluding `dist/` | 692.5 MiB |
 | Current `.love` artifact | 218.8 MiB |
