@@ -14,14 +14,14 @@ This document answers four questions: what is authoritative, what the latest ver
 
 <!-- LIVE-SNAPSHOT:START -->
 
-_Generated from live repository evidence: 2026-08-14 15:56 AEST_
+_Generated from live repository evidence: 2026-08-14 16:52 AEST_
 
 | Field | Live value |
 |---|---|
 | Branch | `codex/ui-catalog-v0.8.5-final` |
-| HEAD | `17d135f` — fix: pair Jazz emblem with Home wordmark |
+| HEAD | `cd9fe89` — fix: align evolution selector grid |
 | Upstream | `origin/codex/world-tour-v1` |
-| Compared with `origin/main` | 26 ahead, 1 behind |
+| Compared with `origin/main` | 29 ahead, 1 behind |
 | Working changes | 1 files: 0 game, 0 site, 0 skills/package |
 | Lua source/test files | 119 source, 64 test |
 | Game tree excluding `dist/` | 660.4 MiB |
@@ -160,7 +160,7 @@ Do not infer `main` promotion from the feature-branch push, GitHub release, or l
 | Public release/download | v0.8.5 is published as GitHub Latest with seven synchronized desktop assets | GitHub API confirms every required asset and SHA-256 digest; stable Latest routes resolve to v0.8.5 |
 | Landing download links | Stable macOS and Windows CTAs are public-live verified against v0.8.5 | Home, Catalog, and Builder display v0.8.5 and link to the stable Latest routes |
 | GitHub README presentation | Landing-styled rewrite committed and pushed at `f96acf9` | GitHub Markdown API rendered 21,124 bytes with 28 images, 50 links, and 3 tables; all 29 local references and 7 navigation anchors resolve; default-page visibility still depends on merging to `main` |
-| Landing deployment | v0.8.5 420-file bundle deployed and public-live verified | Jazz Home selector rollback captured at `20260814-155453-v0.8.5`; the Home page now pairs the canonical Jazz emblem with the Jazz wordmark, and six core files, directory index, representative assets, badges, GitHub Latest, and stable desktop routes passed public parity |
+| Landing deployment | v0.8.5 420-file bundle deployed and public-live verified | Final Home cleanup rollback captured at `20260814-165058-v0.8.5`; World Tour now uses one connected six-tab rail attached to the detail panel, the evolution selector is an aligned 4x4 grid, and all core files, badges, GitHub Latest, and stable desktop routes passed public parity |
 
 ## Desktop and engine portability
 
@@ -203,6 +203,26 @@ For an engine migration, keep LÖVE as the golden reference. The leading researc
    a separate, reviewed pass; do not overwrite its unrelated dirty material.
 
 ## Continuation history
+
+### 2026-08-14 — Connected World Tour tabs and aligned evolution grid
+
+- Removed the redundant six-world route strip and the playable-world heading and
+  helper sentence from Home. The remaining centered selector is the single World
+  Tour menu and sits directly against its detailed information panel.
+- Kept Funk, Soul, Disco, and Jazz as accessible interactive tabs; moved House
+  and Techno into the same joined rail as disabled Coming soon tabs with their
+  canonical emblems and wordmarks.
+- Reorganised all sixteen evolution selectors from staggered rows into an exact
+  four-column by four-row matrix with equal square cells and consistent spacing.
+- Verified desktop and compact headless renders for the connected tab rail and
+  4x4 grid, four selectable and two disabled World tabs, removed duplicate copy,
+  JavaScript syntax, clean whitespace, the 420-file v0.8.5 package, byte-identical
+  live Home/CSS, and the complete public version gate without opening the game.
+- Committed and pushed the World Tour cleanup at `2badd17` and the evolution grid
+  at `cd9fe89`; deployed the combined site by FTPS with rollback
+  `20260814-165058-v0.8.5` and public-live verified it.
+- Delivery state: committed, pushed, deployed, and public-live verified. A
+  physical-phone refresh and `main` promotion remain separate.
 
 ### 2026-08-14 — Jazz Home selector emblem correction
 
