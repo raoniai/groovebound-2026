@@ -1,4 +1,4 @@
-name: Sync Windows version branch
+name: Build and publish desktop release
 
 on:
   push:
@@ -10,12 +10,11 @@ permissions:
   contents: write
 
 concurrency:
-  group: sync-windows-version
+  group: desktop-release
   cancel-in-progress: false
 
 env:
   CANONICAL_BRANCH: codex/world-overhaul-v090
-  WINDOWS_BRANCH: codex/windows-version
 
 jobs:
   sync:
@@ -23,29 +22,18 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - name: Check out the Windows branch
+      - name: Check out canonical release source
         uses: actions/checkout@v4
         with:
-          ref: codex/windows-version
+          ref: codex/world-overhaul-v090
           fetch-depth: 0
-
-      - name: Merge the latest canonical source
-        shell: bash
-        run: |
-          set -euo pipefail
-          git fetch origin \
-            "+refs/heads/${CANONICAL_BRANCH}:refs/remotes/origin/${CANONICAL_BRANCH}" \
-            "+refs/heads/${WINDOWS_BRANCH}:refs/remotes/origin/${WINDOWS_BRANCH}"
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git merge --no-edit "origin/${CANONICAL_BRANCH}"
 
       - name: Install regression dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y luajit lua-check love xvfb
 
-      - name: Verify merged source
+      - name: Verify canonical source
         working-directory: groove-bound
         run: |
           make test
@@ -55,10 +43,7 @@ jobs:
       - name: Audit desktop portability
         run: |
           python3 skills/groove-bound-desktop-distribution/scripts/portability_audit.py --root .
-          git diff --check "origin/${WINDOWS_BRANCH}..HEAD"
-
-      - name: Push the synchronized Windows branch
-        run: git push origin "HEAD:${WINDOWS_BRANCH}"
+          git diff --check HEAD^..HEAD
 
   package-common:
     needs: sync
