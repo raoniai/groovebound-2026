@@ -14,15 +14,15 @@ This document answers four questions: what is authoritative, what the latest ver
 
 <!-- LIVE-SNAPSHOT:START -->
 
-_Generated from live repository evidence: 2026-08-14 14:38 AEST_
+_Generated from live repository evidence: 2026-08-14 15:56 AEST_
 
 | Field | Live value |
 |---|---|
 | Branch | `codex/ui-catalog-v0.8.5-final` |
-| HEAD | `377edb0` — feat: streamline catalog filtering |
+| HEAD | `17d135f` — fix: pair Jazz emblem with Home wordmark |
 | Upstream | `origin/codex/world-tour-v1` |
-| Compared with `origin/main` | 23 ahead, 1 behind |
-| Working changes | 3 files: 0 game, 2 site, 0 skills/package |
+| Compared with `origin/main` | 26 ahead, 1 behind |
+| Working changes | 1 files: 0 game, 0 site, 0 skills/package |
 | Lua source/test files | 119 source, 64 test |
 | Game tree excluding `dist/` | 660.4 MiB |
 | Current `.love` artifact | 202.1 MiB |
@@ -160,7 +160,7 @@ Do not infer `main` promotion from the feature-branch push, GitHub release, or l
 | Public release/download | v0.8.5 is published as GitHub Latest with seven synchronized desktop assets | GitHub API confirms every required asset and SHA-256 digest; stable Latest routes resolve to v0.8.5 |
 | Landing download links | Stable macOS and Windows CTAs are public-live verified against v0.8.5 | Home, Catalog, and Builder display v0.8.5 and link to the stable Latest routes |
 | GitHub README presentation | Landing-styled rewrite committed and pushed at `f96acf9` | GitHub Markdown API rendered 21,124 bytes with 28 images, 50 links, and 3 tables; all 29 local references and 7 navigation anchors resolve; default-page visibility still depends on merging to `main` |
-| Landing deployment | v0.8.5 420-file bundle deployed and public-live verified | Final status-sync rollback captured at `20260814-143926-v0.8.5`; six core files, directory index, representative assets, badges, GitHub Latest, and stable desktop routes passed public parity after the complete 212-record Catalog upload |
+| Landing deployment | v0.8.5 420-file bundle deployed and public-live verified | Jazz Home selector rollback captured at `20260814-155453-v0.8.5`; the Home page now pairs the canonical Jazz emblem with the Jazz wordmark, and six core files, directory index, representative assets, badges, GitHub Latest, and stable desktop routes passed public parity |
 
 ## Desktop and engine portability
 
@@ -203,6 +203,23 @@ For an engine migration, keep LÖVE as the golden reference. The leading researc
    a separate, reviewed pass; do not overwrite its unrelated dirty material.
 
 ## Continuation history
+
+### 2026-08-14 — Jazz Home selector emblem correction
+
+- Corrected the Home World Tour selector so Jazz uses the canonical 512px
+  transparent emblem in its icon slot and retains the existing Jazz wordmark in
+  its logo slot, matching the established Funk, Soul, and Disco presentation.
+- Confirmed the website emblem is byte-identical to the canonical runtime
+  emblem, rendered all four playable-world pairings in a headless visual fixture,
+  and kept the Jazz wordmark as the accessible label.
+- Verified JavaScript syntax, clean diff whitespace, the 420-file v0.8.5 site
+  package, landing-version parity, byte-identical public Home source, explicit
+  live emblem-plus-logo paths, and the complete public version gate without
+  opening the game.
+- Committed and pushed the correction at `17d135f`, deployed it by FTPS with
+  rollback `20260814-155453-v0.8.5`, and public-live verified the result.
+- Delivery state: committed, pushed, deployed, and public-live verified. A
+  physical-phone refresh and `main` promotion remain separate.
 
 ### 2026-08-14 — Compact combinable Catalog filters and canonical world emblems
 
