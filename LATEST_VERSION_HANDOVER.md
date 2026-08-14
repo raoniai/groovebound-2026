@@ -156,7 +156,7 @@ Do not infer `main` promotion from the feature-branch push, GitHub release, or l
 | Public release/download | v0.8.4 is published as GitHub Latest with seven synchronized desktop assets | GitHub API confirms every required asset and SHA-256 digest; stable Latest routes resolve to v0.8.4 |
 | Landing download links | Stable macOS and Windows CTAs are public-live verified against v0.8.4 | Home, Catalog, and Builder display v0.8.4 and link to the stable Latest routes |
 | GitHub README presentation | Landing-styled rewrite committed and pushed at `f96acf9` | GitHub Markdown API rendered 21,124 bytes with 28 images, 50 links, and 3 tables; all 29 local references and 7 navigation anchors resolve; default-page visibility still depends on merging to `main` |
-| Landing deployment | v0.8.4 375-file bundle deployed and public-live verified | Rollback captured at `20260814-132402-v0.8.4`; six core files, directory index, representative assets, the Jazz emblem, a Jazz environment sprite, a Jazz floor surface, badges, and desktop routes passed public parity |
+| Landing deployment | v0.8.4 375-file bundle deployed and public-live verified | Final parity rollback captured at `20260814-132629-v0.8.4`; six core files, directory index, representative assets, the Jazz emblem, a Jazz environment sprite, a Jazz floor surface, badges, and desktop routes passed public parity |
 
 ## Desktop and engine portability
 
@@ -213,7 +213,7 @@ For an engine migration, keep LÖVE as the golden reference. The leading researc
   risks, 386 tests, zero lint findings, and clean package integrity. The emblem
   is site-only, so the published Mac/Windows v0.8.4 payload was not changed.
 - Committed and pushed source at `59ca969`, deployed 375 files by FTPS with
-  rollback `20260814-132402-v0.8.4`, and passed public byte checks for all core
+  final parity rollback `20260814-132629-v0.8.4`, and passed public byte checks for all core
   pages plus the new emblem and representative Jazz environment/floor assets.
 - Added the standing project rule that every future playable world or game asset
   must update the Catalog and complete the approved FTPS/public verification
