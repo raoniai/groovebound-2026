@@ -160,7 +160,7 @@ Do not infer `main` promotion from the feature-branch push, GitHub release, or l
 | Public release/download | v0.8.5 is published as GitHub Latest with seven synchronized desktop assets | GitHub API confirms every required asset and SHA-256 digest; stable Latest routes resolve to v0.8.5 |
 | Landing download links | Stable macOS and Windows CTAs are public-live verified against v0.8.5 | Home, Catalog, and Builder display v0.8.5 and link to the stable Latest routes |
 | GitHub README presentation | Landing-styled rewrite committed and pushed at `f96acf9` | GitHub Markdown API rendered 21,124 bytes with 28 images, 50 links, and 3 tables; all 29 local references and 7 navigation anchors resolve; default-page visibility still depends on merging to `main` |
-| Landing deployment | v0.8.5 420-file bundle deployed and public-live verified | Rollback captured at `20260814-143511-v0.8.5`; six core files, directory index, representative assets, badges, GitHub Latest, and stable desktop routes passed public parity after the complete 212-record Catalog upload |
+| Landing deployment | v0.8.5 420-file bundle deployed and public-live verified | Final status-sync rollback captured at `20260814-143926-v0.8.5`; six core files, directory index, representative assets, badges, GitHub Latest, and stable desktop routes passed public parity after the complete 212-record Catalog upload |
 
 ## Desktop and engine portability
 
@@ -221,7 +221,7 @@ For an engine migration, keep LÖVE as the golden reference. The leading researc
   responsive width, and zero media-pipeline risks without opening the game.
 - Committed the Catalog change at `377edb0`, pushed it to
   `origin/codex/world-tour-v1`, deployed the 420-file v0.8.5 site by FTPS with
-  rollback `20260814-143511-v0.8.5`, and passed byte/public version checks for
+  final status-sync rollback `20260814-143926-v0.8.5`, and passed byte/public version checks for
   all core pages, scripts, representative assets, both stable desktop routes,
   and GitHub Latest v0.8.5.
 - Delivery state: committed, pushed, deployed, and public-live verified. `main`
