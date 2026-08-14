@@ -4,12 +4,13 @@ This file is the local implementation record. Add a new entry at the top after e
 
 ## 2026-08-14 | SITE-051 | v0.9.0 world overhaul sync
 
-Prepared the Home, Catalog, and Builder release identity for Groove Bound
-v0.9.0. The desktop build adds distinct Funk, Soul, Disco, and Jazz mechanic
-loops; animated second-stage environment sets; Encore and boss Break rewards;
-and harder, knockback-resistant bosses with escalating projectile patterns.
-Stable macOS and Windows download actions continue to use GitHub Latest so they
-resolve to the synchronized packages after the v0.9.0 release is published.
+Published the verified 420-file v0.9.0 site through encrypted FTPS after saving
+a local rollback bundle. GitHub Latest now serves the synchronized macOS,
+Windows, and `.love` packages with all required manifests and SHA-256 records.
+The desktop build adds distinct Funk, Soul, Disco, and Jazz mechanic loops;
+animated second-stage environments; Encore and boss Break rewards; and harder,
+knockback-resistant bosses with escalating projectile patterns. Public page,
+version badge, and stable download-route checks all passed.
 
 ## 2026-08-14 | SITE-050 | Consolidated World Tour selector
 
