@@ -48,15 +48,21 @@ SPECS = (
         "prism-roller", "mirror-drone", "laser-fan", "reflection-twin",
         "platform-pouncer", "glitter-guard", "laser-conductor", "prism-monarch",
     )),
+    AtlasSpec("jazz-enemies-atlas.png", "enemies/jazz", 4, 2, (
+        "syncopated-imp", "blue-note-bat", "walking-bass-bot", "scat-cannon",
+        "bebop-behemoth", "brushfire-skitter", "brass-regent", "midnight-maestro",
+    )),
     AtlasSpec("funk-environment-atlas.png", "environments/funk", 4, 2, (
         "boombox-barricade", "record-kiosk", "amp-wall", "turntable-console",
         "disco-palm", "talkbox-streetlight", "vinyl-stack", "hologram-dancer",
     )),
     AtlasSpec("soul-environment-atlas.png", "environments/soul", 4, 2, numbered("prop", 8)),
     AtlasSpec("disco-environment-atlas.png", "environments/disco", 4, 2, numbered("prop", 8)),
+    AtlasSpec("jazz-environment-atlas.png", "environments/jazz", 4, 2, numbered("prop", 8)),
     AtlasSpec("funk-floor-atlas.png", "floors/funk", 2, 2, numbered("surface", 4)),
     AtlasSpec("soul-floor-atlas.png", "floors/soul", 2, 2, numbered("surface", 4)),
     AtlasSpec("disco-floor-atlas.png", "floors/disco", 2, 2, numbered("surface", 4)),
+    AtlasSpec("jazz-floor-atlas.png", "floors/jazz", 2, 2, numbered("surface", 4)),
     AtlasSpec("world-mechanics-atlas.png", "mechanics", 5, 2,
               numbered("funk-pocket", 5) + numbered("disco-spotlight", 5)),
     AtlasSpec("world-tour-ui-atlas.png", "ui/world-tour", 5, 2, (

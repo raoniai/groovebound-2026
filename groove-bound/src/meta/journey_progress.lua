@@ -4,7 +4,10 @@ local JourneyProgress = {}
 local PerkProgress = require("src.meta.perk_progress")
 local WorldTourSession = require("src.meta.world_tour_session")
 
-local NEXT_WORLD = { funk = "soul", soul = "disco", disco = "house" }
+local NEXT_WORLD = {
+  funk = "soul", soul = "disco", disco = "jazz", jazz = "house",
+  house = "techno",
+}
 
 local function ensure_world(slot, world_id)
   slot.worlds[world_id] = slot.worlds[world_id] or {

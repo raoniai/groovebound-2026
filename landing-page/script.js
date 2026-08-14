@@ -7,6 +7,40 @@
   const header = document.querySelector("[data-header]");
   const allVideos = () => [...document.querySelectorAll("video")];
   const fileSlug = (value) => String(value).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+
+  if (body.dataset.page === "home") {
+    const main = document.querySelector("main");
+    const moduleOrder = [
+      ".hero",
+      ".game-trailer",
+      "#resonants",
+      "#story",
+      "#world-tour",
+      ".current-build",
+      ".fusion-lab",
+      "#arsenal",
+      ".remix",
+      ".signal-strip",
+      ".download-stage"
+    ];
+    if (main) moduleOrder.forEach((selector) => {
+      const module = main.querySelector(selector);
+      if (module) main.append(module);
+    });
+    if (window.location.hash) {
+      const restoreHashPosition = () => {
+        const target = document.querySelector(window.location.hash);
+        if (!target) return;
+        const headerOffset = header?.getBoundingClientRect().height || 0;
+        window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - headerOffset, behavior: "instant" });
+      };
+      window.requestAnimationFrame(restoreHashPosition);
+      window.addEventListener("load", () => {
+        [180, 650, 1300].forEach((delay) => window.setTimeout(restoreHashPosition, delay));
+        document.fonts?.ready.then(restoreHashPosition);
+      }, { once: true });
+    }
+  }
   document.querySelectorAll("[data-frame-sequence]").forEach((element) => {
     const count = Math.max(1, Number(element.dataset.frameCount || 1));
     for (let index = 1; index <= count; index += 1) {
@@ -30,13 +64,13 @@
     "funk-floors": collection("floors/funk", numberedFiles("surface", 4)),
     "soul-floors": collection("floors/soul", numberedFiles("surface", 4)),
     "disco-floors": collection("floors/disco", numberedFiles("surface", 4)),
-    "world-mechanics": collection("mechanics", [...numberedFiles("funk-pocket", 5), ...numberedFiles("disco-spotlight", 5)]),
+    "world-mechanics": collection("mechanics", ["funk-pocket-05", "disco-spotlight-05"]),
     "world-tour-ui": collection("ui/world-tour", ["campaign", "funk", "soul", "locked-world", "portal", "grade-d", "grade-c", "grade-b", "grade-a", "grade-s"]),
     "world-interface": collection("ui/interface", ["global-tour", "funk", "soul", "disco", "perk-database", "remix", "encore-gate", "world-route", "encore-coin", "mastery"]),
     "menu-icons": collection("ui/menu", ["continue", "new-game", "world-tour", "settings", "quit", "equalizer-divider", "reset-campaign", "reset-warning", "reset-confirm", "reserved"]),
     evolutions: collection("evolutions", ["prismatic-triangle", "velvet-impaler", "carnival-superorbit", "resonance-rupture", "stadium-keytar", "cathedral-overdrive", "infinite-mixtape", "aurora-harp"]),
     perks: collection("perks", ["open-ears", "pocket-drive", "breakstep", "warm-current", "velvet-guard", "mirrorball-tips", "spotlight-spin", "four-count", "floor-control", "live-wire", "signal-boost", "precision-loop", "hard-reset", "orbital-balance", "encore-spark", "deep-reserve", "afterglow", "neon-dividend", "first-drop"]),
-    "musical-chest": collection("chests/musical", numberedFiles("frame", 8)),
+    "musical-chest": collection("chests/musical", ["frame-08"]),
     "chest-luck": collection("chests/luck", [...numberedFiles("luck", 5), ...numberedFiles("reward-backplate", 5)]),
     completion: collection("chests/completion", ["backbeat-complete", "orbit-complete", "campaign-victory", "funk-mastery", "encore-chest", "resonance", "enemy", "boss"]),
     "funk-pocket": collection("mechanics/funk-pocket", numberedFiles("pad", 5))
@@ -123,6 +157,38 @@
     selectWorld(tabs.find((tab) => tab.classList.contains("is-active"))?.dataset.worldTab || "funk");
   }
 
+  const prologueShowcase = document.querySelector("[data-prologue-showcase]");
+  if (prologueShowcase) {
+    const tabs = [...document.querySelectorAll("[data-prologue-tab]")];
+    const panels = [...prologueShowcase.querySelectorAll("[data-prologue-panel]")];
+    const selectPrologueStage = (stage, focus = false) => {
+      tabs.forEach((tab) => {
+        const active = tab.dataset.prologueTab === stage;
+        tab.classList.toggle("is-active", active);
+        tab.setAttribute("aria-selected", String(active));
+        tab.tabIndex = active ? 0 : -1;
+        if (active && focus) tab.focus();
+      });
+      panels.forEach((panel) => {
+        const active = panel.dataset.prologuePanel === stage;
+        panel.hidden = !active;
+        panel.classList.toggle("is-active", active);
+        if (!active) panel.querySelectorAll("video").forEach((video) => video.pause());
+      });
+    };
+    tabs.forEach((tab, index) => {
+      tab.addEventListener("click", () => selectPrologueStage(tab.dataset.prologueTab));
+      tab.addEventListener("keydown", (event) => {
+        if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+        event.preventDefault();
+        const nextIndex = event.key === "Home" ? 0 : event.key === "End" ? tabs.length - 1 :
+          (index + (event.key === "ArrowRight" ? 1 : -1) + tabs.length) % tabs.length;
+        selectPrologueStage(tabs[nextIndex].dataset.prologueTab, true);
+      });
+    });
+    selectPrologueStage(tabs.find((tab) => tab.classList.contains("is-active"))?.dataset.prologueTab || "backbeat");
+  }
+
   const setMediaLabel = (video, playingSound) => {
     document.querySelectorAll(`[data-video-sound="#${video.id}"]`).forEach((control) => {
       control.setAttribute("aria-pressed", String(playingSound));
@@ -176,7 +242,9 @@
       }
     });
   }, { threshold: [0, 0.18, 0.5] });
-  allVideos().forEach((video) => videoObserver.observe(video));
+  allVideos().forEach((video) => {
+    if (!video.matches("[data-manual-video]")) videoObserver.observe(video);
+  });
 
   document.querySelectorAll("[data-parallax-zone]").forEach((zone) => {
     if (reducedMotion.matches) return;
@@ -396,13 +464,23 @@
       ["Glitter Guard", "Armoured charger", 480,72,33,115,5,"Heavy"],
       ["Laser Conductor", "Stage boss with a large ranged attack", 9000,42,36,920,460,"Final boss"],
       ["Prism Monarch", "World boss with a large static wave", 19400,36,44,1650,820,"Final boss"]
+    ],
+    jazz: [
+      ["Syncopated Imp", "Zigzags through syncopated lanes", 122,118,19,29,5,"Standard"],
+      ["Blue Note Bat", "Fast enemy that circles the player", 104,174,18,24,5,"Standard"],
+      ["Walking Bass Bot", "Heavy charger", 320,58,29,76,5,"Heavy"],
+      ["Scat Cannon", "Keeps its distance and fires note bolts", 205,48,23,49,5,"Ranged"],
+      ["Bebop Behemoth", "Heavy enemy with a close Resonance pulse", 540,68,35,129,5,"Pulse"],
+      ["Brushfire Skitter", "Very fast zigzag attacker", 158,162,21,37,5,"Standard"],
+      ["Brass Regent", "Stage boss with a large static wave", 9800,45,38,1000,500,"Final boss"],
+      ["Midnight Maestro", "World boss with a large static wave", 20800,38,46,1780,880,"Final boss"]
     ]
   };
   const worldEnemies = Object.entries(worldEnemyRows).flatMap(([world, rows]) => rows.map((row, index) => {
     const [name, behavior, hp, speed, damage, xp, coins, rank] = row;
     return {
       key: `world-enemy-${world}-${index + 1}`,
-      name, behavior, hp, speed, damage, xp, coins, rank,
+      world, name, behavior, hp, speed, damage, xp, coins, rank,
       type: "Enemy",
       rarity: rank,
       role: `${world[0].toUpperCase() + world.slice(1)} World / ${behavior}`,
@@ -420,17 +498,17 @@
     ["funk","Funk","The Pocket District","Mothership of Funk","Playable","Stand on the active downbeat pad to build a Pocket chain and gain a damage boost.","assets/world-tour/sprites/ui/interface/funk.png","Core world"],
     ["soul","Soul","Velvet Chapel","Velvet Titan","Playable","Charge a shared reserve in combat, then spend it to recover health.","assets/world-tour/sprites/ui/interface/soul.png","Core world"],
     ["disco","Disco","Mirrorball Metro","Prism Monarch","Playable","Follow the moving spotlight to gain a speed boost.","assets/world-tour/sprites/ui/interface/disco.png","Core world"],
-    ["house","House","Warehouse 909","Kickdrum Constructor","Planned","Arena floor cycles will change the safe lanes.","assets/world-tour/sprites/ui/world-tour/locked-world.png","Core world"],
-    ["electro","Electro","Neon Circuit","Voltage Vandal","Planned","Linked arena nodes will create chain effects.","assets/world-tour/sprites/ui/world-tour/locked-world.png","Core world"],
-    ["techno","Techno","The Iron Loop","Loop Architect","Planned","Recorded patterns will repeat through the arena.","assets/world-tour/sprites/ui/world-tour/locked-world.png","Core world"],
-    ["cosmic-boogie","Cosmic Boogie","Orbital Dance Deck","Celestial Selector","Planned","Secret world unlocked through Funk and Disco grades.","assets/world-tour/sprites/ui/world-tour/portal.png","Secret world"],
-    ["soulful-garage","Soulful Garage","Midnight Garage","Night Shift Conductor","Planned","Secret world unlocked through Soul and House grades.","assets/world-tour/sprites/ui/world-tour/portal.png","Secret world"],
-    ["future-funk","Future Funk","Tomorrow Mall","The Recompiler","Planned","Secret world unlocked through Electro and Techno grades.","assets/world-tour/sprites/ui/world-tour/portal.png","Secret world"]
+    ["jazz","Jazz","Blue Note Borough","Midnight Maestro","Playable","Catch each blue-note improvisation window to gain a temporary speed boost.","assets/world-tour/logos/jazz.png","Core world"],
+    ["house","House","Beyond the tour map","Signal locked","Coming soon","A relentless pulse waits behind the next gate.","assets/world-tour/sprites/ui/world-tour/locked-world.png","Core world"],
+    ["techno","Techno","Beyond the tour map","Signal locked","Coming soon","A machine rhythm waits behind the next gate.","assets/world-tour/sprites/ui/world-tour/locked-world.png","Core world"],
+    ["cosmic-boogie","Cosmic Boogie","Orbital Dance Deck","Celestial Selector","Secret route","Find the hidden connection between Funk and Disco.","assets/world-tour/sprites/ui/world-tour/portal.png","Secret world"],
+    ["soulful-garage","Soulful Garage","Midnight Garage","Night Shift Conductor","Secret route","Find the hidden connection between Soul and House.","assets/world-tour/sprites/ui/world-tour/portal.png","Secret world"],
+    ["future-funk","Future Funk","Tomorrow Mall","The Recompiler","Secret route","Find the hidden connection between Jazz and Techno.","assets/world-tour/sprites/ui/world-tour/portal.png","Secret world"]
   ].map(([id,name,location,boss,status,mechanic,image,kind]) => ({
     key: `world-${id}`, name, type: "World", rarity: kind, role: location, image,
-    description: status === "Playable" ? `${name} has two connected stages in the public v0.8.0 build.` : `${name} is defined for a future two-stage route.`,
+    description: status === "Playable" ? `${name} opens into two connected stages with its own route, enemies, bosses, and musical identity.` : `${name} waits beyond the tour map, its signal already pulsing behind the gate.`,
     strength: mechanic,
-    weakness: status === "Playable" ? "Available now in the public Windows and Mac downloads." : "Planned and not playable yet.",
+    weakness: status === "Playable" ? "Choose this route from the World Tour map." : "The route remains locked for now.",
     facts: [status, location, boss]
   }));
   worlds.forEach((world) => inspectionCatalog.set(world.key, world));
@@ -445,8 +523,8 @@
     ["spotlight-spin","Spotlight Spin",1,"Disco grade A","Add one level-up reroll per run."],
     ["four-count","Four Count",5,"House grade C","Extend the positive Groove timing window."],
     ["floor-control","Floor Control",3,"House grade A","Reduce arena-hazard damage."],
-    ["live-wire","Live Wire",5,"Electro grade C","Reduce attack cooldowns."],
-    ["signal-boost","Signal Boost",3,"Electro grade A","Increase XP gain."],
+    ["live-wire","Live Wire",5,"Jazz grade C","Reduce attack cooldowns."],
+    ["signal-boost","Signal Boost",3,"Jazz grade A","Increase XP gain."],
     ["precision-loop","Precision Loop",5,"Techno grade C","Extend combo grace time."],
     ["hard-reset","Hard Reset",1,"Techno grade A","Reduce the first damaging hit of each run."],
     ["orbital-balance","Orbital Balance",3,"Cosmic Boogie grade C","Improve knockback resistance and recovery."],
@@ -467,7 +545,7 @@
 
   const chests = [
     { key: "chest-musical", name: "Musical Chest", image: "assets/world-tour/sprites/chests/musical/frame-01.png", role: "Random run rewards", description: "Rolls five hidden reels and gives one, three, or five rewards.", strength: "Can add weapons, supports, upgrades, or eligible fusions during a run.", weakness: "The final reward count depends on the luck roll.", facts: ["Eight-frame animation", "Five hidden reels", "1 / 3 / 5 rewards"] },
-    { key: "chest-encore-gate", name: "Encore Gate", image: "assets/world-tour/sprites/chests/encore-gate.png", role: "World stage completion", description: "Drops after a World boss and completes the current stage when collected.", strength: "Closes the stage and carries the current build into the next step.", weakness: "Appears only after the stage boss is defeated.", facts: ["Mandatory collection", "Boss reward", "Stage transition"] }
+    { key: "chest-encore-gate", name: "Encore Gate", image: "assets/world-tour/sprites/chests/encore-gate.png", role: "World stage completion", description: "Drops after a World boss and completes the stage when collected.", strength: "Closes the stage and carries your loadout into the next step.", weakness: "Appears only after the stage boss is defeated.", facts: ["Mandatory collection", "Boss reward", "Stage transition"] }
   ].map((chest) => ({ ...chest, type: "Chest", rarity: "World Tour" }));
   chests.forEach((chest) => inspectionCatalog.set(chest.key, chest));
 
@@ -532,6 +610,11 @@
     const gemKey = enemy.rank === "Final boss" ? "gem-4" : enemy.rank === "Miniboss" || enemy.rank === "Elite" ? "gem-3" : enemy.xp >= 30 ? "gem-2" : "gem-1";
     connectRecord(enemy.key, gemKey, "Resonance drop");
   });
+  worldEnemies.forEach((enemy) => {
+    const gemKey = enemy.rank === "Final boss" ? "gem-4" : enemy.rank === "Miniboss" || enemy.rank === "Elite" ? "gem-3" : enemy.xp >= 30 ? "gem-2" : "gem-1";
+    connectRecord(enemy.key, `world-${enemy.world}`, "World");
+    connectRecord(enemy.key, gemKey, "Resonance drop");
+  });
 
   const catalogGroups = document.querySelector("[data-catalog-groups]");
   const catalogFilters = document.querySelector("[data-catalog-filters]");
@@ -561,7 +644,7 @@
       button.append(name, amount);
       return button;
     };
-    catalogFilters.append(makeFilter("all", "All records", "assets/gb-icon.png", allItems.length));
+    catalogFilters.append(makeFilter("all", "All records", "assets/gb-icon.png?v=20260813-02", allItems.length));
     catalogOrder.forEach((category) => {
       const items = allItems.filter((item) => item.category === category);
       catalogFilters.append(makeFilter(category, pluralLabels[category], categoryMeta[category].icon, items.length));
@@ -790,8 +873,8 @@
       const image = document.createElement("img");
       image.src = evolvedImage(data[5]);
       image.alt = "";
-      image.width = 32;
-      image.height = 32;
+      image.width = 48;
+      image.height = 48;
       button.append(image);
       button.setAttribute("aria-label", `${data[0]} plus ${data[2]}`);
       button.setAttribute("aria-pressed", "false");
@@ -932,7 +1015,7 @@
     element.dataset.category = item?.category || "gem";
     element.dataset.categoryLabel = category.label;
     const hasVisual = Boolean(element.querySelector(":scope > img")) || element.matches(".fusion-piece, .fusion-result, .character-profile__visual");
-    if (element.matches("button, a") && hasVisual && !element.querySelector(":scope > .inspect-cue")) {
+    if (hasVisual && !element.querySelector(":scope > .inspect-cue")) {
       const cue = document.createElement("span");
       cue.className = "inspect-cue";
       cue.textContent = "Inspect";
@@ -1024,7 +1107,7 @@
     world: { label: "Backbeat", title: "A city wired for music.", copy: "Train timing, street lights, rooftop venues, and Pulse Tower share a living network called the Resonance.", video: "assets/video/main-menu.mp4", portrait: "assets/sprites/talking/joe-1.png", alt: "Joe in Backbeat" },
     break: { label: "The Break", title: "A cosmic chord plays backwards.", copy: "Instrument-machine invaders descend, sampling the city and turning familiar sounds into hostile attack patterns.", video: "assets/video/prologue.mp4", portrait: "assets/sprites/enemies/backbeat-4.png?v=site005", alt: "The Static Baron invasion" },
     heroes: { label: "The Resonants", title: "Two answers to the same pressure.", copy: "Joe holds the line. Lyra turns risk into speed. Their strengths are complementary, not direct upgrades.", video: "assets/video/joe-intro.mp4", portrait: "assets/sprites/talking/joe-2.png", alt: "Joe, The Backbeat" },
-    orbit: { label: "The Orbit Line", title: "The dead line is still broadcasting.", copy: "The First Press points beneath the city toward alien platforms, cosmic speakers, and the Grand Orchestrator.", video: "assets/video/lyra-intro.mp4", portrait: "assets/sprites/enemies/orbit-8.png?v=site005", alt: "The Grand Orchestrator" }
+    orbit: { label: "Orbit Line", title: "The dead line is still broadcasting.", copy: "The First Press points beneath the city toward alien platforms, cosmic speakers, and the Grand Orchestrator.", video: "assets/video/lyra-intro.mp4", portrait: "assets/sprites/enemies/orbit-8.png?v=site005", alt: "The Grand Orchestrator" }
   };
   document.querySelectorAll("[data-lore-scene]").forEach((button) => button.addEventListener("click", () => {
     const scene = loreScenes[button.dataset.loreScene];
@@ -1055,7 +1138,7 @@
     direction: { label: "Creative direction", title: "Make every layer speak the same language.", copy: "Pixel art, cinematic cutscenes, music-powered fiction, UI, enemies, and weapon silhouettes reinforce one supernatural funk identity.", image: "assets/campaign-banner.png", alt: "Groove Bound creative direction overview" },
     systems: { label: "Game systems", title: "Turn a build choice into a story beat.", copy: "Sixteen weapons, eight supports, rank-10 fusions, chests, enemy patterns, and persistent two-stage progression create expressive runs.", image: "assets/screens/level-up-cards.jpg", alt: "Groove Bound level-up system" },
     world: { label: "World building", title: "Make the mechanics belong to the city.", copy: "The Resonance explains XP, power, transit, Pulse Tower, the Break, the First Press, and the enemy orchestra within the same fiction.", image: "assets/first-press-orbit.png", alt: "The First Press route to the Orbit Line" },
-    verification: { label: "Verification", title: "Treat playability as part of the craft.", copy: "The project pairs browser and visual QA with deterministic game tests, Admin tools, current screenshots, and a downloadable development build.", image: "assets/screens/admin.jpg", alt: "Groove Bound Admin verification tools" }
+    verification: { label: "Play experience", title: "Make every choice feel alive.", copy: "Readable combat, expressive upgrades, musical feedback, and clear world transitions keep each run moving with purpose.", image: "assets/screens/gameplay-combat.png", alt: "Groove Bound combat in Backbeat Streets" }
   };
   document.querySelectorAll("[data-method]").forEach((button) => button.addEventListener("click", () => {
     const data = methodData[button.dataset.method];

@@ -174,7 +174,7 @@ function Assets.load()
   self.enemy.funk_quads,
     self.enemy.funk_cell_w,
     self.enemy.funk_cell_h = grid_quads(self.enemy.funk, 4, 2, 2)
-  for _, id in ipairs({ "soul", "disco" }) do
+  for _, id in ipairs({ "soul", "disco", "jazz" }) do
     self.enemy[id] = image("assets/generated/campaign/" .. id .. "-enemies-atlas.png")
     self.enemy[id .. "_quads"],
       self.enemy[id .. "_cell_w"],
@@ -267,6 +267,8 @@ function Assets.load()
     self.world_tour_ui_cell_h = grid_quads(self.world_tour_ui, 5, 2, 8)
   self.world_interface = image(
     "assets/generated/campaign/world-interface-atlas.png")
+  self.jazz_world_logo = image(
+    "assets/generated/campaign/jazz-world-logo.png")
   self.world_interface_quads,
     self.world_interface_cell_w,
     self.world_interface_cell_h = grid_quads(self.world_interface, 5, 2, 8)
@@ -358,6 +360,7 @@ function Assets.load()
     funk = image("assets/generated/campaign/funk-floor-atlas.png"),
     soul = image("assets/generated/campaign/soul-floor-atlas.png"),
     disco = image("assets/generated/campaign/disco-floor-atlas.png"),
+    jazz = image("assets/generated/campaign/jazz-floor-atlas.png"),
   }
   self.floor_surface_quads = {}
   self.floor_surface_cell_w = {}
@@ -431,7 +434,7 @@ function Assets.load()
     self.environment_funk_cell_w,
     self.environment_funk_cell_h = grid_quads(
       self.environment_funk, 4, 2, 2)
-  for _, id in ipairs({ "soul", "disco" }) do
+  for _, id in ipairs({ "soul", "disco", "jazz" }) do
     self["environment_" .. id] = image(
       "assets/generated/campaign/" .. id .. "-environment-atlas.png")
     self["environment_" .. id .. "_quads"],
@@ -642,7 +645,9 @@ function Assets:draw_enemy_variant(icon, x, y, size, opts)
     atlas = self.enemy.funk
     quad = self.enemy.funk_quads[icon.row][icon.col]
     cell_size = math.max(self.enemy.funk_cell_w, self.enemy.funk_cell_h)
-  elseif icon.atlas == "soul" or icon.atlas == "disco" then
+  elseif icon.atlas == "soul" or icon.atlas == "disco"
+    or icon.atlas == "jazz"
+  then
     local id = icon.atlas
     atlas = self.enemy[id]
     quad = self.enemy[id .. "_quads"][icon.row][icon.col]
@@ -655,11 +660,13 @@ function Assets:draw_enemy_variant(icon, x, y, size, opts)
     opts.flip_x and -scale or scale, scale,
     icon.atlas == "stage2" and self.enemy.stage2_cell_w / 2
       or icon.atlas == "funk" and self.enemy.funk_cell_w / 2
-      or (icon.atlas == "soul" or icon.atlas == "disco")
+      or (icon.atlas == "soul" or icon.atlas == "disco"
+        or icon.atlas == "jazz")
         and self.enemy[icon.atlas .. "_cell_w"] / 2 or 128,
     icon.atlas == "stage2" and self.enemy.stage2_cell_h / 2
       or icon.atlas == "funk" and self.enemy.funk_cell_h / 2
-      or (icon.atlas == "soul" or icon.atlas == "disco")
+      or (icon.atlas == "soul" or icon.atlas == "disco"
+        or icon.atlas == "jazz")
         and self.enemy[icon.atlas .. "_cell_h"] / 2 or 128)
 end
 
@@ -687,7 +694,7 @@ local function environment_source(self, icon, atlas_id)
     quad = self.environment_funk_quads[icon.row][icon.col]
     cell_w, cell_h = self.environment_funk_cell_w,
       self.environment_funk_cell_h
-  elseif atlas_id == "soul" or atlas_id == "disco" then
+  elseif atlas_id == "soul" or atlas_id == "disco" or atlas_id == "jazz" then
     atlas = self["environment_" .. atlas_id]
     quad = self["environment_" .. atlas_id .. "_quads"][icon.row][icon.col]
     cell_w, cell_h = self["environment_" .. atlas_id .. "_cell_w"],
@@ -1045,6 +1052,19 @@ function Assets:draw_world_interface(col, row, x, y, w, h, opts)
     self.world_interface_cell_w, self.world_interface_cell_h,
     math.max(1, math.min(5, col or 1)), math.max(1, math.min(2, row or 1)),
     x, y, w, h, opts)
+end
+
+function Assets:draw_world_identity(world_id, col, row, x, y, w, h, opts)
+  if world_id ~= "jazz" then
+    return self:draw_world_interface(col, row, x, y, w, h, opts)
+  end
+  opts = opts or {}
+  local source_w, source_h = self.jazz_world_logo:getDimensions()
+  local scale = math.min(w / source_w, h / source_h)
+  love.graphics.setColor(opts.color or { 1, 1, 1, 1 })
+  love.graphics.draw(self.jazz_world_logo,
+    x + w / 2, y + h / 2, 0, scale, scale, source_w / 2, source_h / 2)
+  return true
 end
 
 function Assets:draw_meta_perk(cell, x, y, w, h, opts)

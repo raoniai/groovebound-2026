@@ -89,6 +89,56 @@ T["seeded complete run reaches fusion evolution and final victory"] = function()
   H.eq(combat.progression.evolutions[1].branch, "fusion")
 end
 
+T["Jazz route reaches both bosses and victory across deterministic seeds"] = function()
+  for _, seed in ipairs({ 1204, 2204, 3204 }) do
+    local tuning = Tuning(definitions)
+    tuning:set("player.invincible", true)
+    tuning:set("combat.damage_multiplier", 30)
+    tuning:set("combat.fire_rate_multiplier", 12)
+    tuning:set("pickups.radius_multiplier", 5)
+    tuning:set("run.stage1_duration", 60)
+    tuning:set("run.stage2_duration", 60)
+    local ctx = RunContext({ seed = seed, tuning = tuning })
+    local stages = {}
+    for index, source in ipairs(Content.world_stages.jazz) do
+      stages[index] = {}
+      for key, value in pairs(source) do stages[index][key] = value end
+      stages[index].base_duration = 60
+    end
+    local arena = Arena({ stage = stages[1] })
+    local cx, cy = arena:center()
+    local player = ctx.world:add("player", Player({
+      x = cx, y = cy, tuning = tuning,
+    }))
+    local combat = CombatSystem({
+      ctx = ctx, content = Content, tuning = tuning, arena = arena,
+      player = player, stages = stages, mode = "world_tour",
+    })
+    local outcome
+    for _ = 1, math.ceil(150 / 0.05) do
+      ctx.world:each("reward_chest", function(chest)
+        chest.x, chest.y = player.x, player.y
+        ctx.world:moved(chest)
+      end)
+      ctx:update(0.05)
+      outcome = combat:update(0.05)
+      choose_progression(combat)
+      if outcome == "stage_clear" then
+        arena = Arena({ stage = stages[2] })
+        combat:begin_stage(2, arena)
+        outcome = nil
+      end
+      if outcome then break end
+    end
+    H.eq(outcome, "victory", string.format(
+      "Jazz seed %d time %.1f bosses %d kills %d enemies %d",
+      seed, ctx.time, combat.stats.bosses, combat.stats.kills,
+      ctx.world:count("enemy")))
+    H.eq(combat.stats.bosses, 2, "Jazz seed " .. seed)
+    H.is_true(combat.stats.kills > 50, "Jazz seed " .. seed)
+  end
+end
+
 T["player death produces deterministic defeat before timeout"] = function()
   local tuning = Tuning(definitions)
   local ctx = RunContext({ seed = 7, tuning = tuning })

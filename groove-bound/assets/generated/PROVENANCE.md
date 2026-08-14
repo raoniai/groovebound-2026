@@ -697,3 +697,33 @@ and remains package-excluded. The bundled soft-matte/despill helper removed the
 chroma background. `scripts/build_hud_interface_kit.py` then normalized the two
 badges, cropped stable bar caps and repeatable rail/fill samples, cleared hidden
 RGB, enforced RGBA dimensions and wrote the runtime files above.
+
+## Jazz World runtime suite
+
+**Generated:** 2026-08-13 with OpenAI image generation in Codex built-in mode
+
+| Runtime file | Grid / role | SHA-256 |
+|---|---|---|
+| `campaign/jazz-enemies-atlas.png` | 4x2 RGBA atlas for eight Jazz enemy definitions | `e3e7cf764dce7a2c1b6fff1cfcb7b1bb066374b4e41521e0fcdc3af977140591` |
+| `campaign/jazz-environment-atlas.png` | 4x2 RGBA arena-prop atlas | `15d9c0b92fe4696325ea99bc47220de872fb4cd25a218fd01ec03d5f6167e942` |
+| `campaign/jazz-floor-atlas.png` | 2x2 RGB top-down floor atlas | `45664fa035d1f1723f2a5086ca29372237742eb7610521a0508a70d5b35a481c` |
+| `campaign/jazz-world-logo.png` | Jazz identity mark promoted from the project-owned site asset | `af8fccb7a02cc40f4e32c498a04d91ddcc9c6b473a72e43cabab9b1633c33d7b` |
+
+The enemy prompt requested Syncopated Imp, Blue Note Bat, Walking Bass Bot,
+Scat Cannon, Bebop Behemoth, Brushfire Skitter, Brass Regent and Midnight
+Maestro as eight isolated, text-free cosmic instrument robots. The environment
+prompt requested eight independently extractable club, brass, speaker, bass,
+fountain, planter, bench and spotlight props. Both used existing project atlases
+as style/layout references and required uniform chroma green, generous cell
+padding and no cross-cell effects. The floor prompt requested four full-bleed,
+top-down midnight Jazz textures with low combat contrast and exact quadrant
+boundaries.
+
+Untouched generator outputs are preserved below
+`source-candidates/2026-08-13-jazz-world/` and excluded from packages. The
+bundled soft-matte/despill helper removed chroma backgrounds; FFmpeg then
+normalized the runtime sprite atlases with nearest-neighbour scaling. The Jazz
+logo is an unchanged byte-for-byte runtime promotion of the project-owned
+`landing-page/assets/world-tour/logos/jazz.png`; the website source remains a
+separate public surface. Runtime dimensions, PNG colour types and loader paths
+are regression-tested.

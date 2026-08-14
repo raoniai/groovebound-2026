@@ -5,7 +5,7 @@ SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 GAME_DIR=$(CDPATH= cd -- "$SCRIPT_DIR/.." && pwd)
 DIST_DIR="$GAME_DIR/dist"
 LOVE_APP=${LOVE_APP:-/Applications/love.app}
-VERSION=${VERSION:-0.8.3}
+VERSION=${VERSION:-$(tr -d '[:space:]' < "$GAME_DIR/VERSION")}
 BUILD_NUMBER=${BUILD_NUMBER:-$(git -C "$GAME_DIR" rev-list --count HEAD 2>/dev/null || printf '1')}
 APP_NAME="Groove Bound"
 APP_PATH="$DIST_DIR/macos-build/$APP_NAME.app"
@@ -22,6 +22,15 @@ if [ ! -d "$LOVE_APP" ]; then
 fi
 if [ ! -f "$DIST_DIR/groove-bound.love" ]; then
   printf 'Build dist/groove-bound.love first (make package).\n' >&2
+  exit 1
+fi
+if [ "$VERSION" != "$(tr -d '[:space:]' < "$GAME_DIR/VERSION")" ]; then
+  printf 'macOS version %s disagrees with canonical VERSION\n' "$VERSION" >&2
+  exit 1
+fi
+if ! unzip -p "$DIST_DIR/groove-bound.love" release-build.txt \
+  | grep -qx "version=$VERSION"; then
+  printf 'macOS payload version does not match canonical VERSION %s\n' "$VERSION" >&2
   exit 1
 fi
 if [ ! -f "$ICON_SOURCE" ]; then

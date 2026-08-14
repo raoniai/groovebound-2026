@@ -8,7 +8,6 @@ permissions:
   contents: read
 
 env:
-  RELEASE_VERSION: 0.8.3
   LOVE_RUNTIME_URL: https://github.com/love2d/love/releases/download/11.5/love-11.5-macos.zip
   LOVE_RUNTIME_SHA256: 6795bb3a1656af6a2fdfe741e150787b481886d3a280327a261a3fdded586913
 
@@ -26,6 +25,10 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+
+      - name: Load canonical version
+        shell: bash
+        run: echo "RELEASE_VERSION=$(tr -d '[:space:]' < groove-bound/VERSION)" >> "$GITHUB_ENV"
 
       - name: Download shared common payload
         uses: actions/download-artifact@v4
@@ -48,7 +51,7 @@ jobs:
         shell: bash
         run: |
           if [ ! -f dist/groove-bound.love ]; then
-            python scripts/package_love.py --version "$RELEASE_VERSION" --require-clean
+            python scripts/package_love.py --require-clean
           fi
           python scripts/verify_release_package.py dist/groove-bound.love
 
@@ -56,9 +59,7 @@ jobs:
         working-directory: groove-bound
         shell: bash
         run: |
-          LOVE_APP="$RUNNER_TEMP/love-runtime/love.app" \
-            VERSION="$RELEASE_VERSION" \
-            scripts/build_macos_release.sh
+          LOVE_APP="$RUNNER_TEMP/love-runtime/love.app" scripts/build_macos_release.sh
 
       - name: Run packaged macOS bootstrap smoke
         shell: bash

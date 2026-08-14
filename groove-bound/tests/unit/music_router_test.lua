@@ -62,6 +62,7 @@ T["every World Tour world resolves to its own gameplay route pack"] = function()
     funk = "world_funk_route",
     soul = "world_soul_route",
     disco = "world_disco_route",
+    jazz = "world_electro_route",
     house = "world_house_route",
     electro = "world_electro_route",
     techno = "world_techno_route",

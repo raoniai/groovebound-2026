@@ -6,6 +6,7 @@ local widgets = require("src.ui.widgets.button")
 local UIScale = require("src.ui.scale")
 local JourneyProgress = require("src.meta.journey_progress")
 local MenuChrome = require("src.ui.menu_chrome")
+local BuildInfo = require("src.config.build_info")
 
 local TitleScreen = class()
 TitleScreen.kind = "title"
@@ -286,6 +287,9 @@ function TitleScreen:draw()
     { symbol = "cross", label = "Select" },
     { symbol = "options", label = "Pause in game" },
   }, h - 34, w)
+  love.graphics.setFont(Fonts.get(10))
+  love.graphics.setColor(0.68, 0.72, 0.82, 0.78)
+  love.graphics.print(BuildInfo.label(), 12, h - 18)
   UIScale.finish()
 end
 

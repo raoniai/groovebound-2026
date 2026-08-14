@@ -151,9 +151,11 @@ T["runtime UI artwork and character logos have stable production mappings"] = fu
     { "assets/generated/campaign/funk-enemies-atlas.png", 1600, 800 },
     { "assets/generated/campaign/soul-enemies-atlas.png", 1600, 800 },
     { "assets/generated/campaign/disco-enemies-atlas.png", 1600, 800 },
+    { "assets/generated/campaign/jazz-enemies-atlas.png", 1600, 800 },
     { "assets/generated/campaign/funk-environment-atlas.png", 1600, 800 },
     { "assets/generated/campaign/soul-environment-atlas.png", 1600, 800 },
     { "assets/generated/campaign/disco-environment-atlas.png", 1600, 800 },
+    { "assets/generated/campaign/jazz-environment-atlas.png", 1600, 800 },
     { "assets/generated/evolved-weapon-icons-atlas-2.png", 1600, 800 },
   }) do
     local width, height = png_dimensions(expected[1])
@@ -166,6 +168,16 @@ T["runtime UI artwork and character logos have stable production mappings"] = fu
   H.eq(floor_w, 1024)
   H.eq(floor_h, 1024)
   H.eq(png_color_type("assets/generated/campaign/funk-floor-atlas.png"), 2)
+  local jazz_floor_w, jazz_floor_h = png_dimensions(
+    "assets/generated/campaign/jazz-floor-atlas.png")
+  H.eq(jazz_floor_w, 1024)
+  H.eq(jazz_floor_h, 1024)
+  H.eq(png_color_type("assets/generated/campaign/jazz-floor-atlas.png"), 2)
+  local jazz_logo_w, jazz_logo_h = png_dimensions(
+    "assets/generated/campaign/jazz-world-logo.png")
+  H.is_true(jazz_logo_w >= 1000)
+  H.is_true(jazz_logo_h >= 500)
+  H.eq(png_color_type("assets/generated/campaign/jazz-world-logo.png"), 6)
 end
 
 T["World Tour atlas repair keeps every isolated sprite auditable"] = function()

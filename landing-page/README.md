@@ -9,10 +9,31 @@ After every material game or landing-page change:
 2. Refresh the local preview.
 3. Verify Home, Catalog, Builder, the integrated story route, media sound controls, catalog search and filters, the item inspector, screenshot lightboxes, drag interactions, and mobile layouts.
 
-All public Windows and Mac download buttons use GitHub's stable Latest-release
-asset routes. Windows buttons target `Groove-Bound-Windows-x64.zip`; Mac buttons
-target `Groove-Bound-macOS.dmg`. The visible release badge and notes link identify
-the exact current version. The GB icon is the landing-page identity; rebuilding
-the packaged app icons requires a separate game release.
+All public desktop download buttons use GitHub's stable Latest-release routes:
+the universal macOS DMG and the Windows x64 portable ZIP. The exact version is
+shown only in the top navigation badge; public page copy remains evergreen and
+does not describe release-to-release changes. The GB icon is the landing-page
+identity; rebuilding packaged application icons requires a separate game release.
 
 The public landing-page status ledger was removed from the site. `CHANGELOG.md` remains the local implementation record.
+
+## FTP deployment
+
+The landing page has an approval-gated FTP publisher. It packages only public
+site files, stores the password in macOS Keychain, captures a rollback bundle,
+uploads assets before HTML, and verifies the public pages after publishing.
+
+From `landing-page/`:
+
+```sh
+python3 scripts/build_site_release.py --release v0.8.4
+python3 scripts/setup_site_ftp_credentials.py --copy-existing
+python3 scripts/publish_site.py --inspect-remote
+python3 scripts/publish_site.py --release v0.8.4
+python3 scripts/publish_site.py --release v0.8.4 --publish
+python3 scripts/publish_site.py --release v0.8.4 --verify-public
+```
+
+The publisher defaults to a local dry run. A live upload requires both
+`--release` and `--publish`. Generated rollback data is kept under the ignored
+`landing-page/.deployment/` directory.

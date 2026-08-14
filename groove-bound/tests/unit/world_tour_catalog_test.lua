@@ -3,7 +3,7 @@ local Validate = require("src.content.validate")
 
 local T = {}
 
-T["World Tour catalog has nine stable worlds and first two wave sets"] = function()
+T["World Tour catalog has nine stable worlds and four playable routes"] = function()
   local content = require("src.content.init")
   local count = 0
   for _ in pairs(content.world_tour) do count = count + 1 end
@@ -14,9 +14,14 @@ T["World Tour catalog has nine stable worlds and first two wave sets"] = functio
   H.eq(content.world_tour.funk.implementation_status, "playable")
   H.eq(content.world_tour.soul.implementation_status, "playable")
   H.eq(content.world_tour.disco.implementation_status, "playable")
+  H.eq(content.world_tour.disco.first_clear_unlock, "jazz")
+  H.eq(content.world_tour.jazz.order, 4)
+  H.eq(content.world_tour.jazz.implementation_status, "playable")
+  H.eq(content.world_tour.jazz.first_clear_unlock, "house")
   H.is_true(#content.world_tour_waves.funk >= 5)
   H.is_true(#content.world_tour_waves.soul >= 5)
   H.is_true(#content.world_tour_waves.disco >= 5)
+  H.is_true(#content.world_tour_waves.jazz >= 5)
   H.eq(#content.world_stages.funk, 2)
   H.eq(content.world_stages.funk[1].world_id, "funk")
   H.eq(content.world_stages.funk[1].final_boss, "boogie_tank")
@@ -30,8 +35,30 @@ T["World Tour catalog has nine stable worlds and first two wave sets"] = functio
   H.eq(content.enemies.mothership_of_funk.sprite.atlas, "funk")
   H.eq(#content.world_stages.soul, 2)
   H.eq(#content.world_stages.disco, 2)
+  H.eq(#content.world_stages.jazz, 2)
   H.eq(content.world_stages.soul[2].final_boss, "velvet_titan")
   H.eq(content.world_stages.disco[2].final_boss, "prism_monarch")
+  H.eq(content.world_stages.jazz[1].final_boss, "brass_regent")
+  H.eq(content.world_stages.jazz[2].final_boss, "midnight_maestro")
+end
+
+T["Jazz world owns a complete visual roster and escalating second stage"] = function()
+  local content = require("src.content.init")
+  local jazz_enemy_count = 0
+  for _, enemy in pairs(content.enemies) do
+    if enemy.sprite and enemy.sprite.atlas == "jazz" then
+      jazz_enemy_count = jazz_enemy_count + 1
+    end
+  end
+  H.eq(jazz_enemy_count, 8)
+  local first = content.world_stages.jazz[1]
+  local second = content.world_stages.jazz[2]
+  H.eq(first.floor_style, "jazz")
+  H.eq(second.environment_atlas, "jazz")
+  H.eq(first.mechanic.id, "jazz_improvisation")
+  H.is_true(second.width > first.width)
+  H.is_true(second.mechanic.cycle_seconds < first.mechanic.cycle_seconds)
+  H.is_true(#second.waves[#second.waves].enemies >= 4)
 end
 
 T["Funk world has an authored visual roster and escalating second stage"] = function()
@@ -89,7 +116,7 @@ T["core worlds grant a gradual fresh-entry starter loadout"] = function()
   local Content = require("src.content.init")
   local expected = {
     funk = { 0, 0 }, soul = { 1, 0 }, disco = { 1, 1 },
-    house = { 1, 1 }, electro = { 2, 1 }, techno = { 2, 2 },
+    jazz = { 1, 1 }, house = { 2, 1 }, techno = { 2, 2 },
   }
   for id, counts in pairs(expected) do
     local loadout = Content.world_tour[id].starter_loadout

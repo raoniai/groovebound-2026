@@ -1,0 +1,12 @@
+{
+  "release": "v0.8.4",
+  "protocol": "ftps",
+  "host": "ftp.raoni.studio",
+  "port": 21,
+  "username": "raoni@raoni.studio",
+  "webroot": "public_html/raoni.ai",
+  "remote_root": "groovebound",
+  "public_url": "https://raoni.ai/groovebound/",
+  "ftp_keychain_service": "groove-bound-ftp",
+  "fallback_keychain_service": "voice-dna-ftp"
+}

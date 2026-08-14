@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="landing-page/assets/campaign-banner.png" alt="Groove Bound — Joe and Lyra defend Backbeat and the Orbit Line from a cosmic machine orchestra" width="100%">
+  <img src="docs/assets/groove-bound-campaign-banner.png" alt="Groove Bound — Joe and Lyra defend Backbeat and the Orbit Line from a cosmic machine orchestra" width="100%">
 </p>
 
 <p align="center">
@@ -8,17 +8,17 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/raoniai/groovebound-2026/releases/latest/download/Groove-Bound-Windows-x64.zip">
-    <img src="https://img.shields.io/badge/DOWNLOAD_FOR_WINDOWS-19D3C5?style=for-the-badge&logo=windows11&logoColor=111111" alt="Download Groove Bound for Windows x64">
-  </a>
   <a href="https://github.com/raoniai/groovebound-2026/releases/latest/download/Groove-Bound-macOS.dmg">
     <img src="https://img.shields.io/badge/DOWNLOAD_FOR_MAC-F2BF32?style=for-the-badge&logo=apple&logoColor=111111" alt="Download Groove Bound for macOS">
   </a>
-  <a href="https://github.com/raoniai/groovebound-2026/releases/tag/v0.8.1">
-    <img src="https://img.shields.io/badge/PUBLIC_BUILD-v0.8.1-EA316E?style=for-the-badge" alt="Public build v0.8.1">
+  <a href="https://github.com/raoniai/groovebound-2026/releases/latest/download/Groove-Bound-Windows-x64.zip">
+    <img src="https://img.shields.io/badge/DOWNLOAD_FOR_WINDOWS-6F42C1?style=for-the-badge&logo=windows11&logoColor=FFFFFF" alt="Download Groove Bound for Windows x64">
+  </a>
+  <a href="https://github.com/raoniai/groovebound-2026/releases/tag/v0.8.4">
+    <img src="https://img.shields.io/badge/PUBLIC_BUILD-v0.8.4-EA316E?style=for-the-badge" alt="Public build v0.8.4">
   </a>
   <a href="https://github.com/raoniai/groovebound-2026/actions/workflows/ci.yml">
-    <img src="https://img.shields.io/github/actions/workflow/status/raoniai/groovebound-2026/ci.yml?branch=codex%2Fworld-tour-v1&style=for-the-badge&label=CI&color=19D3C5" alt="Continuous integration status">
+    <img src="https://img.shields.io/github/actions/workflow/status/raoniai/groovebound-2026/ci.yml?branch=GPT%2Fstage-2-cutscenes&style=for-the-badge&label=CI&color=19D3C5" alt="Continuous integration status">
   </a>
 </p>
 
@@ -184,7 +184,7 @@ Explore the [Weapon Database](groove-bound/docs/WEAPON_DATABASE.md) and
   <img src="landing-page/assets/screens/stage2-escalation.png" alt="The Orbit Line threat escalating" width="49%">
 </p>
 
-The v0.8.1 preview includes camera zoom from 75% to 150%, keyboard/mouse and
+The v0.7.1 preview includes camera zoom from 75% to 150%, keyboard/mouse and
 gamepad support, persistent options, aim assistance, rebindings, vibration,
 flash and shake controls, adaptive music, cutscene mute, a transparent campaign
 HUD, chest reward reels, and a complete Arsenal database.
@@ -193,25 +193,14 @@ HUD, chest reward reels, and a complete Arsenal database.
 
 ## Download and play
 
-### Windows x64
-
-<p>
-  <a href="https://github.com/raoniai/groovebound-2026/releases/latest/download/Groove-Bound-Windows-x64.zip">
-    <img src="https://img.shields.io/badge/DOWNLOAD-GROOVE_BOUND_FOR_WINDOWS-19D3C5?style=for-the-badge&logo=windows11&logoColor=111111" alt="Download Groove Bound for Windows x64">
-  </a>
-</p>
-
-Extract the complete **Groove Bound** folder, keep the executable and DLLs
-together, then launch **Groove Bound.exe**. LÖVE does not need to be installed.
-The preview is unsigned, so Windows Defender SmartScreen may ask you to choose
-**More info → Run anyway** on first launch. Validate the ZIP against the
-checksums in the GitHub release before bypassing that warning.
-
-### macOS
+### Desktop downloads
 
 <p>
   <a href="https://github.com/raoniai/groovebound-2026/releases/latest/download/Groove-Bound-macOS.dmg">
     <img src="https://img.shields.io/badge/DOWNLOAD-GROOVE_BOUND_FOR_MAC-F2BF32?style=for-the-badge&logo=apple&logoColor=111111" alt="Download Groove Bound for macOS">
+  </a>
+  <a href="https://github.com/raoniai/groovebound-2026/releases/latest/download/Groove-Bound-Windows-x64.zip">
+    <img src="https://img.shields.io/badge/DOWNLOAD-GROOVE_BOUND_FOR_WINDOWS-6F42C1?style=for-the-badge&logo=windows11&logoColor=FFFFFF" alt="Download Groove Bound for Windows x64">
   </a>
   <a href="https://github.com/raoniai/groovebound-2026/releases/latest">
     <img src="https://img.shields.io/badge/VIEW-RELEASE_NOTES-6F42C1?style=for-the-badge" alt="View the latest release notes">
@@ -223,6 +212,9 @@ The universal build includes LÖVE 11.5 and supports Apple Silicon and Intel Mac
 
 The preview is ad-hoc signed rather than Apple-notarized. If macOS blocks the
 first launch, Control-click **Groove Bound**, choose **Open**, then confirm.
+
+Extract the portable ZIP and launch **Groove Bound.exe**. The public package is
+the Windows x64 build published with the current release manifest and checksums.
 
 ### Linux
 
@@ -271,10 +263,9 @@ packaging, and contribution ground rules.
 
 ### Current verification
 
-- 353 automated tests passing.
-- 0 Luacheck warnings or errors across 172 files.
+- 269 automated tests passing.
+- 0 Luacheck warnings or errors across 123 files.
 - Package integrity and forbidden-source checks passing.
-- Windows x64 ZIP, executable branding, runtime manifest, fused payload, and packaged CI bootstrap verified.
 - Universal macOS app, icon, signature, DMG checksum, and packaged boot verified.
 - GitHub CI passing on the release branch.
 

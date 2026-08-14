@@ -2,11 +2,11 @@
   "policy": "Assign atlas-wide connected alpha components to their nearest authored sprite, recover complete subjects across nominal cell lines, discard isolated pixel noise, and trim to visible alpha bounds without resizing. Opaque floor textures retain their exact authored cells.",
   "source_root": "groove-bound/assets/generated/campaign",
   "output_root": "landing-page/assets/world-tour/sprites",
-  "count": 160,
+  "count": 180,
   "records": [
     {
       "source": "groove-bound/assets/generated/campaign/funk-enemies-atlas.png",
-      "source_sha256": "0bcffe4f5d33a20c27f763769b6608ade6e8a75782ee9906b83b72ae36e54836",
+      "source_sha256": "1e6748bc7c5d8d49272e7dd60be7743b60abd18c6f6ec3ab9265523224e3d207",
       "grid": [
         4,
         2
@@ -18,10 +18,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        65,
-        53,
-        342,
-        341
+        61,
+        56,
+        338,
+        344
       ],
       "authored_cell_bounds": [
         0,
@@ -35,7 +35,7 @@
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 22,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -51,7 +51,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/funk-enemies-atlas.png",
-      "source_sha256": "0bcffe4f5d33a20c27f763769b6608ade6e8a75782ee9906b83b72ae36e54836",
+      "source_sha256": "1e6748bc7c5d8d49272e7dd60be7743b60abd18c6f6ec3ab9265523224e3d207",
       "grid": [
         4,
         2
@@ -63,10 +63,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        453,
-        67,
-        738,
-        349
+        457,
+        59,
+        742,
+        341
       ],
       "authored_cell_bounds": [
         400,
@@ -80,7 +80,7 @@
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 22,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -96,7 +96,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/funk-enemies-atlas.png",
-      "source_sha256": "0bcffe4f5d33a20c27f763769b6608ade6e8a75782ee9906b83b72ae36e54836",
+      "source_sha256": "1e6748bc7c5d8d49272e7dd60be7743b60abd18c6f6ec3ab9265523224e3d207",
       "grid": [
         4,
         2
@@ -108,10 +108,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        823,
-        45,
-        1131,
-        352
+        846,
+        46,
+        1154,
+        353
       ],
       "authored_cell_bounds": [
         800,
@@ -125,7 +125,7 @@
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 22,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -141,7 +141,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/funk-enemies-atlas.png",
-      "source_sha256": "0bcffe4f5d33a20c27f763769b6608ade6e8a75782ee9906b83b72ae36e54836",
+      "source_sha256": "1e6748bc7c5d8d49272e7dd60be7743b60abd18c6f6ec3ab9265523224e3d207",
       "grid": [
         4,
         2
@@ -153,9 +153,9 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        1230,
+        1250,
         27,
-        1529,
+        1549,
         373
       ],
       "authored_cell_bounds": [
@@ -170,7 +170,7 @@
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 22,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -186,7 +186,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/funk-enemies-atlas.png",
-      "source_sha256": "0bcffe4f5d33a20c27f763769b6608ade6e8a75782ee9906b83b72ae36e54836",
+      "source_sha256": "1e6748bc7c5d8d49272e7dd60be7743b60abd18c6f6ec3ab9265523224e3d207",
       "grid": [
         4,
         2
@@ -198,10 +198,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        19,
-        438,
-        375,
-        756
+        22,
+        441,
+        378,
+        759
       ],
       "authored_cell_bounds": [
         0,
@@ -215,7 +215,7 @@
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 22,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -231,7 +231,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/funk-enemies-atlas.png",
-      "source_sha256": "0bcffe4f5d33a20c27f763769b6608ade6e8a75782ee9906b83b72ae36e54836",
+      "source_sha256": "1e6748bc7c5d8d49272e7dd60be7743b60abd18c6f6ec3ab9265523224e3d207",
       "grid": [
         4,
         2
@@ -243,10 +243,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        434,
-        452,
-        705,
-        706
+        464,
+        473,
+        735,
+        727
       ],
       "authored_cell_bounds": [
         400,
@@ -254,9 +254,9 @@
         800,
         800
       ],
-      "primary_component_id": 11,
+      "primary_component_id": 12,
       "source_component_ids": [
-        11,
+        12,
         15,
         16,
         17,
@@ -265,7 +265,7 @@
       ],
       "assigned_components": 6,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 22,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -281,7 +281,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/funk-enemies-atlas.png",
-      "source_sha256": "0bcffe4f5d33a20c27f763769b6608ade6e8a75782ee9906b83b72ae36e54836",
+      "source_sha256": "1e6748bc7c5d8d49272e7dd60be7743b60abd18c6f6ec3ab9265523224e3d207",
       "grid": [
         4,
         2
@@ -293,10 +293,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        755,
-        378,
-        1183,
-        772
+        808,
+        423,
+        1192,
+        776
       ],
       "authored_cell_bounds": [
         800,
@@ -304,32 +304,29 @@
         1200,
         800
       ],
-      "primary_component_id": 4,
+      "primary_component_id": 5,
       "source_component_ids": [
-        4
+        5
       ],
       "assigned_components": 1,
-      "extends_beyond_cell": [
-        "left",
-        "top"
-      ],
-      "discarded_noise_pixels": 22,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
-        428,
-        394
+        384,
+        353
       ],
       "output": "landing-page/assets/world-tour/sprites/enemies/funk/mothership-of-funk.png",
       "output_size": [
-        428,
-        394
+        384,
+        353
       ],
-      "output_sha256": "180281ecfacab37b6705caa97ff71645cecfa4f2d528c8da6ed71d37d843d398"
+      "output_sha256": "58d3479ea34dc873e94cb770c0985d60677ed9bd7e500121b888315ae56ffbbb"
     },
     {
       "source": "groove-bound/assets/generated/campaign/funk-enemies-atlas.png",
-      "source_sha256": "0bcffe4f5d33a20c27f763769b6608ade6e8a75782ee9906b83b72ae36e54836",
+      "source_sha256": "1e6748bc7c5d8d49272e7dd60be7743b60abd18c6f6ec3ab9265523224e3d207",
       "grid": [
         4,
         2
@@ -341,10 +338,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        1226,
-        412,
-        1558,
-        772
+        1234,
+        420,
+        1566,
+        780
       ],
       "authored_cell_bounds": [
         1200,
@@ -352,14 +349,14 @@
         1600,
         800
       ],
-      "primary_component_id": 5,
+      "primary_component_id": 4,
       "source_component_ids": [
-        5,
+        4,
         6,
         7,
         9,
         10,
-        12,
+        11,
         13,
         14,
         20,
@@ -383,7 +380,7 @@
       ],
       "assigned_components": 26,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 22,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -399,7 +396,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/soul-enemies-atlas.png",
-      "source_sha256": "532ec1e94d8fee34011a5d9c0bf82c1859aa8d7c82315ff1b99d1d95a796716e",
+      "source_sha256": "1a79ef1bf271c04eb8c8a65f2ab16b92d91d6ce4e1216fb6a9a0e3a58d55d48c",
       "grid": [
         4,
         2
@@ -411,10 +408,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        111,
-        90,
-        298,
-        343
+        106,
+        73,
+        293,
+        326
       ],
       "authored_cell_bounds": [
         0,
@@ -428,7 +425,7 @@
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 1,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -444,7 +441,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/soul-enemies-atlas.png",
-      "source_sha256": "532ec1e94d8fee34011a5d9c0bf82c1859aa8d7c82315ff1b99d1d95a796716e",
+      "source_sha256": "1a79ef1bf271c04eb8c8a65f2ab16b92d91d6ce4e1216fb6a9a0e3a58d55d48c",
       "grid": [
         4,
         2
@@ -456,10 +453,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        436,
-        30,
-        672,
-        380
+        482,
+        25,
+        718,
+        375
       ],
       "authored_cell_bounds": [
         400,
@@ -473,7 +470,7 @@
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 1,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -489,7 +486,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/soul-enemies-atlas.png",
-      "source_sha256": "532ec1e94d8fee34011a5d9c0bf82c1859aa8d7c82315ff1b99d1d95a796716e",
+      "source_sha256": "1a79ef1bf271c04eb8c8a65f2ab16b92d91d6ce4e1216fb6a9a0e3a58d55d48c",
       "grid": [
         4,
         2
@@ -501,10 +498,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        757,
-        26,
-        1090,
-        379
+        833,
+        23,
+        1166,
+        376
       ],
       "authored_cell_bounds": [
         800,
@@ -517,10 +514,8 @@
         0
       ],
       "assigned_components": 1,
-      "extends_beyond_cell": [
-        "left"
-      ],
-      "discarded_noise_pixels": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -536,7 +531,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/soul-enemies-atlas.png",
-      "source_sha256": "532ec1e94d8fee34011a5d9c0bf82c1859aa8d7c82315ff1b99d1d95a796716e",
+      "source_sha256": "1a79ef1bf271c04eb8c8a65f2ab16b92d91d6ce4e1216fb6a9a0e3a58d55d48c",
       "grid": [
         4,
         2
@@ -548,10 +543,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        1181,
-        59,
-        1488,
-        355
+        1246,
+        52,
+        1553,
+        348
       ],
       "authored_cell_bounds": [
         1200,
@@ -564,10 +559,8 @@
         2
       ],
       "assigned_components": 1,
-      "extends_beyond_cell": [
-        "left"
-      ],
-      "discarded_noise_pixels": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -583,7 +576,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/soul-enemies-atlas.png",
-      "source_sha256": "532ec1e94d8fee34011a5d9c0bf82c1859aa8d7c82315ff1b99d1d95a796716e",
+      "source_sha256": "1a79ef1bf271c04eb8c8a65f2ab16b92d91d6ce4e1216fb6a9a0e3a58d55d48c",
       "grid": [
         4,
         2
@@ -595,10 +588,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        53,
-        472,
-        332,
-        675
+        60,
+        498,
+        339,
+        701
       ],
       "authored_cell_bounds": [
         0,
@@ -612,7 +605,7 @@
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 1,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -628,7 +621,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/soul-enemies-atlas.png",
-      "source_sha256": "532ec1e94d8fee34011a5d9c0bf82c1859aa8d7c82315ff1b99d1d95a796716e",
+      "source_sha256": "1a79ef1bf271c04eb8c8a65f2ab16b92d91d6ce4e1216fb6a9a0e3a58d55d48c",
       "grid": [
         4,
         2
@@ -640,10 +633,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        380,
-        444,
-        632,
-        742
+        474,
+        451,
+        726,
+        749
       ],
       "authored_cell_bounds": [
         400,
@@ -656,10 +649,8 @@
         6
       ],
       "assigned_components": 1,
-      "extends_beyond_cell": [
-        "left"
-      ],
-      "discarded_noise_pixels": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -675,7 +666,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/soul-enemies-atlas.png",
-      "source_sha256": "532ec1e94d8fee34011a5d9c0bf82c1859aa8d7c82315ff1b99d1d95a796716e",
+      "source_sha256": "1a79ef1bf271c04eb8c8a65f2ab16b92d91d6ce4e1216fb6a9a0e3a58d55d48c",
       "grid": [
         4,
         2
@@ -687,10 +678,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        689,
-        390,
-        1079,
-        776
+        808,
+        410,
+        1192,
+        790
       ],
       "authored_cell_bounds": [
         800,
@@ -698,32 +689,29 @@
         1200,
         800
       ],
-      "primary_component_id": 5,
+      "primary_component_id": 4,
       "source_component_ids": [
-        5
+        4
       ],
       "assigned_components": 1,
-      "extends_beyond_cell": [
-        "left",
-        "top"
-      ],
-      "discarded_noise_pixels": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
-        390,
-        386
+        384,
+        380
       ],
       "output": "landing-page/assets/world-tour/sprites/enemies/soul/organ-colossus.png",
       "output_size": [
-        390,
-        386
+        384,
+        380
       ],
-      "output_sha256": "fdad1842c02647fb915b1ecde522d00d3f152576bc9bd6a17730d3a5c970df78"
+      "output_sha256": "9568bf790aebf31a4dab54ed3801aa8b9b172f1c16c68ab5f0bdb1ccb9c67571"
     },
     {
       "source": "groove-bound/assets/generated/campaign/soul-enemies-atlas.png",
-      "source_sha256": "532ec1e94d8fee34011a5d9c0bf82c1859aa8d7c82315ff1b99d1d95a796716e",
+      "source_sha256": "1a79ef1bf271c04eb8c8a65f2ab16b92d91d6ce4e1216fb6a9a0e3a58d55d48c",
       "grid": [
         4,
         2
@@ -735,10 +723,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        1098,
-        388,
-        1562,
-        772
+        1208,
+        441,
+        1592,
+        759
       ],
       "authored_cell_bounds": [
         1200,
@@ -746,32 +734,29 @@
         1600,
         800
       ],
-      "primary_component_id": 4,
+      "primary_component_id": 5,
       "source_component_ids": [
-        4
+        5
       ],
       "assigned_components": 1,
-      "extends_beyond_cell": [
-        "left",
-        "top"
-      ],
-      "discarded_noise_pixels": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
-        464,
-        384
+        384,
+        318
       ],
       "output": "landing-page/assets/world-tour/sprites/enemies/soul/velvet-titan.png",
       "output_size": [
-        464,
-        384
+        384,
+        318
       ],
-      "output_sha256": "e74c74c53c184252011f29a09c6409e369943f66b8022f9d222f65031cf7e5f3"
+      "output_sha256": "2a27b24c0284295887eb3d59acaff730ec70ba4513e0e20de9b48b5e8e3d447c"
     },
     {
       "source": "groove-bound/assets/generated/campaign/disco-enemies-atlas.png",
-      "source_sha256": "ca7626c2dfe254010da3dee112d8e5a3ec67e1173dfab50e787255b1a2ce9d59",
+      "source_sha256": "604b8db120aad51319d4bf4e8a65b0c03f18504caa7f4d7d7296aa0440057b7f",
       "grid": [
         4,
         2
@@ -783,10 +768,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        86,
-        59,
-        297,
-        334
+        94,
+        62,
+        305,
+        337
       ],
       "authored_cell_bounds": [
         0,
@@ -794,13 +779,13 @@
         400,
         400
       ],
-      "primary_component_id": 0,
+      "primary_component_id": 2,
       "source_component_ids": [
-        0
+        2
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 13,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -816,7 +801,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/disco-enemies-atlas.png",
-      "source_sha256": "ca7626c2dfe254010da3dee112d8e5a3ec67e1173dfab50e787255b1a2ce9d59",
+      "source_sha256": "604b8db120aad51319d4bf4e8a65b0c03f18504caa7f4d7d7296aa0440057b7f",
       "grid": [
         4,
         2
@@ -828,10 +813,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        452,
-        59,
-        719,
-        342
+        466,
+        58,
+        733,
+        341
       ],
       "authored_cell_bounds": [
         400,
@@ -839,16 +824,16 @@
         800,
         400
       ],
-      "primary_component_id": 1,
+      "primary_component_id": 0,
       "source_component_ids": [
-        1,
+        0,
         4,
         5,
         6
       ],
       "assigned_components": 4,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 13,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -864,7 +849,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/disco-enemies-atlas.png",
-      "source_sha256": "ca7626c2dfe254010da3dee112d8e5a3ec67e1173dfab50e787255b1a2ce9d59",
+      "source_sha256": "604b8db120aad51319d4bf4e8a65b0c03f18504caa7f4d7d7296aa0440057b7f",
       "grid": [
         4,
         2
@@ -876,10 +861,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        821,
-        65,
-        1141,
-        342
+        840,
+        61,
+        1160,
+        338
       ],
       "authored_cell_bounds": [
         800,
@@ -887,13 +872,13 @@
         1200,
         400
       ],
-      "primary_component_id": 2,
+      "primary_component_id": 1,
       "source_component_ids": [
-        2
+        1
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 13,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -909,7 +894,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/disco-enemies-atlas.png",
-      "source_sha256": "ca7626c2dfe254010da3dee112d8e5a3ec67e1173dfab50e787255b1a2ce9d59",
+      "source_sha256": "604b8db120aad51319d4bf4e8a65b0c03f18504caa7f4d7d7296aa0440057b7f",
       "grid": [
         4,
         2
@@ -921,10 +906,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        1219,
-        70,
-        1515,
-        343
+        1252,
+        63,
+        1548,
+        336
       ],
       "authored_cell_bounds": [
         1200,
@@ -938,7 +923,7 @@
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 13,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -954,7 +939,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/disco-enemies-atlas.png",
-      "source_sha256": "ca7626c2dfe254010da3dee112d8e5a3ec67e1173dfab50e787255b1a2ce9d59",
+      "source_sha256": "604b8db120aad51319d4bf4e8a65b0c03f18504caa7f4d7d7296aa0440057b7f",
       "grid": [
         4,
         2
@@ -966,10 +951,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        38,
-        451,
-        363,
-        741
+        37,
+        455,
+        362,
+        745
       ],
       "authored_cell_bounds": [
         0,
@@ -983,7 +968,7 @@
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 13,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -999,7 +984,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/disco-enemies-atlas.png",
-      "source_sha256": "ca7626c2dfe254010da3dee112d8e5a3ec67e1173dfab50e787255b1a2ce9d59",
+      "source_sha256": "604b8db120aad51319d4bf4e8a65b0c03f18504caa7f4d7d7296aa0440057b7f",
       "grid": [
         4,
         2
@@ -1011,10 +996,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        384,
-        426,
-        665,
-        734
+        459,
+        446,
+        740,
+        754
       ],
       "authored_cell_bounds": [
         400,
@@ -1027,10 +1012,8 @@
         9
       ],
       "assigned_components": 1,
-      "extends_beyond_cell": [
-        "left"
-      ],
-      "discarded_noise_pixels": 13,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -1046,7 +1029,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/disco-enemies-atlas.png",
-      "source_sha256": "ca7626c2dfe254010da3dee112d8e5a3ec67e1173dfab50e787255b1a2ce9d59",
+      "source_sha256": "604b8db120aad51319d4bf4e8a65b0c03f18504caa7f4d7d7296aa0440057b7f",
       "grid": [
         4,
         2
@@ -1058,10 +1041,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        740,
-        422,
-        1125,
-        737
+        808,
+        443,
+        1192,
+        757
       ],
       "authored_cell_bounds": [
         800,
@@ -1074,26 +1057,24 @@
         8
       ],
       "assigned_components": 1,
-      "extends_beyond_cell": [
-        "left"
-      ],
-      "discarded_noise_pixels": 13,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
-        385,
-        315
+        384,
+        314
       ],
       "output": "landing-page/assets/world-tour/sprites/enemies/disco/laser-conductor.png",
       "output_size": [
-        385,
-        315
+        384,
+        314
       ],
-      "output_sha256": "70eeb29f6538777144ff573f12b5028f1dbef5ac66cefee2c879aace47f43304"
+      "output_sha256": "787238c1cbdcbbb2ec782f5fca404840a94bf5b55f370f9bb866e74eee07be04"
     },
     {
       "source": "groove-bound/assets/generated/campaign/disco-enemies-atlas.png",
-      "source_sha256": "ca7626c2dfe254010da3dee112d8e5a3ec67e1173dfab50e787255b1a2ce9d59",
+      "source_sha256": "604b8db120aad51319d4bf4e8a65b0c03f18504caa7f4d7d7296aa0440057b7f",
       "grid": [
         4,
         2
@@ -1105,10 +1086,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        1160,
-        395,
-        1549,
-        745
+        1208,
+        427,
+        1592,
+        772
       ],
       "authored_cell_bounds": [
         1200,
@@ -1123,27 +1104,24 @@
         12
       ],
       "assigned_components": 3,
-      "extends_beyond_cell": [
-        "left",
-        "top"
-      ],
-      "discarded_noise_pixels": 13,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
-        389,
-        350
+        384,
+        345
       ],
       "output": "landing-page/assets/world-tour/sprites/enemies/disco/prism-monarch.png",
       "output_size": [
-        389,
-        350
+        384,
+        345
       ],
-      "output_sha256": "1b16a51d206497899978fe9615acac00c47838ed78ce7e9dd1c4c1b01c9e9d8f"
+      "output_sha256": "f1d4a5e322561400bea66cf1163f6beb7e591a311c3d8792553fe7e2a59e7697"
     },
     {
-      "source": "groove-bound/assets/generated/campaign/funk-environment-atlas.png",
-      "source_sha256": "f4b9614ab7eba0f3f5655abd0a987ba4100f2626d38b743e777fb28baeae0b25",
+      "source": "groove-bound/assets/generated/campaign/jazz-enemies-atlas.png",
+      "source_sha256": "e3e7cf764dce7a2c1b6fff1cfcb7b1bb066374b4e41521e0fcdc3af977140591",
       "grid": [
         4,
         2
@@ -1155,10 +1133,375 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        43,
+        69,
+        79,
+        326,
+        359
+      ],
+      "authored_cell_bounds": [
+        0,
+        0,
+        400,
+        400
+      ],
+      "primary_component_id": 1,
+      "source_component_ids": [
+        1
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 3,
+      "alpha_bounds": [
+        0,
+        0,
+        257,
+        280
+      ],
+      "output": "landing-page/assets/world-tour/sprites/enemies/jazz/syncopated-imp.png",
+      "output_size": [
+        257,
+        280
+      ],
+      "output_sha256": "39b085ca080d1da0d02d38cfcf2dc6f600ff851b6e521014cf59689bbf53f1a5"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/jazz-enemies-atlas.png",
+      "source_sha256": "e3e7cf764dce7a2c1b6fff1cfcb7b1bb066374b4e41521e0fcdc3af977140591",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 2,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        390,
+        124,
+        802,
+        337
+      ],
+      "authored_cell_bounds": [
+        400,
+        0,
+        800,
+        400
+      ],
+      "primary_component_id": 3,
+      "source_component_ids": [
+        3
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [
+        "left",
+        "right"
+      ],
+      "discarded_noise_pixels": 3,
+      "alpha_bounds": [
+        0,
+        0,
+        412,
+        213
+      ],
+      "output": "landing-page/assets/world-tour/sprites/enemies/jazz/blue-note-bat.png",
+      "output_size": [
+        412,
+        213
+      ],
+      "output_sha256": "007118f317a38943ab3b8d401b0bbfb716d0bc6fe2398a3a42fbff898dc3753b"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/jazz-enemies-atlas.png",
+      "source_sha256": "e3e7cf764dce7a2c1b6fff1cfcb7b1bb066374b4e41521e0fcdc3af977140591",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 3,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        855,
         33,
-        397,
-        372
+        1111,
+        363
+      ],
+      "authored_cell_bounds": [
+        800,
+        0,
+        1200,
+        400
+      ],
+      "primary_component_id": 0,
+      "source_component_ids": [
+        0
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 3,
+      "alpha_bounds": [
+        0,
+        0,
+        256,
+        330
+      ],
+      "output": "landing-page/assets/world-tour/sprites/enemies/jazz/walking-bass-bot.png",
+      "output_size": [
+        256,
+        330
+      ],
+      "output_sha256": "72a885cc390476ff83784c31d8f7a8d86cf95fb2786e34cc882bfd167477e144"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/jazz-enemies-atlas.png",
+      "source_sha256": "e3e7cf764dce7a2c1b6fff1cfcb7b1bb066374b4e41521e0fcdc3af977140591",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 4,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        1233,
+        116,
+        1513,
+        362
+      ],
+      "authored_cell_bounds": [
+        1200,
+        0,
+        1600,
+        400
+      ],
+      "primary_component_id": 2,
+      "source_component_ids": [
+        2
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 3,
+      "alpha_bounds": [
+        0,
+        0,
+        280,
+        246
+      ],
+      "output": "landing-page/assets/world-tour/sprites/enemies/jazz/scat-cannon.png",
+      "output_size": [
+        280,
+        246
+      ],
+      "output_sha256": "c3c849cd149db2c877b86c125396f40dcf69721759ef6387383e230a3b1ea937"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/jazz-enemies-atlas.png",
+      "source_sha256": "e3e7cf764dce7a2c1b6fff1cfcb7b1bb066374b4e41521e0fcdc3af977140591",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 5,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        32,
+        437,
+        377,
+        730
+      ],
+      "authored_cell_bounds": [
+        0,
+        400,
+        400,
+        800
+      ],
+      "primary_component_id": 6,
+      "source_component_ids": [
+        6
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 3,
+      "alpha_bounds": [
+        0,
+        0,
+        345,
+        293
+      ],
+      "output": "landing-page/assets/world-tour/sprites/enemies/jazz/bebop-behemoth.png",
+      "output_size": [
+        345,
+        293
+      ],
+      "output_sha256": "2252d4b4d0511d95e425ccfb50bdcff37d8045ea34b40cae64f9b88e13b3b03a"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/jazz-enemies-atlas.png",
+      "source_sha256": "e3e7cf764dce7a2c1b6fff1cfcb7b1bb066374b4e41521e0fcdc3af977140591",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 6,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        400,
+        461,
+        787,
+        733
+      ],
+      "authored_cell_bounds": [
+        400,
+        400,
+        800,
+        800
+      ],
+      "primary_component_id": 7,
+      "source_component_ids": [
+        7
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 3,
+      "alpha_bounds": [
+        0,
+        0,
+        387,
+        272
+      ],
+      "output": "landing-page/assets/world-tour/sprites/enemies/jazz/brushfire-skitter.png",
+      "output_size": [
+        387,
+        272
+      ],
+      "output_sha256": "a3602650c87f48a9ea00aae0a8283a8e15a7b7363efb65d0a89b778e90a07f0b"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/jazz-enemies-atlas.png",
+      "source_sha256": "e3e7cf764dce7a2c1b6fff1cfcb7b1bb066374b4e41521e0fcdc3af977140591",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 7,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        832,
+        402,
+        1108,
+        742
+      ],
+      "authored_cell_bounds": [
+        800,
+        400,
+        1200,
+        800
+      ],
+      "primary_component_id": 4,
+      "source_component_ids": [
+        4
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 3,
+      "alpha_bounds": [
+        0,
+        0,
+        276,
+        340
+      ],
+      "output": "landing-page/assets/world-tour/sprites/enemies/jazz/brass-regent.png",
+      "output_size": [
+        276,
+        340
+      ],
+      "output_sha256": "4203942de4539780ef44924078e3e9f025f3ddb6692693428a73eadd09d890c3"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/jazz-enemies-atlas.png",
+      "source_sha256": "e3e7cf764dce7a2c1b6fff1cfcb7b1bb066374b4e41521e0fcdc3af977140591",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 8,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        1189,
+        410,
+        1523,
+        741
+      ],
+      "authored_cell_bounds": [
+        1200,
+        400,
+        1600,
+        800
+      ],
+      "primary_component_id": 5,
+      "source_component_ids": [
+        5
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [
+        "left"
+      ],
+      "discarded_noise_pixels": 3,
+      "alpha_bounds": [
+        0,
+        0,
+        334,
+        331
+      ],
+      "output": "landing-page/assets/world-tour/sprites/enemies/jazz/midnight-maestro.png",
+      "output_size": [
+        334,
+        331
+      ],
+      "output_sha256": "4e2aa3e4047b485c2eca38c4eef22062a6d5d4cac9f80c12e0ba49d4eb190661"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/funk-environment-atlas.png",
+      "source_sha256": "c7356b19c4dfe7f3b035bb3ce0b5307138318970faf4e9d0332e76473d61965d",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 1,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        23,
+        30,
+        377,
+        369
       ],
       "authored_cell_bounds": [
         0,
@@ -1172,7 +1515,7 @@
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 27,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -1188,7 +1531,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/funk-environment-atlas.png",
-      "source_sha256": "f4b9614ab7eba0f3f5655abd0a987ba4100f2626d38b743e777fb28baeae0b25",
+      "source_sha256": "c7356b19c4dfe7f3b035bb3ce0b5307138318970faf4e9d0332e76473d61965d",
       "grid": [
         4,
         2
@@ -1200,10 +1543,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        453,
-        49,
-        748,
-        364
+        452,
+        42,
+        747,
+        357
       ],
       "authored_cell_bounds": [
         400,
@@ -1217,7 +1560,7 @@
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 27,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -1233,7 +1576,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/funk-environment-atlas.png",
-      "source_sha256": "f4b9614ab7eba0f3f5655abd0a987ba4100f2626d38b743e777fb28baeae0b25",
+      "source_sha256": "c7356b19c4dfe7f3b035bb3ce0b5307138318970faf4e9d0332e76473d61965d",
       "grid": [
         4,
         2
@@ -1245,10 +1588,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        801,
-        33,
-        1147,
-        368
+        827,
+        32,
+        1173,
+        367
       ],
       "authored_cell_bounds": [
         800,
@@ -1262,7 +1605,7 @@
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 27,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -1278,7 +1621,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/funk-environment-atlas.png",
-      "source_sha256": "f4b9614ab7eba0f3f5655abd0a987ba4100f2626d38b743e777fb28baeae0b25",
+      "source_sha256": "c7356b19c4dfe7f3b035bb3ce0b5307138318970faf4e9d0332e76473d61965d",
       "grid": [
         4,
         2
@@ -1290,10 +1633,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        1179,
-        85,
-        1560,
-        368
+        1209,
+        58,
+        1590,
+        341
       ],
       "authored_cell_bounds": [
         1200,
@@ -1306,10 +1649,8 @@
         3
       ],
       "assigned_components": 1,
-      "extends_beyond_cell": [
-        "left"
-      ],
-      "discarded_noise_pixels": 27,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -1325,7 +1666,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/funk-environment-atlas.png",
-      "source_sha256": "f4b9614ab7eba0f3f5655abd0a987ba4100f2626d38b743e777fb28baeae0b25",
+      "source_sha256": "c7356b19c4dfe7f3b035bb3ce0b5307138318970faf4e9d0332e76473d61965d",
       "grid": [
         4,
         2
@@ -1337,10 +1678,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        65,
-        410,
-        316,
-        767
+        74,
+        421,
+        325,
+        778
       ],
       "authored_cell_bounds": [
         0,
@@ -1355,7 +1696,7 @@
       ],
       "assigned_components": 2,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 27,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -1371,7 +1712,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/funk-environment-atlas.png",
-      "source_sha256": "f4b9614ab7eba0f3f5655abd0a987ba4100f2626d38b743e777fb28baeae0b25",
+      "source_sha256": "c7356b19c4dfe7f3b035bb3ce0b5307138318970faf4e9d0332e76473d61965d",
       "grid": [
         4,
         2
@@ -1383,10 +1724,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        497,
-        414,
-        663,
-        765
+        517,
+        424,
+        683,
+        775
       ],
       "authored_cell_bounds": [
         400,
@@ -1400,7 +1741,7 @@
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 27,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -1416,7 +1757,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/funk-environment-atlas.png",
-      "source_sha256": "f4b9614ab7eba0f3f5655abd0a987ba4100f2626d38b743e777fb28baeae0b25",
+      "source_sha256": "c7356b19c4dfe7f3b035bb3ce0b5307138318970faf4e9d0332e76473d61965d",
       "grid": [
         4,
         2
@@ -1428,9 +1769,9 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        804,
+        850,
         445,
-        1103,
+        1149,
         754
       ],
       "authored_cell_bounds": [
@@ -1445,7 +1786,7 @@
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 27,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -1461,7 +1802,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/funk-environment-atlas.png",
-      "source_sha256": "f4b9614ab7eba0f3f5655abd0a987ba4100f2626d38b743e777fb28baeae0b25",
+      "source_sha256": "c7356b19c4dfe7f3b035bb3ce0b5307138318970faf4e9d0332e76473d61965d",
       "grid": [
         4,
         2
@@ -1473,10 +1814,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        1232,
-        416,
-        1444,
-        768
+        1294,
+        424,
+        1506,
+        776
       ],
       "authored_cell_bounds": [
         1200,
@@ -1498,7 +1839,7 @@
       ],
       "assigned_components": 9,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 27,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -1514,7 +1855,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/soul-environment-atlas.png",
-      "source_sha256": "6f3e4f3c4c10ee85588349a749f7324de14b23954d727b7caa218e8eaa91c4ec",
+      "source_sha256": "282762e50dff49c70d28da1bc660486c961566440040797d8054a98641bdf07a",
       "grid": [
         4,
         2
@@ -1526,10 +1867,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        46,
-        27,
-        364,
-        360
+        41,
+        33,
+        359,
+        366
       ],
       "authored_cell_bounds": [
         0,
@@ -1543,7 +1884,7 @@
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 3,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -1559,7 +1900,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/soul-environment-atlas.png",
-      "source_sha256": "6f3e4f3c4c10ee85588349a749f7324de14b23954d727b7caa218e8eaa91c4ec",
+      "source_sha256": "282762e50dff49c70d28da1bc660486c961566440040797d8054a98641bdf07a",
       "grid": [
         4,
         2
@@ -1571,10 +1912,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        452,
-        24,
-        769,
-        369
+        441,
+        27,
+        758,
+        372
       ],
       "authored_cell_bounds": [
         400,
@@ -1588,7 +1929,7 @@
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 3,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -1604,7 +1945,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/soul-environment-atlas.png",
-      "source_sha256": "6f3e4f3c4c10ee85588349a749f7324de14b23954d727b7caa218e8eaa91c4ec",
+      "source_sha256": "282762e50dff49c70d28da1bc660486c961566440040797d8054a98641bdf07a",
       "grid": [
         4,
         2
@@ -1616,10 +1957,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        839,
-        24,
-        1163,
-        367
+        838,
+        28,
+        1162,
+        371
       ],
       "authored_cell_bounds": [
         800,
@@ -1633,7 +1974,7 @@
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 3,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -1649,7 +1990,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/soul-environment-atlas.png",
-      "source_sha256": "6f3e4f3c4c10ee85588349a749f7324de14b23954d727b7caa218e8eaa91c4ec",
+      "source_sha256": "282762e50dff49c70d28da1bc660486c961566440040797d8054a98641bdf07a",
       "grid": [
         4,
         2
@@ -1661,10 +2002,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        1220,
-        35,
-        1568,
-        369
+        1226,
+        33,
+        1574,
+        367
       ],
       "authored_cell_bounds": [
         1200,
@@ -1678,7 +2019,7 @@
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 3,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -1694,7 +2035,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/soul-environment-atlas.png",
-      "source_sha256": "6f3e4f3c4c10ee85588349a749f7324de14b23954d727b7caa218e8eaa91c4ec",
+      "source_sha256": "282762e50dff49c70d28da1bc660486c961566440040797d8054a98641bdf07a",
       "grid": [
         4,
         2
@@ -1706,10 +2047,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        56,
-        412,
-        355,
-        754
+        50,
+        429,
+        349,
+        771
       ],
       "authored_cell_bounds": [
         0,
@@ -1723,7 +2064,7 @@
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 3,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -1739,7 +2080,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/soul-environment-atlas.png",
-      "source_sha256": "6f3e4f3c4c10ee85588349a749f7324de14b23954d727b7caa218e8eaa91c4ec",
+      "source_sha256": "282762e50dff49c70d28da1bc660486c961566440040797d8054a98641bdf07a",
       "grid": [
         4,
         2
@@ -1751,10 +2092,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        500,
-        393,
-        652,
-        757
+        524,
+        418,
+        676,
+        782
       ],
       "authored_cell_bounds": [
         400,
@@ -1767,10 +2108,8 @@
         4
       ],
       "assigned_components": 1,
-      "extends_beyond_cell": [
-        "top"
-      ],
-      "discarded_noise_pixels": 3,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -1786,7 +2125,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/soul-environment-atlas.png",
-      "source_sha256": "6f3e4f3c4c10ee85588349a749f7324de14b23954d727b7caa218e8eaa91c4ec",
+      "source_sha256": "282762e50dff49c70d28da1bc660486c961566440040797d8054a98641bdf07a",
       "grid": [
         4,
         2
@@ -1798,10 +2137,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        828,
-        428,
-        1152,
-        748
+        838,
+        440,
+        1162,
+        760
       ],
       "authored_cell_bounds": [
         800,
@@ -1815,7 +2154,7 @@
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 3,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -1831,7 +2170,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/soul-environment-atlas.png",
-      "source_sha256": "6f3e4f3c4c10ee85588349a749f7324de14b23954d727b7caa218e8eaa91c4ec",
+      "source_sha256": "282762e50dff49c70d28da1bc660486c961566440040797d8054a98641bdf07a",
       "grid": [
         4,
         2
@@ -1843,10 +2182,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        1260,
-        440,
-        1516,
-        752
+        1272,
+        444,
+        1528,
+        756
       ],
       "authored_cell_bounds": [
         1200,
@@ -1860,7 +2199,7 @@
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 3,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -1876,7 +2215,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/disco-environment-atlas.png",
-      "source_sha256": "65b831bfd3f623fe98fbc952e826cf17f27c5fbefcec1dad896fd82cfa25cc08",
+      "source_sha256": "998d85eb9f409f6b5891ea777954e4fb192262f24d5a8f258cfa2dbf5cf23882",
       "grid": [
         4,
         2
@@ -1888,10 +2227,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        30,
-        69,
-        435,
-        381
+        8,
+        52,
+        392,
+        348
       ],
       "authored_cell_bounds": [
         0,
@@ -1899,31 +2238,29 @@
         400,
         400
       ],
-      "primary_component_id": 7,
+      "primary_component_id": 4,
       "source_component_ids": [
-        7
+        4
       ],
       "assigned_components": 1,
-      "extends_beyond_cell": [
-        "right"
-      ],
-      "discarded_noise_pixels": 10,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
-        405,
-        312
+        384,
+        296
       ],
       "output": "landing-page/assets/world-tour/sprites/environments/disco/prop-01.png",
       "output_size": [
-        405,
-        312
+        384,
+        296
       ],
-      "output_sha256": "2d9a21f521fa90200e296732f2353430fa815756f2fcc39a6c7c590d2b7907ce"
+      "output_sha256": "8bf0e79ee3464295fb4220e8333c16e9afbee915b2b1bce739b609f6a4a77886"
     },
     {
       "source": "groove-bound/assets/generated/campaign/disco-environment-atlas.png",
-      "source_sha256": "65b831bfd3f623fe98fbc952e826cf17f27c5fbefcec1dad896fd82cfa25cc08",
+      "source_sha256": "998d85eb9f409f6b5891ea777954e4fb192262f24d5a8f258cfa2dbf5cf23882",
       "grid": [
         4,
         2
@@ -1935,10 +2272,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        525,
-        21,
-        706,
-        374
+        509,
+        23,
+        690,
+        376
       ],
       "authored_cell_bounds": [
         400,
@@ -1949,16 +2286,16 @@
       "primary_component_id": 0,
       "source_component_ids": [
         0,
-        1,
-        2,
         3,
         5,
+        6,
+        7,
         8,
         9
       ],
       "assigned_components": 7,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 10,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -1974,7 +2311,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/disco-environment-atlas.png",
-      "source_sha256": "65b831bfd3f623fe98fbc952e826cf17f27c5fbefcec1dad896fd82cfa25cc08",
+      "source_sha256": "998d85eb9f409f6b5891ea777954e4fb192262f24d5a8f258cfa2dbf5cf23882",
       "grid": [
         4,
         2
@@ -1986,10 +2323,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        814,
-        55,
-        1168,
-        378
+        823,
+        38,
+        1177,
+        361
       ],
       "authored_cell_bounds": [
         800,
@@ -1997,13 +2334,13 @@
         1200,
         400
       ],
-      "primary_component_id": 4,
+      "primary_component_id": 1,
       "source_component_ids": [
-        4
+        1
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 10,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -2019,7 +2356,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/disco-environment-atlas.png",
-      "source_sha256": "65b831bfd3f623fe98fbc952e826cf17f27c5fbefcec1dad896fd82cfa25cc08",
+      "source_sha256": "998d85eb9f409f6b5891ea777954e4fb192262f24d5a8f258cfa2dbf5cf23882",
       "grid": [
         4,
         2
@@ -2031,10 +2368,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        1242,
-        60,
-        1540,
-        379
+        1251,
+        40,
+        1549,
+        359
       ],
       "authored_cell_bounds": [
         1200,
@@ -2042,13 +2379,13 @@
         1600,
         400
       ],
-      "primary_component_id": 6,
+      "primary_component_id": 2,
       "source_component_ids": [
-        6
+        2
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 10,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -2064,7 +2401,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/disco-environment-atlas.png",
-      "source_sha256": "65b831bfd3f623fe98fbc952e826cf17f27c5fbefcec1dad896fd82cfa25cc08",
+      "source_sha256": "998d85eb9f409f6b5891ea777954e4fb192262f24d5a8f258cfa2dbf5cf23882",
       "grid": [
         4,
         2
@@ -2076,10 +2413,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        32,
-        432,
-        398,
-        741
+        17,
+        445,
+        383,
+        754
       ],
       "authored_cell_bounds": [
         0,
@@ -2096,7 +2433,7 @@
       ],
       "assigned_components": 4,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 10,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -2112,7 +2449,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/disco-environment-atlas.png",
-      "source_sha256": "65b831bfd3f623fe98fbc952e826cf17f27c5fbefcec1dad896fd82cfa25cc08",
+      "source_sha256": "998d85eb9f409f6b5891ea777954e4fb192262f24d5a8f258cfa2dbf5cf23882",
       "grid": [
         4,
         2
@@ -2124,10 +2461,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        452,
-        428,
-        735,
-        741
+        458,
+        443,
+        741,
+        756
       ],
       "authored_cell_bounds": [
         400,
@@ -2141,7 +2478,7 @@
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 10,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -2157,7 +2494,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/disco-environment-atlas.png",
-      "source_sha256": "65b831bfd3f623fe98fbc952e826cf17f27c5fbefcec1dad896fd82cfa25cc08",
+      "source_sha256": "998d85eb9f409f6b5891ea777954e4fb192262f24d5a8f258cfa2dbf5cf23882",
       "grid": [
         4,
         2
@@ -2169,10 +2506,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        784,
-        482,
-        1169,
-        741
+        808,
+        471,
+        1192,
+        729
       ],
       "authored_cell_bounds": [
         800,
@@ -2185,26 +2522,24 @@
         13
       ],
       "assigned_components": 1,
-      "extends_beyond_cell": [
-        "left"
-      ],
-      "discarded_noise_pixels": 10,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
-        385,
-        259
+        384,
+        258
       ],
       "output": "landing-page/assets/world-tour/sprites/environments/disco/prop-07.png",
       "output_size": [
-        385,
-        259
+        384,
+        258
       ],
-      "output_sha256": "1886ad829a02daf702ccd8238e6a6036146bf0a290f5160aaae5376e1bc0b07a"
+      "output_sha256": "0431d16bbb6b6c345cffbb038e1093ba2de71a704536baf81ea1148a07d0491c"
     },
     {
       "source": "groove-bound/assets/generated/campaign/disco-environment-atlas.png",
-      "source_sha256": "65b831bfd3f623fe98fbc952e826cf17f27c5fbefcec1dad896fd82cfa25cc08",
+      "source_sha256": "998d85eb9f409f6b5891ea777954e4fb192262f24d5a8f258cfa2dbf5cf23882",
       "grid": [
         4,
         2
@@ -2216,10 +2551,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        1229,
-        449,
-        1506,
-        742
+        1261,
+        453,
+        1538,
+        746
       ],
       "authored_cell_bounds": [
         1200,
@@ -2234,7 +2569,7 @@
       ],
       "assigned_components": 2,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 10,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -2247,6 +2582,368 @@
         293
       ],
       "output_sha256": "c44f2eb02cb54345a08b206d16627626b1fbdecdb9edc3ce1290f738b8e49810"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/jazz-environment-atlas.png",
+      "source_sha256": "15d9c0b92fe4696325ea99bc47220de872fb4cd25a218fd01ec03d5f6167e942",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 1,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        71,
+        14,
+        367,
+        378
+      ],
+      "authored_cell_bounds": [
+        0,
+        0,
+        400,
+        400
+      ],
+      "primary_component_id": 1,
+      "source_component_ids": [
+        1
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 1,
+      "alpha_bounds": [
+        0,
+        0,
+        296,
+        364
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/jazz/prop-01.png",
+      "output_size": [
+        296,
+        364
+      ],
+      "output_sha256": "c997e589320a87f30ce29dfa69f49c95bf23df8cabff40e597bc5b134bae676d"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/jazz-environment-atlas.png",
+      "source_sha256": "15d9c0b92fe4696325ea99bc47220de872fb4cd25a218fd01ec03d5f6167e942",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 2,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        543,
+        4,
+        654,
+        391
+      ],
+      "authored_cell_bounds": [
+        400,
+        0,
+        800,
+        400
+      ],
+      "primary_component_id": 0,
+      "source_component_ids": [
+        0
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 1,
+      "alpha_bounds": [
+        0,
+        0,
+        111,
+        387
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/jazz/prop-02.png",
+      "output_size": [
+        111,
+        387
+      ],
+      "output_sha256": "3497f8f7bc20e6e639c63a6ee98446264648c8f6020bb0a0865e1c8e3ec2a9e4"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/jazz-environment-atlas.png",
+      "source_sha256": "15d9c0b92fe4696325ea99bc47220de872fb4cd25a218fd01ec03d5f6167e942",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 3,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        803,
+        15,
+        1169,
+        396
+      ],
+      "authored_cell_bounds": [
+        800,
+        0,
+        1200,
+        400
+      ],
+      "primary_component_id": 2,
+      "source_component_ids": [
+        2
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 1,
+      "alpha_bounds": [
+        0,
+        0,
+        366,
+        381
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/jazz/prop-03.png",
+      "output_size": [
+        366,
+        381
+      ],
+      "output_sha256": "e002bba4856e9c5f2dbad259bbda4d3f402ad80a1b91b861d0d4e773c6955a98"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/jazz-environment-atlas.png",
+      "source_sha256": "15d9c0b92fe4696325ea99bc47220de872fb4cd25a218fd01ec03d5f6167e942",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 4,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        1243,
+        26,
+        1538,
+        385
+      ],
+      "authored_cell_bounds": [
+        1200,
+        0,
+        1600,
+        400
+      ],
+      "primary_component_id": 3,
+      "source_component_ids": [
+        3
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 1,
+      "alpha_bounds": [
+        0,
+        0,
+        295,
+        359
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/jazz/prop-04.png",
+      "output_size": [
+        295,
+        359
+      ],
+      "output_sha256": "da2f930b7ee2ad5a529adc15991ed321a952ba82cda69661851b0a1c6d3e81d4"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/jazz-environment-atlas.png",
+      "source_sha256": "15d9c0b92fe4696325ea99bc47220de872fb4cd25a218fd01ec03d5f6167e942",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 5,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        35,
+        435,
+        355,
+        781
+      ],
+      "authored_cell_bounds": [
+        0,
+        400,
+        400,
+        800
+      ],
+      "primary_component_id": 5,
+      "source_component_ids": [
+        5
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 1,
+      "alpha_bounds": [
+        0,
+        0,
+        320,
+        346
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/jazz/prop-05.png",
+      "output_size": [
+        320,
+        346
+      ],
+      "output_sha256": "a3f73c33f30f7ea73905233ea0e140a237a1e006ccea855d69d626a182401b77"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/jazz-environment-atlas.png",
+      "source_sha256": "15d9c0b92fe4696325ea99bc47220de872fb4cd25a218fd01ec03d5f6167e942",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 6,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        445,
+        429,
+        710,
+        784
+      ],
+      "authored_cell_bounds": [
+        400,
+        400,
+        800,
+        800
+      ],
+      "primary_component_id": 4,
+      "source_component_ids": [
+        4
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 1,
+      "alpha_bounds": [
+        0,
+        0,
+        265,
+        355
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/jazz/prop-06.png",
+      "output_size": [
+        265,
+        355
+      ],
+      "output_sha256": "6a446d79cc78f9f953694debe5c1c2074c0847db22027cde7f5ade03bc0fa96f"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/jazz-environment-atlas.png",
+      "source_sha256": "15d9c0b92fe4696325ea99bc47220de872fb4cd25a218fd01ec03d5f6167e942",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 7,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        780,
+        464,
+        1166,
+        766
+      ],
+      "authored_cell_bounds": [
+        800,
+        400,
+        1200,
+        800
+      ],
+      "primary_component_id": 7,
+      "source_component_ids": [
+        7
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [
+        "left"
+      ],
+      "discarded_noise_pixels": 1,
+      "alpha_bounds": [
+        0,
+        0,
+        386,
+        302
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/jazz/prop-07.png",
+      "output_size": [
+        386,
+        302
+      ],
+      "output_sha256": "eeb18777611d0f2bc276dda96cbfeed745dfcdd75dc3441beb412d85ea95033b"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/jazz-environment-atlas.png",
+      "source_sha256": "15d9c0b92fe4696325ea99bc47220de872fb4cd25a218fd01ec03d5f6167e942",
+      "grid": [
+        4,
+        2
+      ],
+      "cell": 8,
+      "cell_size": [
+        400,
+        400
+      ],
+      "isolation": "global-alpha-components",
+      "source_bounds": [
+        1267,
+        438,
+        1491,
+        779
+      ],
+      "authored_cell_bounds": [
+        1200,
+        400,
+        1600,
+        800
+      ],
+      "primary_component_id": 6,
+      "source_component_ids": [
+        6
+      ],
+      "assigned_components": 1,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 1,
+      "alpha_bounds": [
+        0,
+        0,
+        224,
+        341
+      ],
+      "output": "landing-page/assets/world-tour/sprites/environments/jazz/prop-08.png",
+      "output_size": [
+        224,
+        341
+      ],
+      "output_sha256": "efd509f54bc3cb0cfd7481357b94a0f0c674ab7d0df3bfb2b0da6ae17862bb9f"
     },
     {
       "source": "groove-bound/assets/generated/campaign/funk-floor-atlas.png",
@@ -2765,8 +3462,180 @@
       "output_sha256": "58540a1f4ca780f68cc8b4f143672063856f7f5187b02eee17e3d7e1ba8b62bc"
     },
     {
+      "source": "groove-bound/assets/generated/campaign/jazz-floor-atlas.png",
+      "source_sha256": "45664fa035d1f1723f2a5086ca29372237742eb7610521a0508a70d5b35a481c",
+      "grid": [
+        2,
+        2
+      ],
+      "cell": 1,
+      "cell_size": [
+        512,
+        512
+      ],
+      "isolation": "opaque-grid-cell",
+      "source_bounds": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "authored_cell_bounds": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "primary_component_id": null,
+      "source_component_ids": null,
+      "assigned_components": null,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
+      "alpha_bounds": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "output": "landing-page/assets/world-tour/sprites/floors/jazz/surface-01.png",
+      "output_size": [
+        512,
+        512
+      ],
+      "output_sha256": "491734187fc2ece42bea380bcdcadaeaf5aab31070be5af1951a48f7252789b7"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/jazz-floor-atlas.png",
+      "source_sha256": "45664fa035d1f1723f2a5086ca29372237742eb7610521a0508a70d5b35a481c",
+      "grid": [
+        2,
+        2
+      ],
+      "cell": 2,
+      "cell_size": [
+        512,
+        512
+      ],
+      "isolation": "opaque-grid-cell",
+      "source_bounds": [
+        512,
+        0,
+        1024,
+        512
+      ],
+      "authored_cell_bounds": [
+        512,
+        0,
+        1024,
+        512
+      ],
+      "primary_component_id": null,
+      "source_component_ids": null,
+      "assigned_components": null,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
+      "alpha_bounds": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "output": "landing-page/assets/world-tour/sprites/floors/jazz/surface-02.png",
+      "output_size": [
+        512,
+        512
+      ],
+      "output_sha256": "6fd37ef58a3416376b925b9da399ce4a5560d300dc6fa13bfcbb4886db461da0"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/jazz-floor-atlas.png",
+      "source_sha256": "45664fa035d1f1723f2a5086ca29372237742eb7610521a0508a70d5b35a481c",
+      "grid": [
+        2,
+        2
+      ],
+      "cell": 3,
+      "cell_size": [
+        512,
+        512
+      ],
+      "isolation": "opaque-grid-cell",
+      "source_bounds": [
+        0,
+        512,
+        512,
+        1024
+      ],
+      "authored_cell_bounds": [
+        0,
+        512,
+        512,
+        1024
+      ],
+      "primary_component_id": null,
+      "source_component_ids": null,
+      "assigned_components": null,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
+      "alpha_bounds": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "output": "landing-page/assets/world-tour/sprites/floors/jazz/surface-03.png",
+      "output_size": [
+        512,
+        512
+      ],
+      "output_sha256": "98187b961b4894b4b973a744e495b046b29b2311e1fe0c05bc3fd463b7e691af"
+    },
+    {
+      "source": "groove-bound/assets/generated/campaign/jazz-floor-atlas.png",
+      "source_sha256": "45664fa035d1f1723f2a5086ca29372237742eb7610521a0508a70d5b35a481c",
+      "grid": [
+        2,
+        2
+      ],
+      "cell": 4,
+      "cell_size": [
+        512,
+        512
+      ],
+      "isolation": "opaque-grid-cell",
+      "source_bounds": [
+        512,
+        512,
+        1024,
+        1024
+      ],
+      "authored_cell_bounds": [
+        512,
+        512,
+        1024,
+        1024
+      ],
+      "primary_component_id": null,
+      "source_component_ids": null,
+      "assigned_components": null,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
+      "alpha_bounds": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "output": "landing-page/assets/world-tour/sprites/floors/jazz/surface-04.png",
+      "output_size": [
+        512,
+        512
+      ],
+      "output_sha256": "144e7ab491c1054165de0aee2c085942a8597c7fadb80ab75e32739c10fd7e8e"
+    },
+    {
       "source": "groove-bound/assets/generated/campaign/world-mechanics-atlas.png",
-      "source_sha256": "b7620efcbf045101bf240281046a33f4553aeb7d1a41ee884387ba35c6a56f72",
+      "source_sha256": "99e14cb437e3d532aea28b9e2b428de73505266cf83a346bbaebb5fcadf39e10",
       "grid": [
         5,
         2
@@ -2778,10 +3647,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        44,
-        86,
-        369,
-        359
+        37,
+        63,
+        362,
+        336
       ],
       "authored_cell_bounds": [
         0,
@@ -2792,16 +3661,16 @@
       "primary_component_id": 2,
       "source_component_ids": [
         2,
-        9,
+        10,
         18,
         19,
-        27,
+        26,
         28,
         39
       ],
       "assigned_components": 7,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 35,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -2817,7 +3686,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/world-mechanics-atlas.png",
-      "source_sha256": "b7620efcbf045101bf240281046a33f4553aeb7d1a41ee884387ba35c6a56f72",
+      "source_sha256": "99e14cb437e3d532aea28b9e2b428de73505266cf83a346bbaebb5fcadf39e10",
       "grid": [
         5,
         2
@@ -2829,10 +3698,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        442,
-        86,
-        769,
-        359
+        436,
+        63,
+        763,
+        336
       ],
       "authored_cell_bounds": [
         400,
@@ -2847,15 +3716,15 @@
         15,
         16,
         20,
-        22,
-        25,
+        21,
+        24,
         29,
         30,
         37
       ],
       "assigned_components": 10,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 35,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -2871,7 +3740,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/world-mechanics-atlas.png",
-      "source_sha256": "b7620efcbf045101bf240281046a33f4553aeb7d1a41ee884387ba35c6a56f72",
+      "source_sha256": "99e14cb437e3d532aea28b9e2b428de73505266cf83a346bbaebb5fcadf39e10",
       "grid": [
         5,
         2
@@ -2883,10 +3752,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        840,
-        86,
-        1166,
-        358
+        837,
+        64,
+        1163,
+        336
       ],
       "authored_cell_bounds": [
         800,
@@ -2894,23 +3763,23 @@
         1200,
         400
       ],
-      "primary_component_id": 4,
+      "primary_component_id": 5,
       "source_component_ids": [
-        4,
-        10,
-        12,
+        5,
+        11,
+        13,
         14,
-        21,
+        22,
         23,
-        24,
-        26,
-        31,
+        25,
+        27,
+        32,
         34,
         36
       ],
       "assigned_components": 11,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 35,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -2926,7 +3795,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/world-mechanics-atlas.png",
-      "source_sha256": "b7620efcbf045101bf240281046a33f4553aeb7d1a41ee884387ba35c6a56f72",
+      "source_sha256": "99e14cb437e3d532aea28b9e2b428de73505266cf83a346bbaebb5fcadf39e10",
       "grid": [
         5,
         2
@@ -2938,10 +3807,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        1237,
-        86,
-        1564,
-        361
+        1236,
+        62,
+        1563,
+        337
       ],
       "authored_cell_bounds": [
         1200,
@@ -2949,18 +3818,18 @@
         1600,
         400
       ],
-      "primary_component_id": 5,
+      "primary_component_id": 1,
       "source_component_ids": [
-        5,
-        11,
-        13,
-        32,
+        1,
+        9,
+        12,
+        31,
         35,
         40
       ],
       "assigned_components": 6,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 35,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -2976,7 +3845,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/world-mechanics-atlas.png",
-      "source_sha256": "b7620efcbf045101bf240281046a33f4553aeb7d1a41ee884387ba35c6a56f72",
+      "source_sha256": "99e14cb437e3d532aea28b9e2b428de73505266cf83a346bbaebb5fcadf39e10",
       "grid": [
         5,
         2
@@ -2988,10 +3857,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        1615,
-        67,
-        1972,
-        374
+        1621,
+        46,
+        1978,
+        353
       ],
       "authored_cell_bounds": [
         1600,
@@ -3002,7 +3871,7 @@
       "primary_component_id": 0,
       "source_component_ids": [
         0,
-        1,
+        4,
         6,
         8,
         17,
@@ -3013,7 +3882,7 @@
       ],
       "assigned_components": 9,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 35,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -3029,7 +3898,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/world-mechanics-atlas.png",
-      "source_sha256": "b7620efcbf045101bf240281046a33f4553aeb7d1a41ee884387ba35c6a56f72",
+      "source_sha256": "99e14cb437e3d532aea28b9e2b428de73505266cf83a346bbaebb5fcadf39e10",
       "grid": [
         5,
         2
@@ -3041,10 +3910,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        46,
-        457,
-        367,
-        727
+        39,
+        465,
+        360,
+        735
       ],
       "authored_cell_bounds": [
         0,
@@ -3058,7 +3927,7 @@
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 35,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -3074,7 +3943,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/world-mechanics-atlas.png",
-      "source_sha256": "b7620efcbf045101bf240281046a33f4553aeb7d1a41ee884387ba35c6a56f72",
+      "source_sha256": "99e14cb437e3d532aea28b9e2b428de73505266cf83a346bbaebb5fcadf39e10",
       "grid": [
         5,
         2
@@ -3086,10 +3955,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        445,
-        457,
-        767,
-        727
+        439,
+        465,
+        761,
+        735
       ],
       "authored_cell_bounds": [
         400,
@@ -3103,7 +3972,7 @@
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 35,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -3119,7 +3988,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/world-mechanics-atlas.png",
-      "source_sha256": "b7620efcbf045101bf240281046a33f4553aeb7d1a41ee884387ba35c6a56f72",
+      "source_sha256": "99e14cb437e3d532aea28b9e2b428de73505266cf83a346bbaebb5fcadf39e10",
       "grid": [
         5,
         2
@@ -3131,10 +4000,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        842,
-        457,
-        1164,
-        727
+        839,
+        465,
+        1161,
+        735
       ],
       "authored_cell_bounds": [
         800,
@@ -3148,7 +4017,7 @@
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 35,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -3164,7 +4033,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/world-mechanics-atlas.png",
-      "source_sha256": "b7620efcbf045101bf240281046a33f4553aeb7d1a41ee884387ba35c6a56f72",
+      "source_sha256": "99e14cb437e3d532aea28b9e2b428de73505266cf83a346bbaebb5fcadf39e10",
       "grid": [
         5,
         2
@@ -3177,9 +4046,9 @@
       "isolation": "global-alpha-components",
       "source_bounds": [
         1239,
-        457,
+        465,
         1561,
-        727
+        735
       ],
       "authored_cell_bounds": [
         1200,
@@ -3193,7 +4062,7 @@
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 35,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -3209,7 +4078,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/world-mechanics-atlas.png",
-      "source_sha256": "b7620efcbf045101bf240281046a33f4553aeb7d1a41ee884387ba35c6a56f72",
+      "source_sha256": "99e14cb437e3d532aea28b9e2b428de73505266cf83a346bbaebb5fcadf39e10",
       "grid": [
         5,
         2
@@ -3221,10 +4090,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        1634,
-        457,
-        1954,
-        727
+        1640,
+        465,
+        1960,
+        735
       ],
       "authored_cell_bounds": [
         1600,
@@ -3238,7 +4107,7 @@
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 35,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -3254,7 +4123,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/world-tour-ui-atlas.png",
-      "source_sha256": "bced163f20b5a581858617db5c67c4be6a0409004d6a56b6b6f5987076e483d3",
+      "source_sha256": "0a92d56589cebf753188ef8a1d8e7d09cbfd0527e4e617ab02007696d6e98eea",
       "grid": [
         5,
         2
@@ -3266,10 +4135,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        30,
-        122,
-        398,
-        426
+        16,
+        98,
+        384,
+        402
       ],
       "authored_cell_bounds": [
         0,
@@ -3277,16 +4146,16 @@
         400,
         500
       ],
-      "primary_component_id": 15,
+      "primary_component_id": 14,
       "source_component_ids": [
-        15,
+        14,
         19,
         20,
         21
       ],
       "assigned_components": 4,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 12,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -3302,7 +4171,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/world-tour-ui-atlas.png",
-      "source_sha256": "bced163f20b5a581858617db5c67c4be6a0409004d6a56b6b6f5987076e483d3",
+      "source_sha256": "0a92d56589cebf753188ef8a1d8e7d09cbfd0527e4e617ab02007696d6e98eea",
       "grid": [
         5,
         2
@@ -3314,10 +4183,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        424,
-        51,
-        794,
-        451
+        415,
+        50,
+        785,
+        450
       ],
       "authored_cell_bounds": [
         400,
@@ -3325,13 +4194,13 @@
         800,
         500
       ],
-      "primary_component_id": 0,
+      "primary_component_id": 1,
       "source_component_ids": [
-        0
+        1
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 12,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -3347,7 +4216,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/world-tour-ui-atlas.png",
-      "source_sha256": "bced163f20b5a581858617db5c67c4be6a0409004d6a56b6b6f5987076e483d3",
+      "source_sha256": "0a92d56589cebf753188ef8a1d8e7d09cbfd0527e4e617ab02007696d6e98eea",
       "grid": [
         5,
         2
@@ -3359,10 +4228,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        828,
-        65,
-        1180,
-        453
+        824,
+        56,
+        1176,
+        444
       ],
       "authored_cell_bounds": [
         800,
@@ -3373,12 +4242,12 @@
       "primary_component_id": 2,
       "source_component_ids": [
         2,
-        9,
-        14
+        10,
+        15
       ],
       "assigned_components": 3,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 12,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -3394,7 +4263,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/world-tour-ui-atlas.png",
-      "source_sha256": "bced163f20b5a581858617db5c67c4be6a0409004d6a56b6b6f5987076e483d3",
+      "source_sha256": "0a92d56589cebf753188ef8a1d8e7d09cbfd0527e4e617ab02007696d6e98eea",
       "grid": [
         5,
         2
@@ -3406,10 +4275,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        1212,
-        92,
-        1558,
-        453
+        1227,
+        69,
+        1573,
+        430
       ],
       "authored_cell_bounds": [
         1200,
@@ -3417,13 +4286,13 @@
         1600,
         500
       ],
-      "primary_component_id": 5,
+      "primary_component_id": 3,
       "source_component_ids": [
-        5
+        3
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 12,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -3439,7 +4308,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/world-tour-ui-atlas.png",
-      "source_sha256": "bced163f20b5a581858617db5c67c4be6a0409004d6a56b6b6f5987076e483d3",
+      "source_sha256": "0a92d56589cebf753188ef8a1d8e7d09cbfd0527e4e617ab02007696d6e98eea",
       "grid": [
         5,
         2
@@ -3451,10 +4320,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        1600,
-        62,
-        1976,
-        466
+        1612,
+        48,
+        1988,
+        452
       ],
       "authored_cell_bounds": [
         1600,
@@ -3462,15 +4331,15 @@
         2000,
         500
       ],
-      "primary_component_id": 1,
+      "primary_component_id": 0,
       "source_component_ids": [
-        1,
-        3,
+        0,
         4,
+        5,
         6,
         7,
         8,
-        10,
+        9,
         11,
         12,
         13,
@@ -3488,7 +4357,7 @@
       ],
       "assigned_components": 21,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 12,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -3504,7 +4373,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/world-tour-ui-atlas.png",
-      "source_sha256": "bced163f20b5a581858617db5c67c4be6a0409004d6a56b6b6f5987076e483d3",
+      "source_sha256": "0a92d56589cebf753188ef8a1d8e7d09cbfd0527e4e617ab02007696d6e98eea",
       "grid": [
         5,
         2
@@ -3516,10 +4385,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        30,
-        534,
-        387,
-        912
+        21,
+        561,
+        378,
+        939
       ],
       "authored_cell_bounds": [
         0,
@@ -3527,13 +4396,13 @@
         400,
         1000
       ],
-      "primary_component_id": 33,
+      "primary_component_id": 34,
       "source_component_ids": [
-        33
+        34
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 12,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -3549,7 +4418,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/world-tour-ui-atlas.png",
-      "source_sha256": "bced163f20b5a581858617db5c67c4be6a0409004d6a56b6b6f5987076e483d3",
+      "source_sha256": "0a92d56589cebf753188ef8a1d8e7d09cbfd0527e4e617ab02007696d6e98eea",
       "grid": [
         5,
         2
@@ -3561,10 +4430,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        416,
-        530,
-        776,
-        917
+        420,
+        556,
+        780,
+        943
       ],
       "authored_cell_bounds": [
         400,
@@ -3578,7 +4447,7 @@
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 12,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -3594,7 +4463,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/world-tour-ui-atlas.png",
-      "source_sha256": "bced163f20b5a581858617db5c67c4be6a0409004d6a56b6b6f5987076e483d3",
+      "source_sha256": "0a92d56589cebf753188ef8a1d8e7d09cbfd0527e4e617ab02007696d6e98eea",
       "grid": [
         5,
         2
@@ -3606,10 +4475,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        803,
-        537,
-        1159,
-        917
+        822,
+        560,
+        1178,
+        940
       ],
       "authored_cell_bounds": [
         800,
@@ -3617,13 +4486,13 @@
         1200,
         1000
       ],
-      "primary_component_id": 34,
+      "primary_component_id": 33,
       "source_component_ids": [
-        34
+        33
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 12,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -3639,7 +4508,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/world-tour-ui-atlas.png",
-      "source_sha256": "bced163f20b5a581858617db5c67c4be6a0409004d6a56b6b6f5987076e483d3",
+      "source_sha256": "0a92d56589cebf753188ef8a1d8e7d09cbfd0527e4e617ab02007696d6e98eea",
       "grid": [
         5,
         2
@@ -3651,10 +4520,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        1186,
-        520,
-        1557,
-        924
+        1214,
+        548,
+        1585,
+        952
       ],
       "authored_cell_bounds": [
         1200,
@@ -3667,10 +4536,8 @@
         31
       ],
       "assigned_components": 1,
-      "extends_beyond_cell": [
-        "left"
-      ],
-      "discarded_noise_pixels": 12,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -3686,7 +4553,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/world-tour-ui-atlas.png",
-      "source_sha256": "bced163f20b5a581858617db5c67c4be6a0409004d6a56b6b6f5987076e483d3",
+      "source_sha256": "0a92d56589cebf753188ef8a1d8e7d09cbfd0527e4e617ab02007696d6e98eea",
       "grid": [
         5,
         2
@@ -3698,10 +4565,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        1572,
-        493,
-        1959,
-        943
+        1608,
+        526,
+        1992,
+        973
       ],
       "authored_cell_bounds": [
         1600,
@@ -3714,27 +4581,24 @@
         30
       ],
       "assigned_components": 1,
-      "extends_beyond_cell": [
-        "left",
-        "top"
-      ],
-      "discarded_noise_pixels": 12,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
-        387,
-        450
+        384,
+        447
       ],
       "output": "landing-page/assets/world-tour/sprites/ui/world-tour/grade-s.png",
       "output_size": [
-        387,
-        450
+        384,
+        447
       ],
-      "output_sha256": "47511ed8fa41948a6e5e6bbb3c6c0850fae6cdbbcc03883c3dccf05c8052e578"
+      "output_sha256": "71aaa4250d028f3b941bfe679d8b06829d93cd046d25ed7ef941a8aa0b5698f1"
     },
     {
       "source": "groove-bound/assets/generated/campaign/world-interface-atlas.png",
-      "source_sha256": "1d5f9e9e98ca7226ebb98525a42b34d880dc81f5dac8f1e9612f24aeaed195e4",
+      "source_sha256": "f85dc35283668a2ca744add8e2f3602d858ad247c2f926bd72ad44d21795fd68",
       "grid": [
         5,
         2
@@ -3746,10 +4610,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        24,
-        65,
-        397,
-        476
+        13,
+        44,
+        386,
+        455
       ],
       "authored_cell_bounds": [
         0,
@@ -3757,13 +4621,13 @@
         400,
         500
       ],
-      "primary_component_id": 1,
+      "primary_component_id": 3,
       "source_component_ids": [
-        1
+        3
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 17,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -3779,7 +4643,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/world-interface-atlas.png",
-      "source_sha256": "1d5f9e9e98ca7226ebb98525a42b34d880dc81f5dac8f1e9612f24aeaed195e4",
+      "source_sha256": "f85dc35283668a2ca744add8e2f3602d858ad247c2f926bd72ad44d21795fd68",
       "grid": [
         5,
         2
@@ -3791,10 +4655,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        451,
-        23,
-        801,
-        500
+        425,
+        11,
+        775,
+        488
       ],
       "authored_cell_bounds": [
         400,
@@ -3807,10 +4671,8 @@
         0
       ],
       "assigned_components": 1,
-      "extends_beyond_cell": [
-        "right"
-      ],
-      "discarded_noise_pixels": 17,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -3826,7 +4688,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/world-interface-atlas.png",
-      "source_sha256": "1d5f9e9e98ca7226ebb98525a42b34d880dc81f5dac8f1e9612f24aeaed195e4",
+      "source_sha256": "f85dc35283668a2ca744add8e2f3602d858ad247c2f926bd72ad44d21795fd68",
       "grid": [
         5,
         2
@@ -3839,9 +4701,9 @@
       "isolation": "global-alpha-components",
       "source_bounds": [
         818,
-        69,
+        34,
         1181,
-        500
+        465
       ],
       "authored_cell_bounds": [
         800,
@@ -3849,13 +4711,13 @@
         1200,
         500
       ],
-      "primary_component_id": 3,
+      "primary_component_id": 2,
       "source_component_ids": [
-        3
+        2
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 17,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -3871,7 +4733,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/world-interface-atlas.png",
-      "source_sha256": "1d5f9e9e98ca7226ebb98525a42b34d880dc81f5dac8f1e9612f24aeaed195e4",
+      "source_sha256": "f85dc35283668a2ca744add8e2f3602d858ad247c2f926bd72ad44d21795fd68",
       "grid": [
         5,
         2
@@ -3883,10 +4745,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        1205,
-        65,
-        1563,
-        506
+        1221,
+        29,
+        1579,
+        470
       ],
       "authored_cell_bounds": [
         1200,
@@ -3894,15 +4756,13 @@
         1600,
         500
       ],
-      "primary_component_id": 2,
+      "primary_component_id": 1,
       "source_component_ids": [
-        2
+        1
       ],
       "assigned_components": 1,
-      "extends_beyond_cell": [
-        "bottom"
-      ],
-      "discarded_noise_pixels": 17,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -3918,7 +4778,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/world-interface-atlas.png",
-      "source_sha256": "1d5f9e9e98ca7226ebb98525a42b34d880dc81f5dac8f1e9612f24aeaed195e4",
+      "source_sha256": "f85dc35283668a2ca744add8e2f3602d858ad247c2f926bd72ad44d21795fd68",
       "grid": [
         5,
         2
@@ -3930,10 +4790,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        1601,
-        99,
-        1961,
-        466
+        1620,
+        66,
+        1980,
+        433
       ],
       "authored_cell_bounds": [
         1600,
@@ -3947,7 +4807,7 @@
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 17,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -3963,7 +4823,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/world-interface-atlas.png",
-      "source_sha256": "1d5f9e9e98ca7226ebb98525a42b34d880dc81f5dac8f1e9612f24aeaed195e4",
+      "source_sha256": "f85dc35283668a2ca744add8e2f3602d858ad247c2f926bd72ad44d21795fd68",
       "grid": [
         5,
         2
@@ -3975,10 +4835,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        34,
-        548,
-        407,
-        938
+        13,
+        555,
+        386,
+        945
       ],
       "authored_cell_bounds": [
         0,
@@ -4027,15 +4887,13 @@
         53,
         55,
         57,
-        60,
+        59,
         61,
         62
       ],
       "assigned_components": 42,
-      "extends_beyond_cell": [
-        "right"
-      ],
-      "discarded_noise_pixels": 17,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -4051,7 +4909,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/world-interface-atlas.png",
-      "source_sha256": "1d5f9e9e98ca7226ebb98525a42b34d880dc81f5dac8f1e9612f24aeaed195e4",
+      "source_sha256": "f85dc35283668a2ca744add8e2f3602d858ad247c2f926bd72ad44d21795fd68",
       "grid": [
         5,
         2
@@ -4063,10 +4921,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        443,
-        536,
-        801,
-        948
+        421,
+        544,
+        779,
+        956
       ],
       "authored_cell_bounds": [
         400,
@@ -4086,14 +4944,12 @@
         54,
         56,
         58,
-        59,
+        60,
         63
       ],
       "assigned_components": 12,
-      "extends_beyond_cell": [
-        "right"
-      ],
-      "discarded_noise_pixels": 17,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -4109,7 +4965,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/world-interface-atlas.png",
-      "source_sha256": "1d5f9e9e98ca7226ebb98525a42b34d880dc81f5dac8f1e9612f24aeaed195e4",
+      "source_sha256": "f85dc35283668a2ca744add8e2f3602d858ad247c2f926bd72ad44d21795fd68",
       "grid": [
         5,
         2
@@ -4122,9 +4978,9 @@
       "isolation": "global-alpha-components",
       "source_bounds": [
         816,
-        536,
+        547,
         1184,
-        942
+        953
       ],
       "authored_cell_bounds": [
         800,
@@ -4138,7 +4994,7 @@
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 17,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -4154,7 +5010,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/world-interface-atlas.png",
-      "source_sha256": "1d5f9e9e98ca7226ebb98525a42b34d880dc81f5dac8f1e9612f24aeaed195e4",
+      "source_sha256": "f85dc35283668a2ca744add8e2f3602d858ad247c2f926bd72ad44d21795fd68",
       "grid": [
         5,
         2
@@ -4166,10 +5022,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        1228,
-        569,
-        1541,
-        917
+        1243,
+        576,
+        1556,
+        924
       ],
       "authored_cell_bounds": [
         1200,
@@ -4185,7 +5041,7 @@
       ],
       "assigned_components": 3,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 17,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -4201,7 +5057,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/world-interface-atlas.png",
-      "source_sha256": "1d5f9e9e98ca7226ebb98525a42b34d880dc81f5dac8f1e9612f24aeaed195e4",
+      "source_sha256": "f85dc35283668a2ca744add8e2f3602d858ad247c2f926bd72ad44d21795fd68",
       "grid": [
         5,
         2
@@ -4213,10 +5069,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        1574,
-        568,
-        1985,
-        943
+        1608,
+        575,
+        1992,
+        925
       ],
       "authored_cell_bounds": [
         1600,
@@ -4229,26 +5085,24 @@
         11
       ],
       "assigned_components": 1,
-      "extends_beyond_cell": [
-        "left"
-      ],
-      "discarded_noise_pixels": 17,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
-        411,
-        375
+        384,
+        350
       ],
       "output": "landing-page/assets/world-tour/sprites/ui/interface/mastery.png",
       "output_size": [
-        411,
-        375
+        384,
+        350
       ],
-      "output_sha256": "c5885947ef68f209b599e9cf96dc38a0f54ffba3544a6ccc4c4c859dc011c13c"
+      "output_sha256": "add005e88dcd1f5777535691482d5b819701612cd86c45360ebe064462d066ce"
     },
     {
       "source": "groove-bound/assets/generated/campaign/menu-button-icons-atlas.png",
-      "source_sha256": "fbbf7ecc0836e253ccca6d352f6f7dfe082533232fefab3da45efb668fb30faa",
+      "source_sha256": "7ea208a912a320fe2d2e9b92dc8e9d6183abe9703035d5c6cd00a91496b4e73f",
       "grid": [
         5,
         2
@@ -4260,10 +5114,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        61,
-        96,
-        385,
-        327
+        38,
+        84,
+        362,
+        315
       ],
       "authored_cell_bounds": [
         0,
@@ -4293,7 +5147,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/menu-button-icons-atlas.png",
-      "source_sha256": "fbbf7ecc0836e253ccca6d352f6f7dfe082533232fefab3da45efb668fb30faa",
+      "source_sha256": "7ea208a912a320fe2d2e9b92dc8e9d6183abe9703035d5c6cd00a91496b4e73f",
       "grid": [
         5,
         2
@@ -4305,10 +5159,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        474,
-        76,
-        762,
-        344
+        456,
+        66,
+        744,
+        334
       ],
       "authored_cell_bounds": [
         400,
@@ -4338,7 +5192,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/menu-button-icons-atlas.png",
-      "source_sha256": "fbbf7ecc0836e253ccca6d352f6f7dfe082533232fefab3da45efb668fb30faa",
+      "source_sha256": "7ea208a912a320fe2d2e9b92dc8e9d6183abe9703035d5c6cd00a91496b4e73f",
       "grid": [
         5,
         2
@@ -4350,10 +5204,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        850,
-        52,
-        1148,
-        351
+        851,
+        50,
+        1149,
+        349
       ],
       "authored_cell_bounds": [
         800,
@@ -4383,7 +5237,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/menu-button-icons-atlas.png",
-      "source_sha256": "fbbf7ecc0836e253ccca6d352f6f7dfe082533232fefab3da45efb668fb30faa",
+      "source_sha256": "7ea208a912a320fe2d2e9b92dc8e9d6183abe9703035d5c6cd00a91496b4e73f",
       "grid": [
         5,
         2
@@ -4395,10 +5249,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        1249,
-        69,
-        1575,
-        349
+        1237,
+        60,
+        1563,
+        340
       ],
       "authored_cell_bounds": [
         1200,
@@ -4428,7 +5282,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/menu-button-icons-atlas.png",
-      "source_sha256": "fbbf7ecc0836e253ccca6d352f6f7dfe082533232fefab3da45efb668fb30faa",
+      "source_sha256": "7ea208a912a320fe2d2e9b92dc8e9d6183abe9703035d5c6cd00a91496b4e73f",
       "grid": [
         5,
         2
@@ -4440,10 +5294,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        1644,
-        61,
-        1927,
-        346
+        1658,
+        57,
+        1941,
+        342
       ],
       "authored_cell_bounds": [
         1600,
@@ -4473,7 +5327,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/menu-button-icons-atlas.png",
-      "source_sha256": "fbbf7ecc0836e253ccca6d352f6f7dfe082533232fefab3da45efb668fb30faa",
+      "source_sha256": "7ea208a912a320fe2d2e9b92dc8e9d6183abe9703035d5c6cd00a91496b4e73f",
       "grid": [
         5,
         2
@@ -4485,10 +5339,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        48,
-        447,
-        389,
-        696
+        29,
+        475,
+        370,
+        724
       ],
       "authored_cell_bounds": [
         0,
@@ -4518,7 +5372,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/menu-button-icons-atlas.png",
-      "source_sha256": "fbbf7ecc0836e253ccca6d352f6f7dfe082533232fefab3da45efb668fb30faa",
+      "source_sha256": "7ea208a912a320fe2d2e9b92dc8e9d6183abe9703035d5c6cd00a91496b4e73f",
       "grid": [
         5,
         2
@@ -4530,10 +5384,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        424,
-        517,
-        803,
-        630
+        410,
+        543,
+        789,
+        656
       ],
       "authored_cell_bounds": [
         400,
@@ -4546,9 +5400,7 @@
         9
       ],
       "assigned_components": 1,
-      "extends_beyond_cell": [
-        "right"
-      ],
+      "extends_beyond_cell": [],
       "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
@@ -4565,7 +5417,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/menu-button-icons-atlas.png",
-      "source_sha256": "fbbf7ecc0836e253ccca6d352f6f7dfe082533232fefab3da45efb668fb30faa",
+      "source_sha256": "7ea208a912a320fe2d2e9b92dc8e9d6183abe9703035d5c6cd00a91496b4e73f",
       "grid": [
         5,
         2
@@ -4578,9 +5430,9 @@
       "isolation": "global-alpha-components",
       "source_bounds": [
         839,
-        422,
+        453,
         1160,
-        716
+        747
       ],
       "authored_cell_bounds": [
         800,
@@ -4588,9 +5440,9 @@
         1200,
         800
       ],
-      "primary_component_id": 6,
+      "primary_component_id": 7,
       "source_component_ids": [
-        6
+        7
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
@@ -4610,7 +5462,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/menu-button-icons-atlas.png",
-      "source_sha256": "fbbf7ecc0836e253ccca6d352f6f7dfe082533232fefab3da45efb668fb30faa",
+      "source_sha256": "7ea208a912a320fe2d2e9b92dc8e9d6183abe9703035d5c6cd00a91496b4e73f",
       "grid": [
         5,
         2
@@ -4622,10 +5474,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        1242,
-        410,
-        1546,
-        734
+        1248,
+        438,
+        1552,
+        762
       ],
       "authored_cell_bounds": [
         1200,
@@ -4655,7 +5507,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/menu-button-icons-atlas.png",
-      "source_sha256": "fbbf7ecc0836e253ccca6d352f6f7dfe082533232fefab3da45efb668fb30faa",
+      "source_sha256": "7ea208a912a320fe2d2e9b92dc8e9d6183abe9703035d5c6cd00a91496b4e73f",
       "grid": [
         5,
         2
@@ -4667,10 +5519,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        1638,
-        426,
-        1928,
-        738
+        1655,
+        444,
+        1945,
+        756
       ],
       "authored_cell_bounds": [
         1600,
@@ -4678,9 +5530,9 @@
         2000,
         800
       ],
-      "primary_component_id": 7,
+      "primary_component_id": 6,
       "source_component_ids": [
-        7
+        6
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
@@ -4700,7 +5552,7 @@
     },
     {
       "source": "groove-bound/assets/generated/evolved-weapon-icons-atlas-2.png",
-      "source_sha256": "31f5abd62e4816c1808583adac79b92aaf7c47bcbe5f10f84b7d85898d62d661",
+      "source_sha256": "1252f1e53ae7295e60bc0ca6900d106cdad6e613717c23f796e07cd706d1ce72",
       "grid": [
         4,
         2
@@ -4712,10 +5564,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        62,
-        93,
-        376,
-        342
+        43,
+        75,
+        357,
+        324
       ],
       "authored_cell_bounds": [
         0,
@@ -4726,27 +5578,27 @@
       "primary_component_id": 12,
       "source_component_ids": [
         12,
-        37,
-        41,
-        45,
+        35,
+        39,
+        47,
         49,
         50,
         51,
         53,
         54,
         55,
-        63,
-        66,
-        68,
+        64,
+        67,
+        69,
         71,
         77,
-        78,
+        79,
         81,
-        84
+        85
       ],
       "assigned_components": 18,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 26,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -4762,7 +5614,7 @@
     },
     {
       "source": "groove-bound/assets/generated/evolved-weapon-icons-atlas-2.png",
-      "source_sha256": "31f5abd62e4816c1808583adac79b92aaf7c47bcbe5f10f84b7d85898d62d661",
+      "source_sha256": "1252f1e53ae7295e60bc0ca6900d106cdad6e613717c23f796e07cd706d1ce72",
       "grid": [
         4,
         2
@@ -4774,10 +5626,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        447,
-        22,
-        735,
-        401
+        456,
+        10,
+        744,
+        389
       ],
       "authored_cell_bounds": [
         400,
@@ -4788,21 +5640,19 @@
       "primary_component_id": 0,
       "source_component_ids": [
         0,
-        15,
-        31,
-        40,
+        16,
+        37,
+        42,
         56,
-        57,
-        61,
-        69,
-        86,
+        59,
+        63,
+        73,
+        90,
         103
       ],
       "assigned_components": 10,
-      "extends_beyond_cell": [
-        "bottom"
-      ],
-      "discarded_noise_pixels": 26,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -4818,7 +5668,7 @@
     },
     {
       "source": "groove-bound/assets/generated/evolved-weapon-icons-atlas-2.png",
-      "source_sha256": "31f5abd62e4816c1808583adac79b92aaf7c47bcbe5f10f84b7d85898d62d661",
+      "source_sha256": "1252f1e53ae7295e60bc0ca6900d106cdad6e613717c23f796e07cd706d1ce72",
       "grid": [
         4,
         2
@@ -4830,10 +5680,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        825,
-        73,
-        1136,
-        374
+        844,
+        49,
+        1155,
+        350
       ],
       "authored_cell_bounds": [
         800,
@@ -4841,48 +5691,48 @@
         1200,
         400
       ],
-      "primary_component_id": 4,
+      "primary_component_id": 2,
       "source_component_ids": [
-        4,
-        7,
-        9,
-        13,
-        16,
-        20,
+        2,
+        5,
+        8,
+        10,
+        11,
+        19,
         21,
         22,
+        23,
         25,
-        28,
-        29,
+        26,
+        30,
+        31,
         32,
         34,
-        35,
-        42,
-        46,
-        47,
+        44,
+        45,
         48,
+        61,
         62,
-        64,
-        67,
+        65,
+        68,
         70,
         72,
-        74,
-        79,
-        82,
-        85,
+        76,
+        80,
+        84,
+        86,
         87,
+        88,
         89,
-        91,
-        93,
         96,
-        99,
+        97,
+        98,
         100,
-        101,
         102
       ],
       "assigned_components": 36,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 26,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -4898,7 +5748,7 @@
     },
     {
       "source": "groove-bound/assets/generated/evolved-weapon-icons-atlas-2.png",
-      "source_sha256": "31f5abd62e4816c1808583adac79b92aaf7c47bcbe5f10f84b7d85898d62d661",
+      "source_sha256": "1252f1e53ae7295e60bc0ca6900d106cdad6e613717c23f796e07cd706d1ce72",
       "grid": [
         4,
         2
@@ -4910,10 +5760,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        1211,
-        43,
-        1546,
-        387
+        1232,
+        28,
+        1567,
+        372
       ],
       "authored_cell_bounds": [
         1200,
@@ -4924,49 +5774,49 @@
       "primary_component_id": 1,
       "source_component_ids": [
         1,
-        2,
         3,
-        5,
+        4,
         6,
-        8,
-        10,
-        11,
+        7,
+        9,
+        13,
         14,
+        15,
         17,
         18,
-        19,
-        23,
+        20,
         24,
-        26,
         27,
-        30,
+        28,
+        29,
         33,
         36,
         38,
-        39,
+        40,
+        41,
         43,
-        44,
+        46,
         52,
+        57,
         58,
-        59,
         60,
-        65,
-        73,
+        66,
+        74,
         75,
-        76,
-        80,
+        78,
+        82,
         83,
-        88,
-        90,
+        91,
         92,
+        93,
         94,
         95,
-        97,
-        98
+        99,
+        101
       ],
       "assigned_components": 40,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 26,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -4982,7 +5832,7 @@
     },
     {
       "source": "groove-bound/assets/generated/evolved-weapon-icons-atlas-2.png",
-      "source_sha256": "31f5abd62e4816c1808583adac79b92aaf7c47bcbe5f10f84b7d85898d62d661",
+      "source_sha256": "1252f1e53ae7295e60bc0ca6900d106cdad6e613717c23f796e07cd706d1ce72",
       "grid": [
         4,
         2
@@ -4994,10 +5844,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        33,
-        464,
-        347,
-        779
+        43,
+        442,
+        357,
+        757
       ],
       "authored_cell_bounds": [
         0,
@@ -5012,17 +5862,17 @@
         108,
         109,
         110,
-        111,
-        120,
-        122,
-        123,
+        113,
+        121,
+        124,
+        125,
+        128,
         130,
-        131,
         139
       ],
       "assigned_components": 12,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 26,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -5038,7 +5888,7 @@
     },
     {
       "source": "groove-bound/assets/generated/evolved-weapon-icons-atlas-2.png",
-      "source_sha256": "31f5abd62e4816c1808583adac79b92aaf7c47bcbe5f10f84b7d85898d62d661",
+      "source_sha256": "1252f1e53ae7295e60bc0ca6900d106cdad6e613717c23f796e07cd706d1ce72",
       "grid": [
         4,
         2
@@ -5050,10 +5900,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        439,
-        434,
-        718,
-        793
+        460,
+        420,
+        739,
+        779
       ],
       "authored_cell_bounds": [
         400,
@@ -5064,24 +5914,24 @@
       "primary_component_id": 104,
       "source_component_ids": [
         104,
-        127,
-        129,
+        132,
         133,
         134,
-        137,
-        140,
-        141,
+        136,
+        138,
+        142,
         144,
+        145,
         146,
-        147,
+        149,
         150,
         151,
         152,
-        153
+        154
       ],
       "assigned_components": 15,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 26,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -5097,7 +5947,7 @@
     },
     {
       "source": "groove-bound/assets/generated/evolved-weapon-icons-atlas-2.png",
-      "source_sha256": "31f5abd62e4816c1808583adac79b92aaf7c47bcbe5f10f84b7d85898d62d661",
+      "source_sha256": "1252f1e53ae7295e60bc0ca6900d106cdad6e613717c23f796e07cd706d1ce72",
       "grid": [
         4,
         2
@@ -5109,10 +5959,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        799,
-        510,
-        1142,
-        753
+        828,
+        478,
+        1171,
+        721
       ],
       "authored_cell_bounds": [
         800,
@@ -5120,43 +5970,41 @@
         1200,
         800
       ],
-      "primary_component_id": 113,
+      "primary_component_id": 112,
       "source_component_ids": [
+        111,
         112,
-        113,
         114,
         115,
         116,
         117,
         118,
         119,
-        121,
-        124,
+        120,
+        122,
+        123,
         126,
-        132,
-        136,
-        138,
-        143,
-        145,
-        157,
+        131,
+        137,
+        140,
+        141,
+        155,
+        158,
         159,
-        160,
         161,
         162,
         163,
+        164,
         165,
-        167,
+        166,
         168,
         169,
         170,
-        171,
-        172
+        171
       ],
       "assigned_components": 29,
-      "extends_beyond_cell": [
-        "left"
-      ],
-      "discarded_noise_pixels": 26,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -5172,7 +6020,7 @@
     },
     {
       "source": "groove-bound/assets/generated/evolved-weapon-icons-atlas-2.png",
-      "source_sha256": "31f5abd62e4816c1808583adac79b92aaf7c47bcbe5f10f84b7d85898d62d661",
+      "source_sha256": "1252f1e53ae7295e60bc0ca6900d106cdad6e613717c23f796e07cd706d1ce72",
       "grid": [
         4,
         2
@@ -5184,10 +6032,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        1238,
-        450,
-        1531,
-        788
+        1253,
+        431,
+        1546,
+        769
       ],
       "authored_cell_bounds": [
         1200,
@@ -5198,22 +6046,22 @@
       "primary_component_id": 105,
       "source_component_ids": [
         105,
-        125,
-        128,
+        127,
+        129,
         135,
-        142,
+        143,
+        147,
         148,
-        149,
-        154,
-        155,
+        153,
         156,
-        158,
-        164,
-        166
+        157,
+        160,
+        167,
+        172
       ],
       "assigned_components": 13,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 26,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -5229,7 +6077,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/meta-perks-atlas.png",
-      "source_sha256": "278a7e837df0f6dedf44ce112e45c80ec59e28161e66c15343ce65a84acaef45",
+      "source_sha256": "ad02754a8b44fed1095f6c8bafdcd1970b43d2bdd5e7a3e36c408f0d6333ba94",
       "grid": [
         5,
         4
@@ -5241,10 +6089,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        45,
-        38,
-        397,
-        400
+        24,
+        19,
+        376,
+        381
       ],
       "authored_cell_bounds": [
         0,
@@ -5252,13 +6100,13 @@
         400,
         400
       ],
-      "primary_component_id": 2,
+      "primary_component_id": 1,
       "source_component_ids": [
-        2
+        1
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 75,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -5274,7 +6122,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/meta-perks-atlas.png",
-      "source_sha256": "278a7e837df0f6dedf44ce112e45c80ec59e28161e66c15343ce65a84acaef45",
+      "source_sha256": "ad02754a8b44fed1095f6c8bafdcd1970b43d2bdd5e7a3e36c408f0d6333ba94",
       "grid": [
         5,
         4
@@ -5286,10 +6134,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        463,
-        35,
-        776,
-        394
+        443,
+        20,
+        756,
+        379
       ],
       "authored_cell_bounds": [
         400,
@@ -5297,13 +6145,13 @@
         800,
         400
       ],
-      "primary_component_id": 0,
+      "primary_component_id": 2,
       "source_component_ids": [
-        0
+        2
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 75,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -5319,7 +6167,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/meta-perks-atlas.png",
-      "source_sha256": "278a7e837df0f6dedf44ce112e45c80ec59e28161e66c15343ce65a84acaef45",
+      "source_sha256": "ad02754a8b44fed1095f6c8bafdcd1970b43d2bdd5e7a3e36c408f0d6333ba94",
       "grid": [
         5,
         4
@@ -5331,10 +6179,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        862,
-        76,
-        1159,
-        383
+        851,
+        46,
+        1148,
+        353
       ],
       "authored_cell_bounds": [
         800,
@@ -5348,7 +6196,7 @@
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 75,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -5364,7 +6212,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/meta-perks-atlas.png",
-      "source_sha256": "278a7e837df0f6dedf44ce112e45c80ec59e28161e66c15343ce65a84acaef45",
+      "source_sha256": "ad02754a8b44fed1095f6c8bafdcd1970b43d2bdd5e7a3e36c408f0d6333ba94",
       "grid": [
         5,
         4
@@ -5376,10 +6224,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        1224,
-        59,
-        1543,
-        377
+        1240,
+        41,
+        1559,
+        359
       ],
       "authored_cell_bounds": [
         1200,
@@ -5396,7 +6244,7 @@
       ],
       "assigned_components": 4,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 75,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -5412,7 +6260,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/meta-perks-atlas.png",
-      "source_sha256": "278a7e837df0f6dedf44ce112e45c80ec59e28161e66c15343ce65a84acaef45",
+      "source_sha256": "ad02754a8b44fed1095f6c8bafdcd1970b43d2bdd5e7a3e36c408f0d6333ba94",
       "grid": [
         5,
         4
@@ -5424,10 +6272,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        1587,
-        35,
-        1962,
-        400
+        1612,
+        17,
+        1987,
+        382
       ],
       "authored_cell_bounds": [
         1600,
@@ -5435,15 +6283,13 @@
         2000,
         400
       ],
-      "primary_component_id": 1,
+      "primary_component_id": 0,
       "source_component_ids": [
-        1
+        0
       ],
       "assigned_components": 1,
-      "extends_beyond_cell": [
-        "left"
-      ],
-      "discarded_noise_pixels": 75,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -5459,7 +6305,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/meta-perks-atlas.png",
-      "source_sha256": "278a7e837df0f6dedf44ce112e45c80ec59e28161e66c15343ce65a84acaef45",
+      "source_sha256": "ad02754a8b44fed1095f6c8bafdcd1970b43d2bdd5e7a3e36c408f0d6333ba94",
       "grid": [
         5,
         4
@@ -5471,10 +6317,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        51,
-        426,
-        390,
-        778
+        30,
+        424,
+        369,
+        776
       ],
       "authored_cell_bounds": [
         0,
@@ -5482,13 +6328,13 @@
         400,
         800
       ],
-      "primary_component_id": 9,
+      "primary_component_id": 8,
       "source_component_ids": [
-        9
+        8
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 75,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -5504,7 +6350,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/meta-perks-atlas.png",
-      "source_sha256": "278a7e837df0f6dedf44ce112e45c80ec59e28161e66c15343ce65a84acaef45",
+      "source_sha256": "ad02754a8b44fed1095f6c8bafdcd1970b43d2bdd5e7a3e36c408f0d6333ba94",
       "grid": [
         5,
         4
@@ -5516,10 +6362,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        450,
-        442,
-        778,
-        760
+        436,
+        441,
+        764,
+        759
       ],
       "authored_cell_bounds": [
         400,
@@ -5531,13 +6377,13 @@
       "source_component_ids": [
         10,
         14,
-        15,
+        16,
         27,
         30
       ],
       "assigned_components": 5,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 75,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -5553,7 +6399,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/meta-perks-atlas.png",
-      "source_sha256": "278a7e837df0f6dedf44ce112e45c80ec59e28161e66c15343ce65a84acaef45",
+      "source_sha256": "ad02754a8b44fed1095f6c8bafdcd1970b43d2bdd5e7a3e36c408f0d6333ba94",
       "grid": [
         5,
         4
@@ -5565,10 +6411,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        846,
-        446,
-        1149,
-        764
+        848,
+        441,
+        1151,
+        759
       ],
       "authored_cell_bounds": [
         800,
@@ -5580,7 +6426,7 @@
       "source_component_ids": [
         11,
         13,
-        16,
+        15,
         17,
         18,
         19,
@@ -5621,7 +6467,7 @@
       ],
       "assigned_components": 40,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 75,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -5637,7 +6483,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/meta-perks-atlas.png",
-      "source_sha256": "278a7e837df0f6dedf44ce112e45c80ec59e28161e66c15343ce65a84acaef45",
+      "source_sha256": "ad02754a8b44fed1095f6c8bafdcd1970b43d2bdd5e7a3e36c408f0d6333ba94",
       "grid": [
         5,
         4
@@ -5649,10 +6495,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        1214,
-        423,
-        1532,
-        763
+        1241,
+        430,
+        1559,
+        770
       ],
       "authored_cell_bounds": [
         1200,
@@ -5660,13 +6506,13 @@
         1600,
         800
       ],
-      "primary_component_id": 8,
+      "primary_component_id": 9,
       "source_component_ids": [
-        8
+        9
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 75,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -5682,7 +6528,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/meta-perks-atlas.png",
-      "source_sha256": "278a7e837df0f6dedf44ce112e45c80ec59e28161e66c15343ce65a84acaef45",
+      "source_sha256": "ad02754a8b44fed1095f6c8bafdcd1970b43d2bdd5e7a3e36c408f0d6333ba94",
       "grid": [
         5,
         4
@@ -5694,10 +6540,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        1620,
-        456,
-        1928,
-        764
+        1646,
+        446,
+        1954,
+        754
       ],
       "authored_cell_bounds": [
         1600,
@@ -5711,7 +6557,7 @@
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 75,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -5727,7 +6573,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/meta-perks-atlas.png",
-      "source_sha256": "278a7e837df0f6dedf44ce112e45c80ec59e28161e66c15343ce65a84acaef45",
+      "source_sha256": "ad02754a8b44fed1095f6c8bafdcd1970b43d2bdd5e7a3e36c408f0d6333ba94",
       "grid": [
         5,
         4
@@ -5739,10 +6585,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        48,
-        816,
-        390,
-        1146
+        29,
+        835,
+        371,
+        1165
       ],
       "authored_cell_bounds": [
         0,
@@ -5750,15 +6596,15 @@
         400,
         1200
       ],
-      "primary_component_id": 57,
+      "primary_component_id": 59,
       "source_component_ids": [
-        57,
+        59,
         64,
         65
       ],
       "assigned_components": 3,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 75,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -5774,7 +6620,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/meta-perks-atlas.png",
-      "source_sha256": "278a7e837df0f6dedf44ce112e45c80ec59e28161e66c15343ce65a84acaef45",
+      "source_sha256": "ad02754a8b44fed1095f6c8bafdcd1970b43d2bdd5e7a3e36c408f0d6333ba94",
       "grid": [
         5,
         4
@@ -5786,10 +6632,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        463,
-        815,
-        764,
-        1151
+        449,
+        832,
+        750,
+        1168
       ],
       "authored_cell_bounds": [
         400,
@@ -5797,18 +6643,18 @@
         800,
         1200
       ],
-      "primary_component_id": 56,
+      "primary_component_id": 57,
       "source_component_ids": [
-        56,
+        57,
         61,
         62,
         63,
-        66,
-        67
+        67,
+        68
       ],
       "assigned_components": 6,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 75,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -5824,7 +6670,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/meta-perks-atlas.png",
-      "source_sha256": "278a7e837df0f6dedf44ce112e45c80ec59e28161e66c15343ce65a84acaef45",
+      "source_sha256": "ad02754a8b44fed1095f6c8bafdcd1970b43d2bdd5e7a3e36c408f0d6333ba94",
       "grid": [
         5,
         4
@@ -5836,10 +6682,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
+        841,
         826,
-        816,
-        1143,
-        1164
+        1158,
+        1174
       ],
       "authored_cell_bounds": [
         800,
@@ -5847,13 +6693,13 @@
         1200,
         1200
       ],
-      "primary_component_id": 58,
+      "primary_component_id": 56,
       "source_component_ids": [
-        58
+        56
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 75,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -5869,7 +6715,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/meta-perks-atlas.png",
-      "source_sha256": "278a7e837df0f6dedf44ce112e45c80ec59e28161e66c15343ce65a84acaef45",
+      "source_sha256": "ad02754a8b44fed1095f6c8bafdcd1970b43d2bdd5e7a3e36c408f0d6333ba94",
       "grid": [
         5,
         4
@@ -5881,10 +6727,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        1198,
-        838,
-        1540,
-        1160
+        1229,
+        839,
+        1571,
+        1161
       ],
       "authored_cell_bounds": [
         1200,
@@ -5895,13 +6741,11 @@
       "primary_component_id": 60,
       "source_component_ids": [
         60,
-        68
+        66
       ],
       "assigned_components": 2,
-      "extends_beyond_cell": [
-        "left"
-      ],
-      "discarded_noise_pixels": 75,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -5917,7 +6761,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/meta-perks-atlas.png",
-      "source_sha256": "278a7e837df0f6dedf44ce112e45c80ec59e28161e66c15343ce65a84acaef45",
+      "source_sha256": "ad02754a8b44fed1095f6c8bafdcd1970b43d2bdd5e7a3e36c408f0d6333ba94",
       "grid": [
         5,
         4
@@ -5929,10 +6773,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        1594,
-        822,
-        1937,
-        1154
+        1628,
+        834,
+        1971,
+        1166
       ],
       "authored_cell_bounds": [
         1600,
@@ -5940,15 +6784,13 @@
         2000,
         1200
       ],
-      "primary_component_id": 59,
+      "primary_component_id": 58,
       "source_component_ids": [
-        59
+        58
       ],
       "assigned_components": 1,
-      "extends_beyond_cell": [
-        "left"
-      ],
-      "discarded_noise_pixels": 75,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -5964,7 +6806,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/meta-perks-atlas.png",
-      "source_sha256": "278a7e837df0f6dedf44ce112e45c80ec59e28161e66c15343ce65a84acaef45",
+      "source_sha256": "ad02754a8b44fed1095f6c8bafdcd1970b43d2bdd5e7a3e36c408f0d6333ba94",
       "grid": [
         5,
         4
@@ -5976,10 +6818,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        47,
-        1199,
-        390,
-        1536
+        28,
+        1231,
+        371,
+        1568
       ],
       "authored_cell_bounds": [
         0,
@@ -5987,15 +6829,13 @@
         400,
         1600
       ],
-      "primary_component_id": 71,
+      "primary_component_id": 70,
       "source_component_ids": [
-        71
+        70
       ],
       "assigned_components": 1,
-      "extends_beyond_cell": [
-        "top"
-      ],
-      "discarded_noise_pixels": 75,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -6011,7 +6851,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/meta-perks-atlas.png",
-      "source_sha256": "278a7e837df0f6dedf44ce112e45c80ec59e28161e66c15343ce65a84acaef45",
+      "source_sha256": "ad02754a8b44fed1095f6c8bafdcd1970b43d2bdd5e7a3e36c408f0d6333ba94",
       "grid": [
         5,
         4
@@ -6023,10 +6863,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        445,
-        1210,
-        780,
-        1541
+        432,
+        1234,
+        767,
+        1565
       ],
       "authored_cell_bounds": [
         400,
@@ -6040,7 +6880,7 @@
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 75,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -6056,7 +6896,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/meta-perks-atlas.png",
-      "source_sha256": "278a7e837df0f6dedf44ce112e45c80ec59e28161e66c15343ce65a84acaef45",
+      "source_sha256": "ad02754a8b44fed1095f6c8bafdcd1970b43d2bdd5e7a3e36c408f0d6333ba94",
       "grid": [
         5,
         4
@@ -6068,10 +6908,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        820,
-        1197,
-        1147,
-        1530
+        836,
+        1233,
+        1163,
+        1566
       ],
       "authored_cell_bounds": [
         800,
@@ -6079,16 +6919,14 @@
         1200,
         1600
       ],
-      "primary_component_id": 70,
+      "primary_component_id": 71,
       "source_component_ids": [
-        70,
+        71,
         75
       ],
       "assigned_components": 2,
-      "extends_beyond_cell": [
-        "top"
-      ],
-      "discarded_noise_pixels": 75,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -6104,7 +6942,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/meta-perks-atlas.png",
-      "source_sha256": "278a7e837df0f6dedf44ce112e45c80ec59e28161e66c15343ce65a84acaef45",
+      "source_sha256": "ad02754a8b44fed1095f6c8bafdcd1970b43d2bdd5e7a3e36c408f0d6333ba94",
       "grid": [
         5,
         4
@@ -6116,10 +6954,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        1206,
-        1196,
-        1528,
-        1541
+        1239,
+        1227,
+        1561,
+        1572
       ],
       "authored_cell_bounds": [
         1200,
@@ -6133,10 +6971,8 @@
         74
       ],
       "assigned_components": 2,
-      "extends_beyond_cell": [
-        "top"
-      ],
-      "discarded_noise_pixels": 75,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -6152,7 +6988,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/meta-perks-atlas.png",
-      "source_sha256": "278a7e837df0f6dedf44ce112e45c80ec59e28161e66c15343ce65a84acaef45",
+      "source_sha256": "ad02754a8b44fed1095f6c8bafdcd1970b43d2bdd5e7a3e36c408f0d6333ba94",
       "grid": [
         5,
         4
@@ -6164,10 +7000,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        1593,
-        1219,
-        1934,
-        1539
+        1629,
+        1240,
+        1970,
+        1560
       ],
       "authored_cell_bounds": [
         1600,
@@ -6180,10 +7016,8 @@
         73
       ],
       "assigned_components": 1,
-      "extends_beyond_cell": [
-        "left"
-      ],
-      "discarded_noise_pixels": 75,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -6199,28 +7033,28 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/musical-chest-atlas.png",
-      "source_sha256": "5c1a733932781047e3c8a9d67f6c71a7b553d2c933d91d7e4639925ec1fe2738",
+      "source_sha256": "a39b4b974e89141f5f30e81e2f23641ad6505bc26c9047d8932eb15aefec9506",
       "grid": [
         4,
         2
       ],
       "cell": 1,
       "cell_size": [
-        314,
-        628
+        400,
+        400
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        40,
-        266,
-        281,
-        523
+        79,
+        71,
+        320,
+        328
       ],
       "authored_cell_bounds": [
         0,
         0,
-        314,
-        628
+        400,
+        400
       ],
       "primary_component_id": 6,
       "source_component_ids": [
@@ -6228,7 +7062,7 @@
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 29,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -6244,40 +7078,40 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/musical-chest-atlas.png",
-      "source_sha256": "5c1a733932781047e3c8a9d67f6c71a7b553d2c933d91d7e4639925ec1fe2738",
+      "source_sha256": "a39b4b974e89141f5f30e81e2f23641ad6505bc26c9047d8932eb15aefec9506",
       "grid": [
         4,
         2
       ],
       "cell": 2,
       "cell_size": [
-        314,
-        628
+        400,
+        400
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        349,
-        221,
-        591,
-        523
+        479,
+        49,
+        721,
+        351
       ],
       "authored_cell_bounds": [
-        314,
+        400,
         0,
-        628,
-        628
+        800,
+        400
       ],
       "primary_component_id": 7,
       "source_component_ids": [
         0,
         1,
-        2,
         3,
+        4,
         7
       ],
       "assigned_components": 5,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 29,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -6293,28 +7127,28 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/musical-chest-atlas.png",
-      "source_sha256": "5c1a733932781047e3c8a9d67f6c71a7b553d2c933d91d7e4639925ec1fe2738",
+      "source_sha256": "a39b4b974e89141f5f30e81e2f23641ad6505bc26c9047d8932eb15aefec9506",
       "grid": [
         4,
         2
       ],
       "cell": 3,
       "cell_size": [
-        314,
-        628
+        400,
+        400
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        653,
-        264,
-        894,
-        523
+        879,
+        70,
+        1120,
+        329
       ],
       "authored_cell_bounds": [
-        628,
+        800,
         0,
-        942,
-        628
+        1200,
+        400
       ],
       "primary_component_id": 5,
       "source_component_ids": [
@@ -6322,7 +7156,7 @@
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 29,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -6338,36 +7172,36 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/musical-chest-atlas.png",
-      "source_sha256": "5c1a733932781047e3c8a9d67f6c71a7b553d2c933d91d7e4639925ec1fe2738",
+      "source_sha256": "a39b4b974e89141f5f30e81e2f23641ad6505bc26c9047d8932eb15aefec9506",
       "grid": [
         4,
         2
       ],
       "cell": 4,
       "cell_size": [
-        314,
-        628
+        400,
+        400
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        958,
-        243,
-        1203,
-        523
+        1277,
+        60,
+        1522,
+        340
       ],
       "authored_cell_bounds": [
-        942,
+        1200,
         0,
-        1256,
-        628
+        1600,
+        400
       ],
-      "primary_component_id": 4,
+      "primary_component_id": 2,
       "source_component_ids": [
-        4
+        2
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 29,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -6383,39 +7217,39 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/musical-chest-atlas.png",
-      "source_sha256": "5c1a733932781047e3c8a9d67f6c71a7b553d2c933d91d7e4639925ec1fe2738",
+      "source_sha256": "a39b4b974e89141f5f30e81e2f23641ad6505bc26c9047d8932eb15aefec9506",
       "grid": [
         4,
         2
       ],
       "cell": 5,
       "cell_size": [
-        314,
-        628
+        400,
+        400
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        46,
-        643,
-        301,
-        989
+        72,
+        427,
+        327,
+        773
       ],
       "authored_cell_bounds": [
         0,
-        628,
-        314,
-        1256
+        400,
+        400,
+        800
       ],
-      "primary_component_id": 10,
+      "primary_component_id": 9,
       "source_component_ids": [
-        10,
-        20,
+        9,
         22,
-        26
+        23,
+        24
       ],
       "assigned_components": 4,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 29,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -6431,97 +7265,95 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/musical-chest-atlas.png",
-      "source_sha256": "5c1a733932781047e3c8a9d67f6c71a7b553d2c933d91d7e4639925ec1fe2738",
+      "source_sha256": "a39b4b974e89141f5f30e81e2f23641ad6505bc26c9047d8932eb15aefec9506",
       "grid": [
         4,
         2
       ],
       "cell": 6,
       "cell_size": [
-        314,
-        628
+        400,
+        400
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        320,
-        624,
-        623,
-        993
+        451,
+        418,
+        749,
+        781
       ],
       "authored_cell_bounds": [
-        314,
-        628,
-        628,
-        1256
+        400,
+        400,
+        800,
+        800
       ],
       "primary_component_id": 8,
       "source_component_ids": [
         8,
-        9,
+        10,
         11,
-        12,
-        13,
-        15,
         17,
-        24,
+        19,
+        20,
+        21,
         25,
+        26,
         27,
         28
       ],
       "assigned_components": 11,
-      "extends_beyond_cell": [
-        "top"
-      ],
-      "discarded_noise_pixels": 29,
+      "extends_beyond_cell": [],
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
-        303,
-        369
+        298,
+        363
       ],
       "output": "landing-page/assets/world-tour/sprites/chests/musical/frame-06.png",
       "output_size": [
-        303,
-        369
+        298,
+        363
       ],
-      "output_sha256": "b8d6cc7fe5128129946dce88547267127fa8c7966aca06031e5cf548697f2e2b"
+      "output_sha256": "e2eb5f5c156563e9ce37590fe35e437d90cf873fb926c4500bb0a9afcb1657cb"
     },
     {
       "source": "groove-bound/assets/generated/campaign/musical-chest-atlas.png",
-      "source_sha256": "5c1a733932781047e3c8a9d67f6c71a7b553d2c933d91d7e4639925ec1fe2738",
+      "source_sha256": "a39b4b974e89141f5f30e81e2f23641ad6505bc26c9047d8932eb15aefec9506",
       "grid": [
         4,
         2
       ],
       "cell": 7,
       "cell_size": [
-        314,
-        628
+        400,
+        400
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        655,
-        702,
-        897,
-        996
+        879,
+        453,
+        1121,
+        747
       ],
       "authored_cell_bounds": [
-        628,
-        628,
-        942,
-        1256
+        800,
+        400,
+        1200,
+        800
       ],
-      "primary_component_id": 21,
+      "primary_component_id": 18,
       "source_component_ids": [
-        14,
+        12,
+        13,
+        15,
         16,
-        18,
-        19,
-        21
+        18
       ],
       "assigned_components": 5,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 29,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -6537,36 +7369,36 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/musical-chest-atlas.png",
-      "source_sha256": "5c1a733932781047e3c8a9d67f6c71a7b553d2c933d91d7e4639925ec1fe2738",
+      "source_sha256": "a39b4b974e89141f5f30e81e2f23641ad6505bc26c9047d8932eb15aefec9506",
       "grid": [
         4,
         2
       ],
       "cell": 8,
       "cell_size": [
-        314,
-        628
+        400,
+        400
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        958,
-        747,
-        1200,
-        1002
+        1279,
+        472,
+        1521,
+        727
       ],
       "authored_cell_bounds": [
-        942,
-        628,
-        1256,
-        1256
+        1200,
+        400,
+        1600,
+        800
       ],
-      "primary_component_id": 23,
+      "primary_component_id": 14,
       "source_component_ids": [
-        23
+        14
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 29,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -6582,7 +7414,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/chest-luck-reveal-atlas.png",
-      "source_sha256": "e2e74c9eabc61da67058f4d1b32d2c1c81cc46e909902eaf28b3c037c66e2866",
+      "source_sha256": "4f2b938e768e80ed3f45ba917b74f78cbad2dc186a790f89ac5ceee35c48d976",
       "grid": [
         5,
         2
@@ -6594,10 +7426,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        86,
-        87,
-        384,
-        367
+        51,
+        60,
+        349,
+        340
       ],
       "authored_cell_bounds": [
         0,
@@ -6611,7 +7443,7 @@
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 3,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -6627,7 +7459,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/chest-luck-reveal-atlas.png",
-      "source_sha256": "e2e74c9eabc61da67058f4d1b32d2c1c81cc46e909902eaf28b3c037c66e2866",
+      "source_sha256": "4f2b938e768e80ed3f45ba917b74f78cbad2dc186a790f89ac5ceee35c48d976",
       "grid": [
         5,
         2
@@ -6639,10 +7471,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        471,
-        88,
-        772,
-        367
+        449,
+        60,
+        750,
+        339
       ],
       "authored_cell_bounds": [
         400,
@@ -6650,13 +7482,13 @@
         800,
         400
       ],
-      "primary_component_id": 4,
+      "primary_component_id": 1,
       "source_component_ids": [
-        4
+        1
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 3,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -6672,7 +7504,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/chest-luck-reveal-atlas.png",
-      "source_sha256": "e2e74c9eabc61da67058f4d1b32d2c1c81cc46e909902eaf28b3c037c66e2866",
+      "source_sha256": "4f2b938e768e80ed3f45ba917b74f78cbad2dc186a790f89ac5ceee35c48d976",
       "grid": [
         5,
         2
@@ -6684,10 +7516,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        849,
-        87,
-        1148,
-        367
+        850,
+        60,
+        1149,
+        340
       ],
       "authored_cell_bounds": [
         800,
@@ -6695,13 +7527,13 @@
         1200,
         400
       ],
-      "primary_component_id": 1,
+      "primary_component_id": 2,
       "source_component_ids": [
-        1
+        2
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 3,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -6717,7 +7549,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/chest-luck-reveal-atlas.png",
-      "source_sha256": "e2e74c9eabc61da67058f4d1b32d2c1c81cc46e909902eaf28b3c037c66e2866",
+      "source_sha256": "4f2b938e768e80ed3f45ba917b74f78cbad2dc186a790f89ac5ceee35c48d976",
       "grid": [
         5,
         2
@@ -6729,10 +7561,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        1227,
-        87,
-        1523,
-        367
+        1252,
+        60,
+        1548,
+        340
       ],
       "authored_cell_bounds": [
         1200,
@@ -6740,13 +7572,13 @@
         1600,
         400
       ],
-      "primary_component_id": 2,
+      "primary_component_id": 3,
       "source_component_ids": [
-        2
+        3
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 3,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -6762,7 +7594,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/chest-luck-reveal-atlas.png",
-      "source_sha256": "e2e74c9eabc61da67058f4d1b32d2c1c81cc46e909902eaf28b3c037c66e2866",
+      "source_sha256": "4f2b938e768e80ed3f45ba917b74f78cbad2dc186a790f89ac5ceee35c48d976",
       "grid": [
         5,
         2
@@ -6774,10 +7606,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        1604,
-        87,
-        1899,
-        367
+        1652,
+        60,
+        1947,
+        340
       ],
       "authored_cell_bounds": [
         1600,
@@ -6785,15 +7617,15 @@
         2000,
         400
       ],
-      "primary_component_id": 3,
+      "primary_component_id": 4,
       "source_component_ids": [
-        3,
+        4,
         5,
         6
       ],
       "assigned_components": 3,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 3,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -6809,7 +7641,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/chest-luck-reveal-atlas.png",
-      "source_sha256": "e2e74c9eabc61da67058f4d1b32d2c1c81cc46e909902eaf28b3c037c66e2866",
+      "source_sha256": "4f2b938e768e80ed3f45ba917b74f78cbad2dc186a790f89ac5ceee35c48d976",
       "grid": [
         5,
         2
@@ -6821,10 +7653,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        108,
-        480,
-        354,
-        694
+        77,
+        493,
+        323,
+        707
       ],
       "authored_cell_bounds": [
         0,
@@ -6838,7 +7670,7 @@
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 3,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -6854,7 +7686,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/chest-luck-reveal-atlas.png",
-      "source_sha256": "e2e74c9eabc61da67058f4d1b32d2c1c81cc46e909902eaf28b3c037c66e2866",
+      "source_sha256": "4f2b938e768e80ed3f45ba917b74f78cbad2dc186a790f89ac5ceee35c48d976",
       "grid": [
         5,
         2
@@ -6866,10 +7698,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        488,
-        480,
-        735,
-        694
+        476,
+        493,
+        723,
+        707
       ],
       "authored_cell_bounds": [
         400,
@@ -6883,7 +7715,7 @@
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 3,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -6899,7 +7731,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/chest-luck-reveal-atlas.png",
-      "source_sha256": "e2e74c9eabc61da67058f4d1b32d2c1c81cc46e909902eaf28b3c037c66e2866",
+      "source_sha256": "4f2b938e768e80ed3f45ba917b74f78cbad2dc186a790f89ac5ceee35c48d976",
       "grid": [
         5,
         2
@@ -6911,10 +7743,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        868,
-        480,
-        1113,
-        694
+        877,
+        493,
+        1122,
+        707
       ],
       "authored_cell_bounds": [
         800,
@@ -6928,7 +7760,7 @@
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 3,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -6944,7 +7776,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/chest-luck-reveal-atlas.png",
-      "source_sha256": "e2e74c9eabc61da67058f4d1b32d2c1c81cc46e909902eaf28b3c037c66e2866",
+      "source_sha256": "4f2b938e768e80ed3f45ba917b74f78cbad2dc186a790f89ac5ceee35c48d976",
       "grid": [
         5,
         2
@@ -6956,10 +7788,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        1249,
-        480,
-        1492,
-        694
+        1278,
+        493,
+        1521,
+        707
       ],
       "authored_cell_bounds": [
         1200,
@@ -6973,7 +7805,7 @@
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 3,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -6989,7 +7821,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/chest-luck-reveal-atlas.png",
-      "source_sha256": "e2e74c9eabc61da67058f4d1b32d2c1c81cc46e909902eaf28b3c037c66e2866",
+      "source_sha256": "4f2b938e768e80ed3f45ba917b74f78cbad2dc186a790f89ac5ceee35c48d976",
       "grid": [
         5,
         2
@@ -7001,10 +7833,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        1630,
-        480,
-        1871,
-        694
+        1679,
+        493,
+        1920,
+        707
       ],
       "authored_cell_bounds": [
         1600,
@@ -7018,7 +7850,7 @@
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
-      "discarded_noise_pixels": 3,
+      "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
@@ -7034,7 +7866,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/completion-ui-atlas.png",
-      "source_sha256": "892af76d029efe4402423296b45278104eaa80125d8682f0e7b4dc19b828e40e",
+      "source_sha256": "27691d82a0482da7f719dece6bdc10b3a824cf3a615ba2e7a918fd79f18aeff4",
       "grid": [
         4,
         2
@@ -7046,10 +7878,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        32,
-        51,
-        396,
-        420
+        18,
+        15,
+        382,
+        384
       ],
       "authored_cell_bounds": [
         0,
@@ -7063,9 +7895,7 @@
         4
       ],
       "assigned_components": 2,
-      "extends_beyond_cell": [
-        "bottom"
-      ],
+      "extends_beyond_cell": [],
       "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
@@ -7082,7 +7912,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/completion-ui-atlas.png",
-      "source_sha256": "892af76d029efe4402423296b45278104eaa80125d8682f0e7b4dc19b828e40e",
+      "source_sha256": "27691d82a0482da7f719dece6bdc10b3a824cf3a615ba2e7a918fd79f18aeff4",
       "grid": [
         4,
         2
@@ -7094,10 +7924,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        432,
-        38,
-        782,
-        428
+        427,
+        8,
+        772,
+        392
       ],
       "authored_cell_bounds": [
         400,
@@ -7110,26 +7940,24 @@
         0
       ],
       "assigned_components": 1,
-      "extends_beyond_cell": [
-        "bottom"
-      ],
+      "extends_beyond_cell": [],
       "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
-        350,
-        390
+        345,
+        384
       ],
       "output": "landing-page/assets/world-tour/sprites/chests/completion/orbit-complete.png",
       "output_size": [
-        350,
-        390
+        345,
+        384
       ],
-      "output_sha256": "e42c61e86a1876b49a4238348fb18cfbe750e24d1292f3fa6b9c86b7d210cb6b"
+      "output_sha256": "d3b80d2ed8e0430c4c36bd419f6dff7f1b36077036f1b768809155f61018c08c"
     },
     {
       "source": "groove-bound/assets/generated/campaign/completion-ui-atlas.png",
-      "source_sha256": "892af76d029efe4402423296b45278104eaa80125d8682f0e7b4dc19b828e40e",
+      "source_sha256": "27691d82a0482da7f719dece6bdc10b3a824cf3a615ba2e7a918fd79f18aeff4",
       "grid": [
         4,
         2
@@ -7141,10 +7969,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        821,
-        80,
-        1173,
-        428
+        824,
+        26,
+        1176,
+        374
       ],
       "authored_cell_bounds": [
         800,
@@ -7157,9 +7985,7 @@
         3
       ],
       "assigned_components": 1,
-      "extends_beyond_cell": [
-        "bottom"
-      ],
+      "extends_beyond_cell": [],
       "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
@@ -7176,7 +8002,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/completion-ui-atlas.png",
-      "source_sha256": "892af76d029efe4402423296b45278104eaa80125d8682f0e7b4dc19b828e40e",
+      "source_sha256": "27691d82a0482da7f719dece6bdc10b3a824cf3a615ba2e7a918fd79f18aeff4",
       "grid": [
         4,
         2
@@ -7188,10 +8014,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        1206,
-        45,
-        1558,
-        435
+        1226,
+        8,
+        1573,
+        392
       ],
       "authored_cell_bounds": [
         1200,
@@ -7204,26 +8030,24 @@
         1
       ],
       "assigned_components": 1,
-      "extends_beyond_cell": [
-        "bottom"
-      ],
+      "extends_beyond_cell": [],
       "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,
         0,
-        352,
-        390
+        347,
+        384
       ],
       "output": "landing-page/assets/world-tour/sprites/chests/completion/funk-mastery.png",
       "output_size": [
-        352,
-        390
+        347,
+        384
       ],
-      "output_sha256": "f3c8de6d88c30973829798e544e2554d9b4d5a25ff61bde02d81464b7b95ff2b"
+      "output_sha256": "a6928342fbd1dd89d5fb66bd0ed8439823b1dd5e996c55dd8d9e788caf6a61cd"
     },
     {
       "source": "groove-bound/assets/generated/campaign/completion-ui-atlas.png",
-      "source_sha256": "892af76d029efe4402423296b45278104eaa80125d8682f0e7b4dc19b828e40e",
+      "source_sha256": "27691d82a0482da7f719dece6bdc10b3a824cf3a615ba2e7a918fd79f18aeff4",
       "grid": [
         4,
         2
@@ -7235,10 +8059,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        90,
-        483,
-        333,
-        727
+        78,
+        478,
+        321,
+        722
       ],
       "authored_cell_bounds": [
         0,
@@ -7268,7 +8092,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/completion-ui-atlas.png",
-      "source_sha256": "892af76d029efe4402423296b45278104eaa80125d8682f0e7b4dc19b828e40e",
+      "source_sha256": "27691d82a0482da7f719dece6bdc10b3a824cf3a615ba2e7a918fd79f18aeff4",
       "grid": [
         4,
         2
@@ -7280,10 +8104,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        468,
-        462,
-        725,
-        745
+        471,
+        458,
+        728,
+        741
       ],
       "authored_cell_bounds": [
         400,
@@ -7291,9 +8115,9 @@
         800,
         800
       ],
-      "primary_component_id": 5,
+      "primary_component_id": 6,
       "source_component_ids": [
-        5
+        6
       ],
       "assigned_components": 1,
       "extends_beyond_cell": [],
@@ -7313,7 +8137,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/completion-ui-atlas.png",
-      "source_sha256": "892af76d029efe4402423296b45278104eaa80125d8682f0e7b4dc19b828e40e",
+      "source_sha256": "27691d82a0482da7f719dece6bdc10b3a824cf3a615ba2e7a918fd79f18aeff4",
       "grid": [
         4,
         2
@@ -7325,10 +8149,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        842,
-        466,
-        1126,
-        740
+        858,
+        463,
+        1142,
+        737
       ],
       "authored_cell_bounds": [
         800,
@@ -7336,9 +8160,9 @@
         1200,
         800
       ],
-      "primary_component_id": 6,
+      "primary_component_id": 7,
       "source_component_ids": [
-        6,
+        7,
         9,
         12
       ],
@@ -7360,7 +8184,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/completion-ui-atlas.png",
-      "source_sha256": "892af76d029efe4402423296b45278104eaa80125d8682f0e7b4dc19b828e40e",
+      "source_sha256": "27691d82a0482da7f719dece6bdc10b3a824cf3a615ba2e7a918fd79f18aeff4",
       "grid": [
         4,
         2
@@ -7372,10 +8196,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        1227,
-        469,
-        1536,
-        759
+        1245,
+        455,
+        1554,
+        745
       ],
       "authored_cell_bounds": [
         1200,
@@ -7383,9 +8207,9 @@
         1600,
         800
       ],
-      "primary_component_id": 7,
+      "primary_component_id": 5,
       "source_component_ids": [
-        7,
+        5,
         10,
         11,
         13,
@@ -7412,7 +8236,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/funk-pocket-pad-atlas.png",
-      "source_sha256": "8a183ad1e715dc9fdbbc4fde76dd7ab7d6e09a52c27341aa840a31fcfef3919a",
+      "source_sha256": "bf36022699b9e2116c2a69ead178a11d2d67dfdd408bac1191bd6419145b01db",
       "grid": [
         5,
         1
@@ -7424,10 +8248,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        30,
-        40,
-        320,
-        372
+        15,
+        34,
+        305,
+        366
       ],
       "authored_cell_bounds": [
         0,
@@ -7457,7 +8281,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/funk-pocket-pad-atlas.png",
-      "source_sha256": "8a183ad1e715dc9fdbbc4fde76dd7ab7d6e09a52c27341aa840a31fcfef3919a",
+      "source_sha256": "bf36022699b9e2116c2a69ead178a11d2d67dfdd408bac1191bd6419145b01db",
       "grid": [
         5,
         1
@@ -7469,10 +8293,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        340,
-        41,
-        630,
-        372
+        335,
+        34,
+        625,
+        365
       ],
       "authored_cell_bounds": [
         320,
@@ -7502,7 +8326,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/funk-pocket-pad-atlas.png",
-      "source_sha256": "8a183ad1e715dc9fdbbc4fde76dd7ab7d6e09a52c27341aa840a31fcfef3919a",
+      "source_sha256": "bf36022699b9e2116c2a69ead178a11d2d67dfdd408bac1191bd6419145b01db",
       "grid": [
         5,
         1
@@ -7514,10 +8338,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        649,
-        41,
-        939,
-        372
+        655,
+        34,
+        945,
+        365
       ],
       "authored_cell_bounds": [
         640,
@@ -7547,7 +8371,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/funk-pocket-pad-atlas.png",
-      "source_sha256": "8a183ad1e715dc9fdbbc4fde76dd7ab7d6e09a52c27341aa840a31fcfef3919a",
+      "source_sha256": "bf36022699b9e2116c2a69ead178a11d2d67dfdd408bac1191bd6419145b01db",
       "grid": [
         5,
         1
@@ -7559,10 +8383,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        960,
-        41,
-        1251,
-        372
+        974,
+        34,
+        1265,
+        365
       ],
       "authored_cell_bounds": [
         960,
@@ -7592,7 +8416,7 @@
     },
     {
       "source": "groove-bound/assets/generated/campaign/funk-pocket-pad-atlas.png",
-      "source_sha256": "8a183ad1e715dc9fdbbc4fde76dd7ab7d6e09a52c27341aa840a31fcfef3919a",
+      "source_sha256": "bf36022699b9e2116c2a69ead178a11d2d67dfdd408bac1191bd6419145b01db",
       "grid": [
         5,
         1
@@ -7604,10 +8428,10 @@
       ],
       "isolation": "global-alpha-components",
       "source_bounds": [
-        1271,
-        41,
-        1561,
-        372
+        1295,
+        34,
+        1585,
+        365
       ],
       "authored_cell_bounds": [
         1280,
@@ -7620,9 +8444,7 @@
         4
       ],
       "assigned_components": 1,
-      "extends_beyond_cell": [
-        "left"
-      ],
+      "extends_beyond_cell": [],
       "discarded_noise_pixels": 0,
       "alpha_bounds": [
         0,

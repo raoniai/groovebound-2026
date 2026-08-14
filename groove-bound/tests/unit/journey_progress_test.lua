@@ -85,6 +85,22 @@ T["high-grade World victories unlock their perks and the next core world"] = fun
   H.eq(app.slot.wallet.coins, 740)
 end
 
+T["Disco victory unlocks Jazz and Jazz victory unlocks House"] = function()
+  local app = fresh()
+  app.content = require("src.content.init")
+  app.slot.prologue.completed = true
+  for _, world_id in ipairs({ "disco", "jazz" }) do
+    JourneyProgress.record_result(app, {
+      outcome = "victory", mode = "world_tour", world_id = world_id,
+      time = 600, level = 10, health_fraction = 1,
+      stats = { kills = 160, bosses = 2, damage = 5000, xp = 1000 },
+      world_mechanic = { activations = 10, opportunities = 10, best_chain = 8 },
+    })
+  end
+  H.is_true(app.slot.worlds.jazz.unlocked)
+  H.is_true(app.slot.worlds.house.unlocked)
+end
+
 T["campaign reset clears the active Slot and in-memory journey"] = function()
   local app = fresh()
   local reset_slot

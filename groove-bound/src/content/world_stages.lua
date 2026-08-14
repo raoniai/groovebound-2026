@@ -48,18 +48,26 @@ local function themed_stage(id, world_id, name, subtitle, final_boss, wave_modul
   for i,p in ipairs(dpos) do deco[#deco+1] = { x=width*p[1], y=height*p[2],
     size=145+(i%3)*14, icon={col=(i-1)%4+1,row=2},
     blocks_base=(i==1 or i==2), hitbox_w=78, hitbox_h=38, hitbox_offset_y=58 } end
+  local palettes = {
+    soul = { floor={.82,.68,.88,1}, veil={.08,.012,.065,.26}, grid={1,.55,.42,.35} },
+    jazz = { floor={.58,.70,.92,1}, veil={.006,.018,.065,.30}, grid={.24,.78,1,.38} },
+    disco = { floor={.70,.78,.96,1}, veil={.012,.025,.075,.24}, grid={.35,.92,1,.34} },
+  }
+  local palette = palettes[world_id] or palettes.disco
+  local timing = world_id == "soul" and {
+    cycle=4.6, active=.72, charge=1.15, boost=1.4, multiplier=1.08,
+  } or world_id == "jazz" and {
+    cycle=stage_index == 1 and 3.8 or 3.35, active=.44, charge=.48,
+    boost=2.0, multiplier=1.32,
+  } or { cycle=3.0, active=.34, charge=.38, boost=2.4, multiplier=1.42 }
   return { id=id, world_id=world_id, name=name, subtitle=subtitle,
     width=width, height=height, base_duration=240, wave_base_duration=600,
     waves=require(wave_module), final_boss=final_boss,
     floor_style=world_id, environment_atlas=world_id,
-    floor_tint=world_id=="soul" and { .82,.68,.88,1 } or { .70,.78,.96,1 },
-    veil_color=world_id=="soul" and { .08,.012,.065,.26 } or { .012,.025,.075,.24 },
-    grid_color=world_id=="soul" and { 1,.55,.42,.35 } or { .35,.92,1,.34 },
-    mechanic={ id=mechanic_id, cycle_seconds=world_id=="soul" and 4.6 or 3.0,
-      active_window=world_id=="soul" and .72 or .34,
-      charge_seconds=world_id=="soul" and 1.15 or .38,
-      boost_seconds=world_id=="soul" and 1.4 or 2.4,
-      boost_multiplier=world_id=="soul" and 1.08 or 1.42,
+    floor_tint=palette.floor, veil_color=palette.veil, grid_color=palette.grid,
+    mechanic={ id=mechanic_id, cycle_seconds=timing.cycle,
+      active_window=timing.active, charge_seconds=timing.charge,
+      boost_seconds=timing.boost, boost_multiplier=timing.multiplier,
       heal_fraction=world_id=="soul" and .07 or 0,
       radius=world_id=="soul" and 128 or 118, pads=pads },
     obstacles=obs, decorations=deco }
@@ -172,5 +180,15 @@ return {
       "Ride the bonus lane and dethrone the Prism Monarch.",
       "prism_monarch", "src.content.world_tour_waves.disco_stage2",
       "disco_spotlight_flow", 2),
+  },
+  jazz = {
+    themed_stage("world_jazz_blue_note_borough", "jazz", "BLUE NOTE BOROUGH",
+      "Read the changes. Catch each blue-note window and improvise.",
+      "brass_regent", "src.content.world_tour_waves.jazz",
+      "jazz_improvisation", 1),
+    themed_stage("world_jazz_midnight_changes", "jazz", "MIDNIGHT CHANGES",
+      "Chain the changes and take the bandstand from the Maestro.",
+      "midnight_maestro", "src.content.world_tour_waves.jazz_stage2",
+      "jazz_improvisation", 2),
   },
 }

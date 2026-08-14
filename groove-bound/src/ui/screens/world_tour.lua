@@ -169,7 +169,7 @@ function WorldTourScreen:_draw_world_slot(world, rect, selected)
       or unlocked and { 0.36, 0.92, 1, 0.78 } or { 0.42, 0.38, 0.52, 0.42 },
   })
   local col = world.id == "funk" and 2 or world.id == "soul" and 3 or 4
-  self.app.assets:draw_world_interface(col, 1,
+  self.app.assets:draw_world_identity(world.id, col, 1,
     rect.x + rect.w * 0.16, rect.y + 5, rect.w * 0.68, rect.h * 0.68,
     { color = unlocked and { 1, 1, 1, 1 } or { 0.52, 0.48, 0.62, 0.48 } })
   love.graphics.setFont(Fonts.get(math.max(10, math.min(14, rect.w * 0.12))))
@@ -195,7 +195,7 @@ function WorldTourScreen:_draw_record(world, rect)
     { color = unlocked and { 0.36, 0.92, 1, 0.78 } or { 0.42, 0.38, 0.52, 0.46 } })
 
   local icon_col = world.id == "funk" and 2 or world.id == "soul" and 3 or 4
-  self.app.assets:draw_world_interface(icon_col, 1,
+  self.app.assets:draw_world_identity(world.id, icon_col, 1,
     rect.x + 18, rect.y + 12, 112, 112,
     { color = unlocked and { 1, 1, 1, 1 } or { 0.48, 0.45, 0.58, 0.48 } })
   love.graphics.setFont(Fonts.get(26))

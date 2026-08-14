@@ -65,6 +65,9 @@ function FunkPocketSystem:update(dt, time)
     elseif mechanic_id == "disco_spotlight_flow" then
       self.reward_text = string.format("SPOTLIGHT HIT  •  SPEED ×%.2f FOR %.1fs",
         self.definition.boost_multiplier, self.definition.boost_seconds)
+    elseif mechanic_id == "jazz_improvisation" then
+      self.reward_text = string.format("BLUE NOTE  •  IMPROVISE ×%.2f FOR %.1fs",
+        self.definition.boost_multiplier, self.definition.boost_seconds)
     else
       self.reward_text = string.format("DOWNBEAT HIT  •  SPEED ×%.2f FOR %.1fs",
         self.definition.boost_multiplier, self.definition.boost_seconds)

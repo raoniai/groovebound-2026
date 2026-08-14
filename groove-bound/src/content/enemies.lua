@@ -481,4 +481,32 @@ add("glitter_guard", "Glitter Guard", "disco", 6, 480, 72, 33, "charger", { colo
 add("laser_conductor", "Laser Conductor", "disco", 7, 9000, 42, 36, "ranged", { color=disco, size=55, sprite_size=202, boss_type="final", attack_kind="static_wave", attack_interval=1.42, attack_range=590, preferred_range=390, windup=0.62, projectile_speed=350, projectile_count=22, xp=920, coins=460 })
 add("prism_monarch", "Prism Monarch", "disco", 8, 19400, 36, 44, "pulse", { color=disco, size=68, sprite_size=252, hurtbox_radius=82, boss_type="final", attack_kind="static_wave", attack_interval=1.18, attack_range=650, windup=0.70, projectile_speed=370, projectile_count=28, xp=1650, coins=820 })
 
+local jazz = { 0.24, 0.78, 1.0, 1 }
+add("syncopated_imp", "Syncopated Imp", "jazz", 1, 122, 118, 19,
+  "zigzag", { color=jazz, sprite_size=96 })
+add("blue_note_bat", "Blue Note Bat", "jazz", 2, 104, 174, 18,
+  "orbit", { color=jazz, sprite_size=100 })
+add("walking_bass_bot", "Walking Bass Bot", "jazz", 3, 320, 58, 29,
+  "charger", { color=jazz, size=29, sprite_size=132 })
+add("scat_cannon", "Scat Cannon", "jazz", 4, 205, 48, 23,
+  "ranged", { color=jazz, attack_kind="note_bolt", attack_interval=1.82,
+    attack_range=610, preferred_range=395, windup=0.40,
+    projectile_speed=355, sprite_size=124 })
+add("bebop_behemoth", "Bebop Behemoth", "jazz", 5, 540, 68, 35,
+  "pulse", { color=jazz, size=34, sprite_size=148,
+    attack_kind="resonance_pulse", attack_interval=2.25,
+    attack_range=185, windup=0.58 })
+add("brushfire_skitter", "Brushfire Skitter", "jazz", 6, 158, 162, 21,
+  "zigzag", { color=jazz, sprite_size=108 })
+add("brass_regent", "Brass Regent", "jazz", 7, 9800, 45, 38,
+  "ranged", { color=jazz, size=57, sprite_size=210, boss_type="final",
+    attack_kind="static_wave", attack_interval=1.36, attack_range=625,
+    preferred_range=405, windup=0.60, projectile_speed=365,
+    projectile_count=24, xp=1000, coins=500 })
+add("midnight_maestro", "Midnight Maestro", "jazz", 8, 20800, 38, 46,
+  "pulse", { color=jazz, size=70, sprite_size=258, hurtbox_radius=84,
+    boss_type="final", attack_kind="static_wave", attack_interval=1.12,
+    attack_range=680, windup=0.68, projectile_speed=382,
+    projectile_count=30, xp=1780, coins=880 })
+
 return enemies

@@ -5,13 +5,13 @@ from __future__ import annotations
 
 import argparse
 import hashlib
-import os
 import subprocess
 import zipfile
 from pathlib import Path, PurePosixPath
 
 
 GAME_ROOT = Path(__file__).resolve().parents[1]
+VERSION_FILE = GAME_ROOT / "VERSION"
 FIXED_ZIP_TIME = (1980, 1, 1, 0, 0, 0)
 
 
@@ -31,6 +31,8 @@ def excluded(relative: PurePosixPath) -> bool:
     }:
         return True
     if relative.name in {"Makefile", ".luacheckrc", ".DS_Store"}:
+        return True
+    if len(parts) == 1 and relative.name not in {"VERSION", "conf.lua", "main.lua"}:
         return True
     if relative.suffix.lower() == ".md" or relative.name.endswith("-source.png"):
         return True
@@ -64,9 +66,17 @@ def sha256(path: Path) -> str:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--output", type=Path, default=GAME_ROOT / "dist/groove-bound.love")
-    parser.add_argument("--version", default=os.environ.get("VERSION", "0.8.3"))
+    parser.add_argument("--version", help="must match the canonical VERSION file")
     parser.add_argument("--require-clean", action="store_true")
     args = parser.parse_args()
+
+    version = VERSION_FILE.read_text(encoding="utf-8").strip()
+    if not version or any(not part.isdigit() for part in version.split(".")):
+        raise SystemExit("VERSION must contain a numeric dotted release version")
+    if args.version and args.version.lstrip("v") != version:
+        raise SystemExit(
+            f"requested version {args.version} disagrees with canonical VERSION {version}"
+        )
 
     status = git("status", "--porcelain=v1", "--", ".")
     if args.require_clean and status:
@@ -88,7 +98,7 @@ def main() -> int:
 
     marker = (
         "profile=release\n"
-        f"version={args.version}\n"
+        f"version={version}\n"
         f"commit={git('rev-parse', '--short=12', 'HEAD')}\n"
         f"dirty={'true' if status else 'false'}\n"
     ).encode("utf-8")

@@ -7,6 +7,7 @@ local Input = require("src.game.input")
 local settings = require("src.config.settings")
 local widgets = require("src.ui.widgets.button")
 local MenuChrome = require("src.ui.menu_chrome")
+local BuildInfo = require("src.config.build_info")
 
 local PauseScreen = class()
 PauseScreen.kind = "pause"
@@ -102,6 +103,11 @@ function PauseScreen:draw()
     self.panel.w, "center")
 
   self.button_list:draw()
+
+  love.graphics.setFont(Fonts.get(10))
+  love.graphics.setColor(0.68, 0.72, 0.82, 0.78)
+  love.graphics.printf(BuildInfo.label(), self.panel.x + 16,
+    self.panel.y + self.panel.h - 22, self.panel.w - 32, "right")
 end
 
 function PauseScreen:keypressed(key)

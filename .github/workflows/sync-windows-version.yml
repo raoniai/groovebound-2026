@@ -16,7 +16,6 @@ concurrency:
 env:
   CANONICAL_BRANCH: codex/world-tour-v1
   WINDOWS_BRANCH: codex/windows-version
-  RELEASE_VERSION: 0.8.3
 
 jobs:
   sync:
@@ -76,11 +75,17 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Load canonical version
+        run: echo "RELEASE_VERSION=$(tr -d '[:space:]' < groove-bound/VERSION)" >> "$GITHUB_ENV"
+
       - name: Build and verify the common payload once
         working-directory: groove-bound
         run: |
-          python scripts/package_love.py --version "$RELEASE_VERSION" --require-clean
+          python scripts/package_love.py --require-clean
           python scripts/verify_release_package.py dist/groove-bound.love
+
+      - name: Enforce source and common-payload version parity
+        run: python3 skills/groove-bound-version-sync/scripts/check_version_sync.py --root . --scope local
 
       - name: Upload common payload
         uses: actions/upload-artifact@v4
@@ -106,7 +111,7 @@ jobs:
     needs:
       - package-windows
       - package-macos
-    if: "github.event_name == 'push' && github.event.head_commit.message == 'release: publish desktop v0.8.3'"
+    if: "github.event_name == 'push' && startsWith(github.event.head_commit.message, 'release: publish desktop v')"
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
@@ -116,6 +121,9 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: codex/world-tour-v1
+
+      - name: Load canonical version
+        run: echo "RELEASE_VERSION=$(tr -d '[:space:]' < groove-bound/VERSION)" >> "$GITHUB_ENV"
 
       - name: Download Windows candidate
         uses: actions/download-artifact@v4
@@ -135,14 +143,26 @@ jobs:
             --version "$RELEASE_VERSION" \
             --commit "$GITHUB_SHA" \
             --assets-dir release-assets \
-            --template groove-bound/packaging/release-v0.8.3.md \
+            --template "groove-bound/packaging/release-v${RELEASE_VERSION}.md" \
             --notes-output release-assets/RELEASE-NOTES.md \
             --sums-output release-assets/SHA256SUMS-Desktop.txt
+
+      - name: Enforce complete candidate version and payload parity
+        run: |
+          python3 skills/groove-bound-version-sync/scripts/check_version_sync.py \
+            --root . --scope candidate --assets-dir release-assets
 
       - name: Publish synchronized desktop assets
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          if ! gh release view "v${RELEASE_VERSION}" >/dev/null 2>&1; then
+            gh release create "v${RELEASE_VERSION}" \
+              --target "$GITHUB_SHA" \
+              --title "Groove Bound v${RELEASE_VERSION}" \
+              --notes-file release-assets/RELEASE-NOTES.md \
+              --draft
+          fi
           gh release upload "v${RELEASE_VERSION}" \
             release-assets/windows/Groove-Bound-Windows-x64.zip \
             release-assets/windows/Groove-Bound-Windows-x64.manifest.json \
@@ -154,4 +174,9 @@ jobs:
             --clobber
           gh release edit "v${RELEASE_VERSION}" \
             --title "Groove Bound v${RELEASE_VERSION}" \
-            --notes-file release-assets/RELEASE-NOTES.md
+            --notes-file release-assets/RELEASE-NOTES.md \
+            --draft=false \
+            --latest
+
+      - name: Verify GitHub Latest after publication
+        run: python3 skills/groove-bound-version-sync/scripts/check_version_sync.py --root . --scope github
