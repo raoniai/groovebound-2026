@@ -2019,10 +2019,10 @@ body main section[class] h2 { max-width: none; }
 .prologue-panel__player figcaption { padding: .8rem 1rem; border-top: 1px solid rgba(255,255,255,.1); color: #f4edf9; background: linear-gradient(90deg,rgba(85,26,119,.72),rgba(7,3,13,.96)); font: .68rem var(--pixel); text-transform: uppercase; }
 
 .fusion-lab { grid-template-columns: minmax(460px,.88fr) minmax(0,1.12fr); }
-.fusion-picker { display: grid; grid-template-columns: repeat(12,minmax(0,1fr)); align-items: start; gap: .65rem; width: min(100%,560px); }
+.fusion-picker { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); align-items: start; gap: .65rem; width: min(100%,420px); }
 .fusion-picker button {
   position: relative;
-  grid-column: span 2;
+  grid-column: auto;
   box-sizing: border-box;
   width: 100%;
   min-width: 0;
@@ -2037,8 +2037,6 @@ body main section[class] h2 { max-width: none; }
   width: calc(100% - .96rem);
   height: calc(100% - .96rem);
 }
-.fusion-picker button:nth-child(1),.fusion-picker button:nth-child(6) { grid-column: 2 / span 2; }
-.fusion-picker button:nth-child(11) { grid-column: 1 / span 2; }
 .fusion-stage::before { position: absolute; inset: 14%; z-index: 0; border: 1px solid rgba(115,222,255,.16); border-radius: 50%; background: conic-gradient(from 0deg,transparent,rgba(118,48,255,.12),transparent 32%,rgba(55,215,255,.1),transparent 68%); content: ""; animation: fusionOrbit 5.2s linear infinite; }
 .fusion-piece--weapon { animation: fuseLeft 4.8s cubic-bezier(.62,0,.22,1) infinite; }
 .fusion-piece--support { animation: fuseRight 4.8s cubic-bezier(.62,0,.22,1) infinite; }
@@ -2094,8 +2092,8 @@ body main section[class] h2 { max-width: none; }
   .prologue-roster figure img { height: 112px; }
   .prologue-roster__boss { min-height: 225px !important; }
   .prologue-roster__boss img { height: 178px !important; }
-  .fusion-picker { grid-template-columns: repeat(8,minmax(0,1fr)); gap: .55rem; }
-  .fusion-picker button,.fusion-picker button:nth-child(1),.fusion-picker button:nth-child(6),.fusion-picker button:nth-child(11) { grid-column: span 2; }
+  .fusion-picker { grid-template-columns: repeat(4,minmax(0,1fr)); gap: .55rem; }
+  .fusion-picker button { grid-column: auto; }
 }
 @media (prefers-reduced-motion: reduce) {
   .prologue-tour__signal,.prologue-route__bridge img,.fusion-stage::before,.fusion-wave,.fusion-pulse,.fusion-core,.fusion-flash { animation: none !important; }

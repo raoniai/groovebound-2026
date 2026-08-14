@@ -2,6 +2,12 @@
 
 This file is the local implementation record. Add a new entry at the top after every material site pass.
 
+## 2026-08-14 | SITE-051 | Aligned 4x4 evolution selector
+
+Reorganised all sixteen evolved-weapon selectors into an exact four-column by
+four-row grid. Removed the staggered row offsets so every square now shares the
+same alignment, spacing, and footprint on desktop and compact layouts.
+
 ## 2026-08-14 | SITE-050 | Consolidated World Tour selector
 
 Removed the duplicate six-world route strip and the redundant playable-world
