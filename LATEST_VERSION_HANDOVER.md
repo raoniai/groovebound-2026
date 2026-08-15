@@ -36,12 +36,12 @@ _Generated from live repository evidence: 2026-08-15 15:29 AEST_
 
 Groove Bound is a bright urban-supernatural survival roguelike built in Lua with LÖVE 11.5. Its current development preview follows:
 
-The canonical source and desktop release are now **v0.9.2**. Loose-folder play
-displays `v0.9.2-dev`; packaged builds display `v0.9.2`. GitHub Latest exposes
-seven synchronized v0.9.2 assets built from clean release commit `eeadf67`.
-The deployed public site remains v0.9.1 because site deployment is a separate
-approval-gated delivery surface; its local source is already prepared for
-v0.9.2 and retains the stable Latest desktop download routes.
+The canonical source and desktop release are now **v0.9.3**. Loose-folder play
+displays `v0.9.3-dev`; packaged builds display `v0.9.3`. GitHub Latest exposes
+seven synchronized v0.9.3 assets built from clean release commit `ded61e1`.
+The 420-file v0.9.3 public-site bundle is deployed and public-live verified;
+Home, Catalog, Builder, shared files, representative assets, and both stable
+desktop download routes passed exact HTTPS checks.
 
 **Title → Prologue → Character Selection → Character Intro → Backbeat Streets → The Orbit Line → World Tour → playable Funk, Soul, Disco, and Jazz routes**
 
@@ -54,8 +54,8 @@ The player selects Joe or Lyra Vex, keeps one build across both stages, banks le
 - The complete two-stage Prologue plus eight playable World Tour stages across
   Funk, Soul, Disco, and Jazz; five later routes remain defined future scope.
 - Sixteen base weapons, eight supports, and sixteen documented fusions.
-- Six authored enemy families across the Prologue and playable World Tour,
-  including Jazz's eight-enemy ensemble and two stage bosses.
+- Six authored enemy families across the Prologue and playable World Tour;
+  all 49 definitions use deterministic three- or four-frame animation.
 - Persistent options, keyboard/mouse/gamepad controls, rebindings, deadzone, aim assistance, four camera zoom levels, vibration, flash, shake, fullscreen, and volume controls.
 - Adaptive music routing, runtime OGG music, runtime OGV cutscenes, and storyboard fallbacks.
 - Arsenal, Admin, results, level-up, pause, options, character selection, cutscene, run, and chest-reward screens.
@@ -92,6 +92,7 @@ The public landing site is a separate static presentation under `landing-page/`.
 | Chest rewards | Published in v0.7.1, tests passed, visually sampled, and package verified | Five large spinning chests converge without number cycling, flash the centre chest, reveal large sprite-backed rewards, and accept Esc/Circle animation skip; capped builds auto-apply the selected utility reward unless an eligible evolution must be shown | Physical-controller timing and reward-feel playthrough with naturally dropped chests |
 | Arena collision and navigation | Published in v0.7.0 and tests passed | Tall props now block 90% of their height and redraw their complete opaque sprite above actors; deterministic safe-drop and navigation tests remain green | Confirm every authored tall prop in a full playthrough |
 | Enemy projectiles | Committed, pushed, and tests passed | Sprite mapping, attack tuning, content and entity tests | Confirm readability, rate, and boss pressure in play |
+| Enemy animation | Published in v0.9.3; automated, atlas, package, and native boot checks passed | Six runtime atlases animate all 49 definitions and 48 unique visuals without consuming gameplay RNG; static enemies retain position and left-facing sprites retain flipping | Full crowded-combat and boss-scale play-feel pass on physical Mac and Windows hardware |
 | World-specific mechanics | Released in v0.9.0 and correctly repackaged in v0.9.1; tests, art audit, package boot, and public delivery passed | Funk timing/relay, Soul charge/call-response with Guard overflow, Disco flow/prism relay, Jazz phrase/changes, shared chain/Encore rewards, and boss Break all retain stable IDs; eight animated mechanic states per world are packaged | Full two-stage play-feel pass with both characters and physical controller |
 | World bosses | Released in v0.9.0; phase, knockback, projectile, and Break regression tests passed | Eight bosses have increased health/range, 90–96% knockback resistance, wind-up anchoring, three escalating phases, rotating pulse/fan/radial/cross patterns, and heavy multi-hit projectiles; range warnings use calmer outlines | Prolonged high-power-build balance pass and physical-device projectile-readability QA |
 | Cutscene video | Six runtime videos published in v0.6.0 and package verified | Both new MP4s converted to packaged OGV; scene-ID discovery; Circle/`b` skip tests; global mute now drives video-source volume; skip/mute separation visually verified | Physical PlayStation controller check; listening check for mute during each video; full-video fade, pause, final-frame, fallback, and campaign-order playthrough |
@@ -101,9 +102,9 @@ The public landing site is a separate static presentation under `landing-page/`.
 | Combat readability and HUD | v0.9.2 projectile candidate tested; earlier interface states manually verified | Every player weapon owns a separate five-stage atlas; high-power effects have longer recovery windows; beams preserve authored proportions; rank increases protective geometry | Fresh unlocked graphical pass at minimum and reference sizes plus prolonged combat feel with flash/reduced-flash options |
 | Character, upgrade, and results interface | Published in v0.7.1, tests passed, and visually sampled | Anton/Oswald typography, modular nine-slice upgrade cards, relevant-equipped evolution rows only, exact icon-led gain-to-total attributes, generated NEW badge, pickup-art utility choices, existing reroll/skip sprite CTAs, and bright sprite-backed menu focus | Manual defeat/victory results pass and final small-screen readability review |
 | Save system | Version 2 profiles and slots | Save, migration, profile, export and World Tour session tests | Cross-platform clean-machine fixtures |
-| Landing page and repository README | Local source prepared for v0.9.2; public site remains v0.9.1 | Home, Catalog, and Builder source badges show v0.9.2 and retain stable Latest desktop URLs | Site deployment is separately approval-gated; physical-phone refresh and `main` promotion remain open |
+| Landing page and repository README | v0.9.3 bundle deployed and public-live verified | Home, Catalog, and Builder show v0.9.3, match local bytes, and retain stable Latest desktop URLs | Complete physical-phone refresh; `main` promotion remains separate |
 | World Tour runtime atlases | v0.9.1 package verified after the v0.9.0 lock-sprite omission | Four Stage 2 environment atlases, four eight-state mechanic atlases, 32 individual mechanic sprites, and the directly loaded World Tour lock sprite pass source, archive, RGBA, transparency, grid, and packaged-reference checks | Full in-motion readability and collision/layering pass in all eight World Tour stages |
-| Desktop distribution | v0.9.2 published as GitHub Latest and mirrored locally | One clean common payload feeds the universal macOS ZIP/DMG and branded Windows x64 ZIP; all seven public assets expose SHA-256 digests and the local mirror matches them | Physical Windows QA, prolonged unlocked-Mac graphical play, Apple signing, and notarization remain open |
+| Desktop distribution | v0.9.3 published as GitHub Latest and mirrored locally | One clean common payload feeds the universal macOS ZIP/DMG and branded Windows x64 ZIP; all seven public assets expose SHA-256 digests and the local mirror matches them | Physical Windows QA, prolonged unlocked-Mac graphical play, Apple signing, and notarization remain open |
 | Engine migration | Planned | Engine migration research and parity roadmap | Clean baseline and bounded target-engine spike |
 | Groove Bound skills | Twelve repository skills validated; version-sync skill committed and pushed | The fail-closed checker is wired into source, local/candidate, GitHub, landing, and public phases; repository package validation passes 12 of 12 | Unlocked-Mac visual forward test remains open |
 
@@ -174,20 +175,20 @@ Do not infer `main` promotion from the feature-branch push, GitHub release, or l
 
 | Layer | Latest state | Meaning |
 |---|---|---|
-| Automated tests | v0.9.2 release: 410 passed, 0 failed locally and in release CI on 2026-08-15 | Projectile lifecycle, cooldown recovery, rank-scaled coverage, deterministic campaign completion, and existing systems are covered |
-| Lint | 0 warnings and 0 errors across 187 files on 2026-08-15 | Current Lua source and tests statically checked |
-| Common package | Published v0.9.2 `.love`, 230,806,584 bytes, SHA-256 `ceb20559830f250b4fe43c222e553587f28779764a2cddfec3ddd77aa0564f09` | Clean release marker, complete runtime assets, and identical embedding in both native packages |
-| macOS artifacts | Published universal ZIP SHA-256 `e48b50f8334b75c79558a5478db0b815ee5d6365c0b4a8b694d166340854cc0b`; DMG SHA-256 `980de1b156821bf19816c42178c2a2f156470d5ecdae6771ae2e879df34667c3` | Archive integrity, bundle version, code-signature structure, DMG checksum, common payload, and packaged boot passed; ad-hoc signed and not notarized |
-| Windows artifact | Published branded x64 ZIP SHA-256 `72275ae8375759a17244e6b4e47ce50d084f5e617aa5a0682e2b0b72ebc039e7` | Pinned official LÖVE 11.5 runtime, icon/version metadata, common-payload equality, archive integrity, and native packaged boot passed; unsigned |
+| Automated tests | v0.9.3 release: 415 passed, 0 failed locally and in Linux, macOS, and Windows release workflows on 2026-08-15 | Enemy animation mapping, deterministic visual phase, static-position preservation, facing, projectiles, deterministic campaign completion, and existing systems are covered |
+| Lint | 0 warnings and 0 errors across 189 files on 2026-08-15 | Current Lua source and tests statically checked |
+| Common package | Published v0.9.3 `.love`, 239,843,571 bytes, SHA-256 `5d70c74d3aac4df9bd9465890a5f6703f6470cc3538ded32e90d2e3c62617f36` | Clean release marker, all six runtime animation atlases, source-candidate exclusion, and identical embedding in both native packages |
+| macOS artifacts | Published universal ZIP SHA-256 `e9caa89540968826e51af85035e4da8cdb7b8778dd242657c8a87dfcb79eb10c`; DMG SHA-256 `e895106db214c41fed89a9c24e30ed12b7d9fd3e3e30785ab8a03a5b645677b7` | Archive integrity, bundle version, code-signature structure, DMG checksum, common payload, and packaged boot passed; ad-hoc signed and not notarized |
+| Windows artifact | Published branded x64 ZIP SHA-256 `4f4d64ad13b71841e1817b7e8398c1345f16d3cb299898dfeb7ef444f3399f4b` | Pinned official LÖVE 11.5 runtime, icon/version metadata, common-payload equality, archive integrity, and native packaged boot passed; unsigned |
 | Packaged boot | Verified in Windows and macOS release CI on 2026-08-15; published macOS app also passed a fresh local boot marker | Both packages reached `boot-complete`; this proves startup integrity, not a full graphical/audio playthrough |
 | Manual graphical QA | v0.8.2 changed interface states verified at 1280 x 720 and 800 x 600 | Active World Tour mechanic, timer, HP/XP, build slots, level-point CTA, pause, level-up, results, title, and settings were visually inspected; full campaign, physical controller, audio and prolonged play-feel remain open |
-| Source release commit | `eeadf67` — release: publish desktop v0.9.2 | Tag `v0.9.2` targets full commit `eeadf676dfe49ec11f666f42579fcd0706b95be4` |
-| Feature-branch push | `origin/codex/projectile-redesign-v092` and `origin/codex/world-overhaul-v090` contain the release commit | `main` remains independently unpromoted; original local dirty work is preserved |
+| Source release commit | `ded61e1` — release: publish desktop v0.9.3 | Tag `v0.9.3` targets full commit `ded61e1e9863afdb09199c3281a0e599ab117d42` |
+| Feature-branch push | `origin/codex/enemy-animation-v093` and `origin/codex/world-overhaul-v090` contain the release commit | `main` remains independently unpromoted; original local dirty work is preserved |
 | Main promotion | Not current | Verify `origin/main` independently |
-| Public release/download | v0.9.2 is published as GitHub Latest with seven synchronized desktop assets | GitHub API and the fail-closed version gate confirm every required asset and SHA-256 digest; stable Latest routes resolve to v0.9.2 |
-| Landing download links | Stable macOS and Windows CTAs now resolve to GitHub Latest v0.9.2 | Deployed Home, Catalog, and Builder still display v0.9.1 until a separately approved site deployment; local source displays v0.9.2 |
+| Public release/download | v0.9.3 is published as GitHub Latest with seven synchronized desktop assets | GitHub API and the fail-closed version gate confirm every required asset and SHA-256 digest; stable Latest routes resolve to v0.9.3 |
+| Landing download links | Public Home, Catalog, and Builder display v0.9.3 and reference stable macOS/Windows Latest routes | HTTPS bytes match local source; both routes resolve to the expected v0.9.3 GitHub asset sizes |
 | GitHub README presentation | Landing-styled rewrite committed and pushed at `f96acf9` | GitHub Markdown API rendered 21,124 bytes with 28 images, 50 links, and 3 tables; all 29 local references and 7 navigation anchors resolve; default-page visibility still depends on merging to `main` |
-| Landing deployment | v0.9.1 420-file bundle deployed and public-live verified | Rollback captured at `20260814-182535-v0.9.1`; six core files, directory index, representative assets, badges, GitHub Latest, and stable desktop routes passed public parity |
+| Landing deployment | v0.9.3 420-file bundle deployed and public-live verified | Rollback captured at `20260815-153846-v0.9.3`; six core files, directory index, representative assets, badges, GitHub Latest, and stable desktop routes pass public parity |
 
 ## Desktop and engine portability
 
@@ -214,9 +215,8 @@ For an engine migration, keep LÖVE as the golden reference. The leading researc
    temporary Electro-derived music fallback before commissioning Jazz audio.
 3. Verify Circle skip on physical PlayStation hardware and cover hot-plug,
    remapping, wired, and wireless behavior.
-4. Produce the two planned 4-by-6 enemy movement atlases and wire three-frame
-   animation for all sixteen enemy definitions without changing deterministic
-   movement or combat timing.
+4. Perform a crowded-combat animation feel pass across all six enemy families
+   on physical Mac and Windows hardware.
 5. Promote the verified source to `main` only through a separately approved
    merge after reviewing the feature-branch delta and CI state.
 6. Keep the stable GitHub Latest Download URL in future landing-page releases;
@@ -230,6 +230,25 @@ For an engine migration, keep LÖVE as the golden reference. The leading researc
    a separate, reviewed pass; do not overwrite its unrelated dirty material.
 
 ## Continuation history
+
+### 2026-08-15 — v0.9.3 complete enemy animation release
+
+- Added six runtime animation atlases covering all 49 definitions and 48
+  unique visuals with three-frame loops for Backbeat through Disco and
+  four-frame loops for Jazz.
+- Preserved enemy mechanics, balance, collision, attacks, pooling, facing,
+  static positions, and deterministic gameplay RNG; visual phase is derived
+  independently from stable identity and spawn coordinates.
+- Passed 415 tests, zero lint findings across 189 files, zero-risk media audit,
+  full-resolution atlas inspection, loose and packaged LÖVE boot, and local
+  source/native payload parity.
+- Published v0.9.3 from `ded61e1`; CI `31867133775`, standalone Windows
+  `31867133809`, and desktop release `31867133836` all passed. Both native
+  packages reached `boot-complete`, and the exact seven public assets are
+  mirrored locally with checksum and candidate parity checks passing.
+- Deployed the 420-file site with rollback `20260815-153846-v0.9.3`; six core
+  files, directory index, representative assets, badges, GitHub Latest, and
+  both stable desktop routes passed public HTTPS parity.
 
 ### 2026-08-15 — v0.9.2 projectile release
 
