@@ -14,14 +14,14 @@ This document answers four questions: what is authoritative, what the latest ver
 
 <!-- LIVE-SNAPSHOT:START -->
 
-_Generated from live repository evidence: 2026-08-15 15:29 AEST_
+_Generated from live repository evidence: 2026-08-15 15:46 AEST_
 
 | Field | Live value |
 |---|---|
 | Branch | `codex/enemy-animation-v093` |
-| HEAD | `239a570` — merge: preserve v0.9.2 release record |
-| Upstream | `unavailable` |
-| Compared with `origin/main` | 40 ahead, 1 behind |
+| HEAD | `87e96fa` — docs: record v0.9.3 public release |
+| Upstream | `origin/codex/enemy-animation-v093` |
+| Compared with `origin/main` | 42 ahead, 1 behind |
 | Working changes | 0 files: 0 game, 0 site, 0 skills/package |
 | Lua source/test files | 121 source, 66 test |
 | Game tree excluding `dist/` | 774.3 MiB |
