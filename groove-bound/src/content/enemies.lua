@@ -375,7 +375,7 @@ local enemies = {
   boogie_tank = {
     id = "boogie_tank",
     name = "Boogie Tank",
-    hp = 7200,
+    hp = 9600,
     speed = 46,
     size = 50,
     damage = 32,
@@ -385,8 +385,16 @@ local enemies = {
     boss_type = "final",
     attack_kind = "resonance_pulse",
     attack_interval = 1.55,
-    attack_range = 230,
+    attack_range = 330,
     windup = 0.66,
+    knockback_resistance = 0.90,
+    max_knockback_per_hit = 9,
+    break_threshold = 3,
+    attack_patterns = {
+      { kind="resonance_pulse", projectile_class="environmental" },
+      { kind="aimed_fan", projectile_class="heavy", count=5, spread=16 },
+      { kind="cross_wave", projectile_class="light", count=8 },
+    },
     color = { 0.92, 0.42, 1.0, 1 },
     sprite = { atlas = "funk", col = 1, row = 2 },
     sprite_size = 184,
@@ -410,7 +418,7 @@ local enemies = {
   mothership_of_funk = {
     id = "mothership_of_funk",
     name = "Mothership of Funk",
-    hp = 16800,
+    hp = 23200,
     speed = 28,
     size = 64,
     damage = 40,
@@ -420,11 +428,19 @@ local enemies = {
     boss_type = "final",
     attack_kind = "static_wave",
     attack_interval = 1.32,
-    attack_range = 610,
+    attack_range = 760,
     preferred_range = 410,
     windup = 0.78,
     projectile_speed = 340,
     projectile_count = 24,
+    knockback_resistance = 0.96,
+    max_knockback_per_hit = 6,
+    break_threshold = 4,
+    attack_patterns = {
+      { kind="static_wave", projectile_class="light" },
+      { kind="aimed_fan", projectile_class="heavy", count=7, spread=12 },
+      { kind="cross_wave", projectile_class="heavy", count=12 },
+    },
     color = { 1.0, 0.68, 0.22, 1 },
     sprite = { atlas = "funk", col = 3, row = 2 },
     sprite_size = 238,
@@ -468,8 +484,8 @@ add("organ_walker", "Organ Walker", "soul", 3, 290, 55, 27, "charger", { color=s
 add("harmony_linker", "Harmony Linker", "soul", 4, 210, 76, 22, "orbit", { color=soul, attack_kind="resonance_pulse", attack_interval=2.5, attack_range=160, windup=0.55 })
 add("gospel_moth", "Gospel Moth", "soul", 5, 78, 156, 16, "zigzag", { color=soul, sprite_size=92 })
 add("velvet_knight", "Velvet Knight", "soul", 6, 430, 64, 31, "charger", { color=soul, size=31, sprite_size=138 })
-add("organ_colossus", "Organ Colossus", "soul", 7, 8200, 38, 34, "pulse", { color=soul, size=53, sprite_size=195, boss_type="final", attack_kind="resonance_pulse", attack_interval=1.48, attack_range=250, windup=0.64, xp=850, coins=420 })
-add("velvet_titan", "Velvet Titan", "soul", 8, 17800, 32, 42, "ranged", { color=soul, size=66, sprite_size=244, hurtbox_radius=80, boss_type="final", attack_kind="static_wave", attack_interval=1.28, attack_range=620, preferred_range=410, windup=0.76, projectile_speed=345, projectile_count=26, xp=1500, coins=760 })
+add("organ_colossus", "Organ Colossus", "soul", 7, 10800, 38, 36, "pulse", { color=soul, size=53, sprite_size=195, boss_type="final", attack_kind="resonance_pulse", attack_interval=1.42, attack_range=355, windup=0.64, knockback_resistance=.91, max_knockback_per_hit=9, break_threshold=3, attack_patterns={{kind="resonance_pulse",projectile_class="environmental"},{kind="aimed_fan",projectile_class="heavy",count=5,spread=18},{kind="cross_wave",projectile_class="light",count=8}}, xp=850, coins=420 })
+add("velvet_titan", "Velvet Titan", "soul", 8, 24600, 32, 45, "ranged", { color=soul, size=66, sprite_size=244, hurtbox_radius=80, boss_type="final", attack_kind="static_wave", attack_interval=1.20, attack_range=790, preferred_range=470, windup=0.76, projectile_speed=365, projectile_count=28, knockback_resistance=.96, max_knockback_per_hit=6, break_threshold=4, attack_patterns={{kind="static_wave",projectile_class="light"},{kind="aimed_fan",projectile_class="heavy",count=7,spread=13},{kind="cross_wave",projectile_class="heavy",count=10}}, xp=1500, coins=760 })
 
 local disco = { 0.36, 0.92, 1.0, 1 }
 add("prism_roller", "Prism Roller", "disco", 1, 108, 132, 18, "orbit", { color=disco })
@@ -478,7 +494,37 @@ add("laser_fan", "Laser Fan", "disco", 3, 175, 62, 21, "ranged", { color=disco, 
 add("reflection_twin", "Reflection Twin", "disco", 4, 275, 96, 25, "chase", { color=disco, size=27, sprite_size=120 })
 add("platform_pouncer", "Platform Pouncer", "disco", 5, 135, 150, 20, "charger", { color=disco })
 add("glitter_guard", "Glitter Guard", "disco", 6, 480, 72, 33, "charger", { color=disco, size=32, sprite_size=142 })
-add("laser_conductor", "Laser Conductor", "disco", 7, 9000, 42, 36, "ranged", { color=disco, size=55, sprite_size=202, boss_type="final", attack_kind="static_wave", attack_interval=1.42, attack_range=590, preferred_range=390, windup=0.62, projectile_speed=350, projectile_count=22, xp=920, coins=460 })
-add("prism_monarch", "Prism Monarch", "disco", 8, 19400, 36, 44, "pulse", { color=disco, size=68, sprite_size=252, hurtbox_radius=82, boss_type="final", attack_kind="static_wave", attack_interval=1.18, attack_range=650, windup=0.70, projectile_speed=370, projectile_count=28, xp=1650, coins=820 })
+add("laser_conductor", "Laser Conductor", "disco", 7, 11900, 42, 39, "ranged", { color=disco, size=55, sprite_size=202, boss_type="final", attack_kind="static_wave", attack_interval=1.34, attack_range=745, preferred_range=450, windup=0.62, projectile_speed=370, projectile_count=24, knockback_resistance=.91, max_knockback_per_hit=9, break_threshold=3, attack_patterns={{kind="aimed_fan",projectile_class="heavy",count=5,spread=15},{kind="cross_wave",projectile_class="light",count=8},{kind="static_wave",projectile_class="light"}}, xp=920, coins=460 })
+add("prism_monarch", "Prism Monarch", "disco", 8, 26700, 36, 47, "pulse", { color=disco, size=68, sprite_size=252, hurtbox_radius=82, boss_type="final", attack_kind="static_wave", attack_interval=1.10, attack_range=835, windup=0.70, projectile_speed=395, projectile_count=30, knockback_resistance=.96, max_knockback_per_hit=6, break_threshold=4, attack_patterns={{kind="static_wave",projectile_class="light"},{kind="aimed_fan",projectile_class="heavy",count=9,spread=10},{kind="cross_wave",projectile_class="heavy",count=12}}, xp=1650, coins=820 })
+
+local jazz = { 0.24, 0.78, 1.0, 1 }
+add("syncopated_imp", "Syncopated Imp", "jazz", 1, 122, 118, 19,
+  "zigzag", { color=jazz, sprite_size=96 })
+add("blue_note_bat", "Blue Note Bat", "jazz", 2, 104, 174, 18,
+  "orbit", { color=jazz, sprite_size=100 })
+add("walking_bass_bot", "Walking Bass Bot", "jazz", 3, 320, 58, 29,
+  "charger", { color=jazz, size=29, sprite_size=132 })
+add("scat_cannon", "Scat Cannon", "jazz", 4, 205, 48, 23,
+  "ranged", { color=jazz, attack_kind="note_bolt", attack_interval=1.82,
+    attack_range=610, preferred_range=395, windup=0.40,
+    projectile_speed=355, sprite_size=124 })
+add("bebop_behemoth", "Bebop Behemoth", "jazz", 5, 540, 68, 35,
+  "pulse", { color=jazz, size=34, sprite_size=148,
+    attack_kind="resonance_pulse", attack_interval=2.25,
+    attack_range=185, windup=0.58 })
+add("brushfire_skitter", "Brushfire Skitter", "jazz", 6, 158, 162, 21,
+  "zigzag", { color=jazz, sprite_size=108 })
+add("brass_regent", "Brass Regent", "jazz", 7, 12800, 45, 41,
+  "ranged", { color=jazz, size=57, sprite_size=210, boss_type="final",
+    attack_kind="static_wave", attack_interval=1.28, attack_range=780,
+    preferred_range=405, windup=0.60, projectile_speed=365,
+    projectile_count=26, knockback_resistance=.91, max_knockback_per_hit=9,
+    break_threshold=3, attack_patterns={{kind="aimed_fan",projectile_class="heavy",count=5,spread=17},{kind="cross_wave",projectile_class="light",count=8},{kind="static_wave",projectile_class="light"}}, xp=1000, coins=500 })
+add("midnight_maestro", "Midnight Maestro", "jazz", 8, 28600, 38, 49,
+  "pulse", { color=jazz, size=70, sprite_size=258, hurtbox_radius=84,
+    boss_type="final", attack_kind="static_wave", attack_interval=1.04,
+    attack_range=870, windup=0.68, projectile_speed=408,
+    projectile_count=32, knockback_resistance=.96, max_knockback_per_hit=6,
+    break_threshold=4, attack_patterns={{kind="static_wave",projectile_class="light"},{kind="aimed_fan",projectile_class="heavy",count=9,spread=11},{kind="cross_wave",projectile_class="heavy",count=12}}, xp=1780, coins=880 })
 
 return enemies

@@ -12,6 +12,17 @@ function MusicContext.snapshot(app)
     context.slide_index = top.index
   end
   if top and top.result then context.outcome = top.result.outcome end
+  if top and top.kind == "world_tour" and top.worlds and top.selected then
+    local selected_world = top.worlds[top.selected]
+    context.world_id = selected_world and selected_world.id or nil
+  elseif top and top.kind == "world_loadout" and top.world then
+    context.world_id = top.world.id
+  end
+
+  if app.music then
+    local music = app.music:snapshot()
+    context.current_cue = music and music.cue or nil
+  end
 
   local audible_screen = top
   if context.screen == "options" or context.screen == "controls" then
@@ -35,6 +46,7 @@ function MusicContext.snapshot(app)
 
   local run = app.active_run
   if run and run.combat then
+    context.world_id = run.world_id
     context.stage_index = run.combat.stage_index
     context.wave_index = run.combat.spawner
       and run.combat.spawner.active_wave_index or 0

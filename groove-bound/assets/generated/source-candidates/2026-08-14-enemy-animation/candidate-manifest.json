@@ -1,0 +1,2904 @@
+{
+  "status": "source_candidate_not_runtime_integrated",
+  "generated": "2026-08-14",
+  "frame_canvas": [
+    256,
+    256
+  ],
+  "rosters": {
+    "backbeat": {
+      "layout": "columns_4_rows_6_three_frames",
+      "atlas": "backbeat/backbeat-movement-atlas-transparent.png",
+      "atlas_sha256": "1cae24d2a7078c4a75158c5a255b93e0efb1ea332608dd23636e1be588f1b280",
+      "frame_count": 3,
+      "isolation": "global-alpha-components",
+      "discarded_noise_pixels": 5,
+      "enemies": {
+        "monotone": {
+          "frames": [
+            {
+              "alpha_bounds": [
+                48,
+                80,
+                207,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "backbeat/frames/monotone/frame-01.png",
+              "sha256": "df5c199ede141add7493e394a0f5278f862d9f991b4a962aafba3e7ac2efe78e",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                52,
+                74,
+                203,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "backbeat/frames/monotone/frame-02.png",
+              "sha256": "64aa37a93fe2c410acefc0a6ec9376a967b3eaf4a60e77bc35615e3e673c0272",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                54,
+                84,
+                201,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "backbeat/frames/monotone/frame-03.png",
+              "sha256": "a0e82763042af8122a252e7bc38c55f10bddc71f19772349ddddd97052c8b062",
+              "dimensions": [
+                256,
+                256
+              ]
+            }
+          ],
+          "preview_strip": "backbeat/frames/monotone/preview-strip.png",
+          "preview_strip_sha256": "4e5135cb217b10fac24e5cffa720d595bd792673f1787a636c0ad2151c96ea48",
+          "preview_gif": "backbeat/frames/monotone/preview.gif",
+          "preview_gif_sha256": "25852f01fd59030964cc4b3a8c92b9dbfc305d90604778cc3e9dfcb51457d1cd"
+        },
+        "tempo_leech": {
+          "frames": [
+            {
+              "alpha_bounds": [
+                24,
+                66,
+                231,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "backbeat/frames/tempo_leech/frame-01.png",
+              "sha256": "23d66011cad811d2e2e3be138e435eb914e07f58a913d3a31fa6594583c7b375",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                35,
+                71,
+                221,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "backbeat/frames/tempo_leech/frame-02.png",
+              "sha256": "e45f16a22dfc331f871ac392677b33619beb2534e0310496e98bb7e4ac1cf17b",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                27,
+                70,
+                228,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "backbeat/frames/tempo_leech/frame-03.png",
+              "sha256": "cbab7c78ea13d2f7f69d36c63f906e85b4aeb2c61600c8d1a6fed0f42856b148",
+              "dimensions": [
+                256,
+                256
+              ]
+            }
+          ],
+          "preview_strip": "backbeat/frames/tempo_leech/preview-strip.png",
+          "preview_strip_sha256": "9719c603742bd7591032ee546dbfd6db517b96336b1e14b7a8923bfb7808df8c",
+          "preview_gif": "backbeat/frames/tempo_leech/preview.gif",
+          "preview_gif_sha256": "60053ccd0540c007f55d2c8e7dc9d11b016ee8e54d8dddf7ed0d06de43a2eca3"
+        },
+        "metronome_guardian": {
+          "frames": [
+            {
+              "alpha_bounds": [
+                18,
+                37,
+                238,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "backbeat/frames/metronome_guardian/frame-01.png",
+              "sha256": "9f1acef734ae51b0236264d62c6ff4fd9b66a37b6ee6ad1d90c764b1015b2e84",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                21,
+                39,
+                234,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "backbeat/frames/metronome_guardian/frame-02.png",
+              "sha256": "6490d4cfc4c8e5e3fd68177489cd8a9e1d8a3b863ee25ff4ecdcb686322f15c6",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                22,
+                39,
+                234,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "backbeat/frames/metronome_guardian/frame-03.png",
+              "sha256": "30a34a41ffb8f8b980c2c9b6ae5145fd8fff3c4c6b03a7249394a055b77ef47b",
+              "dimensions": [
+                256,
+                256
+              ]
+            }
+          ],
+          "preview_strip": "backbeat/frames/metronome_guardian/preview-strip.png",
+          "preview_strip_sha256": "d0e21becbdcb6608a1e7b03cf1c23ded3691d8fb5cadc83377389cc0fbf0d116",
+          "preview_gif": "backbeat/frames/metronome_guardian/preview.gif",
+          "preview_gif_sha256": "dca29cb0b28073054b61ebc9d4d3706e69e24180cf2a666b9f5eb7282baf0431"
+        },
+        "static_baron": {
+          "frames": [
+            {
+              "alpha_bounds": [
+                23,
+                12,
+                233,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "backbeat/frames/static_baron/frame-01.png",
+              "sha256": "aa1c9abadc6463063df407662220faa10ba523c214cbeef54f3a953462a1c28e",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                42,
+                32,
+                213,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "backbeat/frames/static_baron/frame-02.png",
+              "sha256": "7a2b1c6e0a603ba48d71a992bc3904d571dc6ef99de81311afc88a754b75518e",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                24,
+                37,
+                231,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "backbeat/frames/static_baron/frame-03.png",
+              "sha256": "bebd32fbe35ca46b2c5408024d332da4328c9a64cd9cd44b70c6a74633663204",
+              "dimensions": [
+                256,
+                256
+              ]
+            }
+          ],
+          "preview_strip": "backbeat/frames/static_baron/preview-strip.png",
+          "preview_strip_sha256": "d949c0382ece7cb1ae12cb89614eedcacf8d172477e9865e3a874297619f4809",
+          "preview_gif": "backbeat/frames/static_baron/preview.gif",
+          "preview_gif_sha256": "37311683ddeb74fc7aa443fd38044bede24cea9cd069168452033c22bae3ec0b"
+        },
+        "syncopation_skitter": {
+          "frames": [
+            {
+              "alpha_bounds": [
+                36,
+                87,
+                219,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "backbeat/frames/syncopation_skitter/frame-01.png",
+              "sha256": "2f61029927f6377e91ac3da7c3c4b0f416a23ef75713673cd57b4a71d6bf6d10",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                43,
+                96,
+                212,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "backbeat/frames/syncopation_skitter/frame-02.png",
+              "sha256": "a5c48666e741068baa1c2bf2d8f712d44a56ad08fa1f7d2b07160ee99283d98f",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                39,
+                88,
+                217,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "backbeat/frames/syncopation_skitter/frame-03.png",
+              "sha256": "431732cf77e8c8dc355b878e36e143bf4763e40153aacc60d68cc3b7e473081d",
+              "dimensions": [
+                256,
+                256
+              ]
+            }
+          ],
+          "preview_strip": "backbeat/frames/syncopation_skitter/preview-strip.png",
+          "preview_strip_sha256": "aa222adc1747a640778e96d2d1e2d1fed1a5ec828ae23e2ae48feb06a5d4aaa4",
+          "preview_gif": "backbeat/frames/syncopation_skitter/preview.gif",
+          "preview_gif_sha256": "d5248b9dc63cf5befeffac9047c503d1514499d8c27ab1de9c9b1f3a09f868ff"
+        },
+        "feedback_phantom": {
+          "frames": [
+            {
+              "alpha_bounds": [
+                38,
+                48,
+                218,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "backbeat/frames/feedback_phantom/frame-01.png",
+              "sha256": "b81c55376720ba56249a439ebfa72ef2303bc85ea6f8794d2b52e17176d366fb",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                39,
+                55,
+                216,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "backbeat/frames/feedback_phantom/frame-02.png",
+              "sha256": "34f5e9e6548c9ea4c3d58cfff7b1c186cfa34dc9d9393b984754a9cfacbb7b2b",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                39,
+                53,
+                216,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "backbeat/frames/feedback_phantom/frame-03.png",
+              "sha256": "7170b2c1d361edee09c3443ee5cefcef714818b0840c4fe9e75491d8e597635d",
+              "dimensions": [
+                256,
+                256
+              ]
+            }
+          ],
+          "preview_strip": "backbeat/frames/feedback_phantom/preview-strip.png",
+          "preview_strip_sha256": "028cac253d9ea5317154c496eef186b7c07e537b6f519dce9c7b43cb472bcfbe",
+          "preview_gif": "backbeat/frames/feedback_phantom/preview.gif",
+          "preview_gif_sha256": "6a91f73762abecdb8fcb242488b07f3b14c4bca5b15b9870947f06d78d0d15a6"
+        },
+        "bass_brute": {
+          "frames": [
+            {
+              "alpha_bounds": [
+                12,
+                89,
+                244,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "backbeat/frames/bass_brute/frame-01.png",
+              "sha256": "c9512487bea38c9a313b0ddb7a8c4b8bde21768468d9ef55a1966ae499b035f1",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                22,
+                98,
+                233,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "backbeat/frames/bass_brute/frame-02.png",
+              "sha256": "2f7004374520255cfb4987bc94306f37ce74b6f39fcd19d90524f081f8eff8a8",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                25,
+                93,
+                230,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "backbeat/frames/bass_brute/frame-03.png",
+              "sha256": "b2f7886d9f9e36982bbdc7b8961d782a7dce933e5efff08a0be9988fa7d108e7",
+              "dimensions": [
+                256,
+                256
+              ]
+            }
+          ],
+          "preview_strip": "backbeat/frames/bass_brute/preview-strip.png",
+          "preview_strip_sha256": "0fa31702e958a7e75982e497674b21cf46d4bc3a05fe85cec8f9459a618f9d82",
+          "preview_gif": "backbeat/frames/bass_brute/preview.gif",
+          "preview_gif_sha256": "6ccd228d5c15f293afa70d4ddefc451616cf0f0185302ed149961be07d5cb2a4"
+        },
+        "noise_turret": {
+          "frames": [
+            {
+              "alpha_bounds": [
+                40,
+                46,
+                216,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "backbeat/frames/noise_turret/frame-01.png",
+              "sha256": "50aca5cb21fe6b75e783a8da7b341c981057b97ee704e2b194cc756ee385d2cb",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                39,
+                68,
+                216,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "backbeat/frames/noise_turret/frame-02.png",
+              "sha256": "9890d37d73da34bb94728490f1ee217e4fbac29ab465ee208b8af05d73bd43b1",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                38,
+                66,
+                217,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "backbeat/frames/noise_turret/frame-03.png",
+              "sha256": "e7354dce3a5d417d298f41a973a75323be0c9bc669b19d654358ee6ab5fb0440",
+              "dimensions": [
+                256,
+                256
+              ]
+            }
+          ],
+          "preview_strip": "backbeat/frames/noise_turret/preview-strip.png",
+          "preview_strip_sha256": "3c09f44b01876d7f95185ecd8cebe10ea86ce60d22736bb849f7ec5bb9885eca",
+          "preview_gif": "backbeat/frames/noise_turret/preview.gif",
+          "preview_gif_sha256": "cdd5b2ab0d4a06ce8486bf4a2716d6b71dee392fe767da5c6a88753ecfa6530e"
+        }
+      },
+      "clean_atlas": "backbeat/backbeat-movement-atlas-clean.png",
+      "clean_atlas_sha256": "c2bddc0b4b1392fae8f7c5491656172e7d5c8cccd0d46e8455827d37f6677a1a"
+    },
+    "orbit": {
+      "layout": "columns_4_rows_6_three_frames",
+      "atlas": "orbit/orbit-movement-atlas-transparent.png",
+      "atlas_sha256": "a038932707dd7152a2adba65a212e49904ea2998e63f72f96322fcb494270d21",
+      "frame_count": 3,
+      "isolation": "global-alpha-components",
+      "discarded_noise_pixels": 60,
+      "enemies": {
+        "vinyl_drone": {
+          "frames": [
+            {
+              "alpha_bounds": [
+                27,
+                59,
+                229,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "orbit/frames/vinyl_drone/frame-01.png",
+              "sha256": "a45e80b1abd1c9d1a6c28acde399bca64d0f5ebb037c527625fed065186e2d00",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                26,
+                72,
+                229,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "orbit/frames/vinyl_drone/frame-02.png",
+              "sha256": "a33476e3d728ff2722aef8296711a463d745471661097a8b5da1ede97091f71e",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                31,
+                62,
+                224,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "orbit/frames/vinyl_drone/frame-03.png",
+              "sha256": "a12eba571a6f30d0678be44aa2d17626407aa5ef7e3985bd12207a42dba0076e",
+              "dimensions": [
+                256,
+                256
+              ]
+            }
+          ],
+          "preview_strip": "orbit/frames/vinyl_drone/preview-strip.png",
+          "preview_strip_sha256": "90e07211f66072ed8ecd76639bc5d36fb91c4cc9df83d4564a567fcf7072eb68",
+          "preview_gif": "orbit/frames/vinyl_drone/preview.gif",
+          "preview_gif_sha256": "b6f09be501f24c69dc8b19fc5dee4242cf0af1987dceaddc54b201c941c2549b"
+        },
+        "trumpet_ray": {
+          "frames": [
+            {
+              "alpha_bounds": [
+                17,
+                55,
+                239,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "orbit/frames/trumpet_ray/frame-01.png",
+              "sha256": "0fd959fb049ea19c1b824525fed1ab4c7baab45b2135172d0fe0388510baa100",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                15,
+                58,
+                241,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "orbit/frames/trumpet_ray/frame-02.png",
+              "sha256": "6b620510890a6a7a76fac4f10a22a5e7df6fdb86af1fdbee676367f8b240bf27",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                17,
+                56,
+                238,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "orbit/frames/trumpet_ray/frame-03.png",
+              "sha256": "d998fe4ab35875a3059bfdbec877f2050bf23fbd8e72c1ba8980b3846eab6a41",
+              "dimensions": [
+                256,
+                256
+              ]
+            }
+          ],
+          "preview_strip": "orbit/frames/trumpet_ray/preview-strip.png",
+          "preview_strip_sha256": "7f8c66be9fb019bc02dda680ec4b713f4c6d358cda8ebc009bf0f364f1d98ba1",
+          "preview_gif": "orbit/frames/trumpet_ray/preview.gif",
+          "preview_gif_sha256": "70ae039d220a378232ab3f171639b002fef909f18b52f8918a0ed82da081cb2e"
+        },
+        "drum_wheel": {
+          "frames": [
+            {
+              "alpha_bounds": [
+                23,
+                77,
+                232,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "orbit/frames/drum_wheel/frame-01.png",
+              "sha256": "d81571a3fb26ddf40adb6824ad4d5279b6fe5108d037e1880506b7cce3acc589",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                20,
+                67,
+                236,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "orbit/frames/drum_wheel/frame-02.png",
+              "sha256": "792f9d7829c73dec82736e98ce8c47799e66524960774cf2c3353f4861ca73fb",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                21,
+                66,
+                235,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "orbit/frames/drum_wheel/frame-03.png",
+              "sha256": "9dae0f85b156eb4501c244a77da1e8a0f2f5feae804af4abe6b2fb539b99c7c4",
+              "dimensions": [
+                256,
+                256
+              ]
+            }
+          ],
+          "preview_strip": "orbit/frames/drum_wheel/preview-strip.png",
+          "preview_strip_sha256": "a2901ac76e3ed2cf60360cf599124c5d823f6f0249ffdd41b15a44b2afe7ed1e",
+          "preview_gif": "orbit/frames/drum_wheel/preview.gif",
+          "preview_gif_sha256": "aa59fff3e8a59303619f2728fd90661687ece4fbb2dd18e0e5f2a2f42ef7a04c"
+        },
+        "theremin_jelly": {
+          "frames": [
+            {
+              "alpha_bounds": [
+                28,
+                55,
+                228,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "orbit/frames/theremin_jelly/frame-01.png",
+              "sha256": "5046d8f0df776edc1e55ec46a44868ba202cd04ee1406586104f6e39ef4c9122",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                29,
+                54,
+                227,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "orbit/frames/theremin_jelly/frame-02.png",
+              "sha256": "ec94bf3fe5f32d5213e59b900d783c2b7b09806d5bdbfb3602b2b9ff9d6272b8",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                33,
+                58,
+                223,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "orbit/frames/theremin_jelly/frame-03.png",
+              "sha256": "8047984d9a14fef1d17176735d2631fd27f4e62ac83f109a21f83cf628d2d2bb",
+              "dimensions": [
+                256,
+                256
+              ]
+            }
+          ],
+          "preview_strip": "orbit/frames/theremin_jelly/preview-strip.png",
+          "preview_strip_sha256": "e481f8760e5a6677df08e3847aba6e7d97513c6709587fbe4327fdcc6428b61c",
+          "preview_gif": "orbit/frames/theremin_jelly/preview.gif",
+          "preview_gif_sha256": "9d8319a531284bb3f98d88841507a34fc86d0c60860bbba50ff72c71e24f46c1"
+        },
+        "amp_hound": {
+          "frames": [
+            {
+              "alpha_bounds": [
+                18,
+                47,
+                238,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "orbit/frames/amp_hound/frame-01.png",
+              "sha256": "128fbda8e5261631371731d1288d162564eb2d29a95bc878bd43b952d5e2143b",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                14,
+                60,
+                242,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "orbit/frames/amp_hound/frame-02.png",
+              "sha256": "b78e9f6b6fec39deb0d6727bd6cd326abae8518a6cf86c0835d094537f38c111",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                14,
+                55,
+                241,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "orbit/frames/amp_hound/frame-03.png",
+              "sha256": "e8efaf25f8e915ec45ab4d447782307692f92be89eada5e5cb92f837589678cb",
+              "dimensions": [
+                256,
+                256
+              ]
+            }
+          ],
+          "preview_strip": "orbit/frames/amp_hound/preview-strip.png",
+          "preview_strip_sha256": "ba0390e4ecc03742f90c8fc1bfc80d76bf112ce6a3f4718b387ab2e5c41c3c9d",
+          "preview_gif": "orbit/frames/amp_hound/preview.gif",
+          "preview_gif_sha256": "0079bb3706bb3476e0f0fcd00c30362ac5e9c7b2c231503a96601808d05321c8"
+        },
+        "keyboard_centipede": {
+          "frames": [
+            {
+              "alpha_bounds": [
+                21,
+                54,
+                234,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "orbit/frames/keyboard_centipede/frame-01.png",
+              "sha256": "5e806352f9108e9dad9c258db992423c6d060d6711a5795298e5ea3aa0cc99f3",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                26,
+                63,
+                229,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "orbit/frames/keyboard_centipede/frame-02.png",
+              "sha256": "ff0bdca37fcf8177dc9098fe5e682b26592b51a48742fc9a8bcfa0b5a7902713",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                24,
+                64,
+                231,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "orbit/frames/keyboard_centipede/frame-03.png",
+              "sha256": "a9e2f4cfdbb9e18a2b153037933f8504a453ac3eac8b5e9e6751bcea82079dc9",
+              "dimensions": [
+                256,
+                256
+              ]
+            }
+          ],
+          "preview_strip": "orbit/frames/keyboard_centipede/preview-strip.png",
+          "preview_strip_sha256": "c1318892cc368415e97a32c7e683c32307a138e72b18e88343e6ac0f49c62630",
+          "preview_gif": "orbit/frames/keyboard_centipede/preview.gif",
+          "preview_gif_sha256": "3b1b60492e7d77dae7b2351e1eeddc240bd9163502d9a7bceb1c1f4acf78ca7b"
+        },
+        "turntable_sentinel": {
+          "frames": [
+            {
+              "alpha_bounds": [
+                19,
+                12,
+                236,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "orbit/frames/turntable_sentinel/frame-01.png",
+              "sha256": "6b46760e44dba4e2bceda3f394bbe868dc103e12e8c5d501889c390a8c6f7230",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                33,
+                33,
+                223,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "orbit/frames/turntable_sentinel/frame-02.png",
+              "sha256": "97c3aa27cf4f477f28c99c88ac287b95d96be2e034ce7f3c2062c036ca55667a",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                31,
+                35,
+                224,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "orbit/frames/turntable_sentinel/frame-03.png",
+              "sha256": "f9618353fe9483532e327166c2791e5336a77f4bbc14f5ef8a0a13ddf8755168",
+              "dimensions": [
+                256,
+                256
+              ]
+            }
+          ],
+          "preview_strip": "orbit/frames/turntable_sentinel/preview-strip.png",
+          "preview_strip_sha256": "34cb0440d580aaea2ecb653afcf469313d8cc3002fd6701b59e6f3aeb94ca8d1",
+          "preview_gif": "orbit/frames/turntable_sentinel/preview.gif",
+          "preview_gif_sha256": "4c0fccf9ea220a2a44ea5a98e8325a1878e3fa1fddb537af505e69e7a0f58527"
+        },
+        "grand_orchestrator": {
+          "frames": [
+            {
+              "alpha_bounds": [
+                12,
+                18,
+                244,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "orbit/frames/grand_orchestrator/frame-01.png",
+              "sha256": "da1a62e8660dc54f439564b2dfd8036d78d0d64e49804bd7d059b03de5aabdf9",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                24,
+                38,
+                232,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "orbit/frames/grand_orchestrator/frame-02.png",
+              "sha256": "d2e7b25adfc91a3598e9a625610f5416dc38987834f561ee9bc5377d814c3d3e",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                16,
+                45,
+                239,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "orbit/frames/grand_orchestrator/frame-03.png",
+              "sha256": "a75d5e0d412e7603f0799f513adf2a4ab2e6d5f19331f374e1f30ffda52526a6",
+              "dimensions": [
+                256,
+                256
+              ]
+            }
+          ],
+          "preview_strip": "orbit/frames/grand_orchestrator/preview-strip.png",
+          "preview_strip_sha256": "3b35ee407b986c4f1b3422b465b4ed2950c956639c5b3158777cd91af4b6949c",
+          "preview_gif": "orbit/frames/grand_orchestrator/preview.gif",
+          "preview_gif_sha256": "ea8ee652dc95b9d03f0e3a7572146a54cceac5f053547a599d325b585ac806d6"
+        }
+      },
+      "clean_atlas": "orbit/orbit-movement-atlas-clean.png",
+      "clean_atlas_sha256": "fb1acb6f17f0b9682d8ff59d7abfebc767b7b52ca31097cd74bdd9f079bc3bdf"
+    },
+    "funk": {
+      "layout": "columns_4_rows_6_three_frames",
+      "atlas": "funk/funk-movement-atlas-transparent.png",
+      "atlas_sha256": "f09f74dc8e13a221e67905c01742451fc96e3d493b598878a2d47054605a9844",
+      "frame_count": 3,
+      "isolation": "global-alpha-components",
+      "discarded_noise_pixels": 51,
+      "enemies": {
+        "pocket_gremlin": {
+          "frames": [
+            {
+              "alpha_bounds": [
+                46,
+                59,
+                210,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "funk/frames/pocket_gremlin/frame-01.png",
+              "sha256": "4d45774eaafcbec6460f3fa501f1f27d9c1dae63eb87ba3808d7fdb14439d97a",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                45,
+                62,
+                210,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "funk/frames/pocket_gremlin/frame-02.png",
+              "sha256": "1bf07c3b3fd7e0e9a4194e81711b9ad21f3f120ff12cc391bb6301e38d8432dc",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                45,
+                65,
+                210,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "funk/frames/pocket_gremlin/frame-03.png",
+              "sha256": "763c81d65f221e6f2bb168ae18f931de4814ec5826421add7c0ea017c62d07b2",
+              "dimensions": [
+                256,
+                256
+              ]
+            }
+          ],
+          "preview_strip": "funk/frames/pocket_gremlin/preview-strip.png",
+          "preview_strip_sha256": "98c492e0f6a80aa66541417d3e25a4b132e83f4db712cf6e401a9a5465f8d357",
+          "preview_gif": "funk/frames/pocket_gremlin/preview.gif",
+          "preview_gif_sha256": "0087809ad15c0e9244de28baf8bf0b264c6d110824486710fb1adb88fde0c988"
+        },
+        "slapback_hound": {
+          "frames": [
+            {
+              "alpha_bounds": [
+                32,
+                75,
+                223,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "funk/frames/slapback_hound/frame-01.png",
+              "sha256": "820a8be772a3d0b7f1d4795e6cb29cf2c486aceb9e77d088383a6b8f492904f6",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                27,
+                79,
+                228,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "funk/frames/slapback_hound/frame-02.png",
+              "sha256": "6b939179449eb5b555e62980abc7b514750cb90d6b66f06c6d519e9f2ceea736",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                28,
+                80,
+                228,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "funk/frames/slapback_hound/frame-03.png",
+              "sha256": "15f4ee944ad005cecfbd6d26da683e79cc1bcf62bd14846e706a95d87198c21a",
+              "dimensions": [
+                256,
+                256
+              ]
+            }
+          ],
+          "preview_strip": "funk/frames/slapback_hound/preview-strip.png",
+          "preview_strip_sha256": "5853df801a4020d32e3446ede4ca133532595f88f6f1191a7db277cd7a61a3bc",
+          "preview_gif": "funk/frames/slapback_hound/preview.gif",
+          "preview_gif_sha256": "ab4eef9db7049170bd3a5746faf9ebe421527c3fe0b8b5de13c2e26d76817a10"
+        },
+        "groove_guard": {
+          "frames": [
+            {
+              "alpha_bounds": [
+                29,
+                50,
+                226,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "funk/frames/groove_guard/frame-01.png",
+              "sha256": "f4bc527d46033c188babf1b5719dca8cc0406402f918d531f10a560405cb76fe",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                31,
+                52,
+                225,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "funk/frames/groove_guard/frame-02.png",
+              "sha256": "00284cbb73c50429894e7f0c3e31af988f7f38132f4d12994d6d675eae0cb62c",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                34,
+                52,
+                222,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "funk/frames/groove_guard/frame-03.png",
+              "sha256": "ea92390ec7a289848822880009b8e9916433ad946fcbcd584550445edc27b51b",
+              "dimensions": [
+                256,
+                256
+              ]
+            }
+          ],
+          "preview_strip": "funk/frames/groove_guard/preview-strip.png",
+          "preview_strip_sha256": "2abce6957f7e55f6f089ba9acd03fad183e545f2975be043a34795b08f1389f4",
+          "preview_gif": "funk/frames/groove_guard/preview.gif",
+          "preview_gif_sha256": "e2f7fc006f5d9916f67d5247b37861a8d1a527cf9df95270b2111dc77b189bda"
+        },
+        "talkbox_oracle": {
+          "frames": [
+            {
+              "alpha_bounds": [
+                32,
+                26,
+                224,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "funk/frames/talkbox_oracle/frame-01.png",
+              "sha256": "d130f129e6f4a5c31c5731d48a20ac955505d541d2ccb4cd2011a94dd3ec9ae6",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                36,
+                29,
+                219,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "funk/frames/talkbox_oracle/frame-02.png",
+              "sha256": "54f88fb00072933160224dc82d4a878c1dd5411313f172ef12fcece608db5639",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                36,
+                30,
+                219,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "funk/frames/talkbox_oracle/frame-03.png",
+              "sha256": "26df824f34a7771024475f026e12ee228f085a41d22923cef6a21059c8b4d238",
+              "dimensions": [
+                256,
+                256
+              ]
+            }
+          ],
+          "preview_strip": "funk/frames/talkbox_oracle/preview-strip.png",
+          "preview_strip_sha256": "193ae7d76e66330932bdcab46b4cb06736d63f0822b10281cb3f8dd0597e7ab3",
+          "preview_gif": "funk/frames/talkbox_oracle/preview.gif",
+          "preview_gif_sha256": "de93a4d2870138fb5156fbfd2156fde8267240964a60df5a988b435818dcf1fb"
+        },
+        "boogie_tank": {
+          "frames": [
+            {
+              "alpha_bounds": [
+                22,
+                60,
+                234,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "funk/frames/boogie_tank/frame-01.png",
+              "sha256": "28f80a6dc7f16d5bb2294dae381430ec4670680c40bf363ea03febee2712d486",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                17,
+                48,
+                238,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "funk/frames/boogie_tank/frame-02.png",
+              "sha256": "ab3c9967087ff32e99dccb5e123f26dea2a92d6bff41b2f5b4cccf98ce7f5d09",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                17,
+                53,
+                238,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "funk/frames/boogie_tank/frame-03.png",
+              "sha256": "5619f2d5a5921713ef28c4b94d1c1d3af5ba00cac7dbf76b972eedf064da3709",
+              "dimensions": [
+                256,
+                256
+              ]
+            }
+          ],
+          "preview_strip": "funk/frames/boogie_tank/preview-strip.png",
+          "preview_strip_sha256": "e90a686f4c697005bb46dc231fe834d6b4dae19d5e4ec815bde339c35a3cebd6",
+          "preview_gif": "funk/frames/boogie_tank/preview.gif",
+          "preview_gif_sha256": "93f01962072806d91e41b8e93883fe15c33226b48865f1b7553347f43d04c7ab"
+        },
+        "funkadelic_wasp": {
+          "frames": [
+            {
+              "alpha_bounds": [
+                42,
+                66,
+                214,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "funk/frames/funkadelic_wasp/frame-01.png",
+              "sha256": "f844e6130b9d5719e43fa6d24ba0db8381157ff2ed18093f4546340c3ceabd78",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                37,
+                61,
+                219,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "funk/frames/funkadelic_wasp/frame-02.png",
+              "sha256": "9ac6a3b72dffbb876416b6fff7b33726eec8f81d0c7d3def6a508744d17f4c65",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                35,
+                71,
+                220,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "funk/frames/funkadelic_wasp/frame-03.png",
+              "sha256": "301b28a875d635926de78eb5d323c7b7c8ed1e0e82534d08824c1253548642f4",
+              "dimensions": [
+                256,
+                256
+              ]
+            }
+          ],
+          "preview_strip": "funk/frames/funkadelic_wasp/preview-strip.png",
+          "preview_strip_sha256": "dc87f840629faaa95c8f49e0788dfd8c1695a90f52838dcc5e41bac3a45de0c6",
+          "preview_gif": "funk/frames/funkadelic_wasp/preview.gif",
+          "preview_gif_sha256": "f7a713549d987e75f96683d5d2418fca4f59a1b5d74f5bacb6903243dc9216b2"
+        },
+        "mothership_of_funk": {
+          "frames": [
+            {
+              "alpha_bounds": [
+                12,
+                28,
+                244,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "funk/frames/mothership_of_funk/frame-01.png",
+              "sha256": "fcdbb3ce4f9fb0768942fbb935afa5294e46fe3e77e8fd0190d92630e16c7f21",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                17,
+                27,
+                239,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "funk/frames/mothership_of_funk/frame-02.png",
+              "sha256": "e93dcadf4927504ff38057b6df6993961d5961ee5f32a5762cf9a5dd66fddb2a",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                12,
+                32,
+                243,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "funk/frames/mothership_of_funk/frame-03.png",
+              "sha256": "f3566ac81b5911d90836b6596f36811ded10ad65bf23068972913801a4c3de78",
+              "dimensions": [
+                256,
+                256
+              ]
+            }
+          ],
+          "preview_strip": "funk/frames/mothership_of_funk/preview-strip.png",
+          "preview_strip_sha256": "cda969fed2647a4b7aeffe61df8a4752cf8b2f0b89df74438f9dc959b7f81f58",
+          "preview_gif": "funk/frames/mothership_of_funk/preview.gif",
+          "preview_gif_sha256": "1a20a70a5ae578677469e3033afaec859048aec8a52153d17bc6b65225296ab6"
+        },
+        "pocket_phantom": {
+          "frames": [
+            {
+              "alpha_bounds": [
+                26,
+                12,
+                230,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "funk/frames/pocket_phantom/frame-01.png",
+              "sha256": "0a5e82810a72938287f78a059bb55d5fc0319dad4d15823dd5d0a10436d661fa",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                31,
+                17,
+                224,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "funk/frames/pocket_phantom/frame-02.png",
+              "sha256": "106e2218db26803b87e2c1c27e45b6ebe6f1250d62c499f583339793d76bbeb0",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                26,
+                26,
+                230,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "funk/frames/pocket_phantom/frame-03.png",
+              "sha256": "a49209f26ecfdfd3706c0b7c4db5ebb1e83291bb67613e15c82dbe895d0c3251",
+              "dimensions": [
+                256,
+                256
+              ]
+            }
+          ],
+          "preview_strip": "funk/frames/pocket_phantom/preview-strip.png",
+          "preview_strip_sha256": "ca612947062a7b22f625d2fce02dd6ab118ec34b707b3e387fdeeda7f38784df",
+          "preview_gif": "funk/frames/pocket_phantom/preview.gif",
+          "preview_gif_sha256": "82bd0c58eb749a108180abdcbe80f406af21adf2e6f851f79bf70789bb9fa472"
+        }
+      },
+      "clean_atlas": "funk/funk-movement-atlas-clean.png",
+      "clean_atlas_sha256": "9422e1eb841d39748ca4cbee13e5c51642f8e4ff6c8217a871ace5a822d67a6d"
+    },
+    "soul": {
+      "layout": "columns_4_rows_6_three_frames",
+      "atlas": "soul/soul-movement-atlas-transparent.png",
+      "atlas_sha256": "eb9cf7248de3be2cf0f7a6de51ce6d6103bead146091b8af3fc96f0dead59d24",
+      "frame_count": 3,
+      "isolation": "global-alpha-components",
+      "discarded_noise_pixels": 1,
+      "enemies": {
+        "choir_automaton": {
+          "frames": [
+            {
+              "alpha_bounds": [
+                54,
+                70,
+                201,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "soul/frames/choir_automaton/frame-01.png",
+              "sha256": "41c8631d3d05d9fedebc908062554ef19e17f20266ada15b5c83bfadbfd6de67",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                62,
+                76,
+                194,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "soul/frames/choir_automaton/frame-02.png",
+              "sha256": "7316b5436669a7bf1509bfe2d2eed1537d0c708cad58ac0bbbf27ef4f292151e",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                63,
+                78,
+                193,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "soul/frames/choir_automaton/frame-03.png",
+              "sha256": "19b181b423b5ca09820fb6652665d27a4b7d109b7bbb10f76c5f481b130758dd",
+              "dimensions": [
+                256,
+                256
+              ]
+            }
+          ],
+          "preview_strip": "soul/frames/choir_automaton/preview-strip.png",
+          "preview_strip_sha256": "e67e6584d7ed3d424b01f373f6cdb09061487ba160947ec1ffbdd41a3c0169f0",
+          "preview_gif": "soul/frames/choir_automaton/preview.gif",
+          "preview_gif_sha256": "a6209f7e5de1f0e43265d34525604f84fadfeff5439be3aeb5fb732d685f447f"
+        },
+        "string_sentinel": {
+          "frames": [
+            {
+              "alpha_bounds": [
+                45,
+                18,
+                211,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "soul/frames/string_sentinel/frame-01.png",
+              "sha256": "f0b1daba9e99df278021da5d0872ad2ade1c8158288473c33019d0e393ccd6f6",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                39,
+                27,
+                216,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "soul/frames/string_sentinel/frame-02.png",
+              "sha256": "20510c95a8340c9cf528b521bfffd6984640d9d6817f76b3b630658511aead72",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                39,
+                30,
+                217,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "soul/frames/string_sentinel/frame-03.png",
+              "sha256": "a228a476abfa9ce82ab852abb400a7b28ca998dae66e34ccd67289a17703ef7b",
+              "dimensions": [
+                256,
+                256
+              ]
+            }
+          ],
+          "preview_strip": "soul/frames/string_sentinel/preview-strip.png",
+          "preview_strip_sha256": "7d1f94e97ee45fc3ad257e7b773016642eb911b35c9ea97eb2ace3877a3ca717",
+          "preview_gif": "soul/frames/string_sentinel/preview.gif",
+          "preview_gif_sha256": "3db130f8be383da0092f46214f6757ae9f92a80c565119d3c668c1cec9184f12"
+        },
+        "organ_walker": {
+          "frames": [
+            {
+              "alpha_bounds": [
+                12,
+                21,
+                244,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "soul/frames/organ_walker/frame-01.png",
+              "sha256": "ba5ca8c1b3bd649e6da1ba591c8ac55fe079a2715f3ca46271c8dab4306b2905",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                14,
+                26,
+                242,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "soul/frames/organ_walker/frame-02.png",
+              "sha256": "398ab36b0bdffe0dc24f71a373ce28020c7363782a0cfd082bff74012acc1eff",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                13,
+                22,
+                242,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "soul/frames/organ_walker/frame-03.png",
+              "sha256": "e8db1a45c2dcb3b78720fa1b23259b065b035ca9bb37afd30b1bd776bfa92327",
+              "dimensions": [
+                256,
+                256
+              ]
+            }
+          ],
+          "preview_strip": "soul/frames/organ_walker/preview-strip.png",
+          "preview_strip_sha256": "ee9099c366cde62051bb5804f4e0b861c3b70b8e34c2e65b4a6fa38d2315376d",
+          "preview_gif": "soul/frames/organ_walker/preview.gif",
+          "preview_gif_sha256": "c0f198d97d4c04eb3c85e71ddb810a0c325d3014df0e722735b1480ac49155a4"
+        },
+        "harmony_linker": {
+          "frames": [
+            {
+              "alpha_bounds": [
+                27,
+                51,
+                228,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "soul/frames/harmony_linker/frame-01.png",
+              "sha256": "9504db742219e3483dd740ac7036e1f3c03d07a81d9f6bd86bce999741947038",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                34,
+                56,
+                221,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "soul/frames/harmony_linker/frame-02.png",
+              "sha256": "60e6db913ca9d9fa5e3ce17c2d3238291c98e0de41f1371d327ba3d03ddb9805",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                35,
+                56,
+                221,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "soul/frames/harmony_linker/frame-03.png",
+              "sha256": "324896143fa61b45c1333f277972afa5c704453b6e4e649b8192dd34b96f8e17",
+              "dimensions": [
+                256,
+                256
+              ]
+            }
+          ],
+          "preview_strip": "soul/frames/harmony_linker/preview-strip.png",
+          "preview_strip_sha256": "82abc3b1966ef7ecc85e7cf662e16934cbc49545cb0ff4d654c9bb4afaf6ff11",
+          "preview_gif": "soul/frames/harmony_linker/preview.gif",
+          "preview_gif_sha256": "2f28e6f252be143beea0824bb225d0a836600059092b8f8dbfa38978c157e52d"
+        },
+        "gospel_moth": {
+          "frames": [
+            {
+              "alpha_bounds": [
+                40,
+                102,
+                216,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "soul/frames/gospel_moth/frame-01.png",
+              "sha256": "f23a2bd2b064b5cb2a2da003fc99a1ff3c67e42fcd64b9e7a31ad6a10ca12a46",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                39,
+                103,
+                216,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "soul/frames/gospel_moth/frame-02.png",
+              "sha256": "089b219bbcafc65b851c3b9a2392df6769be49641a8e5cb568bcf9d3ee9fad89",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                48,
+                110,
+                208,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "soul/frames/gospel_moth/frame-03.png",
+              "sha256": "206aca704a65892bc4ba5acdbdd58ac80ff4d255220e3b23fb1e2f10502b92a9",
+              "dimensions": [
+                256,
+                256
+              ]
+            }
+          ],
+          "preview_strip": "soul/frames/gospel_moth/preview-strip.png",
+          "preview_strip_sha256": "509267c5691226adf95c9f70ffdb8f414beb8847deba34fd952ac00d9e178888",
+          "preview_gif": "soul/frames/gospel_moth/preview.gif",
+          "preview_gif_sha256": "45716580102afc872525b9f75a87ab57c12fe6a60311ff58b9afef52e4ece5bb"
+        },
+        "velvet_knight": {
+          "frames": [
+            {
+              "alpha_bounds": [
+                38,
+                31,
+                218,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "soul/frames/velvet_knight/frame-01.png",
+              "sha256": "1a514856fd4ba40ae9283922c90d1547acc6210fb9e3b31d4b882ad4be082c4f",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                36,
+                28,
+                220,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "soul/frames/velvet_knight/frame-02.png",
+              "sha256": "16e488d8be7bc24999f0b8d1280a74f25f8c671647f535bc1bc30c3ccbf03015",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                36,
+                32,
+                220,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "soul/frames/velvet_knight/frame-03.png",
+              "sha256": "9de5c97044eee026fde1290ae374f17cf17da7eac630502f8b697c4582b904fc",
+              "dimensions": [
+                256,
+                256
+              ]
+            }
+          ],
+          "preview_strip": "soul/frames/velvet_knight/preview-strip.png",
+          "preview_strip_sha256": "ed6753b6f4aba206f9cf5ac8facbfe488fb57d5cba673b0792cd994e3993d515",
+          "preview_gif": "soul/frames/velvet_knight/preview.gif",
+          "preview_gif_sha256": "b2a635ac3d3cf669d6b69dbd0accfa20de58443fa9259720de7b9ac64a6f8a41"
+        },
+        "organ_colossus": {
+          "frames": [
+            {
+              "alpha_bounds": [
+                13,
+                12,
+                242,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "soul/frames/organ_colossus/frame-01.png",
+              "sha256": "a385d6fa0fb484f4f46de3afa603e815d1f353b21fcc6d9b863ee806658402d5",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                19,
+                24,
+                237,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "soul/frames/organ_colossus/frame-02.png",
+              "sha256": "4d760a8e6e9ebab638813eff4eb3185d6be0255c3b87defefac9c9adee7ea6bf",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                18,
+                27,
+                237,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "soul/frames/organ_colossus/frame-03.png",
+              "sha256": "cbb0dd104cb1c793d34c15116ad7fda1b5f802c33d7973e699da154baf2f9494",
+              "dimensions": [
+                256,
+                256
+              ]
+            }
+          ],
+          "preview_strip": "soul/frames/organ_colossus/preview-strip.png",
+          "preview_strip_sha256": "7ecc464b085d0bd768888524882eb3963883851cfe2a2f531158bdbf8e83091b",
+          "preview_gif": "soul/frames/organ_colossus/preview.gif",
+          "preview_gif_sha256": "4d92ea66228e1cdd9fbc314ff8d7e70271d0f8fa891c2e12652e03009169bd41"
+        },
+        "velvet_titan": {
+          "frames": [
+            {
+              "alpha_bounds": [
+                12,
+                46,
+                244,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "soul/frames/velvet_titan/frame-01.png",
+              "sha256": "8dde0a02a1ffc67f4fcf7346ebb7852eb27530ee665f942b861dd7ee9ecca6d8",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                19,
+                51,
+                237,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "soul/frames/velvet_titan/frame-02.png",
+              "sha256": "dd105fcc947ed267acbdac78b39a69e0f5d0b47712662c2b01e53d6b347b3d4f",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                18,
+                51,
+                237,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "soul/frames/velvet_titan/frame-03.png",
+              "sha256": "6d921f907efae3e10ed96fca1f57af44014a5daa62bca1f32129ffe2a0a4b441",
+              "dimensions": [
+                256,
+                256
+              ]
+            }
+          ],
+          "preview_strip": "soul/frames/velvet_titan/preview-strip.png",
+          "preview_strip_sha256": "9e44ece09c493f5cdf80af403f47bc624750e9c57037dfebfe1c5a33bc301814",
+          "preview_gif": "soul/frames/velvet_titan/preview.gif",
+          "preview_gif_sha256": "cc263129689c016fdd102f985524720d6a2a375268813bd3f51ba98c8e39b24d"
+        }
+      },
+      "clean_atlas": "soul/soul-movement-atlas-clean.png",
+      "clean_atlas_sha256": "383a777749ffdd2a2efaae5d91b5409a9d5c1411e34c74e113fb95323fe48270"
+    },
+    "disco": {
+      "layout": "columns_4_rows_6_three_frames",
+      "atlas": "disco/disco-movement-atlas-transparent.png",
+      "atlas_sha256": "f2dd3b4edee1c87b9240cad92472485cf8e735581768644015423026d57f6c31",
+      "frame_count": 3,
+      "isolation": "global-alpha-components",
+      "discarded_noise_pixels": 4,
+      "enemies": {
+        "prism_roller": {
+          "frames": [
+            {
+              "alpha_bounds": [
+                60,
+                49,
+                196,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "disco/frames/prism_roller/frame-01.png",
+              "sha256": "1129749b1d0d2e5d0f70c6e9956b1c9e710cdc59e340e97242e1e422475d7672",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                62,
+                47,
+                194,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "disco/frames/prism_roller/frame-02.png",
+              "sha256": "e6ab658ab9519d8dba06c912de21f79fe47a6bbff03a2df10601a3855de3d77a",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                59,
+                48,
+                196,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "disco/frames/prism_roller/frame-03.png",
+              "sha256": "fedab5c912ff3547d52933fd4adaee5bab0656c49853b0e154aeeb03f5d48e61",
+              "dimensions": [
+                256,
+                256
+              ]
+            }
+          ],
+          "preview_strip": "disco/frames/prism_roller/preview-strip.png",
+          "preview_strip_sha256": "c4063b088da3ce710d71423930f156bf6946024206a332512b04f42c3af0a25e",
+          "preview_gif": "disco/frames/prism_roller/preview.gif",
+          "preview_gif_sha256": "df14b0346dd40f2512ad2225cf5482821551e22f3d0822b0ac9df449c0703397"
+        },
+        "mirror_drone": {
+          "frames": [
+            {
+              "alpha_bounds": [
+                38,
+                52,
+                217,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "disco/frames/mirror_drone/frame-01.png",
+              "sha256": "6fa9b6c0c671d5dc455bd73abf2b2c824e68f93a6cf67248cf28dc6330c08802",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                39,
+                51,
+                217,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "disco/frames/mirror_drone/frame-02.png",
+              "sha256": "070f044135d24fe4d526ceabe5e7f15c2f511d2095c21dfb421bd7ec1fbf6906",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                38,
+                55,
+                217,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "disco/frames/mirror_drone/frame-03.png",
+              "sha256": "1c028b3930bdaa2effeeb02cc93ed79db9a7fc5aed0fe11004462e74b3c5e432",
+              "dimensions": [
+                256,
+                256
+              ]
+            }
+          ],
+          "preview_strip": "disco/frames/mirror_drone/preview-strip.png",
+          "preview_strip_sha256": "eb3c4c3fa6f6f399da613f44342efcee53cc177af0eb85513178ef06abba445a",
+          "preview_gif": "disco/frames/mirror_drone/preview.gif",
+          "preview_gif_sha256": "8f3c792a77008da787f7f5b4c0b2f022e99fcd847381536ed488055c5c36424b"
+        },
+        "laser_fan": {
+          "frames": [
+            {
+              "alpha_bounds": [
+                37,
+                68,
+                218,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "disco/frames/laser_fan/frame-01.png",
+              "sha256": "21ea55a70f0f1fcde11acc26261520bc327bd2c84737aaa277924ee2e608b6c8",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                37,
+                69,
+                218,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "disco/frames/laser_fan/frame-02.png",
+              "sha256": "f10e43810d9e2b8d107d1b46f31edc4bcb83fd8e75194dc6b0884ba969d30342",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                37,
+                71,
+                218,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "disco/frames/laser_fan/frame-03.png",
+              "sha256": "7872fde7f7cc1c67ee6d14b5c1106cfc5f3feee7d47cf217c64f04994693338e",
+              "dimensions": [
+                256,
+                256
+              ]
+            }
+          ],
+          "preview_strip": "disco/frames/laser_fan/preview-strip.png",
+          "preview_strip_sha256": "e7fd47516f2cbdbc413f83ce9caecc57b4e85bf9f9a3d9fbd3b29378ec049781",
+          "preview_gif": "disco/frames/laser_fan/preview.gif",
+          "preview_gif_sha256": "694c0b9e03e0330a9520cf2442bb7a4c59f5966203ec58af86475d16c5f67ce6"
+        },
+        "reflection_twin": {
+          "frames": [
+            {
+              "alpha_bounds": [
+                32,
+                69,
+                224,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "disco/frames/reflection_twin/frame-01.png",
+              "sha256": "f68fa8d0812cd32a2949fedc7cbc95a981142811db41ba773c1e62b10974cf45",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                32,
+                68,
+                224,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "disco/frames/reflection_twin/frame-02.png",
+              "sha256": "48081a9a5d3efa52d7c1e89e9225fe8c29723b4c7d325efc724d0a992d3636d7",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                31,
+                68,
+                224,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "disco/frames/reflection_twin/frame-03.png",
+              "sha256": "e388ed0ba915f51e9657b3302d67fe50d1a0029c34320663f50d5eeb162dff14",
+              "dimensions": [
+                256,
+                256
+              ]
+            }
+          ],
+          "preview_strip": "disco/frames/reflection_twin/preview-strip.png",
+          "preview_strip_sha256": "20698e361f1d5b2f23ad01a6cda13149020bcb32863846f6d59f1ee19bba19a1",
+          "preview_gif": "disco/frames/reflection_twin/preview.gif",
+          "preview_gif_sha256": "84587f4402c5a9fa814fae9d3e272a2b2df8acdcecef448d48b3f1f8f7d78604"
+        },
+        "platform_pouncer": {
+          "frames": [
+            {
+              "alpha_bounds": [
+                22,
+                62,
+                234,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "disco/frames/platform_pouncer/frame-01.png",
+              "sha256": "db7bad93c2c82e4f717b0b68f822fc8a96bfaec432aae1104f465bd04e5bd317",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                12,
+                79,
+                244,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "disco/frames/platform_pouncer/frame-02.png",
+              "sha256": "745e66bfa7dce5d503cfad7aebf7a7f017cbbb5a39541ee3a0ffda47ede2b79a",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                22,
+                64,
+                233,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "disco/frames/platform_pouncer/frame-03.png",
+              "sha256": "7ebe12adcbeab3bf63f7fc1dfca92ed9860e11c4e7dda7aa33122e73e9dd8bdd",
+              "dimensions": [
+                256,
+                256
+              ]
+            }
+          ],
+          "preview_strip": "disco/frames/platform_pouncer/preview-strip.png",
+          "preview_strip_sha256": "2518a1e94f4589d14e39db288912f37e56a955d6183040c8d6cf6601619fe582",
+          "preview_gif": "disco/frames/platform_pouncer/preview.gif",
+          "preview_gif_sha256": "197cc655c631c78daddaab185ec05f197ed2aaab27fe238d20bc1b224ab152f7"
+        },
+        "glitter_guard": {
+          "frames": [
+            {
+              "alpha_bounds": [
+                39,
+                43,
+                216,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "disco/frames/glitter_guard/frame-01.png",
+              "sha256": "2e9d9e615b62630ca68a5a12fe1a41c628337fe59419245c730b3d394736926f",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                42,
+                44,
+                214,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "disco/frames/glitter_guard/frame-02.png",
+              "sha256": "a1afa8edbde49e720520c3da99264ea630c53095398dff7d6620790c2fed5b5a",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                42,
+                41,
+                214,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "disco/frames/glitter_guard/frame-03.png",
+              "sha256": "aa9a869cde7b04cadf81c797beff41df395abadd04ea63a85e5012a9f7ffce34",
+              "dimensions": [
+                256,
+                256
+              ]
+            }
+          ],
+          "preview_strip": "disco/frames/glitter_guard/preview-strip.png",
+          "preview_strip_sha256": "baed53656943c6430cf16c57d46f5057f6bbb30936d5aef0542b3e03abd21bd9",
+          "preview_gif": "disco/frames/glitter_guard/preview.gif",
+          "preview_gif_sha256": "2fff30838c0e549eb53ef78afc359de470721e2801973955920080f26f57b3eb"
+        },
+        "laser_conductor": {
+          "frames": [
+            {
+              "alpha_bounds": [
+                13,
+                56,
+                243,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "disco/frames/laser_conductor/frame-01.png",
+              "sha256": "2b328596caf041bb72373a463c51cd9f19d5a2f70d6d54d964a0c802bcdbc86c",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                14,
+                59,
+                241,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "disco/frames/laser_conductor/frame-02.png",
+              "sha256": "16a39a8f1b1229e8b5a86a1634c022b1043edb73b7bf13b89d2ee5f85b665294",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                12,
+                56,
+                244,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "disco/frames/laser_conductor/frame-03.png",
+              "sha256": "b088feced8682e557b485d9e3cf469c718c66701a5d8799b48e0316eba13a47b",
+              "dimensions": [
+                256,
+                256
+              ]
+            }
+          ],
+          "preview_strip": "disco/frames/laser_conductor/preview-strip.png",
+          "preview_strip_sha256": "e3358ebe56271ce16ac7e7b5318c6d0a0d25493be55923ba8b13cb6bc852a3a2",
+          "preview_gif": "disco/frames/laser_conductor/preview.gif",
+          "preview_gif_sha256": "88a8971894ef47bf347f7af9bce9226854f9c5d52e4371df342aca1dfce1702a"
+        },
+        "prism_monarch": {
+          "frames": [
+            {
+              "alpha_bounds": [
+                13,
+                36,
+                243,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "disco/frames/prism_monarch/frame-01.png",
+              "sha256": "cd2d0eba40b83d60f95a9bba39a5d9c6d2c08c8371b4ceab2a152e712c054c97",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                12,
+                33,
+                244,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "disco/frames/prism_monarch/frame-02.png",
+              "sha256": "8e49ccb58d4a5685ca9f4dcfecd29c5309ef3b96488c6e38d94c1d6c002ef38e",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                13,
+                33,
+                243,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "disco/frames/prism_monarch/frame-03.png",
+              "sha256": "9d359b03a69c4c3703367247bb0a3f8b452c602bf7d6be378c1ba9f34ffa8f79",
+              "dimensions": [
+                256,
+                256
+              ]
+            }
+          ],
+          "preview_strip": "disco/frames/prism_monarch/preview-strip.png",
+          "preview_strip_sha256": "ea6cf1e9d48bc1f514f8dfb4bf2c222097d020801ee788080c442dfbfd73e530",
+          "preview_gif": "disco/frames/prism_monarch/preview.gif",
+          "preview_gif_sha256": "ae32279c93ebbad1ce279db545bf61896a190b5172c618493a45a7cb5073de0e"
+        }
+      },
+      "clean_atlas": "disco/disco-movement-atlas-clean.png",
+      "clean_atlas_sha256": "ce30f223a853ba4a852a6de2d5de2dec9d89d682e190130f2c8236b69e834c67"
+    },
+    "jazz": {
+      "layout": "columns_4_rows_8_four_frames",
+      "atlas": "jazz/jazz-movement-atlas-normalized-transparent.png",
+      "atlas_sha256": "418b3046d61586ac3abd8647dda2762b824461f8fb542fd2dbb4ab26c29e91e8",
+      "frame_count": 4,
+      "isolation": "global-alpha-components",
+      "discarded_noise_pixels": 2,
+      "enemies": {
+        "syncopated_imp": {
+          "frames": [
+            {
+              "alpha_bounds": [
+                36,
+                48,
+                220,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "jazz/frames/syncopated_imp/frame-01.png",
+              "sha256": "1e34625bc2a4bca350bc9b9e86e4fcde2725c980130cb4deb888cdf4c1ede2a8",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                37,
+                49,
+                218,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "jazz/frames/syncopated_imp/frame-02.png",
+              "sha256": "f291436e908c59ff487c93d4c0396d0f4bb15561c8bf24c7c560180d7ad5d840",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                37,
+                44,
+                219,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "jazz/frames/syncopated_imp/frame-03.png",
+              "sha256": "9c720c08771de405ba9f8b503863542d4c223875b0ea4597e64b7b1298200048",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                36,
+                48,
+                219,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "jazz/frames/syncopated_imp/frame-04.png",
+              "sha256": "b3139690d8cfd044dc78d7647f1cbe67358f2c591e31c5ec3890d7f5e98d9712",
+              "dimensions": [
+                256,
+                256
+              ]
+            }
+          ],
+          "preview_strip": "jazz/frames/syncopated_imp/preview-strip.png",
+          "preview_strip_sha256": "44f9b89ddea84cefb29c0d1034e253b66839bfeac47a6a300a1201d08d630704",
+          "preview_gif": "jazz/frames/syncopated_imp/preview.gif",
+          "preview_gif_sha256": "100b70a34663af709a70ebc25936ef565b532babfe8c7542310188537e6ab083"
+        },
+        "blue_note_bat": {
+          "frames": [
+            {
+              "alpha_bounds": [
+                12,
+                107,
+                244,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "jazz/frames/blue_note_bat/frame-01.png",
+              "sha256": "9c72f847cd1c2acd73144244766f0cfeacee77ff8f2a26ac9f2c4f562bfb95f5",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                28,
+                107,
+                227,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "jazz/frames/blue_note_bat/frame-02.png",
+              "sha256": "483b0a3c5a322004790efb9c5493cf090c66be82317b818a2d0de6e5f7d793bf",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                14,
+                107,
+                242,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "jazz/frames/blue_note_bat/frame-03.png",
+              "sha256": "a225141a43e4eecddd10331e704a99112708dac757118f53e74100b4cf5f576c",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                27,
+                106,
+                228,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "jazz/frames/blue_note_bat/frame-04.png",
+              "sha256": "fbc221becf8206c67e5320aa4e0e74051d0a4ea83ab496ef217e0e01ccd2c3dc",
+              "dimensions": [
+                256,
+                256
+              ]
+            }
+          ],
+          "preview_strip": "jazz/frames/blue_note_bat/preview-strip.png",
+          "preview_strip_sha256": "61894abe5e01872da2e50a25f775cf3342ff7416959215f615f71419c86cd0bd",
+          "preview_gif": "jazz/frames/blue_note_bat/preview.gif",
+          "preview_gif_sha256": "e6c941a624da9ec0f833d07560121debde5cbb02355bab1fc05df260f8384cbc"
+        },
+        "walking_bass_bot": {
+          "frames": [
+            {
+              "alpha_bounds": [
+                39,
+                24,
+                216,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "jazz/frames/walking_bass_bot/frame-01.png",
+              "sha256": "b828a34e31ab00d561c368f7ebaa6c000b36628e5b6c4b1a68f6d97b6a96ead2",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                38,
+                23,
+                217,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "jazz/frames/walking_bass_bot/frame-02.png",
+              "sha256": "d5cdd5fbb28c7cd5252f18a95273490bf1e03fec64eaceabc4f13fbd925bac03",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                45,
+                12,
+                210,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "jazz/frames/walking_bass_bot/frame-03.png",
+              "sha256": "54208c63eeb3503fd10744fad86175bb3be996d5e64e7cfa36844c07ddd8995e",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                34,
+                14,
+                222,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "jazz/frames/walking_bass_bot/frame-04.png",
+              "sha256": "3e98ea13e5916a85d7b6605c2a56283c7f86dc914ea21e845fa6fc1eb6360307",
+              "dimensions": [
+                256,
+                256
+              ]
+            }
+          ],
+          "preview_strip": "jazz/frames/walking_bass_bot/preview-strip.png",
+          "preview_strip_sha256": "e792aec43dae05421cdb55766fbac23bb4177e4d454e080b7cbc03ad6b0077e3",
+          "preview_gif": "jazz/frames/walking_bass_bot/preview.gif",
+          "preview_gif_sha256": "511690421c4fcfa6053f1d83d10bcb5afd69388beeff6fc979e3efc1523683b3"
+        },
+        "scat_cannon": {
+          "frames": [
+            {
+              "alpha_bounds": [
+                30,
+                68,
+                225,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "jazz/frames/scat_cannon/frame-01.png",
+              "sha256": "7a27dae43b29abfed6ab0f2e86933eb878c1f6c115f83fe09a8eb25b507e3448",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                27,
+                75,
+                229,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "jazz/frames/scat_cannon/frame-02.png",
+              "sha256": "dc418b53c34f86f007ba661ae972dfd6fddd162d4ef4cad9cb531a1d5a891c71",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                29,
+                70,
+                227,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "jazz/frames/scat_cannon/frame-03.png",
+              "sha256": "e9f85efc4780b14e50570d1c7adc8fd5e2fa8de00d83f150feba8788b863abf3",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                30,
+                69,
+                225,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "jazz/frames/scat_cannon/frame-04.png",
+              "sha256": "cc0ad801e63173cb16f7a67485bafb22da2a765bfa83ab0691096126049a5dcd",
+              "dimensions": [
+                256,
+                256
+              ]
+            }
+          ],
+          "preview_strip": "jazz/frames/scat_cannon/preview-strip.png",
+          "preview_strip_sha256": "cc1cf11b514353736623e68d4a8ec29052d22b7d2c4241ea090dfc8e31e0120e",
+          "preview_gif": "jazz/frames/scat_cannon/preview.gif",
+          "preview_gif_sha256": "075937dc75de0c609489d9dea5775a0e190ce32bb3a27ca9f0b20164a013c1b5"
+        },
+        "bebop_behemoth": {
+          "frames": [
+            {
+              "alpha_bounds": [
+                12,
+                53,
+                244,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "jazz/frames/bebop_behemoth/frame-01.png",
+              "sha256": "560761ca0bbdc68f59b65cbef76345136bebf8af7be345e3238feb52db3b49b1",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                12,
+                46,
+                243,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "jazz/frames/bebop_behemoth/frame-02.png",
+              "sha256": "638b2b3a593b08f322b7b819c219715ec93cdf10b269eb9a8f84772b61107756",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                23,
+                47,
+                232,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "jazz/frames/bebop_behemoth/frame-03.png",
+              "sha256": "3a62fa5b7698c481ea24690e8fb9f6c2fd6c5bf09fe84bb6f7619d8fa8b02bc9",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                17,
+                52,
+                239,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "jazz/frames/bebop_behemoth/frame-04.png",
+              "sha256": "26770a79a78c4d479831e695559291ffd45d2c5fe92c6d60f1c1678abd824c2d",
+              "dimensions": [
+                256,
+                256
+              ]
+            }
+          ],
+          "preview_strip": "jazz/frames/bebop_behemoth/preview-strip.png",
+          "preview_strip_sha256": "c2f60badc4de472085dd753b14e5f1a987f69fa2f083e1cc4bc6b52c481db152",
+          "preview_gif": "jazz/frames/bebop_behemoth/preview.gif",
+          "preview_gif_sha256": "cb9c2b550e3fe07d37d3ddbe6c56d4f04a0fa20421499ad58b0ea04b5201c21c"
+        },
+        "brushfire_skitter": {
+          "frames": [
+            {
+              "alpha_bounds": [
+                12,
+                67,
+                244,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "jazz/frames/brushfire_skitter/frame-01.png",
+              "sha256": "032b7255907bd9d756f65f4edeecc1bace803026caf65d4b886942e2d2ad7004",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                14,
+                65,
+                242,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "jazz/frames/brushfire_skitter/frame-02.png",
+              "sha256": "4e52370ed0a9b4d2e2fa0890e4b4e18d69895a591e8163064fe39ee8f4a4d19d",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                12,
+                68,
+                243,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "jazz/frames/brushfire_skitter/frame-03.png",
+              "sha256": "f2ec1246d44c432182a08ffb9700de0909ac23ff7a6b9138d1a3d9535b72d0b9",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                12,
+                66,
+                243,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "jazz/frames/brushfire_skitter/frame-04.png",
+              "sha256": "4d37e3adc2efa509a0d8f5eac99e9b181875e8caa0040c371d915facd36a1dc4",
+              "dimensions": [
+                256,
+                256
+              ]
+            }
+          ],
+          "preview_strip": "jazz/frames/brushfire_skitter/preview-strip.png",
+          "preview_strip_sha256": "87b2845022e2a71b365324d458bf7ca6aa4379f6f8ef8823d0cd7dbe09ba097a",
+          "preview_gif": "jazz/frames/brushfire_skitter/preview.gif",
+          "preview_gif_sha256": "772190e952afe8d7e210e5590287bd05d4cb778daa25f180aae53ae087606359"
+        },
+        "brass_regent": {
+          "frames": [
+            {
+              "alpha_bounds": [
+                32,
+                13,
+                224,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "jazz/frames/brass_regent/frame-01.png",
+              "sha256": "92ea8dac0ca906d9f3531d4c4e111f4cb89b529d0708195ee56bb272ee090a74",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                32,
+                15,
+                224,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "jazz/frames/brass_regent/frame-02.png",
+              "sha256": "714d2cee86d20931b78afcf3393cb8bb3f6282ab43925a860af7cb75adc7b38a",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                18,
+                14,
+                238,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "jazz/frames/brass_regent/frame-03.png",
+              "sha256": "2bdf5aa46103f1507b89438652c5a22e7bd6a6ce301def93915743317462230e",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                33,
+                12,
+                223,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "jazz/frames/brass_regent/frame-04.png",
+              "sha256": "d05fcc2a7bb726021dd06de75e6b9ad9218ce1d97965ace97baf77d31e39c237",
+              "dimensions": [
+                256,
+                256
+              ]
+            }
+          ],
+          "preview_strip": "jazz/frames/brass_regent/preview-strip.png",
+          "preview_strip_sha256": "4a116c9abe2ce7b58805bb8acb37e77aa3a3c328eb5c9b0cb49a5bee8a00b060",
+          "preview_gif": "jazz/frames/brass_regent/preview.gif",
+          "preview_gif_sha256": "9683c7d44d44ae0650cec51af77bcd8937f33e0cee38c86167067a9a71e9a1f2"
+        },
+        "midnight_maestro": {
+          "frames": [
+            {
+              "alpha_bounds": [
+                20,
+                22,
+                236,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "jazz/frames/midnight_maestro/frame-01.png",
+              "sha256": "b6f9ecd8887ce0e6f0d379d6a2a70a6ba8e6c56b1c4740a7ddbabf29fa8dde58",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                24,
+                23,
+                231,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "jazz/frames/midnight_maestro/frame-02.png",
+              "sha256": "77b85d6a192d2cf5b47998821b735d1ffea98f33c56f0191062f735c7581b34a",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                23,
+                22,
+                232,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "jazz/frames/midnight_maestro/frame-03.png",
+              "sha256": "f36c9cb88a02f80e736b3f923b54ea149149eacf07838029bcf504aa70d237ec",
+              "dimensions": [
+                256,
+                256
+              ]
+            },
+            {
+              "alpha_bounds": [
+                20,
+                18,
+                235,
+                244
+              ],
+              "transparent_corners": true,
+              "edge_contact": false,
+              "path": "jazz/frames/midnight_maestro/frame-04.png",
+              "sha256": "080c86b573552eed211e7b0f7ccaf354c4983d47db85383ee4b558bcd042c161",
+              "dimensions": [
+                256,
+                256
+              ]
+            }
+          ],
+          "preview_strip": "jazz/frames/midnight_maestro/preview-strip.png",
+          "preview_strip_sha256": "8b7f2079daedaad4932fa7762480762c90ed43a06ef2641bec927444607f1cdb",
+          "preview_gif": "jazz/frames/midnight_maestro/preview.gif",
+          "preview_gif_sha256": "b9967f6969ce677272bc2835f7d5933fa9412bb46fba39539c6b33aa67f84c1a"
+        }
+      },
+      "clean_atlas": "jazz/jazz-movement-atlas-clean.png",
+      "clean_atlas_sha256": "986eef555664b80e1524936cfafb18312e0f88cf673cb3d90ce00258b46edfa8"
+    }
+  },
+  "aliases": {
+    "breakbeat_bruiser": {
+      "uses_animation_of": "turntable_sentinel",
+      "reason": "Current content definition reuses the same Orbit atlas cell."
+    }
+  }
+}

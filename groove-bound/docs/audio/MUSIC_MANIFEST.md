@@ -48,3 +48,17 @@ listening is still pending.
 Candidate files live in `assets/generated/source-candidates/music/` and remain
 excluded from release packages. `docs/audio/MUSIC_QA_LOG.md` records the
 runtime hashes and technical results.
+
+## 2026-08-13 — World Tour V1 expansion
+
+Cues 31–58 add a neutral continuous World Tour hub plus an independent
+route/pressure/finale pack for each of the nine fixed worlds. The complete
+generation contract, prompts, routing map, promoted Suno IDs, source durations,
+runtime hashes, and technical results are recorded in
+[`WORLD_TOUR_MUSIC_PLAN.md`](WORLD_TOUR_MUSIC_PLAN.md) and
+[`WORLD_TOUR_MUSIC_QA.md`](WORLD_TOUR_MUSIC_QA.md).
+
+The batch used Suno v5.5 in Advanced Instrumental mode, cost 280 credits, and
+preserves all promoted 48 kHz stereo MP3 masters beneath
+`assets/generated/source-candidates/music/world-tour-v1/`. Those sources and
+the rejected Boogie Tank alternate remain excluded from packaged games.

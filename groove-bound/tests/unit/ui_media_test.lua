@@ -1,5 +1,7 @@
 local H = require("tests.helpers")
 local UIScale = require("src.ui.scale")
+local EnemyAnimation = require("src.render.enemy_animation")
+local enemies = require("src.content.enemies")
 
 local T = {}
 
@@ -34,6 +36,22 @@ T["runtime UI artwork and character logos have stable production mappings"] = fu
     H.is_true(#file:read(16) > 0)
     file:close()
   end
+  local enemy_state_strips = 0
+  for id, definition in pairs(enemies) do
+    for _, state in ipairs({ "walk", "hit", "death", "attack" }) do
+      if state ~= "attack" or definition.attack_kind then
+        local frames = EnemyAnimation.frame_count(id, state)
+        local path = "assets/generated/campaign/enemies/" .. id
+          .. "/" .. state .. ".png"
+        local width, height = png_dimensions(path)
+        H.eq(width, frames * 256, id .. " " .. state .. " width")
+        H.eq(height, 256, id .. " " .. state .. " height")
+        H.eq(png_color_type(path), 6, id .. " " .. state .. " alpha")
+        enemy_state_strips = enemy_state_strips + 1
+      end
+    end
+  end
+  H.eq(enemy_state_strips, 170)
   local new_w, new_h = png_dimensions(
     "assets/generated/campaign/ui/new-tag.png")
   H.is_true(new_w > new_h * 2)
@@ -61,6 +79,21 @@ T["runtime UI artwork and character logos have stable production mappings"] = fu
   H.eq(menu_h, 1200)
   H.eq(png_color_type(
     "assets/generated/campaign/ui/menu-category-icons-atlas-v2.png"), 6)
+  for _, path in ipairs({
+    "assets/generated/campaign/ui/menu-stat-icons-v1.png",
+    "assets/generated/campaign/ui/settings-icons-v1.png",
+  }) do
+    local width, height = png_dimensions(path)
+    H.eq(width, 1600)
+    H.eq(height, 1600)
+    H.eq(png_color_type(path), 6)
+  end
+  local alert_w, alert_h = png_dimensions(
+    "assets/generated/campaign/ui/level-points-alert-icons-v1.png")
+  H.eq(alert_w, 1536)
+  H.eq(alert_h, 1024)
+  H.eq(png_color_type(
+    "assets/generated/campaign/ui/level-points-alert-icons-v1.png"), 6)
   for _, name in ipairs({
     "top-left", "top", "top-right", "left", "center", "right",
     "bottom-left", "bottom", "bottom-right",
@@ -70,6 +103,35 @@ T["runtime UI artwork and character logos have stable production mappings"] = fu
     local width, height = png_dimensions(path)
     H.is_true(width > 0)
     H.is_true(height > 0)
+    H.eq(png_color_type(path), 6)
+  end
+  for _, root in ipairs({ "cta-frame-v1", "cta-focus-v1" }) do
+    for _, name in ipairs({
+      "top-left", "top", "top-right", "left", "center", "right",
+      "bottom-left", "bottom", "bottom-right",
+    }) do
+      local path = "assets/generated/campaign/ui/" .. root .. "/"
+        .. name .. ".png"
+      local width, height = png_dimensions(path)
+      H.is_true(width > 0)
+      H.is_true(height > 0)
+      H.eq(png_color_type(path), 6)
+    end
+  end
+  local hud_kit = "assets/generated/campaign/ui/hud-interface-kit-v1/"
+  local hud_expected = {
+    ["rank-badge.png"] = { 256, 256 },
+    ["max-badge.png"] = { 256, 256 },
+    ["bar-left.png"] = { 96, 64 },
+    ["bar-middle.png"] = { 64, 64 },
+    ["bar-right.png"] = { 96, 64 },
+    ["bar-fill.png"] = { 64, 24 },
+  }
+  for name, dimensions in pairs(hud_expected) do
+    local path = hud_kit .. name
+    local width, height = png_dimensions(path)
+    H.eq(width, dimensions[1])
+    H.eq(height, dimensions[2])
     H.eq(png_color_type(path), 6)
   end
   local aim_w, aim_h = png_dimensions(
@@ -107,9 +169,17 @@ T["runtime UI artwork and character logos have stable production mappings"] = fu
     { "assets/generated/campaign/funk-enemies-atlas.png", 1600, 800 },
     { "assets/generated/campaign/soul-enemies-atlas.png", 1600, 800 },
     { "assets/generated/campaign/disco-enemies-atlas.png", 1600, 800 },
+    { "assets/generated/campaign/jazz-enemies-atlas.png", 1600, 800 },
+    { "assets/generated/campaign/enemy-animation/backbeat-movement-atlas.png", 1024, 1536 },
+    { "assets/generated/campaign/enemy-animation/orbit-movement-atlas.png", 1024, 1536 },
+    { "assets/generated/campaign/enemy-animation/funk-movement-atlas.png", 1024, 1536 },
+    { "assets/generated/campaign/enemy-animation/soul-movement-atlas.png", 1024, 1536 },
+    { "assets/generated/campaign/enemy-animation/disco-movement-atlas.png", 1024, 1536 },
+    { "assets/generated/campaign/enemy-animation/jazz-movement-atlas.png", 1024, 2048 },
     { "assets/generated/campaign/funk-environment-atlas.png", 1600, 800 },
     { "assets/generated/campaign/soul-environment-atlas.png", 1600, 800 },
     { "assets/generated/campaign/disco-environment-atlas.png", 1600, 800 },
+    { "assets/generated/campaign/jazz-environment-atlas.png", 1600, 800 },
     { "assets/generated/evolved-weapon-icons-atlas-2.png", 1600, 800 },
   }) do
     local width, height = png_dimensions(expected[1])
@@ -122,6 +192,27 @@ T["runtime UI artwork and character logos have stable production mappings"] = fu
   H.eq(floor_w, 1024)
   H.eq(floor_h, 1024)
   H.eq(png_color_type("assets/generated/campaign/funk-floor-atlas.png"), 2)
+  local jazz_floor_w, jazz_floor_h = png_dimensions(
+    "assets/generated/campaign/jazz-floor-atlas.png")
+  H.eq(jazz_floor_w, 1024)
+  H.eq(jazz_floor_h, 1024)
+  H.eq(png_color_type("assets/generated/campaign/jazz-floor-atlas.png"), 2)
+  local jazz_logo_w, jazz_logo_h = png_dimensions(
+    "assets/generated/campaign/jazz-world-logo.png")
+  H.is_true(jazz_logo_w >= 1000)
+  H.is_true(jazz_logo_h >= 500)
+  H.eq(png_color_type("assets/generated/campaign/jazz-world-logo.png"), 6)
+  for _, world_id in ipairs({
+    "jazz", "house", "techno", "cosmic-boogie",
+    "soulful-garage", "future-funk",
+  }) do
+    local path = "assets/generated/campaign/world-emblems/"
+      .. world_id .. ".png"
+    local width, height = png_dimensions(path)
+    H.eq(width, 512)
+    H.eq(height, 512)
+    H.eq(png_color_type(path), 6)
+  end
 end
 
 T["World Tour atlas repair keeps every isolated sprite auditable"] = function()

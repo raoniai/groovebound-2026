@@ -32,6 +32,7 @@ T["Device Settings persist shared options independently of progression Slots"] =
 
   H.eq(device.active_slot, 1)
   H.is_false(device.options.reduced_motion)
+  H.is_false(device.options.automatic_level_up)
   H.is_true(device.options.rhythm_visual_cues)
   H.eq(device.options.timing_window, "standard")
 

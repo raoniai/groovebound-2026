@@ -1,20 +1,20 @@
 -- Deterministic, cumulative, once-only World Tour reward claims.
 
 local claims = {}
-local core = { "funk", "soul", "disco", "house", "electro", "techno" }
+local core = { "funk", "soul", "disco", "jazz", "house", "techno" }
 local perks = {
   funk = { C = "pocket_drive", A = "breakstep" },
   soul = { C = "warm_current", A = "velvet_guard" },
   disco = { C = "mirrorball_tips", A = "spotlight_spin" },
   house = { C = "four_count", A = "floor_control" },
-  electro = { C = "live_wire", A = "signal_boost" },
+  jazz = { C = "live_wire", A = "signal_boost" },
   techno = { C = "precision_loop", A = "hard_reset" },
   cosmic_boogie = { C = "orbital_balance", A = "encore_spark" },
   soulful_garage = { C = "deep_reserve", A = "afterglow" },
   future_funk = { C = "neon_dividend", A = "first_drop" },
 }
 local all = {
-  "funk", "soul", "disco", "house", "electro", "techno",
+  "funk", "soul", "disco", "jazz", "house", "techno",
   "cosmic_boogie", "soulful_garage", "future_funk",
 }
 

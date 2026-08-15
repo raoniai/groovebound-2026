@@ -4,6 +4,8 @@
 -- depends on filenames and future art replacement stays mechanical.
 
 local SpriteSheet = require("src.render.sprite_sheet")
+local EnemyAnimation = require("src.render.enemy_animation")
+local EnemyDefinitions = require("src.content.enemies")
 
 local Assets = {}
 Assets.__index = Assets
@@ -18,6 +20,20 @@ local function source(path, volume)
   local value = love.audio.newSource(path, "static")
   value:setVolume(volume or 0.25)
   return value
+end
+
+local function nine_slice(root)
+  return {
+    top_left = image(root .. "top-left.png"),
+    top = image(root .. "top.png"),
+    top_right = image(root .. "top-right.png"),
+    left = image(root .. "left.png"),
+    center = image(root .. "center.png"),
+    right = image(root .. "right.png"),
+    bottom_left = image(root .. "bottom-left.png"),
+    bottom = image(root .. "bottom.png"),
+    bottom_right = image(root .. "bottom-right.png"),
+  }
 end
 
 local function grid_quads(value, columns, rows, inset)
@@ -160,11 +176,40 @@ function Assets.load()
   self.enemy.funk_quads,
     self.enemy.funk_cell_w,
     self.enemy.funk_cell_h = grid_quads(self.enemy.funk, 4, 2, 2)
-  for _, id in ipairs({ "soul", "disco" }) do
+  for _, id in ipairs({ "soul", "disco", "jazz" }) do
     self.enemy[id] = image("assets/generated/campaign/" .. id .. "-enemies-atlas.png")
     self.enemy[id .. "_quads"],
       self.enemy[id .. "_cell_w"],
       self.enemy[id .. "_cell_h"] = grid_quads(self.enemy[id], 4, 2, 8)
+  end
+  self.enemy.animation = {}
+  for _, id in ipairs({ "backbeat", "orbit", "funk", "soul", "disco", "jazz" }) do
+    local rows = id == "jazz" and 8 or 6
+    local atlas = image(
+      "assets/generated/campaign/enemy-animation/" .. id
+        .. "-movement-atlas.png")
+    local quads, cell_w, cell_h = grid_quads(atlas, 4, rows)
+    self.enemy.animation[id] = {
+      atlas = atlas,
+      quads = quads,
+      cell_w = cell_w,
+      cell_h = cell_h,
+    }
+  end
+  self.enemy.states = {}
+  for id, definition in pairs(EnemyDefinitions) do
+    self.enemy.states[id] = {}
+    for _, state in ipairs({ "walk", "hit", "death", "attack" }) do
+      if state ~= "attack" or definition.attack_kind then
+        self.enemy.states[id][state] = SpriteSheet({
+          path = "assets/generated/campaign/enemies/" .. id .. "/" .. state .. ".png",
+          frame_w = 256,
+          frame_h = 256,
+          cols = EnemyAnimation.frame_count(id, state),
+          rows = 1,
+        })
+      end
+    end
   end
 
   self.floor = image("assets/legacy/images/floor-tiles1.jpg")
@@ -177,10 +222,8 @@ function Assets.load()
   end
 
   self.projectile = image("assets/legacy/images/projectile.png")
-  self.projectile_atlas = image("assets/generated/campaign/projectile-atlas.png")
-  self.projectile_quads = grid_quads(self.projectile_atlas, 6, 4)
-  self.projectile_cells = {}
-  local projectile_ids = {
+  self.player_attacks = {}
+  local player_attack_ids = {
     "kazoo_pistol", "bass_drop", "cymbal_slicer", "feedback_loop",
     "drum_circle", "trumpet_burst", "vinyl_scratch", "synth_wave",
     "triangle_tracer", "cello_lance", "maraca_orbit", "tuning_fork",
@@ -188,25 +231,18 @@ function Assets.load()
     "brass_barrage", "improvised_solo", "subwoofer_supernova",
     "orbital_ovation", "thunderhead_ensemble", "golden_fortissimo",
     "gravity_groove", "neon_crescendo",
+    "prismatic_triangle", "velvet_impaler", "carnival_superorbit",
+    "resonance_rupture", "stadium_keytar", "cathedral_overdrive",
+    "infinite_mixtape", "aurora_harp",
   }
-  for index, id in ipairs(projectile_ids) do
-    self.projectile_cells[id] = {
-      col = (index - 1) % 6 + 1,
-      row = math.floor((index - 1) / 6) + 1,
-    }
-  end
-  local projectile_aliases = {
-    prismatic_triangle = "triangle_tracer",
-    velvet_impaler = "cello_lance",
-    carnival_superorbit = "maraca_orbit",
-    resonance_rupture = "tuning_fork",
-    stadium_keytar = "keytar_chord",
-    cathedral_overdrive = "bell_tower",
-    infinite_mixtape = "tape_repeater",
-    aurora_harp = "laser_harp",
-  }
-  for id, base_id in pairs(projectile_aliases) do
-    self.projectile_cells[id] = self.projectile_cells[base_id]
+  for _, id in ipairs(player_attack_ids) do
+    self.player_attacks[id] = SpriteSheet({
+      path = "assets/generated/projectiles/" .. id .. ".png",
+      frame_w = 384,
+      frame_h = 128,
+      cols = 5,
+      rows = 1,
+    })
   end
   self.combat_fx = SpriteSheet({
     path = "assets/generated/campaign/combat-fx-atlas.png",
@@ -236,6 +272,11 @@ function Assets.load()
   self.completion_ui_quads,
     self.completion_ui_cell_w,
     self.completion_ui_cell_h = grid_quads(self.completion_ui, 4, 2, 2)
+  self.level_alert_icons = image(
+    "assets/generated/campaign/ui/level-points-alert-icons-v1.png")
+  self.level_alert_icon_quads,
+    self.level_alert_icon_cell_w,
+    self.level_alert_icon_cell_h = grid_quads(self.level_alert_icons, 3, 2)
   self.funk_pocket_pads = image(
     "assets/generated/campaign/funk-pocket-pad-atlas.png")
   self.funk_pocket_pad_quads,
@@ -248,6 +289,14 @@ function Assets.load()
     self.world_tour_ui_cell_h = grid_quads(self.world_tour_ui, 5, 2, 8)
   self.world_interface = image(
     "assets/generated/campaign/world-interface-atlas.png")
+  self.world_emblems = {}
+  for _, id in ipairs({ "jazz", "house", "techno", "cosmic-boogie",
+    "soulful-garage", "future-funk" }) do
+    self.world_emblems[id:gsub("-", "_")] = image(
+      "assets/generated/campaign/world-emblems/" .. id .. ".png")
+  end
+  self.world_lock = image(
+    "assets/generated/campaign/world-tour-sprites/ui/world-tour/locked-world.png")
   self.world_interface_quads,
     self.world_interface_cell_w,
     self.world_interface_cell_h = grid_quads(self.world_interface, 5, 2, 8)
@@ -260,6 +309,15 @@ function Assets.load()
   self.world_mechanic_quads,
     self.world_mechanic_cell_w,
     self.world_mechanic_cell_h = grid_quads(self.world_mechanics, 5, 2, 4)
+  self.world_mechanic_atlases = {}
+  for _, id in ipairs({ "funk", "soul", "disco", "jazz" }) do
+    local atlas = image(
+      "assets/generated/campaign/" .. id .. "-mechanic-atlas.png")
+    local quads, cell_w, cell_h = grid_quads(atlas, 4, 2, 6)
+    self.world_mechanic_atlases[id] = {
+      image = atlas, quads = quads, cell_w = cell_w, cell_h = cell_h,
+    }
+  end
   self.menu_button_icons = image(
     "assets/generated/campaign/menu-button-icons-atlas.png")
   self.menu_button_icon_quads,
@@ -294,6 +352,29 @@ function Assets.load()
     self.menu_category_icon_cell_w,
     self.menu_category_icon_cell_h = grid_quads(
       self.menu_category_icons, 4, 3, 12)
+  self.menu_stat_icons = image(
+    "assets/generated/campaign/ui/menu-stat-icons-v1.png")
+  self.menu_stat_icon_quads,
+    self.menu_stat_icon_cell_w,
+    self.menu_stat_icon_cell_h = grid_quads(self.menu_stat_icons, 4, 4, 24)
+  self.settings_icons = image(
+    "assets/generated/campaign/ui/settings-icons-v1.png")
+  self.settings_icon_quads,
+    self.settings_icon_cell_w,
+    self.settings_icon_cell_h = grid_quads(self.settings_icons, 4, 4, 24)
+  self.cta_frame = nine_slice(
+    "assets/generated/campaign/ui/cta-frame-v1/")
+  self.cta_focus = nine_slice(
+    "assets/generated/campaign/ui/cta-focus-v1/")
+  local hud_kit_root = "assets/generated/campaign/ui/hud-interface-kit-v1/"
+  self.hud_interface = {
+    rank_badge = image(hud_kit_root .. "rank-badge.png"),
+    max_badge = image(hud_kit_root .. "max-badge.png"),
+    bar_left = image(hud_kit_root .. "bar-left.png"),
+    bar_middle = image(hud_kit_root .. "bar-middle.png"),
+    bar_right = image(hud_kit_root .. "bar-right.png"),
+    bar_fill = image(hud_kit_root .. "bar-fill.png"),
+  }
   local focus_frame_root =
     "assets/generated/campaign/ui/menu-focus-frame-v2/"
   self.menu_focus_frame = {
@@ -316,6 +397,7 @@ function Assets.load()
     funk = image("assets/generated/campaign/funk-floor-atlas.png"),
     soul = image("assets/generated/campaign/soul-floor-atlas.png"),
     disco = image("assets/generated/campaign/disco-floor-atlas.png"),
+    jazz = image("assets/generated/campaign/jazz-floor-atlas.png"),
   }
   self.floor_surface_quads = {}
   self.floor_surface_cell_w = {}
@@ -389,13 +471,22 @@ function Assets.load()
     self.environment_funk_cell_w,
     self.environment_funk_cell_h = grid_quads(
       self.environment_funk, 4, 2, 2)
-  for _, id in ipairs({ "soul", "disco" }) do
+  for _, id in ipairs({ "soul", "disco", "jazz" }) do
     self["environment_" .. id] = image(
       "assets/generated/campaign/" .. id .. "-environment-atlas.png")
     self["environment_" .. id .. "_quads"],
       self["environment_" .. id .. "_cell_w"],
       self["environment_" .. id .. "_cell_h"] = grid_quads(
         self["environment_" .. id], 4, 2, 8)
+  end
+  for _, id in ipairs({ "funk", "soul", "disco", "jazz" }) do
+    local key = id .. "_stage2"
+    self["environment_" .. key] = image(
+      "assets/generated/campaign/" .. id .. "-stage2-environment-atlas.png")
+    self["environment_" .. key .. "_quads"],
+      self["environment_" .. key .. "_cell_w"],
+      self["environment_" .. key .. "_cell_h"] = grid_quads(
+        self["environment_" .. key], 4, 2, 6)
   end
   self.environment_upper_quads = {}
 
@@ -488,6 +579,61 @@ function Assets:draw_hud_slot(x, y, w, h, opts)
   return true
 end
 
+local function draw_horizontal_tiles(value, x, y, w, h)
+  if w <= 0 or h <= 0 then return end
+  local source_w, source_h = value:getDimensions()
+  local tile_w = source_w * h / source_h
+  local drawn = 0
+  while drawn < w - 0.01 do
+    local piece_w = math.min(tile_w, w - drawn)
+    local source_piece_w = source_w * piece_w / tile_w
+    local quad = love.graphics.newQuad(
+      0, 0, source_piece_w, source_h, source_w, source_h)
+    love.graphics.draw(value, quad, x + drawn, y, 0,
+      h / source_h, h / source_h)
+    drawn = drawn + piece_w
+  end
+end
+
+function Assets:draw_segmented_bar(x, y, w, h, fraction, opts)
+  opts = opts or {}
+  fraction = math.max(0, math.min(1, fraction or 0))
+  local cap_w = math.min(w / 2, h * 1.5)
+  local middle_w = math.max(0, w - cap_w * 2)
+
+  love.graphics.setColor(opts.frame_color or { 1, 1, 1, 1 })
+  local left = self.hud_interface.bar_left
+  local left_w, left_h = left:getDimensions()
+  love.graphics.draw(left, x, y, 0, cap_w / left_w, h / left_h)
+  -- The one-pixel overlap hides sampling seams between the fixed corner
+  -- sprites and the repeated centre rail at fractional UI scales.
+  draw_horizontal_tiles(
+    self.hud_interface.bar_middle, x + cap_w - 1, y, middle_w + 2, h)
+  -- Mirror the proven left cap for the right edge. Both ends now share the
+  -- exact silhouette and connection point instead of relying on a mismatched
+  -- prototype right-cap crop.
+  love.graphics.draw(left, x + w, y, 0,
+    -cap_w / left_w, h / left_h)
+
+  local inset_x, inset_y = math.max(3, h * 0.18), h * 0.27
+  local fill_w = math.max(0, (w - inset_x * 2) * fraction)
+  love.graphics.setColor(opts.fill_color or { 1, 1, 1, 1 })
+  draw_horizontal_tiles(self.hud_interface.bar_fill,
+    x + inset_x, y + inset_y, fill_w, h - inset_y * 2)
+  return true
+end
+
+function Assets:draw_rank_badge_sprite(x, y, size, maxed, opts)
+  opts = opts or {}
+  local value = maxed and self.hud_interface.max_badge
+    or self.hud_interface.rank_badge
+  local width, height = value:getDimensions()
+  love.graphics.setColor(opts.color or { 1, 1, 1, 1 })
+  love.graphics.draw(value, x, y, opts.rotation or 0,
+    size / width, size / height)
+  return true
+end
+
 function Assets:draw_aim_cursor(x, y, size, opts)
   draw_centered_fit(
     self.campaign.aim_reticle,
@@ -535,6 +681,19 @@ end
 
 function Assets:draw_enemy_variant(icon, x, y, size, opts)
   opts = opts or {}
+  if opts.frame then
+    local animation = self.enemy.animation[EnemyAnimation.atlas_id(icon)]
+    local row, col = EnemyAnimation.cell(icon, opts.frame)
+    if animation and animation.quads[row] and animation.quads[row][col] then
+      local scale = size / math.max(animation.cell_w, animation.cell_h)
+      love.graphics.setColor(opts.color or { 1, 1, 1, 1 })
+      love.graphics.draw(
+        animation.atlas, animation.quads[row][col], x, y, 0,
+        opts.flip_x and -scale or scale, scale,
+        animation.cell_w / 2, animation.cell_h / 2)
+      return true
+    end
+  end
   local atlas = self.enemy.variants
   local quad = self.enemy.variant_quads[icon.row][icon.col]
   local cell_size = 256
@@ -546,7 +705,9 @@ function Assets:draw_enemy_variant(icon, x, y, size, opts)
     atlas = self.enemy.funk
     quad = self.enemy.funk_quads[icon.row][icon.col]
     cell_size = math.max(self.enemy.funk_cell_w, self.enemy.funk_cell_h)
-  elseif icon.atlas == "soul" or icon.atlas == "disco" then
+  elseif icon.atlas == "soul" or icon.atlas == "disco"
+    or icon.atlas == "jazz"
+  then
     local id = icon.atlas
     atlas = self.enemy[id]
     quad = self.enemy[id .. "_quads"][icon.row][icon.col]
@@ -559,12 +720,29 @@ function Assets:draw_enemy_variant(icon, x, y, size, opts)
     opts.flip_x and -scale or scale, scale,
     icon.atlas == "stage2" and self.enemy.stage2_cell_w / 2
       or icon.atlas == "funk" and self.enemy.funk_cell_w / 2
-      or (icon.atlas == "soul" or icon.atlas == "disco")
+      or (icon.atlas == "soul" or icon.atlas == "disco"
+        or icon.atlas == "jazz")
         and self.enemy[icon.atlas .. "_cell_w"] / 2 or 128,
     icon.atlas == "stage2" and self.enemy.stage2_cell_h / 2
       or icon.atlas == "funk" and self.enemy.funk_cell_h / 2
-      or (icon.atlas == "soul" or icon.atlas == "disco")
+      or (icon.atlas == "soul" or icon.atlas == "disco"
+        or icon.atlas == "jazz")
         and self.enemy[icon.atlas .. "_cell_h"] / 2 or 128)
+  return true
+end
+
+function Assets:draw_enemy_state(id, state, frame, x, y, size, opts)
+  opts = opts or {}
+  local enemy = self.enemy.states[id]
+  local sheet = enemy and (enemy[state] or enemy.walk)
+  if not sheet then return false end
+  sheet:draw(frame, 1, x, y, {
+    scale = size / 256,
+    flip_x = opts.flip_x,
+    color = opts.color,
+    rotation = opts.rotation,
+  })
+  return true
 end
 
 local function environment_source(self, icon, atlas_id)
@@ -591,7 +769,9 @@ local function environment_source(self, icon, atlas_id)
     quad = self.environment_funk_quads[icon.row][icon.col]
     cell_w, cell_h = self.environment_funk_cell_w,
       self.environment_funk_cell_h
-  elseif atlas_id == "soul" or atlas_id == "disco" then
+  elseif atlas_id == "soul" or atlas_id == "disco" or atlas_id == "jazz"
+      or atlas_id == "funk_stage2" or atlas_id == "soul_stage2"
+      or atlas_id == "disco_stage2" or atlas_id == "jazz_stage2" then
     atlas = self["environment_" .. atlas_id]
     quad = self["environment_" .. atlas_id .. "_quads"][icon.row][icon.col]
     cell_w, cell_h = self["environment_" .. atlas_id .. "_cell_w"],
@@ -606,7 +786,11 @@ function Assets:draw_environment(icon, x, y, size, opts)
     self, icon, opts.atlas)
   local origin_x, origin_y = cell_w / 2, cell_h / 2
   local cell_size = math.max(cell_w, cell_h)
-  local scale = size / cell_size
+  local motion = opts.animated and not opts.reduced_motion
+    and math.sin((opts.time or love.timer.getTime()) * 2.2
+      + icon.col * 1.7 + icon.row * .9) or 0
+  y = y + motion * math.min(5, size * .025)
+  local scale = size / cell_size * (1 + motion * .012)
   love.graphics.setColor(opts.color or { 1, 1, 1, 1 })
   love.graphics.draw(atlas, quad, x, y, 0, scale, scale, origin_x, origin_y)
 end
@@ -627,34 +811,113 @@ function Assets:draw_environment_upper(icon, x, y, size, opts)
       viewport_x, viewport_y, cell_w, upper_h, atlas:getDimensions())
     self.environment_upper_quads[cache_key] = upper
   end
-  local scale = size / math.max(cell_w, cell_h)
+  local motion = opts.animated and not opts.reduced_motion
+    and math.sin((opts.time or love.timer.getTime()) * 2.2
+      + icon.col * 1.7 + icon.row * .9) or 0
+  y = y + motion * math.min(5, size * .025)
+  local scale = size / math.max(cell_w, cell_h) * (1 + motion * .012)
   love.graphics.setColor(opts.color or { 1, 1, 1, 1 })
   love.graphics.draw(
     atlas, upper, x, y, 0, scale, scale, cell_w / 2, cell_h / 2)
 end
 
+function Assets.attack_transform(opts)
+  local x, y = opts.x, opts.y
+  local rotation = opts.rotation or 0
+  local scale
+
+  if opts.family == "beam" then
+    local length = opts.beam_length or opts.coverage or 560
+    x = x + (opts.dx or 1) * length * 0.5
+    y = y + (opts.dy or 0) * length * 0.5
+    scale = length / 264
+  elseif opts.family == "area_effect"
+    or ((opts.family == "lobbed_bomb" or opts.family == "deployable")
+      and opts.phase == "active")
+  then
+    local diameter = math.max(64, (opts.effect_radius or 64) * 2)
+    scale = diameter / 104
+  elseif opts.family == "wave" then
+    scale = (opts.wave_width or opts.effect_radius or 220) / 270
+    rotation = rotation + math.pi / 2
+  elseif opts.family == "storm" then
+    local diameter = math.max(92, (opts.effect_radius or 52) * 2)
+    scale = diameter / 104
+    rotation = 0
+  elseif opts.family == "orbital" then
+    local draw_size = math.max(48, (opts.size or 12) * 3.5)
+    scale = draw_size / 104
+    rotation = rotation + (opts.age or 0) * 3.5
+  else
+    local draw_size = opts.phase == "flight"
+      and math.max(42, (opts.size or 12) * 3)
+      or math.max(34, (opts.size or 12) * 3.4)
+    scale = draw_size / 104
+    if opts.family == "boomerang" then
+      rotation = rotation + (opts.age or 0) * 7
+    end
+  end
+
+  local pose_scale = ((opts.scale_x or 1) + (opts.scale_y or 1)) * 0.5
+  scale = scale * pose_scale
+  return {
+    x = x,
+    y = y,
+    rotation = rotation,
+    scale_x = scale,
+    scale_y = scale,
+  }
+end
+
+function Assets:draw_attack(opts)
+  local sheet = self.player_attacks[opts.visual_id]
+  if not sheet then return false end
+  local frame_count = opts.animation_frames or 5
+  local frame = opts.frame or (
+    math.floor((opts.age or 0) * (opts.animation_fps or 12))
+      % frame_count + 1)
+  local transform = Assets.attack_transform(opts)
+  sheet:draw(frame, 1, transform.x, transform.y, {
+    rotation = transform.rotation,
+    scale = transform.scale_x,
+    scale_y = transform.scale_y,
+    color = opts.color or { 1, 1, 1, 1 },
+  })
+  return true
+end
+
 function Assets:draw_projectile(
   weapon_id, x, y, size, rotation, color, scale_x, scale_y)
-  local cell = self.projectile_cells[weapon_id]
-  if not cell then return false end
-  local quad = self.projectile_quads[cell.row][cell.col]
-  local scale = math.max(12, size * 2.5) / 256
-  scale_x = scale_x or 1
-  scale_y = scale_y or 1
-  love.graphics.setColor(color or { 1, 1, 1, 1 })
-  love.graphics.draw(
-    self.projectile_atlas, quad, x, y, rotation or 0,
-    scale * scale_x, scale * scale_y, 128, 128)
-  return true
+  return self:draw_attack({
+    visual_id = weapon_id,
+    family = "linear",
+    age = 0,
+    x = x,
+    y = y,
+    size = size,
+    rotation = rotation,
+    color = color,
+    scale_x = scale_x,
+    scale_y = scale_y,
+  })
 end
 
 function Assets:draw_enemy_projectile(
   projectile_kind, x, y, size, rotation, color, scale_x, scale_y)
   local sprite = projectile_kind == "note_bolt"
     and "brass_barrage" or "neon_crescendo"
-  return self:draw_projectile(
-    sprite, x, y, math.max(size, 10), rotation,
-    color, scale_x * 1.18, scale_y * 1.18)
+  return self:draw_attack({
+    visual_id = sprite,
+    family = "linear",
+    age = love.timer.getTime(),
+    x = x,
+    y = y,
+    size = math.max(size, 10),
+    rotation = rotation,
+    color = color,
+    scale_x = scale_x * 1.18,
+    scale_y = scale_y * 1.18,
+  })
 end
 
 function Assets:draw_portrait(icon, x, y, w, h, opts)
@@ -770,6 +1033,21 @@ function Assets:draw_stage_clear_chest(x, y, size, opts)
   return true
 end
 
+function Assets:draw_level_alert_icon(index, x, y, size, opts)
+  index = math.max(1, math.min(6, index or 1))
+  local col = (index - 1) % 3 + 1
+  local row = math.floor((index - 1) / 3) + 1
+  opts = opts or {}
+  local scale = size / math.max(
+    self.level_alert_icon_cell_w, self.level_alert_icon_cell_h)
+  love.graphics.setColor(opts.color or { 1, 1, 1, 1 })
+  love.graphics.draw(
+    self.level_alert_icons, self.level_alert_icon_quads[row][col], x, y,
+    opts.rotation or 0, scale, scale,
+    self.level_alert_icon_cell_w / 2, self.level_alert_icon_cell_h / 2)
+  return true
+end
+
 local function draw_atlas_cell(atlas, quads, cell_w, cell_h,
     col, row, x, y, w, h, opts)
   opts = opts or {}
@@ -841,6 +1119,18 @@ function Assets:draw_menu_focus_frame(x, y, w, h, opts)
   return draw_nine_slice(self.menu_focus_frame, x, y, w, h, opts)
 end
 
+function Assets:draw_cta_frame(x, y, w, h, opts)
+  opts = opts or {}
+  opts.corner = opts.corner or math.min(18, h * 0.30)
+  return draw_nine_slice(self.cta_frame, x, y, w, h, opts)
+end
+
+function Assets:draw_cta_focus(x, y, w, h, opts)
+  opts = opts or {}
+  opts.corner = opts.corner or math.min(20, h * 0.34)
+  return draw_nine_slice(self.cta_focus, x, y, w, h, opts)
+end
+
 function Assets:draw_new_tag(x, y, w, h, opts)
   opts = opts or {}
   local iw, ih = self.ui_new_tag:getDimensions()
@@ -868,6 +1158,26 @@ function Assets:draw_menu_category_icon(cell, x, y, size, opts)
   return draw_atlas_cell(
     self.menu_category_icons, self.menu_category_icon_quads,
     self.menu_category_icon_cell_w, self.menu_category_icon_cell_h,
+    col, row, x, y, size, size, opts)
+end
+
+function Assets:draw_menu_stat_icon(cell, x, y, size, opts)
+  cell = math.max(1, math.min(16, cell or 1))
+  local col = (cell - 1) % 4 + 1
+  local row = math.floor((cell - 1) / 4) + 1
+  return draw_atlas_cell(
+    self.menu_stat_icons, self.menu_stat_icon_quads,
+    self.menu_stat_icon_cell_w, self.menu_stat_icon_cell_h,
+    col, row, x, y, size, size, opts)
+end
+
+function Assets:draw_settings_icon(cell, x, y, size, opts)
+  cell = math.max(1, math.min(16, cell or 1))
+  local col = (cell - 1) % 4 + 1
+  local row = math.floor((cell - 1) / 4) + 1
+  return draw_atlas_cell(
+    self.settings_icons, self.settings_icon_quads,
+    self.settings_icon_cell_w, self.settings_icon_cell_h,
     col, row, x, y, size, size, opts)
 end
 
@@ -904,6 +1214,25 @@ function Assets:draw_world_interface(col, row, x, y, w, h, opts)
     x, y, w, h, opts)
 end
 
+function Assets:draw_world_identity(world_id, col, row, x, y, w, h, opts)
+  local emblem = self.world_emblems and self.world_emblems[world_id]
+  if not emblem then
+    return self:draw_world_interface(col, row, x, y, w, h, opts)
+  end
+  opts = opts or {}
+  local source_w, source_h = emblem:getDimensions()
+  local scale = math.min(w / source_w, h / source_h)
+  love.graphics.setColor(opts.color or { 1, 1, 1, 1 })
+  love.graphics.draw(emblem,
+    x + w / 2, y + h / 2, 0, scale, scale, source_w / 2, source_h / 2)
+  return true
+end
+
+function Assets:draw_world_lock(x, y, w, h, opts)
+  draw_centered_fit(self.world_lock, x, y, w, h, opts)
+  return true
+end
+
 function Assets:draw_meta_perk(cell, x, y, w, h, opts)
   cell = math.max(1, math.min(20, cell or 20))
   local col = (cell - 1) % 5 + 1
@@ -917,6 +1246,16 @@ function Assets:draw_world_mechanic(frame, row, x, y, w, h, opts)
     self.world_mechanic_cell_w, self.world_mechanic_cell_h,
     math.max(1, math.min(5, frame or 1)), math.max(1, math.min(2, row or 1)),
     x, y, w, h, opts)
+end
+
+function Assets:draw_world_mechanic_variant(world_id, frame, x, y, w, h, opts)
+  local atlas = self.world_mechanic_atlases[world_id]
+  if not atlas then return false end
+  frame = math.max(1, math.min(8, frame or 1))
+  local col = (frame - 1) % 4 + 1
+  local row = math.floor((frame - 1) / 4) + 1
+  return draw_atlas_cell(atlas.image, atlas.quads,
+    atlas.cell_w, atlas.cell_h, col, row, x, y, w, h, opts)
 end
 
 function Assets:draw_menu_button_icon(col, row, x, y, w, h, opts)

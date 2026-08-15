@@ -61,4 +61,21 @@ T["adapter exposes the exact cutscene slide and result outcome"] = function()
   H.eq(context.outcome, "victory")
 end
 
+T["adapter exposes selected World Tour and loadout identities"] = function()
+  local tour = { kind = "world_tour", selected = 2,
+    worlds = { { id = "funk" }, { id = "soul" } } }
+  local context = MusicContext.snapshot({
+    states = { stack = { tour }, top = function() return tour end },
+    music = { snapshot = function() return { cue = "world_funk_route" } end },
+  })
+  H.eq(context.world_id, "soul")
+  H.eq(context.current_cue, "world_funk_route")
+
+  local loadout = { kind = "world_loadout", world = { id = "disco" } }
+  context = MusicContext.snapshot({
+    states = { stack = { loadout }, top = function() return loadout end },
+  })
+  H.eq(context.world_id, "disco")
+end
+
 return T

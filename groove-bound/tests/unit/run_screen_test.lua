@@ -94,6 +94,21 @@ T["boss danger warning names the attack when the player is in range"] = function
   H.eq(warning.detail, "ATTACK CHARGING")
 end
 
+T["mechanic explainer sits under score without touching the timer"] = function()
+  local screen = RunScreen({}, {})
+  local HUD = require("src.ui.hud")
+  local hud = HUD({}, {}, {})
+  for _, width in ipairs({ 800, 1280 }) do
+    local timer = hud:timer_rect(width)
+    local mechanic = screen:world_mechanic_hud_rect(width)
+    H.is_true(mechanic.y >= timer.y + timer.h)
+    H.is_true(mechanic.x >= timer.x + timer.w)
+    H.eq(mechanic.x + mechanic.w, width - 8)
+    H.eq(mechanic.y, 76)
+    H.is_true(mechanic.y >= 8 + 56 + 12)
+  end
+end
+
 T["plus and minus adjust and persist gameplay zoom presets"] = function()
   local saved = 0
   local screen = RunScreen({
@@ -192,6 +207,73 @@ T["an evolution chest always opens its reveal even if marked automatic"] = funct
   screen:update(0.1)
   H.eq(pushed[1], "chest_reward")
   H.is_true(screen.choice_open)
+end
+
+local function level_point_screen(automatic)
+  local pushed = {}
+  local app = {
+    profile = { options = { automatic_level_up = automatic } },
+    states = { push = function(_, state) pushed[#pushed + 1] = state.kind end },
+  }
+  local screen = RunScreen(app, {})
+  screen.pending_outcome = "hold"
+  screen.seed_notice = 0
+  screen.choice_open = false
+  screen.auto_snoozed_points = 0
+  screen.combat = {
+    take_pending_chest_reveal = function() return nil end,
+    progression = { create_offer = function() return { {}, {}, {} } end },
+    xp = {
+      pending_choices = 2,
+      has_pending_choice = function() return true end,
+    },
+  }
+  return screen, pushed
+end
+
+T["manual level-up points never interrupt the run"] = function()
+  local screen, pushed = level_point_screen(false)
+  screen:update(0.1)
+  H.eq(#pushed, 0)
+  H.is_false(screen.choice_open)
+  H.is_true(screen:keypressed("l"))
+  H.eq(pushed[1], "level_up")
+  H.is_true(screen.choice_open)
+end
+
+T["automatic mode opens only newly earned unsnoozed points"] = function()
+  local screen, pushed = level_point_screen(true)
+  screen:update(0.1)
+  H.eq(pushed[1], "level_up")
+  screen:resume({ kind = "level_up_closed" })
+  H.eq(screen.auto_snoozed_points, 2)
+  screen:update(0.1)
+  H.eq(#pushed, 1)
+  screen.combat.xp.pending_choices = 3
+  screen:update(0.1)
+  H.eq(pushed[2], "level_up")
+end
+
+T["remembered capped utility spends points even when auto menu is off"] = function()
+  local screen, pushed = level_point_screen(false)
+  local applied = 0
+  screen.combat.progression = {
+    can_auto_select = function() return true end,
+    auto_select = function()
+      applied = applied + 1
+      return { kind = "heal" }
+    end,
+  }
+  screen.combat.xp.consume_choice = function(self)
+    self.pending_choices = self.pending_choices - 1
+  end
+  screen.combat.xp.has_pending_choice = function(self)
+    return self.pending_choices > 0
+  end
+  screen:update(0.1)
+  H.eq(applied, 2)
+  H.eq(screen.combat.xp.pending_choices, 0)
+  H.eq(#pushed, 0)
 end
 
 T["World Tour stage confirmation advances into its second playable arena"] = function()

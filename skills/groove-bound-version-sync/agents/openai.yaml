@@ -1,0 +1,4 @@
+interface:
+  display_name: "Groove Bound Version Sync"
+  short_description: "Verify every Groove Bound release surface"
+  default_prompt: "Use $groove-bound-version-sync to prove source, packages, GitHub Latest, and landing-page versions match."

@@ -2,6 +2,7 @@ local class = require("src.core.class")
 local Fonts = require("src.ui.fonts")
 local Hints = require("src.ui.controller_hints")
 local UIScale = require("src.ui.scale")
+local MenuChrome = require("src.ui.menu_chrome")
 
 local StageCompleteScreen = class()
 StageCompleteScreen.kind = "stage_complete"
@@ -33,6 +34,12 @@ function StageCompleteScreen:_layout()
     y = h / 2 + 112,
     w = 320,
     h = 54,
+  }
+  self.continue_button = {
+    x = self.continue_rect.x, y = self.continue_rect.y,
+    w = self.continue_rect.w, h = self.continue_rect.h,
+    label = "CONTINUE", focused = true, hovered = false,
+    variant = "primary",
   }
 end
 
@@ -119,7 +126,10 @@ function StageCompleteScreen:draw()
   for index, status in ipairs({
     { kind = "chest", text = "ENCORE CHEST CLAIMED",
       color = { 1.0, 0.70, 0.20, 0.95 } },
-    { kind = "mechanic", text = "WORLD MECHANIC SECURED",
+    { kind = "mechanic", text = string.format(
+      "BEST CHAIN ×%d  •  ENCORE ×%d",
+      (self.payload.world_mechanic or {}).best_chain or 0,
+      (self.payload.world_mechanic or {}).encores or 0),
       color = { 0.28, 0.90, 1.0, 0.95 } },
   }) do
     local x = status_start + (index - 1) * (status_w + status_gap)
@@ -130,12 +140,8 @@ function StageCompleteScreen:draw()
     if status.kind == "chest" then
       self.app.assets:draw_stage_clear_chest(
         x + 30, status_y + 29, 50, { color = { 1, 1, 1, eased } })
-    elseif self.payload.world_id == "funk" then
-      self.app.assets:draw_funk_pad(5, x + 5, status_y + 4, 50, 50,
-        { color = { 1, 1, 1, eased } })
     else
-      local row = self.payload.world_id == "soul" and 1 or 2
-      self.app.assets:draw_world_mechanic(5, row,
+      self.app.assets:draw_world_mechanic_variant(self.payload.world_id, 7,
         x + 5, status_y + 4, 50, 50,
         { color = { 1, 1, 1, eased } })
     end
@@ -157,12 +163,10 @@ function StageCompleteScreen:draw()
   local stat_start = w / 2 - stat_w - 10
   for index, stat in ipairs(stat_values) do
     local x = stat_start + (index - 1) * (stat_w + 20)
-    love.graphics.setColor(0.045, 0.022, 0.090, 0.92)
-    love.graphics.rectangle("fill", x, stats_y, stat_w, 70, 10, 10)
-    love.graphics.setColor(stat.color[1], stat.color[2], stat.color[3], eased)
-    love.graphics.rectangle("line", x, stats_y, stat_w, 70, 10, 10)
-    self.app.assets:draw_world_interface(stat.col, 2,
-      x + 8, stats_y + 7, 56, 56, { color = { 1, 1, 1, eased } })
+    MenuChrome.cta(self.app.assets,
+      { x = x, y = stats_y, w = stat_w, h = 70 }, { alpha = 0.88 * eased })
+    self.app.assets:draw_menu_stat_icon(index == 1 and 15 or 16,
+      x + 10, stats_y + 9, 52, { color = { 1, 1, 1, eased } })
     love.graphics.setFont(Fonts.get(23))
     love.graphics.setColor(1.0, 0.76, 0.22, eased)
     love.graphics.printf(tostring(stat.value), x + 66, stats_y + 11,
@@ -176,19 +180,9 @@ function StageCompleteScreen:draw()
   love.graphics.pop()
 
   if self:is_ready() then
-    local rect = self.continue_rect
-    love.graphics.setColor(0.08, 0.04, 0.14, 0.98)
-    love.graphics.rectangle("fill", rect.x, rect.y, rect.w, rect.h, 10, 10)
-    self.app.assets:draw_menu_button_icon(
-      1, 1, rect.x + 10, rect.y + 6, 42, 42)
-    love.graphics.setColor(1.0, 0.76, 0.22, 1)
-    love.graphics.setLineWidth(3)
-    love.graphics.rectangle("line", rect.x, rect.y, rect.w, rect.h, 10, 10)
-    love.graphics.setLineWidth(1)
-    love.graphics.setColor(1, 1, 1, 1)
-    love.graphics.setFont(Fonts.get(19))
-    love.graphics.printf("CONTINUE", rect.x + 46, rect.y + 16,
-      rect.w - 56, "center")
+    MenuChrome.action(self.app.assets, self.continue_button, {
+      menu_cell = 1, label = "CONTINUE", font_size = 19, icon_size = 42,
+    })
   end
 
   love.graphics.setColor(0.015, 0.01, 0.05, 0.94)

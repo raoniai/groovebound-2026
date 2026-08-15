@@ -6,6 +6,7 @@ local ControlsScreen = require("src.ui.screens.controls")
 local WorldTourScreen = require("src.ui.screens.world_tour")
 local PerkDatabase = require("src.ui.screens.perk_database")
 local Content = require("src.content.init")
+local Defaults = require("src.meta.defaults")
 
 local T = {}
 
@@ -40,6 +41,7 @@ T["World Tour slots, records and campaign actions fit supported canvases"] = fun
       screen:_layout()
       H.is_true(inside(screen.catalog_rect, dimensions[1], dimensions[2]))
       H.is_true(inside(screen.detail_rect, dimensions[1], dimensions[2]))
+      H.is_true(screen.catalog_rect.w > screen.detail_rect.w)
       H.is_false(overlaps(screen.catalog_rect, screen.detail_rect))
       for _, rect in ipairs(screen.slot_rects) do
         H.is_true(inside(rect, dimensions[1], dimensions[2]))
@@ -81,7 +83,23 @@ T["World Tour mouse hover never changes the clicked selection"] = function()
   end)
 end
 
-T["Perk database CTAs remain inside the detail panel and above hints"] = function()
+T["playable World Tour selection asks for a character before starting"] = function()
+  local switched
+  local slot = Defaults.new_slot(1, "now")
+  slot.prologue.completed = true
+  local app = {
+    content = Content,
+    slot = slot,
+    states = { switch = function(_, screen) switched = screen end },
+  }
+  local screen = WorldTourScreen(app)
+  H.is_true(screen:_play_selected())
+  H.eq(switched.kind, "character_select")
+  H.is_true(type(switched.opts.on_confirm) == "function")
+  H.is_true(type(switched.opts.on_back) == "function")
+end
+
+T["Perk database CTAs sit side by side inside the detail panel"] = function()
   for _, dimensions in ipairs({ { 800, 600 }, { 1280, 720 } }) do
     with_dimensions(dimensions[1], dimensions[2], function()
       local screen = PerkDatabase({ content = Content })
@@ -95,6 +113,7 @@ T["Perk database CTAs remain inside the detail panel and above hints"] = functio
         H.is_true(button.y + button.h <= dimensions[2] - 38)
       end
       H.is_false(overlaps(screen.buttons.buttons[1], screen.buttons.buttons[2]))
+      H.eq(screen.buttons.buttons[1].y, screen.buttons.buttons[2].y)
     end)
   end
 end
@@ -126,6 +145,10 @@ T["settings labels, controls, rows and guide remain disjoint at compact size"] =
     for _, row in ipairs(screen.rows) do
       H.is_true(inside(row.rect, 800, 600))
       H.is_false(overlaps(row.label_rect, row.control))
+      if row.kind == "slider" then
+        H.is_true(inside(row.track, 800, 600))
+        H.is_false(overlaps(row.minus_rect, row.plus_rect))
+      end
     end
     H.is_true(inside(screen.guide_rect, 800, 600))
     for _, row in ipairs(screen.rows) do
@@ -133,6 +156,18 @@ T["settings labels, controls, rows and guide remain disjoint at compact size"] =
         H.is_false(overlaps(row.rect, screen.guide_rect))
       end
     end
+  end)
+end
+
+T["settings remain concise and centered on widescreen canvases"] = function()
+  with_dimensions(2048, 1152, function()
+    local screen = OptionsScreen({})
+    screen:_layout()
+    H.is_true(screen.panel.w <= 980)
+    H.is_true(screen.panel.h <= 530)
+    H.near(screen.panel.x + screen.panel.w / 2, 1024)
+    H.near(screen.panel.y + screen.panel.h / 2, 576)
+    H.is_true(inside(screen.guide_rect, 2048, 1152))
   end)
 end
 

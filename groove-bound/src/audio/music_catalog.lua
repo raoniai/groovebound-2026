@@ -23,7 +23,8 @@ function MusicCatalog:init(records, opts)
     assert(type(cue.beats) == "number" and cue.beats > 0,
       "music beats must be positive")
     if cue.loop then
-      assert(cue.beats == 32, "loop music cue must contain exactly 32 beats")
+      assert(cue.beats % 32 == 0,
+        "loop music cue must contain a multiple of 32 beats")
     end
     assert(type(cue.gain) == "number" and cue.gain >= 0 and cue.gain <= 1,
       "music gain must be between zero and one")

@@ -71,3 +71,19 @@ PYTHONPATH=/tmp/groove_music_tools:scripts/audio python3 scripts/audio/audit_mus
   `music/`, or audio build scripts are present in the archive.
 - **Delivery state:** **Packaged** and **locally integrated**; not committed,
   pushed, merged, manually listened, or campaign-playthrough verified.
+
+## 2026-08-13 — World Tour V1 soundtrack expansion
+
+- Added cues 31–58: one continuous hub cue and nine unique three-cue world
+  packs. No world reuses another world's route, pressure, or finale file.
+- All 59 catalog records pass the independent codec, 48 kHz stereo, duration,
+  loudness, true-peak, audible-edge, and seam audit.
+- World Tour metrics: -18.6 to -17.4 LUFS, maximum true peak -5.1 dBFS, maximum
+  seam jump 0.04254.
+- The Boogie Tank source-length exception ships as a validated 32-beat loop;
+  all other World Tour route/hub cues are 128 beats and boss/pressure/finale
+  cues are 64 beats.
+- The full regression suite passes: 355 tests, 0 failures.
+- Exact Suno IDs, source durations, runtime hashes, routing acceptance, and
+  remaining human listening/native-Windows gates are in
+  [`WORLD_TOUR_MUSIC_QA.md`](WORLD_TOUR_MUSIC_QA.md).

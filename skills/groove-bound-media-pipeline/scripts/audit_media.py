@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import struct
 from collections import Counter
@@ -20,6 +21,17 @@ def png_dimensions(path: Path) -> tuple[int, int] | None:
             header = handle.read(24)
         if header[:8] == b"\x89PNG\r\n\x1a\n":
             return struct.unpack(">II", header[16:24])
+    except OSError:
+        pass
+    return None
+
+
+def png_color_type(path: Path) -> int | None:
+    try:
+        with path.open("rb") as handle:
+            header = handle.read(26)
+        if header[:8] == b"\x89PNG\r\n\x1a\n":
+            return header[25]
     except OSError:
         pass
     return None
@@ -65,6 +77,30 @@ def main() -> int:
     wrong_runtime_video = [str(p.relative_to(root)) for p in files if "/runtime/" in p.as_posix() and p.suffix.lower() == ".mp4"]
     if wrong_runtime_video:
         risks.append("MP4 present in runtime video directory")
+    projectile_root = asset_root / "generated" / "projectiles"
+    projectile_files = sorted(projectile_root.glob("*.png"))
+    if len(projectile_files) != 32:
+        risks.append(
+            f"expected 32 separate projectile animations, found {len(projectile_files)}"
+        )
+    invalid_projectiles = [
+        str(path.relative_to(root))
+        for path in projectile_files
+        if png_dimensions(path) != (1920, 128) or png_color_type(path) != 6
+    ]
+    if invalid_projectiles:
+        risks.append("projectile strips must be 1920x128 RGBA")
+    projectile_hashes = {
+        hashlib.sha256(path.read_bytes()).hexdigest() for path in projectile_files
+    }
+    if len(projectile_hashes) != len(projectile_files):
+        risks.append("duplicate projectile animation strips")
+    for retired in (
+        asset_root / "generated" / "campaign" / "projectile-atlas.png",
+        asset_root / "generated" / "campaign" / "attack-visuals-atlas.png",
+    ):
+        if retired.exists():
+            risks.append(f"retired combined projectile atlas present: {retired.name}")
     payload = {
         "asset_root": str(asset_root),
         "files": len(files),

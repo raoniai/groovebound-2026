@@ -17,13 +17,21 @@ local afterparty_pads = {
   { x = 3400, y = 2280 },
 }
 
-local function mechanic(pads, cycle_seconds, radius)
+local function mechanic(pads, cycle_seconds, radius, variant, kind)
   return {
     id = "funk_hold_the_pocket",
+    world_id = "funk",
+    stage_variant = variant,
+    kind = kind or "timed_zone",
     cycle_seconds = cycle_seconds,
     active_window = 0.28,
     boost_seconds = 2.8,
     boost_multiplier = 1.55,
+    damage_multiplier = kind == "relay" and 1.24 or 1.16,
+    cadence_multiplier = kind == "relay" and 1.24 or 1.16,
+    encore_threshold = kind == "relay" and 3 or 4,
+    encore_seconds = 5.5,
+    boss_break = kind == "relay" and 1.5 or 1,
     radius = radius,
     pads = pads,
   }
@@ -48,19 +56,43 @@ local function themed_stage(id, world_id, name, subtitle, final_boss, wave_modul
   for i,p in ipairs(dpos) do deco[#deco+1] = { x=width*p[1], y=height*p[2],
     size=145+(i%3)*14, icon={col=(i-1)%4+1,row=2},
     blocks_base=(i==1 or i==2), hitbox_w=78, hitbox_h=38, hitbox_offset_y=58 } end
+  local palettes = {
+    soul = { floor={.82,.68,.88,1}, veil={.08,.012,.065,.26}, grid={1,.55,.42,.35} },
+    jazz = { floor={.58,.70,.92,1}, veil={.006,.018,.065,.30}, grid={.24,.78,1,.38} },
+    disco = { floor={.70,.78,.96,1}, veil={.012,.025,.075,.24}, grid={.35,.92,1,.34} },
+  }
+  local palette = palettes[world_id] or palettes.disco
+  local timing = world_id == "soul" and {
+    cycle=4.6, active=.72, charge=1.15, boost=1.4, multiplier=1.08,
+  } or world_id == "jazz" and {
+    cycle=stage_index == 1 and 3.8 or 3.35, active=.44, charge=.48,
+    boost=2.0, multiplier=1.32,
+  } or { cycle=3.0, active=.34, charge=.38, boost=2.4, multiplier=1.42 }
+  local kinds = {
+    soul = stage_index == 1 and "charge" or "call_response",
+    disco = stage_index == 1 and "flow" or "prism_relay",
+    jazz = stage_index == 1 and "phrase" or "changes",
+  }
   return { id=id, world_id=world_id, name=name, subtitle=subtitle,
     width=width, height=height, base_duration=240, wave_base_duration=600,
     waves=require(wave_module), final_boss=final_boss,
-    floor_style=world_id, environment_atlas=world_id,
-    floor_tint=world_id=="soul" and { .82,.68,.88,1 } or { .70,.78,.96,1 },
-    veil_color=world_id=="soul" and { .08,.012,.065,.26 } or { .012,.025,.075,.24 },
-    grid_color=world_id=="soul" and { 1,.55,.42,.35 } or { .35,.92,1,.34 },
-    mechanic={ id=mechanic_id, cycle_seconds=world_id=="soul" and 4.6 or 3.0,
-      active_window=world_id=="soul" and .72 or .34,
-      charge_seconds=world_id=="soul" and 1.15 or .38,
-      boost_seconds=world_id=="soul" and 1.4 or 2.4,
-      boost_multiplier=world_id=="soul" and 1.08 or 1.42,
+    floor_style=world_id,
+    environment_atlas=stage_index == 2 and world_id .. "_stage2" or world_id,
+    floor_tint=palette.floor, veil_color=palette.veil, grid_color=palette.grid,
+    mechanic={ id=mechanic_id, world_id=world_id,
+      stage_variant=id, kind=kinds[world_id],
+      cycle_seconds=timing.cycle,
+      active_window=timing.active, charge_seconds=timing.charge,
+      boost_seconds=timing.boost, boost_multiplier=timing.multiplier,
+      damage_multiplier=world_id=="jazz" and 1.22
+        or world_id=="disco" and 1.18 or 1.10,
+      cadence_multiplier=world_id=="disco" and 1.25
+        or world_id=="jazz" and 1.18 or 1.10,
+      encore_threshold=stage_index==2 and 3 or 4,
+      encore_seconds=stage_index==2 and 6 or 5,
+      boss_break=stage_index==2 and 1.5 or 1,
       heal_fraction=world_id=="soul" and .07 or 0,
+      guard_fraction=world_id=="soul" and .18 or 0,
       radius=world_id=="soul" and 128 or 118, pads=pads },
     obstacles=obs, decorations=deco }
 end
@@ -83,7 +115,8 @@ return {
       veil_color = { 0.025, 0.008, 0.055, 0.24 },
       grid_color = { 1.0, 0.68, 0.18, 0.40 },
       environment_atlas = "funk",
-      mechanic = mechanic(pocket_pads, 2.2, 112),
+      mechanic = mechanic(pocket_pads, 2.2, 112,
+        "world_funk_pocket_district", "timed_zone"),
       obstacles = {
         { x = 620, y = 450, w = 260, h = 225, icon = { col = 1, row = 1 } },
         { x = 1410, y = 390, w = 230, h = 220, icon = { col = 2, row = 1 } },
@@ -123,8 +156,9 @@ return {
       floor_tint = { 0.72, 0.68, 0.92, 1 },
       veil_color = { 0.055, 0.006, 0.075, 0.30 },
       grid_color = { 0.30, 0.90, 1.0, 0.34 },
-      environment_atlas = "funk",
-      mechanic = mechanic(afterparty_pads, 1.95, 118),
+      environment_atlas = "funk_stage2",
+      mechanic = mechanic(afterparty_pads, 1.95, 118,
+        "world_funk_golden_afterparty", "relay"),
       obstacles = {
         { x = 560, y = 470, w = 285, h = 240, icon = { col = 1, row = 1 } },
         { x = 1470, y = 510, w = 255, h = 235, icon = { col = 3, row = 1 } },
@@ -172,5 +206,15 @@ return {
       "Ride the bonus lane and dethrone the Prism Monarch.",
       "prism_monarch", "src.content.world_tour_waves.disco_stage2",
       "disco_spotlight_flow", 2),
+  },
+  jazz = {
+    themed_stage("world_jazz_blue_note_borough", "jazz", "BLUE NOTE BOROUGH",
+      "Read the changes. Catch each blue-note window and improvise.",
+      "brass_regent", "src.content.world_tour_waves.jazz",
+      "jazz_improvisation", 1),
+    themed_stage("world_jazz_midnight_changes", "jazz", "MIDNIGHT CHANGES",
+      "Chain the changes and take the bandstand from the Maestro.",
+      "midnight_maestro", "src.content.world_tour_waves.jazz_stage2",
+      "jazz_improvisation", 2),
   },
 }

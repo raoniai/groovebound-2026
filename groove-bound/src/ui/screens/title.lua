@@ -1,10 +1,11 @@
 local class = require("src.core.class")
 local Fonts = require("src.ui.fonts")
-local Hints = require("src.ui.controller_hints")
 local settings = require("src.config.settings")
 local widgets = require("src.ui.widgets.button")
 local UIScale = require("src.ui.scale")
 local JourneyProgress = require("src.meta.journey_progress")
+local MenuChrome = require("src.ui.menu_chrome")
+local BuildInfo = require("src.config.build_info")
 
 local TitleScreen = class()
 TitleScreen.kind = "title"
@@ -129,12 +130,15 @@ function TitleScreen:_layout()
     and math.max(326, math.min(h - 270, h * 0.50))
     or math.max(344, math.min(h - 220, h * 0.53))
   local half = (bw - gap) / 2
-  local draw_icon = self.app.assets and function(icon, ix, iy, iw, ih, opts)
-    self.app.assets:draw_menu_button_icon(
-      icon.col, icon.row, ix, iy, iw, ih, opts)
-  end or nil
   local function button(opts)
-    opts.draw_icon = draw_icon
+    opts.renderer = function(value)
+      MenuChrome.action(self.app.assets, value, {
+        menu_cell = opts.menu_cell,
+        label = opts.label,
+        font_size = opts.font_size,
+        icon_size = opts.icon_size,
+      })
+    end
     return widgets.Button(opts)
   end
   local buttons = {}
@@ -143,7 +147,7 @@ function TitleScreen:_layout()
     buttons[#buttons + 1] = button({
       label = "CONTINUE CAMPAIGN",
       x = x, y = y, w = bw, h = 54,
-      font_size = 22, icon = { col = 1, row = 1 },
+      font_size = 22, menu_cell = 1,
       variant = "primary",
       on_press = function() self:_continue_campaign() end,
     })
@@ -151,13 +155,13 @@ function TitleScreen:_layout()
     buttons[#buttons + 1] = button({
       label = "REPLAY PROLOGUE",
       x = x, y = y, w = half, h = 42, font_size = 16,
-      icon = { col = 1, row = 2 },
+      menu_cell = 7,
       on_press = function() self:_replay_prologue() end,
     })
     buttons[#buttons + 1] = button({
       label = "NEW GAME",
       x = x + half + gap, y = y, w = half, h = 42, font_size = 16,
-      icon = { col = 2, row = 1 },
+      menu_cell = 2,
       on_press = function() self:_new_game() end,
     })
     y = y + 42 + gap
@@ -167,7 +171,7 @@ function TitleScreen:_layout()
       x = x, y = y, w = has_campaign and half or bw,
       h = has_campaign and 46 or 54,
       font_size = has_campaign and 18 or 22,
-      icon = { col = 2, row = 1 },
+      menu_cell = 2,
       variant = has_campaign and "default" or "primary",
       on_press = function() self:_new_game() end,
     }) end
@@ -177,13 +181,13 @@ function TitleScreen:_layout()
       w = has_campaign and half or half,
       h = 46,
       font_size = has_campaign and 16 or 18,
-      icon = { col = 3, row = 1 },
+      menu_cell = 3,
       on_press = function() self:_catalog() end,
     })
   buttons[#buttons + 1] = button({
     label = "PERK CATALOG", x = x + half + gap,
     y = has_campaign and y or y + 54 + gap, w = half, h = 46,
-    font_size = 16, icon = { col = 5, row = 1 },
+    font_size = 16, menu_cell = 5,
     on_press = function() self:_perks() end,
   })
   y = has_campaign and y + 46 + 7 or y + 54 + gap + 46 + 7
@@ -192,14 +196,14 @@ function TitleScreen:_layout()
   buttons[#buttons + 1] = button({
       label = "SETTINGS",
       x = x, y = y, w = half, h = 40,
-      font_size = 16, icon = { col = 4, row = 1 },
+      font_size = 16, menu_cell = 4,
       on_press = function() self:_settings() end,
     })
   buttons[#buttons + 1] = button({
       label = "QUIT",
       x = x + half + gap, y = y,
       w = half, h = 40,
-      font_size = 16, icon = { col = 5, row = 1 },
+      font_size = 16, menu_cell = 6,
       on_press = function() love.event.quit() end,
     })
   if has_campaign then
@@ -211,7 +215,7 @@ function TitleScreen:_layout()
       x = x + (bw - 220) / 2, y = y,
       w = 220, h = 30,
       font_size = 13, icon_size = 24,
-      icon = { col = 1, row = 2 }, variant = "danger",
+      menu_cell = 7, variant = "danger",
       on_press = function() self:_confirm_campaign_reset(false) end,
     })
   end
@@ -262,28 +266,17 @@ function TitleScreen:draw()
       scale, scale, logo:getWidth() / 2, 0)
   end
 
-  love.graphics.setFont(Fonts.get(16))
-  love.graphics.setColor(0.88, 0.92, 1.0, 0.94)
-  love.graphics.printf("RESTORE RHYTHM TO THE UNIVERSE",
-    0, math.max(320, h * 0.465), w, "center")
-
   self.button_list:draw()
 
-  if self.app.assets and self.app.assets.draw_menu_button_icon then
-    for _, divider in ipairs(self.dividers or {}) do
-      self.app.assets:draw_menu_button_icon(
-        2, 2, divider.x, divider.y, divider.w, divider.h,
-        { color = { 0.78, 0.50, 1.0, 0.84 } })
-    end
+  love.graphics.setColor(0.22, 0.78, 0.92, 0.52)
+  for _, divider in ipairs(self.dividers or {}) do
+    love.graphics.rectangle("fill", divider.x, divider.y + divider.h / 2,
+      divider.w, 1)
   end
 
-  love.graphics.setColor(0.01, 0.005, 0.035, 0.78)
-  love.graphics.rectangle("fill", 0, h - 48, w, 48)
-  Hints.draw({
-    { symbol = "dpad", label = "Navigate" },
-    { symbol = "cross", label = "Select" },
-    { symbol = "options", label = "Pause in game" },
-  }, h - 34, w)
+  love.graphics.setFont(Fonts.get(10))
+  love.graphics.setColor(0.68, 0.72, 0.82, 0.62)
+  love.graphics.print(BuildInfo.label(), 12, h - 14)
   UIScale.finish()
 end
 

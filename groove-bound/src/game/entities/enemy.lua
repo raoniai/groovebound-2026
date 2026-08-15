@@ -1,4 +1,5 @@
 local class = require("src.core.class")
+local EnemyAnimation = require("src.render.enemy_animation")
 
 local Enemy = class()
 
@@ -36,10 +37,19 @@ function Enemy:reset(opts)
   self.anim_time = 0
   self.anim_frame = 1
   self.anim_row = directions.down
+  self.variant_anim_phase = EnemyAnimation.phase(self.id, self.x, self.y)
+  self.visual_state = "walk"
+  self.visual_state_time = 0
+  self.hit_remaining = 0
+  self.attack_recovery = 0
+  self.attack_windup_total = 0
   self.contact_cooldown = 0
   self.attack_cooldown = opts.definition.attack_interval or 0
   self.attack_windup = 0
   self.attack_just_fired = false
+  self.attack_pattern_index = 1
+  self.phase = 1
+  self.broken_remaining = 0
   self.brain_time = 0
   self.navigation_timer = 0
   self.navigation_dx, self.navigation_dy = nil, nil
@@ -67,18 +77,26 @@ function Enemy:update(dt, player, speed_multiplier, arena)
   if self.dead then return nil end
   self.contact_cooldown = math.max(0, self.contact_cooldown - dt)
   self.flash = math.max(0, self.flash - dt)
+  self.hit_remaining = math.max(0, self.hit_remaining - dt)
+  self.attack_recovery = math.max(0, self.attack_recovery - dt)
   self.attack_cooldown = math.max(0, self.attack_cooldown - dt)
   self.attack_just_fired = false
   self.brain_time = self.brain_time + dt
+  self.broken_remaining = math.max(0, self.broken_remaining - dt)
   local dx, dy = player.x - self.x, player.y - self.y
   local length = math.sqrt(dx * dx + dy * dy)
   self.target_distance = length
   self.target_in_attack_range = (self.definition.attack_range or 0) > 0
     and length <= self.definition.attack_range
+  if self.definition.boss_type == "final" then
+    local fraction = self.hp / math.max(1, self.max_hp)
+    self.phase = fraction > .66 and 1 or fraction > .30 and 2 or 3
+  end
   if self.attack_windup > 0 then
     self.attack_windup = math.max(0, self.attack_windup - dt)
     if self.attack_windup == 0 then
       self.attack_just_fired = true
+      self.attack_recovery = 0.18
     end
   end
   if length > 0.001 and self.definition.brain ~= "static" then
@@ -139,16 +157,41 @@ function Enemy:update(dt, player, speed_multiplier, arena)
     and length <= attack_range
   then
     self.attack_windup = self.definition.windup or 0.45
-    self.attack_cooldown = self.definition.attack_interval or 2
+    self.attack_windup_total = self.attack_windup
+    local phase_interval = self.phase == 3 and .72
+      or self.phase == 2 and .86 or 1
+    self.attack_cooldown = (self.definition.attack_interval or 2)
+      * phase_interval
   end
 
   self.anim_time = self.anim_time + dt
   self.anim_frame = math.floor(self.anim_time * 12) % 6 + 1
+  local visual_state = self.hit_remaining > 0 and "hit"
+    or (self.definition.attack_kind
+      and (self.attack_windup > 0 or self.attack_recovery > 0)) and "attack"
+    or "walk"
+  if visual_state ~= self.visual_state then
+    self.visual_state = visual_state
+    self.visual_state_time = 0
+  else
+    self.visual_state_time = self.visual_state_time + dt
+  end
   if self.attack_just_fired then
     local attack_x, attack_y = player.x - self.x, player.y - self.y
     local attack_length = math.sqrt(attack_x * attack_x + attack_y * attack_y)
+    local patterns = self.definition.attack_patterns
+    local pattern = patterns and patterns[self.attack_pattern_index]
+    if pattern then
+      self.attack_pattern_index = self.attack_pattern_index % #patterns + 1
+    end
     return {
-      kind = self.definition.attack_kind,
+      kind = pattern and pattern.kind or self.definition.attack_kind,
+      projectile_class = pattern and pattern.projectile_class,
+      count = pattern and pattern.count
+        and pattern.count + (self.phase - 1) * 2 or nil,
+      spread = pattern and pattern.spread
+        and math.max(7, pattern.spread - (self.phase - 1) * 2) or nil,
+      phase = self.phase,
       dx = attack_length > 0.001 and attack_x / attack_length or 1,
       dy = attack_length > 0.001 and attack_y / attack_length or 0,
     }
@@ -156,14 +199,35 @@ function Enemy:update(dt, player, speed_multiplier, arena)
 end
 
 function Enemy:push(dx, dy, force)
+  if self.definition.boss_type == "final" then
+    if self.attack_windup > 0 then return end
+    force = math.min(force * (1 - (self.definition.knockback_resistance or .90)),
+      self.definition.max_knockback_per_hit or 10)
+  end
   self.knockback_x = self.knockback_x + dx * force
   self.knockback_y = self.knockback_y + dy * force
 end
 
+function Enemy:apply_world_break(amount)
+  if self.definition.boss_type ~= "final" or self.dead then return false end
+  self.break_progress = (self.break_progress or 0) + (amount or 0)
+  local threshold = self.definition.break_threshold or 3
+  if self.break_progress < threshold then return false end
+  self.break_progress = self.break_progress - threshold
+  self.broken_remaining = self.definition.break_seconds or 4
+  return true
+end
+
 function Enemy:take_damage(amount)
+  if self.broken_remaining > 0 then
+    amount = amount * (self.definition.break_damage_multiplier or 1.25)
+  end
   if self.dead then return false end
   self.hp = self.hp - amount
   self.flash = 0.08
+  self.hit_remaining = 0.22
+  self.visual_state = "hit"
+  self.visual_state_time = 0
   if self.hp <= 0 then
     self.hp = 0
     self.dead = true
@@ -175,16 +239,14 @@ end
 function Enemy:draw()
   if self.dead then return end
   local color = self.definition.color or { 1, 1, 1, 1 }
-  if self.definition.attack_kind == "static_wave" and self.target_in_attack_range then
+  if self.definition.boss_type == "final" and self.target_in_attack_range then
     local reduced = self.options.reduced_flash == true
       or self.options.hit_flash == false
-    local pulse = reduced and 0.55
-      or (0.5 + 0.5 * math.sin(self.brain_time * 12))
+    local pulse = reduced and 0.45
+      or (0.42 + 0.12 * math.sin(self.brain_time * 7))
     local range = self.definition.attack_range
-    love.graphics.setColor(1.0, 0.12, 0.38, 0.055 + pulse * 0.075)
-    love.graphics.circle("fill", self.x, self.y, range)
-    love.graphics.setColor(1.0, 0.32, 0.58, 0.48 + pulse * 0.38)
-    love.graphics.setLineWidth(5)
+    love.graphics.setColor(1.0, 0.32, 0.58, 0.24 + pulse * 0.28)
+    love.graphics.setLineWidth(reduced and 2 or 3)
     love.graphics.circle("line", self.x, self.y, range)
     love.graphics.setLineWidth(1)
   end
@@ -196,7 +258,33 @@ function Enemy:draw()
     color = { 1, 0.70, 0.24, 1 }
   end
 
-  if self.assets and self.definition.sprite then
+  if self.assets and self.assets.draw_enemy_state then
+    local progress
+    if self.visual_state == "hit" then
+      progress = 1 - self.hit_remaining / 0.22
+    elseif self.visual_state == "attack" then
+      if self.attack_windup > 0 then
+        progress = 0.66 * (1 - self.attack_windup
+          / math.max(0.001, self.attack_windup_total))
+      else
+        progress = 0.66 + 0.34 * (1 - self.attack_recovery / 0.18)
+      end
+    end
+    local state_frame = EnemyAnimation.frame(
+      self.definition, self.visual_state, self.visual_state_time,
+      self.variant_anim_phase, progress)
+    self.assets:draw_enemy_state(
+      self.id,
+      self.visual_state,
+      state_frame,
+      self.x,
+      self.y,
+      self.definition.sprite_size or 82,
+      {
+        color = color,
+        flip_x = self.anim_row == directions.left,
+      })
+  elseif self.assets and self.definition.sprite then
     self.assets:draw_enemy_variant(
       self.definition.sprite,
       self.x,

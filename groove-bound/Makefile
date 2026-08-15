@@ -16,16 +16,16 @@ lint:
 
 # Build a deterministic public .love with release-only controls enabled.
 package:
-	$(PYTHON) scripts/package_love.py --version "$(VERSION)"
+	$(PYTHON) scripts/package_love.py
 
 # Build a universal macOS app, ZIP, and DMG with the Groove Bound icon.
 # Requires the official LÖVE 11.5 app at /Applications/love.app.
 package-macos: package
-	VERSION="$(VERSION)" scripts/build_macos_release.sh
+	scripts/build_macos_release.sh
 
 # Build the self-contained Windows x64 ZIP from an extracted official runtime.
 package-windows: package
-	$(PYTHON) scripts/build_windows_release.py --version "$(VERSION)" --runtime-dir "$(LOVE_WINDOWS_RUNTIME)"
+	$(PYTHON) scripts/build_windows_release.py --runtime-dir "$(LOVE_WINDOWS_RUNTIME)"
 
 clean:
 	$(PYTHON) scripts/clean_dist.py

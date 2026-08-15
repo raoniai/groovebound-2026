@@ -213,7 +213,6 @@ from release packages. Runtime assets are:
 | `campaign/stage2-environment-atlas.png` | 4×2 collision and decorative props |
 | `campaign/backbeat-environment-expansion-atlas.png` | 4×2 Backbeat trees, barriers, street equipment, and decoration |
 | `campaign/orbit-environment-expansion-atlas.png` | 4×2 Orbit Line crystal trees, rails, beacons, debris, and gates |
-| `campaign/projectile-atlas.png` | 6×4 unique base/evolved weapon bullets |
 | `campaign/combat-fx-atlas.png` | 4×4 impacts, explosions, deaths, damage |
 | `campaign/app-icon.png` | 512×512 RGBA application/window icon |
 | `campaign/groove-bound-logo.png` | menu logo extracted from the repository banner |
@@ -238,6 +237,7 @@ scaling and keyed from chroma green to RGBA with FFmpeg.
 | `campaign/world-tour-ui-atlas.png` | 5×2 campaign/world emblems and rank medallions |
 | `campaign/menu-button-icons-atlas.png` | 5×2 main-menu actions, divider and reset-warning symbols |
 | `campaign/completion-ui-atlas.png` | 4×2 campaign/Funk completion crests and pictorial result badges |
+
 
 The chest atlas depicts a single increasingly energized vinyl selector in its
 top row and a transforming arcade reward-card stage in its bottom row. The
@@ -312,6 +312,53 @@ converted from sampled chroma green to alpha with the bundled soft-matte,
 despill and one-pixel contraction helper. The floor atlas was normalized to
 four opaque 512x512 cells. Runtime dimensions, color types and cell mappings
 are regression-tested.
+
+## World Tour catalog emblem suite
+
+**Generated:** 2026-08-14 with OpenAI image generation in Codex built-in mode
+
+| Runtime file | World identity | SHA-256 |
+|---|---|---|
+| `campaign/world-emblems/jazz.png` | Jazz brass-and-piano crest | `f1ba475c274c69832ccf493cc89df31f702a44aaa73fb3936daba7bc586d7a9a` |
+| `campaign/world-emblems/house.png` | House club-speaker crest | `5e5f3a7e960ec5ccd9f93c2be8a77dc2d46eb2498dc009fd1a71a6d017da6634` |
+| `campaign/world-emblems/techno.png` | Techno synth-circuit crest | `169e7e40c2ff1160b0983c4d57e191fde705add9878c47853f84ba553c0e6d7f` |
+| `campaign/world-emblems/cosmic-boogie.png` | Cosmic Boogie rocket-dancer crest | `d28dbe864713285ddafa90e9726b6c16806a49dc1fca0cf554baf0f21860699b` |
+| `campaign/world-emblems/soulful-garage.png` | Soulful Garage shutter-and-heart crest | `41e8995de0df7b33790e5667d04196f4b3c37da96975b80d95891cd049bde94a` |
+| `campaign/world-emblems/future-funk.png` | Future Funk neon-bass crest | `16060b13b564fc362e66a6850736c06a2fd3ec63c2d61ce8e5f2dc00ca0a2623` |
+
+Each prompt requested one centered, text-free world emblem in the established
+Groove Bound dense pixel-painted style, with gold bevels, cyan-magenta edge
+light, generous isolation and a uniform chroma-green background. The existing
+`world-interface-atlas.png` was supplied as the visual reference; the subject
+brief then specified the instrument, architecture or cosmic motif unique to
+each world.
+
+Untouched 1536-pixel chroma sources are retained below
+`source-candidates/2026-08-14-world-emblems/` and excluded from packages. The
+bundled soft-matte/despill helper removed the green background, and macOS image
+tools normalized each runtime emblem to a 512x512 RGBA PNG. Runtime dimensions,
+alpha support and loader mappings are regression-tested.
+
+## Jazz World catalog emblem
+
+**Generated:** 2026-08-14 with OpenAI image generation in Codex built-in mode
+
+| File | Classification | Dimensions | SHA-256 |
+|---|---|---:|---|
+| `source-candidates/2026-08-14-jazz-catalog/jazz-emblem-source.png` | Untouched generated source; reference-only and package-excluded | 1254×1254 RGB | `6b915e769dfb0f272aec26a923913fe6f9062aef7b99fd24c97d6fd4b2ae7afd` |
+| `../../../landing-page/assets/world-tour/emblems/jazz.png` | Transparent public Catalog identity; excluded from the desktop game payload | 1254×1254 RGBA | `e24d914100af6ab042acd2b774c0689f15bbe6dca173ce544492e36772a76826` |
+
+The prompt requested a standalone, text-free Jazz World emblem: a central
+golden saxophone and luminous blue note inside a circular midnight-vinyl crest,
+with brass mechanical trim and a violet cosmic gem in detailed Groove Bound
+pixel art. It required a flat `#ff00ff` chroma background, no magenta in the
+subject, and no robots, crowns, weapons, watermark, or lettering.
+
+The bundled media-pipeline chroma helper removed the flat background and edge
+spill. The final file was visually inspected, confirmed RGBA with transparent
+corners and alpha bounds `(78, 63, 1176, 1203)`, then saved to the public
+Catalog path above. It is deliberately outside the runtime campaign directory,
+so this site-only addition cannot silently mutate the released v0.8.4 payload.
 
 ## Application icon
 
@@ -527,6 +574,66 @@ cell-boundary isolation. Runtime projectile art deliberately aliases the
 matching base-weapon projectile cell; only the inventory/evolution identity
 uses the new atlas, avoiding a hidden expansion of the 6x4 projectile contract.
 
+## Accessible CTA, menu, settings and final-stat suite
+
+**Generated:** 2026-08-12 with OpenAI image generation in Codex built-in mode
+
+| Runtime file | Grid / role |
+|---|---|
+| `campaign/ui/menu-stat-icons-v1.png` (1600x1600 RGBA) | 4x4 menu-action and final-stat icon atlas |
+| `campaign/ui/settings-icons-v1.png` (1600x1600 RGBA) | 4x4 options/control icon atlas |
+| `campaign/ui/cta-frame-v1/` | Nine-slice monochrome CTA surface |
+| `campaign/ui/cta-focus-v1/` | Nine-slice focus outline derived from the same CTA source |
+
+The menu/stat prompt requested exactly sixteen isolated symbols in a 4x4 grid:
+continue, new game, World Tour, settings, perk catalog, quit, replay, back,
+stages, time, score, max combo, damage, coins, enemies cleared and bosses
+defeated. The settings prompt requested master, music, SFX, mute, fullscreen,
+deadzone, keyboard, shake, hit flash, aim assist, zoom, vibration, audio, system,
+gameplay and confirm symbols. Both explicitly require a single cyan hue family,
+strong low-noise silhouettes, equal cells, safe padding, no text, no particles,
+and a uniform green chroma background.
+
+The CTA prompt requested one empty, front-on 4.5:1 panel with a quiet dark navy
+interior, cyan outer and inner strokes, four small corner notches, repeatable
+edges, no icon, no text, no particles, and no object-like ornament. Raw 8-bit
+RGB generator outputs are preserved as
+`source-candidates/menu-stat-icons-v1-source.png`,
+`source-candidates/settings-icons-v1-source.png`, and
+`source-candidates/cta-frame-v1-source.png`; they remain package-excluded.
+
+The bundled chroma-key helper was used to validate clean alpha extraction.
+`scripts/build_accessible_ui_assets.py` then applies a deterministic cyan hue
+lock while preserving luminance depth, normalises each icon independently into
+400x400 cells with 64px safe insets, clears hidden RGB, and builds scalable CTA
+surface/focus nine-slice parts. Runtime mappings, exact dimensions, RGBA colour
+type, layout, hold-repeat input and package inclusion are regression-tested.
+
+## Level-point CTA and alert icons
+
+**Generated:** 2026-08-13 with OpenAI image generation in Codex built-in mode
+
+| Runtime file | Grid / role | SHA-256 |
+|---|---|---|
+| `campaign/ui/level-points-alert-icons-v1.png` | 3x2 atlas: level point, evolution, danger, pickup, upgrade and information | `8c8443804e9e95232b0dcb82ff78920b6e06e22de42d27b2dbf2f28293b34dec` |
+
+The primary prompt requested six isolated, text-free, chunky pixel-art symbols
+with dark navy outlines and Groove Bound's cyan, violet, gold, red and green
+accents. The symbols were arranged in equal 512x512 cells on a flat green
+chroma background. A separate magenta-key source regenerated the green upgrade
+chevrons and gold star so key removal could preserve that symbol's intended
+colour.
+
+Raw sources are preserved as
+`source-candidates/level-points-alert-icons-v1-source.png` (SHA-256
+`76a1d27c3f5e19e580efad997faa15938b09ad10bbadbceb540f5ee439fcdf76`)
+and `source-candidates/level-upgrade-icon-v1-source.png` (SHA-256
+`0b82b420ae5e4dd07a1fa270ed8b61aa4c2a13b595160e987a33641a9743a4ef`).
+They remain package-excluded. The bundled chroma helper produced alpha PNGs;
+FFmpeg then normalized the replacement icon into its 512x512 cell and rebuilt
+the exact 1536x1024 RGBA atlas. Runtime dimensions, alpha type and package
+inclusion are regression-tested.
+
 ## Level-up and reward interface sprites
 
 **Generated:** 2026-08-11 with OpenAI image generation in Codex built-in mode
@@ -607,3 +714,149 @@ to 1600x1200 and divides the keyed focus frame into nine separate PNGs. Runtime
 menus reuse the existing upgrade-card kit for backplates and the existing menu
 action atlas for Resume, Settings, Exit and Back CTAs; the new art is limited
 to semantic categories and the selected-state overlay.
+
+## Persistent HUD badge and segmented-bar kit
+
+**Generated:** 2026-08-13 with OpenAI image generation in Codex built-in mode
+
+| Runtime file | Role | SHA-256 |
+|---|---|---|
+| `campaign/ui/hud-interface-kit-v1/rank-badge.png` | Empty number device shared by weapon, passive, perk, player-level and point counters | `abeb70ef230785d5c74936b30417c12ca43b63d107d8c095f86da892fc970096` |
+| `campaign/ui/hud-interface-kit-v1/max-badge.png` | Same-size highlighted max-state device with no text | `17b1607560d4a4ac1af673ef0e68bf6991dedf5f4e7fea9f6606bd7fc2af9dc9` |
+| `campaign/ui/hud-interface-kit-v1/bar-left.png` | Fixed left status-bar cap | `6887b8a105b95a6a6eababcf6539e770b5f6140fd1a06a1a048b075f2d65f079` |
+| `campaign/ui/hud-interface-kit-v1/bar-middle.png` | Horizontally repeated status-bar rail | `3cce27e7c5159f75cffd2ce2aea72b7ee04db34fe0c52a7e27fdd9ea2e4afaf4` |
+| `campaign/ui/hud-interface-kit-v1/bar-right.png` | Fixed right status-bar cap | `bdc8206e2ddb827e4c152bb4f18eb4e28ad0164d67f92ced76a9590b2cf67fdc` |
+| `campaign/ui/hud-interface-kit-v1/bar-fill.png` | Horizontally repeated neutral segmented fill, tinted by runtime status | `10307e4a9f86edbeab50cfcdbfd41ce4e5fecf27ed6bc8a511be5d2eb7a1eb9b` |
+
+The prompt used the approved level-point alert atlas and transparent HUD frame
+as style references. It requested a strict text-free 3x2 source grid containing
+an empty circular rank badge, a same-size highlighted max badge, compatible
+left/middle/right horizontal bar pieces, and a neutral segmented fill tile in
+the established dark-navy, cyan, violet and gold arcade-pixel palette. The
+background was required to be uniform chroma green with generous cell padding,
+no shadows, particles, watermark, embedded letters or numbers.
+
+The untouched generated source is retained as
+`source-candidates/hud-interface-kit-v1-source.png` (SHA-256
+`02d9f9f18a1286dcbe0a111a2a39df65cf6825b7fc35c0e6f6776a3881f8386f`)
+and remains package-excluded. The bundled soft-matte/despill helper removed the
+chroma background. `scripts/build_hud_interface_kit.py` then normalized the two
+badges, cropped stable bar caps and repeatable rail/fill samples, cleared hidden
+RGB, enforced RGBA dimensions and wrote the runtime files above.
+
+## Jazz World runtime suite
+
+**Generated:** 2026-08-13 with OpenAI image generation in Codex built-in mode
+
+| Runtime file | Grid / role | SHA-256 |
+|---|---|---|
+| `campaign/jazz-enemies-atlas.png` | 4x2 RGBA atlas for eight Jazz enemy definitions | `e3e7cf764dce7a2c1b6fff1cfcb7b1bb066374b4e41521e0fcdc3af977140591` |
+| `campaign/jazz-environment-atlas.png` | 4x2 RGBA arena-prop atlas | `15d9c0b92fe4696325ea99bc47220de872fb4cd25a218fd01ec03d5f6167e942` |
+| `campaign/jazz-floor-atlas.png` | 2x2 RGB top-down floor atlas | `45664fa035d1f1723f2a5086ca29372237742eb7610521a0508a70d5b35a481c` |
+| `campaign/jazz-world-logo.png` | Jazz identity mark promoted from the project-owned site asset | `af8fccb7a02cc40f4e32c498a04d91ddcc9c6b473a72e43cabab9b1633c33d7b` |
+
+The enemy prompt requested Syncopated Imp, Blue Note Bat, Walking Bass Bot,
+Scat Cannon, Bebop Behemoth, Brushfire Skitter, Brass Regent and Midnight
+Maestro as eight isolated, text-free cosmic instrument robots. The environment
+prompt requested eight independently extractable club, brass, speaker, bass,
+fountain, planter, bench and spotlight props. Both used existing project atlases
+as style/layout references and required uniform chroma green, generous cell
+padding and no cross-cell effects. The floor prompt requested four full-bleed,
+top-down midnight Jazz textures with low combat contrast and exact quadrant
+boundaries.
+
+Untouched generator outputs are preserved below
+`source-candidates/2026-08-13-jazz-world/` and excluded from packages. The
+bundled soft-matte/despill helper removed chroma backgrounds; FFmpeg then
+normalized the runtime sprite atlases with nearest-neighbour scaling. The Jazz
+logo is an unchanged byte-for-byte runtime promotion of the project-owned
+`landing-page/assets/world-tour/logos/jazz.png`; the website source remains a
+separate public surface. Runtime dimensions, PNG colour types and loader paths
+are regression-tested.
+
+## Separate player attack animation strips
+
+**Generated:** 2026-08-14 with OpenAI image generation in Codex built-in mode
+
+| File | Classification / role | Dimensions | SHA-256 |
+|---|---|---:|---|
+| `source-candidates/2026-08-14-projectile-v091/stage-board-base-a-chroma-source.png` | Untouched source for base attacks 1-8; package-excluded | 1402x1122 RGB | `04d4e03b7403722c946b967994897a2fb92d10808fef5e1a78da0a35ef235125` |
+| `source-candidates/2026-08-14-projectile-v091/stage-board-base-a-transparent.png` | Keyed build source | 1402x1122 RGBA | `09d8cbff1b2f8d46489348fc45c92f98cf13060357e6a6df3b008198d13e15b8` |
+| `source-candidates/2026-08-14-projectile-v091/stage-board-base-b-chroma-source.png` | Untouched source for base attacks 9-16; package-excluded | 1672x941 RGB | `559b9ab57cb6df19062a8849a6ff081785d7b7a86415e7e17dee0d22e5d21d7b` |
+| `source-candidates/2026-08-14-projectile-v091/stage-board-base-b-transparent.png` | Keyed build source | 1672x941 RGBA | `430332acaee7c62b82d8a06d83df5dcdf730d87a4d38089b5ab972c95da02cb6` |
+| `source-candidates/2026-08-14-projectile-v091/stage-board-evolved-a-chroma-source.png` | Untouched source for evolved attacks 1-8; package-excluded | 1536x1024 RGB | `586219f0e94a7f199158aa45e866078cd64548b57d20ac90939a32cf51d6406c` |
+| `source-candidates/2026-08-14-projectile-v091/stage-board-evolved-a-transparent.png` | Keyed build source | 1536x1024 RGBA | `1f2d4558627d77a4bd3edea087dfb236cc155e8ee15317b9e06e45638b56fe9f` |
+| `source-candidates/2026-08-14-projectile-v091/stage-board-evolved-b-chroma-source.png` | Untouched source for evolved attacks 9-16; package-excluded | 1619x971 RGB | `22539a43b8682a0a1b52b31776b329cda4689ee2847e2f3f6017e0cb254b7abb` |
+| `source-candidates/2026-08-14-projectile-v091/stage-board-evolved-b-transparent.png` | Keyed build source | 1619x971 RGBA | `f9ee2c9f8b4feaa79269d369474a21607bf51d108b274f25e5db2afcd959455d` |
+| `projectiles/<weapon-id>.png` | 32 separate runtime animation strips | 1920x128 RGBA each | Five unique frame hashes and unique per-file hashes verified by the build script |
+
+The source prompt is recorded beside the source images in `PROMPTS.md`. The
+v0.9.1 projectile atlas and combat-effects atlas were used only as visual
+references. The rejected shared attack atlas guided the category list but was
+not copied into this branch. The earlier concept board is retained as
+reference-only. Four accepted stage boards replace it as build inputs and paint
+all five states for every attack with controlled glow and generous empty space.
+
+`scripts/build_projectile_animations.py` splits the four source boards in
+stable row and stage order and produces five distinct 384x128 frames for every
+weapon ID. It preserves authored stage art and aspect ratio; it does not
+manufacture motion from a single frame or create a combined runtime atlas.
+`src/assets.lua` loads each strip independently from
+`assets/generated/projectiles/`. The retired
+`campaign/projectile-atlas.png` is removed from runtime and packaging; its old
+source candidate remains reference-only for historical provenance.
+
+## Enemy movement animation suite
+
+**Generated:** 2026-08-14 with OpenAI image generation in Codex built-in mode
+**Promoted to runtime:** 2026-08-15 for v0.9.3
+
+| Runtime file | Grid / role | SHA-256 |
+|---|---|---|
+| `campaign/enemy-animation/backbeat-movement-atlas.png` | 4x6 RGBA atlas; three frames for eight Backbeat visuals | `c2bddc0b4b1392fae8f7c5491656172e7d5c8cccd0d46e8455827d37f6677a1a` |
+| `campaign/enemy-animation/orbit-movement-atlas.png` | 4x6 RGBA atlas; three frames for eight Orbit visuals | `fb1acb6f17f0b9682d8ff59d7abfebc767b7b52ca31097cd74bdd9f079bc3bdf` |
+| `campaign/enemy-animation/funk-movement-atlas.png` | 4x6 RGBA atlas; three frames for eight Funk visuals | `9422e1eb841d39748ca4cbee13e5c51642f8e4ff6c8217a871ace5a822d67a6d` |
+| `campaign/enemy-animation/soul-movement-atlas.png` | 4x6 RGBA atlas; three frames for eight Soul visuals | `383a777749ffdd2a2efaae5d91b5409a9d5c1411e34c74e113fb95323fe48270` |
+| `campaign/enemy-animation/disco-movement-atlas.png` | 4x6 RGBA atlas; three frames for eight Disco visuals | `ce30f223a853ba4a852a6de2d5de2dec9d89d682e190130f2c8236b69e834c67` |
+| `campaign/enemy-animation/jazz-movement-atlas.png` | 4x8 RGBA atlas; four frames for eight Jazz visuals | `986eef555664b80e1524936cfafb18312e0f88cf673cb3d90ce00258b46edfa8` |
+
+The six existing Groove Bound enemy atlases were the only visual references.
+The prompts preserved every established silhouette while requesting a
+character-specific walk, hover, pulse, recoil, wingbeat or planted motion.
+Untouched generator outputs, rejected key-conflict sources, prompts, manifests,
+build script, per-enemy frames, and review GIFs remain below
+`source-candidates/2026-08-14-enemy-animation/` and are package-excluded.
+
+The runtime atlases are promoted byte-for-byte from the verified `*-clean.png`
+candidate atlases. Five use three vertical frames per original source cell;
+Jazz uses one enemy per row with four horizontal frames. The runtime mapping
+covers all 49 enemy definitions and 48 unique visuals. `breakbeat_bruiser`
+continues to share the current `turntable_sentinel` Orbit visual explicitly.
+Animation phase is derived deterministically without consuming gameplay RNG;
+the existing static atlas remains the renderer fallback when no frame is
+requested.
+
+## Individual enemy state animation suite
+
+**Generated and prepared:** 2026-08-15 with OpenAI image generation in Codex
+built-in mode
+
+The package runtime now contains 170 individual RGBA animation strips under
+`campaign/enemies/<enemy-id>/`: walk, hit, and death for all 49 enemy IDs plus
+attack for the 23 definitions with `attack_kind`. The strips contain 600
+256x256 frames. `breakbeat_bruiser` has a new, independent orange-and-black
+drum-machine brawler identity instead of the former Turntable Sentinel alias.
+
+The prior movement atlases and every established Groove Bound enemy sprite
+were the only visual references. No third-party images were used. Generator
+boards, individual source frames, the reproducible preparation script, and the
+complete hash/path/frame manifest are preserved below
+`source-candidates/2026-08-15-enemy-state-animation/` and excluded from
+packages. The built-in generator does not expose a user-selectable model name
+or separate per-call price.
+
+`prepare_state_assets.py` normalizes generator boards to exact 256px cells,
+removes and despills their flat chroma backgrounds, preserves a transparent
+gutter, slices every state into individual frames, and writes one horizontal
+runtime strip per enemy/state. `state-manifest.json` records all source-frame
+and runtime hashes, dimensions, counts, and mappings.

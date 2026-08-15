@@ -65,6 +65,80 @@ T["enemy projectiles render with the generated projectile sprite"] = function()
   H.eq(drawn, "note_bolt")
 end
 
+T["heavy boss projectiles require multiple cancellation hits"] = function()
+  local projectile = EnemyProjectile()
+  projectile:reset({
+    projectile_class = "heavy", cancel_health = 3,
+    x = 20, y = 20, dx = 1, dy = 0,
+  })
+  H.is_false(projectile:register_cancel_hit())
+  H.is_false(projectile:register_cancel_hit())
+  H.is_true(projectile:register_cancel_hit())
+  H.is_true(projectile.dead)
+end
+
+T["final bosses resist projectile push and anchor during windup"] = function()
+  local enemy = Enemy()
+  enemy:reset({
+    definition = {
+      id="boss", hp=100, speed=0, size=40, damage=1, brain="static",
+      boss_type="final", knockback_resistance=.95, max_knockback_per_hit=8,
+    },
+    x=50, y=50,
+  })
+  enemy:push(1, 0, 100)
+  H.near(enemy.knockback_x, 5)
+  enemy.attack_windup = .5
+  enemy:push(1, 0, 100)
+  H.near(enemy.knockback_x, 5)
+end
+
+T["final boss phase three accelerates and densifies rotating patterns"] = function()
+  local enemy = Enemy()
+  enemy:reset({
+    definition = {
+      id="phase_boss", hp=100, speed=0, size=40, damage=1,
+      brain="static", boss_type="final", attack_kind="aimed_fan",
+      attack_interval=1, attack_range=500, windup=.1,
+      attack_patterns={
+        { kind="aimed_fan", count=5, spread=15 },
+        { kind="cross_wave", count=8 },
+      },
+    },
+    x=50, y=50,
+  })
+  enemy.hp = 20
+  enemy.attack_cooldown = 0
+  enemy:update(.01, { x=80, y=50 }, 1, arena)
+  H.near(enemy.attack_cooldown, .72)
+  local action = enemy:update(.1, { x=80, y=50 }, 1, arena)
+  H.eq(action.kind, "aimed_fan")
+  H.eq(action.phase, 3)
+  H.eq(action.count, 9)
+  H.eq(action.spread, 11)
+  enemy.attack_cooldown = 0
+  enemy:update(.01, { x=80, y=50 }, 1, arena)
+  action = enemy:update(.1, { x=80, y=50 }, 1, arena)
+  H.eq(action.kind, "cross_wave")
+  H.eq(action.count, 12)
+end
+
+T["world mechanic Break exposes a final boss core to bonus damage"] = function()
+  local enemy = Enemy()
+  enemy:reset({
+    definition = {
+      id="break_boss", hp=100, speed=0, size=40, damage=1,
+      brain="static", boss_type="final", break_threshold=3,
+      break_damage_multiplier=1.25,
+    },
+    x=50, y=50,
+  })
+  H.is_false(enemy:apply_world_break(1.5))
+  H.is_true(enemy:apply_world_break(1.5))
+  enemy:take_damage(20)
+  H.eq(enemy.hp, 75)
+end
+
 T["projectile pierce is consumed once per distinct enemy"] = function()
   local projectile = Projectile()
   projectile:reset({

@@ -6,3 +6,5 @@ crash_*.txt
 groove-bound/dist/
 groove-bound/save.json
 groove-bound/logs/
+landing-page/.deployment/
+__pycache__/

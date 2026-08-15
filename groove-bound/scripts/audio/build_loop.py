@@ -91,7 +91,12 @@ def beat_window(source: Path, bpm: float, beats: int) -> dict[str, float]:
     }
 
 
-def export_loop(source: Path, output: Path, window: dict[str, float]) -> None:
+def export_loop(
+    source: Path,
+    output: Path,
+    window: dict[str, float],
+    target_lufs: float,
+) -> None:
     output.parent.mkdir(parents=True, exist_ok=True)
     target = window["target_duration"]
     fade = min(0.006, target / 1000)
@@ -99,7 +104,7 @@ def export_loop(source: Path, output: Path, window: dict[str, float]) -> None:
         f"atempo={window['tempo_correction']:.9f},"
         f"afade=t=in:st=0:d={fade:.6f},"
         f"afade=t=out:st={target - fade:.9f}:d={fade:.6f},"
-        "loudnorm=I=-18:LRA=7:TP=-1"
+        f"loudnorm=I={target_lufs}:LRA=7:TP=-1"
     )
     run([
         "ffmpeg", "-y", "-v", "error",
@@ -172,10 +177,11 @@ def main() -> None:
     parser.add_argument("output", type=Path)
     parser.add_argument("--bpm", type=float, required=True)
     parser.add_argument("--beats", type=int, default=32)
+    parser.add_argument("--target-lufs", type=float, default=-18)
     args = parser.parse_args()
 
     window = beat_window(args.source, args.bpm, args.beats)
-    export_loop(args.source, args.output, window)
+    export_loop(args.source, args.output, window, args.target_lufs)
     validation = validate_loop(args.output, window["target_duration"])
     print(json.dumps({"window": window, "validation": validation}, indent=2))
 

@@ -5,8 +5,9 @@ local class = require("src.core.class")
 local Fonts = require("src.ui.fonts")
 local settings = require("src.config.settings")
 local widgets = require("src.ui.widgets.button")
-local Hints = require("src.ui.controller_hints")
 local UIScale = require("src.ui.scale")
+local MenuChrome = require("src.ui.menu_chrome")
+local RankBadge = require("src.ui.rank_badge")
 
 local LevelUpScreen = class()
 LevelUpScreen.kind = "level_up"
@@ -39,18 +40,59 @@ function LevelUpScreen:enter()
 end
 
 function LevelUpScreen:_choose(choice)
-  if choice.kind == "heal" or choice.kind == "coins" or choice.kind == "guard" then
+  local utility = choice.kind == "heal" or choice.kind == "coins"
+    or choice.kind == "guard"
+  if utility and self.combat.progression.is_auto_select_available
+    and self.combat.progression:is_auto_select_available()
+  then
     self.combat.progression:set_auto_fallback(choice.kind)
   end
-  self.combat.progression:apply(choice)
+  local result = self.combat.progression:apply(choice)
   self.combat.xp:consume_choice()
-  self.app.states:pop(choice)
+  while self.combat.xp:has_pending_choice()
+    and self.combat.progression.can_auto_select
+    and self.combat.progression:can_auto_select()
+  do
+    self.combat.progression:auto_select()
+    self.combat.xp:consume_choice()
+  end
+  local has_more = self.combat.xp:has_pending_choice()
+  if has_more then
+    self.offer = self.combat.progression:create_offer()
+    self:_layout()
+  end
+  if choice.kind == "evolution" then
+    self.close_after_child = not has_more
+    local ChestRewardScreen = require("src.ui.screens.chest_reward")
+    self.app.states:push(ChestRewardScreen(self.app, {
+      source = "level_up",
+      skip_chest_intro = true,
+      roll = 1,
+      has_evolution = true,
+      rewards = {
+        {
+          kind = choice.kind,
+          id = choice.id,
+          title = choice.title,
+          description = choice.description,
+          result = result,
+        },
+      },
+    }))
+  elseif not has_more then
+    self.app.states:pop(choice)
+  end
 end
 
 function LevelUpScreen:_skip()
   self.combat.progression:skip()
   self.combat.xp:consume_choice()
-  self.app.states:pop({ kind = "skip" })
+  if self.combat.xp:has_pending_choice() then
+    self.offer = self.combat.progression:create_offer()
+    self:_layout()
+  else
+    self.app.states:pop({ kind = "skip" })
+  end
 end
 
 function LevelUpScreen:_reroll()
@@ -58,6 +100,23 @@ function LevelUpScreen:_reroll()
   if offer then
     self.offer = offer
     self:_layout()
+  end
+end
+
+function LevelUpScreen:_close()
+  self.app.states:pop({ kind = "level_up_closed" })
+end
+
+function LevelUpScreen:_toggle_automatic()
+  local options = self.app.profile.options
+  options.automatic_level_up = options.automatic_level_up ~= true
+  self.app.save:save(self.app.profile)
+end
+
+function LevelUpScreen:resume()
+  if self.close_after_child then
+    self.close_after_child = false
+    self.app.states:pop({ kind = "level_up_complete" })
   end
 end
 
@@ -85,23 +144,46 @@ function LevelUpScreen:_layout()
     })
   end
 
+  local cta_gap = 10
+  local cta_total_w = math.min(820, w - 44)
+  local cta_w = (cta_total_w - cta_gap * 3) / 4
+  local cta_x = (w - cta_total_w) / 2
+  local cta_y = y + card_h + 10
   buttons[#buttons + 1] = widgets.Button({
     label = "",
-    x = w / 2 - 194,
-    y = y + card_h + 10,
-    w = 178,
+    x = cta_x,
+    y = cta_y,
+    w = cta_w,
     h = compact and 52 or 58,
     font_size = 18,
     on_press = function() self:_reroll() end,
   })
   buttons[#buttons + 1] = widgets.Button({
     label = "",
-    x = w / 2 + 16,
-    y = y + card_h + 10,
-    w = 178,
+    x = cta_x + cta_w + cta_gap,
+    y = cta_y,
+    w = cta_w,
     h = compact and 52 or 58,
     font_size = 18,
     on_press = function() self:_skip() end,
+  })
+  buttons[#buttons + 1] = widgets.Button({
+    label = "",
+    x = cta_x + (cta_w + cta_gap) * 2,
+    y = cta_y,
+    w = cta_w,
+    h = compact and 52 or 58,
+    font_size = 18,
+    on_press = function() self:_toggle_automatic() end,
+  })
+  buttons[#buttons + 1] = widgets.Button({
+    label = "",
+    x = cta_x + (cta_w + cta_gap) * 3,
+    y = cta_y,
+    w = cta_w,
+    h = compact and 52 or 58,
+    font_size = 18,
+    on_press = function() self:_close() end,
   })
   self.buttons = widgets.ButtonList(buttons)
   self.compact = compact
@@ -120,15 +202,21 @@ function LevelUpScreen:draw()
 
   love.graphics.setColor(settings.ui.accent_color)
   love.graphics.setFont(Fonts.heading(h < 680 and 27 or 34))
-  local auto_setup = self.combat.progression:is_auto_select_available()
-    and not self.combat.progression:can_auto_select()
-  love.graphics.printf(auto_setup and "CHOOSE AUTO PICK" or "CHOOSE YOUR NEXT RIFF",
-    0, h < 680 and 18 or 24, w, "center")
+  local heading_y = h < 680 and 18 or 24
+  love.graphics.printf("CHOOSE YOUR NEXT RIFF",
+    0, heading_y, w, "center")
+  RankBadge.draw(self.app.assets, w / 2 + math.min(244, w * 0.29),
+    heading_y - 3, h < 680 and 34 or 40,
+    self.combat.xp.pending_choices)
 
   local reroll_button = self.buttons.buttons[#self.offer + 1]
   local skip_button = self.buttons.buttons[#self.offer + 2]
+  local auto_button = self.buttons.buttons[#self.offer + 3]
+  local close_button = self.buttons.buttons[#self.offer + 4]
   if reroll_button then self:_draw_cta(reroll_button, "reroll") end
   if skip_button then self:_draw_cta(skip_button, "skip") end
+  if auto_button then self:_draw_cta(auto_button, "automatic") end
+  if close_button then self:_draw_cta(close_button, "close") end
   for index, choice in ipairs(self.offer) do
     local button = self.buttons.buttons[index]
     local color = kind_colors[choice.kind] or settings.ui.accent_color
@@ -162,9 +250,17 @@ function LevelUpScreen:draw()
 
     love.graphics.setColor(settings.ui.text_color)
     love.graphics.setFont(Fonts.heading(self.compact and 17 or 19))
-    love.graphics.printf(choice.title,
+    local title = (choice.title or ""):gsub("%s+R%d+$", "")
+    love.graphics.printf(title,
       button.x + 28, button.y + (self.compact and 132 or 148),
       button.w - 56, "center")
+
+    local rank, maxed = self:_choice_rank(choice)
+    if rank then
+      RankBadge.draw(self.app.assets,
+        button.x + button.w - (self.compact and 48 or 54),
+        button.y + 49, self.compact and 34 or 40, rank, { maxed = maxed })
+    end
 
     local description_y = button.y + (self.compact and 164 or 181)
     local description_h = self.compact and 49 or 58
@@ -184,46 +280,103 @@ function LevelUpScreen:draw()
   if self:_requirements_visible() then
     self:_draw_evolution_guide(w, h)
   end
-  love.graphics.setColor(0.015, 0.01, 0.05, 0.92)
-  love.graphics.rectangle("fill", 0, h - 40, w, 40)
-  Hints.draw({
-    { symbol = "dpad", label = "Choose" },
-    { symbol = "cross", label = "Select" },
-    { symbol = "square", label = "Reroll" },
-    { symbol = "circle", label = "Skip" },
-  }, h - 30, w, { font_size = 13, glyph_size = 18, gap = 18 })
   UIScale.finish()
+end
+
+function LevelUpScreen:_choice_rank(choice)
+  if choice.kind == "weapon_add" then return 1, false end
+  if choice.kind == "weapon_level" then
+    local definition = self.app.content.weapons[choice.id]
+    local owned = self.combat.inventory:get(choice.id)
+    local level = math.min(definition.max_level, owned.level + 1)
+    return level, level >= definition.max_level
+  end
+  if choice.kind == "passive_add" then return 1, false end
+  if choice.kind == "passive_level" then
+    local definition = self.app.content.passives[choice.id]
+    local owned = self.combat.progression.passives:get(choice.id)
+    local level = math.min(definition.max_level, owned.level + 1)
+    return level, level >= definition.max_level
+  end
+  if choice.kind == "evolution" then return 0, true end
+  return nil, false
 end
 
 function LevelUpScreen:_draw_cta(button, kind)
   local is_reroll = kind == "reroll"
+  local automatic = kind == "automatic"
+  local close = kind == "close"
+  local enabled = self.app.profile.options.automatic_level_up == true
   local color = is_reroll and { 0.30, 0.92, 1.0, 1 }
+    or automatic and (enabled and { 0.34, 1.0, 0.68, 1 }
+      or { 0.72, 0.54, 1.0, 1 })
+    or close and { 0.72, 0.74, 0.86, 1 }
     or { 0.96, 0.38, 0.72, 1 }
   local alpha = button.focused and 1 or 0.82
-  if button.focused then
-    love.graphics.setColor(color[1], color[2], color[3], 0.14)
-    love.graphics.rectangle("fill", button.x - 4, button.y - 4,
-      button.w + 8, button.h + 8, 10, 10)
-  end
-  self.app.assets:draw_upgrade_card_frame(button.x, button.y, button.w, button.h,
-    { corner = 23, color = { 1, 1, 1, alpha } })
-  if button.focused then
-    self.app.assets:draw_menu_focus_frame(
-      button.x - 4, button.y - 4, button.w + 8, button.h + 8,
-      { corner = 24 })
-  end
-  self.app.assets:draw_menu_button_icon(is_reroll and 5 or 5,
-    is_reroll and 2 or 1, button.x + 10, button.y + 4,
-    button.h - 8, button.h - 8, { color = { 1, 1, 1, alpha } })
+  MenuChrome.cta(self.app.assets, button, {
+    focused = button.focused, alpha = alpha,
+  })
+  local icon = is_reroll and 7 or automatic and 10 or close and 6 or 1
+  self.app.assets:draw_menu_stat_icon(icon,
+    button.x + 10, button.y + 4, button.h - 8,
+    { color = { 1, 1, 1, alpha } })
   love.graphics.setColor(color[1], color[2], color[3], alpha)
   love.graphics.setFont(Fonts.heading(15))
-  love.graphics.printf(is_reroll and "REROLL" or "SKIP",
+  local label = is_reroll and "REROLL" or automatic and "AUTO MENU"
+    or close and "CLOSE" or "SKIP"
+  love.graphics.printf(label,
     button.x + 62, button.y + 10, button.w - 72, "center")
   love.graphics.setColor(0.78, 0.77, 0.88, alpha)
   love.graphics.setFont(Fonts.body(10))
-  love.graphics.printf(is_reroll
-      and (self.combat.progression.rerolls .. " LEFT") or "+5 COINS",
+  local detail = is_reroll and (self.combat.progression.rerolls .. " LEFT")
+    or automatic and (enabled and "ON" or "OFF")
+    or close and "SAVE POINTS" or "+5 COINS"
+  love.graphics.printf(detail,
     button.x + 62, button.y + 31, button.w - 72, "center")
+end
+
+function LevelUpScreen:_move_focus(direction)
+  local index = self.buttons.focus_index
+  local top_count = #self.offer
+  local bottom_first = top_count + 1
+  local bottom_last = #self.buttons.buttons
+  local in_top = index <= top_count
+  local first = in_top and 1 or bottom_first
+  local last = in_top and top_count or bottom_last
+
+  if direction == "left" then
+    if index > first then self.buttons.focus_index = index - 1 end
+  elseif direction == "right" then
+    if index < last then self.buttons.focus_index = index + 1 end
+  elseif direction == "down" and in_top then
+    local current = self.buttons.buttons[index]
+    local centre = current.x + current.w / 2
+    local best, distance
+    for candidate = bottom_first, bottom_last do
+      local button = self.buttons.buttons[candidate]
+      local candidate_centre = button.x + button.w / 2
+      local delta = math.abs(candidate_centre - centre)
+      if not distance or delta < distance then
+        best, distance = candidate, delta
+      end
+    end
+    self.buttons.focus_index = best or index
+  elseif direction == "up" and not in_top then
+    local current = self.buttons.buttons[index]
+    local centre = current.x + current.w / 2
+    local best, distance
+    for candidate = 1, top_count do
+      local button = self.buttons.buttons[candidate]
+      local candidate_centre = button.x + button.w / 2
+      local delta = math.abs(candidate_centre - centre)
+      if not distance or delta < distance then
+        best, distance = candidate, delta
+      end
+    end
+    self.buttons.focus_index = best or index
+  end
+  self.buttons:_apply_focus()
+  return true
 end
 
 function LevelUpScreen:_choice_stat_items(choice)
@@ -355,7 +508,7 @@ function LevelUpScreen:_fusion_hint(choice)
   local prefix
   if choice.kind == "weapon_add" or choice.kind == "weapon_level" then
     recipe = self:_recipe_for_base(choice.id)
-    prefix = "R10 + SUPPORT: "
+    prefix = "MAX RANK + SUPPORT: "
   elseif choice.kind == "passive_add" or choice.kind == "passive_level" then
     recipe = self:_recipe_for_support(choice.id)
     prefix = "PAIRS WITH: "
@@ -367,7 +520,20 @@ function LevelUpScreen:_fusion_hint(choice)
   if choice.kind == "weapon_add" or choice.kind == "weapon_level" then
     return prefix .. support.name .. " -> " .. result.name
   end
-  return prefix .. base.name .. " R10 -> " .. result.name
+  return prefix .. base.name .. " AT MAX -> " .. result.name
+end
+
+function LevelUpScreen:evolution_recipe_layout(cell_w)
+  local icon_size = math.max(30, math.min(42, cell_w * 0.19))
+  return {
+    base_x = cell_w * 0.16,
+    plus = { x = cell_w * 0.33, label = "+" },
+    support_x = cell_w * 0.50,
+    equals = { x = cell_w * 0.67, label = "=" },
+    result_x = cell_w * 0.84,
+    icon_size = icon_size,
+    result_size = math.min(48, icon_size + 6),
+  }
 end
 
 function LevelUpScreen:_draw_evolution_guide(w, h)
@@ -397,12 +563,23 @@ function LevelUpScreen:_draw_evolution_guide(w, h)
     self.app.assets:draw_hud_frame(x, y, cell_w, cell_h - 6,
       { corner = 8, color = { tint[1], tint[2], tint[3], 0.58 } })
     local icon_y = y + 28
-    self.app.assets:draw_weapon_icon(record.base.icon, x + 39, icon_y, 42,
+    local recipe_layout = self:evolution_recipe_layout(cell_w)
+    self.app.assets:draw_weapon_icon(record.base.icon,
+      x + recipe_layout.base_x, icon_y, recipe_layout.icon_size,
       { color = { 1, 1, 1, 0.80 } })
+    love.graphics.setColor(0.42, 0.88, 1, 0.96)
+    love.graphics.setFont(Fonts.heading(cell_w < 210 and 15 or 17))
+    love.graphics.printf(recipe_layout.plus.label,
+      x + recipe_layout.plus.x - 12, icon_y - 9, 24, "center")
     self.app.assets:draw_support_icon(record.support.icon,
-      x + cell_w / 2, icon_y, 42, { color = { 1, 1, 1, 0.80 } })
+      x + recipe_layout.support_x, icon_y, recipe_layout.icon_size,
+      { color = { 1, 1, 1, 0.80 } })
+    love.graphics.setColor(1, 0.74, 0.20, 0.98)
+    love.graphics.printf(recipe_layout.equals.label,
+      x + recipe_layout.equals.x - 12, icon_y - 9, 24, "center")
     self.app.assets:draw_weapon_icon(record.result.icon,
-      x + cell_w - 39, icon_y, 48, { color = { 1, 1, 1, 1 } })
+      x + recipe_layout.result_x, icon_y, recipe_layout.result_size,
+      { color = { 1, 1, 1, 1 } })
     love.graphics.setColor(settings.ui.text_color)
     love.graphics.setFont(Fonts.heading(12))
     love.graphics.printf(record.result.name, x + 8, y + cell_h - 30,
@@ -468,7 +645,7 @@ function LevelUpScreen:_choice_stats(choice)
       local to = math.min(passive.max_level, from + 1)
       local value = passive.per_level * to
       local delta = passive.per_level
-      return string.format("R%d  TOTAL %+d%%", to, math.floor(value * 100 + 0.5)),
+      return string.format("RANK TOTAL %+d%%", math.floor(value * 100 + 0.5)),
         string.format("%+d%% %s", math.floor(delta * 100 + 0.5),
           string.upper(passive.stat:gsub("_", " ")))
     end
@@ -515,10 +692,18 @@ function LevelUpScreen:keypressed(key)
   elseif key == "r" then
     self:_reroll()
     return true
+  elseif key == "t" then
+    self:_toggle_automatic()
+    return true
   elseif key == "escape" or key == "x" then
-    self:_skip()
+    self:_close()
     return true
   end
+  local directions = {
+    up = "up", w = "up", down = "down", s = "down",
+    left = "left", a = "left", right = "right", d = "right",
+  }
+  if directions[key] then return self:_move_focus(directions[key]) end
   return self.buttons:keypressed(key)
 end
 
@@ -526,10 +711,17 @@ function LevelUpScreen:gamepadpressed(_, button)
   if button == "x" then
     self:_reroll()
     return true
+  elseif button == "y" then
+    self:_toggle_automatic()
+    return true
   elseif button == "b" then
-    self:_skip()
+    self:_close()
     return true
   end
+  local directions = {
+    dpup = "up", dpdown = "down", dpleft = "left", dpright = "right",
+  }
+  if directions[button] then return self:_move_focus(directions[button]) end
   return self.buttons:gamepadpressed(button)
 end
 

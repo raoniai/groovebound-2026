@@ -28,6 +28,9 @@ function VFXSystem:spawn(kind, x, y, opts)
     scale = opts.scale or 0.24,
     rotation = opts.rotation or 0,
     color = opts.color or { 1, 1, 1, 1 },
+    enemy_id = opts.enemy_id,
+    enemy_size = opts.enemy_size,
+    flip_x = opts.flip_x,
   }
 end
 
@@ -42,7 +45,7 @@ function VFXSystem:update(dt)
 end
 
 function VFXSystem:draw()
-  if not self.assets or not self.assets.combat_fx then return end
+  if not self.assets then return end
   for _, effect in ipairs(self.effects) do
     local progress = math.min(0.999, effect.age / effect.duration)
     local frame = math.floor(progress * 4) + 1
@@ -51,13 +54,20 @@ function VFXSystem:draw()
       effect.color[1], effect.color[2], effect.color[3],
       (effect.color[4] or 1) * alpha,
     }
-    self.assets.combat_fx:draw(
-      frame, rows[effect.kind] or 1, effect.x, effect.y,
-      {
-        scale = effect.scale,
-        rotation = effect.rotation,
-        color = color,
-      })
+    if effect.kind == "enemy_death" and self.assets.draw_enemy_state then
+      self.assets:draw_enemy_state(
+        effect.enemy_id, "death", frame, effect.x, effect.y,
+        effect.enemy_size or 82,
+        { flip_x = effect.flip_x, color = color })
+    elseif self.assets.combat_fx then
+      self.assets.combat_fx:draw(
+        frame, rows[effect.kind] or 1, effect.x, effect.y,
+        {
+          scale = effect.scale,
+          rotation = effect.rotation,
+          color = color,
+        })
+    end
   end
 end
 

@@ -17,6 +17,7 @@ DIST = GAME_ROOT / "dist"
 PRODUCT = "Groove Bound"
 ZIP_NAME = "Groove-Bound-Windows-x64.zip"
 FIXED_ZIP_TIME = (1980, 1, 1, 0, 0, 0)
+CANONICAL_VERSION = (GAME_ROOT / "VERSION").read_text(encoding="utf-8").strip()
 
 
 def sha256(path: Path) -> str:
@@ -54,13 +55,19 @@ def zip_tree(source: Path, destination: Path) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--version", default="0.7.1")
+    parser.add_argument("--version", default=CANONICAL_VERSION)
     parser.add_argument("--runtime-dir", type=Path, required=True)
     parser.add_argument("--love-file", type=Path, default=DIST / "groove-bound.love")
     parser.add_argument("--icon", type=Path, default=GAME_ROOT / "packaging/windows/GrooveBound.ico")
     parser.add_argument("--resource-editor", type=Path)
     parser.add_argument("--require-branding", action="store_true")
     args = parser.parse_args()
+
+    if args.version.lstrip("v") != CANONICAL_VERSION:
+        raise SystemExit(
+            f"Windows version {args.version} disagrees with canonical VERSION "
+            f"{CANONICAL_VERSION}"
+        )
 
     runtime = args.runtime_dir.resolve()
     love_file = args.love_file.resolve()
@@ -70,6 +77,10 @@ def main() -> int:
         raise SystemExit("runtime must be the extracted official LÖVE x64 ZIP")
     if not love_file.is_file():
         raise SystemExit(f"common payload not found: {love_file}")
+    with zipfile.ZipFile(love_file) as payload:
+        marker = payload.read("release-build.txt").decode("utf-8")
+    if f"version={CANONICAL_VERSION}\n" not in marker:
+        raise SystemExit("common payload version does not match canonical VERSION")
     dlls = sorted(runtime.glob("*.dll"))
     if not dlls:
         raise SystemExit("official LÖVE runtime DLLs are missing")

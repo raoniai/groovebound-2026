@@ -27,8 +27,8 @@ function ControlsScreen:_layout()
   local x, y = (w - bw) / 2, self.panel.y + 88
   local function renderer(button)
     MenuChrome.action(self.app.assets, button, {
-      category_cell = button.is_back and nil or 12,
-      icon = button.is_back and { col = 5, row = 2 } or nil,
+      menu_cell = button.is_back and 8 or nil,
+      settings_cell = button.is_back and nil or 7,
       label = button.label,
       font_size = 15,
     })

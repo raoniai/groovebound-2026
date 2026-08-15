@@ -3,6 +3,7 @@ local Fonts = require("src.ui.fonts")
 local settings = require("src.config.settings")
 local Hints = require("src.ui.controller_hints")
 local UIScale = require("src.ui.scale")
+local MenuChrome = require("src.ui.menu_chrome")
 
 local ChestRewardScreen = class()
 ChestRewardScreen.kind = "chest_reward"
@@ -10,6 +11,8 @@ ChestRewardScreen.opaque = false
 
 local COUNT_ROLL_DURATION = 1.85
 local COUNT_LOCK_DURATION = 0.55
+local EVOLUTION_REVEAL_DURATION = 1.55
+local REDUCED_EVOLUTION_REVEAL_DURATION = 0.72
 local REWARD_HOLD_DURATION = 0.95
 
 local kind_colors = {
@@ -43,15 +46,22 @@ function ChestRewardScreen:init(app, reveal)
   self.app = app
   self.reveal = assert(reveal)
   self.rewards = assert(reveal.rewards)
-  self.elapsed = 0
+  self.elapsed = reveal.skip_chest_intro
+    and COUNT_ROLL_DURATION + COUNT_LOCK_DURATION or 0
   self.complete = false
   self.settled_count = 0
   self.continue_rect = nil
   self.resolution_sound_played = false
+  self.evolution_rewards = {}
+  for _, reward in ipairs(self.rewards) do
+    if reward.kind == "evolution" then
+      self.evolution_rewards[#self.evolution_rewards + 1] = reward
+    end
+  end
 end
 
 function ChestRewardScreen:animation_duration()
-  return COUNT_ROLL_DURATION + COUNT_LOCK_DURATION + REWARD_HOLD_DURATION
+  return self:reward_reveal_at() + REWARD_HOLD_DURATION
 end
 
 function ChestRewardScreen:count_roll_duration()
@@ -62,8 +72,61 @@ function ChestRewardScreen:count_lock_duration()
   return COUNT_LOCK_DURATION
 end
 
-function ChestRewardScreen:reward_reveal_at()
+function ChestRewardScreen:chest_unlock_at()
   return COUNT_ROLL_DURATION + COUNT_LOCK_DURATION
+end
+
+function ChestRewardScreen:reduced_motion()
+  return self.app.profile
+    and self.app.profile.options
+    and self.app.profile.options.reduced_motion == true
+end
+
+function ChestRewardScreen:flash_enabled()
+  local options = self.app.profile and self.app.profile.options or {}
+  return options.hit_flash ~= false and options.reduced_flash ~= true
+end
+
+function ChestRewardScreen:evolution_count()
+  return #self.evolution_rewards
+end
+
+function ChestRewardScreen:evolution_reveal_duration()
+  return self:reduced_motion()
+    and REDUCED_EVOLUTION_REVEAL_DURATION or EVOLUTION_REVEAL_DURATION
+end
+
+function ChestRewardScreen:evolution_sequence_duration()
+  return self:evolution_count() * self:evolution_reveal_duration()
+end
+
+function ChestRewardScreen:reward_reveal_at()
+  return self:chest_unlock_at() + self:evolution_sequence_duration()
+end
+
+function ChestRewardScreen:active_evolution_index()
+  if self:evolution_count() == 0
+    or self.elapsed < self:chest_unlock_at()
+    or self.elapsed >= self:reward_reveal_at() then
+    return nil
+  end
+  local elapsed = self.elapsed - self:chest_unlock_at()
+  return math.min(self:evolution_count(),
+    math.floor(elapsed / self:evolution_reveal_duration()) + 1)
+end
+
+function ChestRewardScreen:current_evolution()
+  local index = self:active_evolution_index()
+  return index and self.evolution_rewards[index] or nil
+end
+
+function ChestRewardScreen:evolution_progress()
+  local index = self:active_evolution_index()
+  if not index then return 0 end
+  local elapsed = self.elapsed - self:chest_unlock_at()
+    - (index - 1) * self:evolution_reveal_duration()
+  return math.max(0, math.min(1,
+    elapsed / self:evolution_reveal_duration()))
 end
 
 -- Kept as a compatibility seam for callers/tests. Rewards do not spin.
@@ -74,7 +137,8 @@ end
 function ChestRewardScreen:phase()
   if self.complete then return "complete" end
   if self.elapsed < COUNT_ROLL_DURATION then return "converge" end
-  if self.elapsed < self:reward_reveal_at() then return "flash" end
+  if self.elapsed < self:chest_unlock_at() then return "flash" end
+  if self.elapsed < self:reward_reveal_at() then return "evolution" end
   return "rewards"
 end
 
@@ -212,6 +276,122 @@ local function smoothstep(value)
   return value * value * (3 - 2 * value)
 end
 
+local function lerp(from, to, amount)
+  return from + (to - from) * amount
+end
+
+function ChestRewardScreen:_evolution_parts(symbol)
+  local recipe = symbol and self.app.content.evolutions[symbol.id]
+  if not recipe then return nil end
+  local requirement = recipe.required_passives
+    and recipe.required_passives[1]
+  local base = self.app.content.weapons[recipe.base_weapon]
+  local support = requirement
+    and self.app.content.passives[requirement.id]
+  local result = self.app.content.weapons[recipe.result_weapon]
+  if not base or not support or not result then return nil end
+  return recipe, base, support, result
+end
+
+function ChestRewardScreen:_draw_evolution_label(text, x, y, width, color, alpha)
+  love.graphics.setColor(color[1], color[2], color[3], alpha)
+  love.graphics.setFont(Fonts.get(15))
+  love.graphics.printf(text, x - width / 2, y, width, "center")
+end
+
+function ChestRewardScreen:_draw_evolution_theatre(w, h)
+  local symbol = self:current_evolution()
+  local recipe, base, support, result = self:_evolution_parts(symbol)
+  if not recipe then return end
+
+  local progress = self:evolution_progress()
+  local center_x = w / 2
+  local center_y = math.min(h * 0.47, 326)
+  local source_y = center_y - 4
+  local left_x = math.max(150, w * 0.25)
+  local right_x = math.min(w - 150, w * 0.75)
+  local reduced = self:reduced_motion()
+
+  if reduced then
+    local result_alpha = smoothstep((progress - 0.42) / 0.18)
+    local source_alpha = 1 - result_alpha
+    self.app.assets:draw_weapon_icon(base.icon, left_x, source_y, 150, {
+      color = { 1, 1, 1, source_alpha },
+    })
+    self.app.assets:draw_support_icon(support.icon, right_x, source_y, 150, {
+      color = { 1, 1, 1, source_alpha },
+    })
+    self:_draw_evolution_label(base.name .. "  •  MAX RANK",
+      left_x, source_y + 104, 260, { 0.42, 0.88, 1 }, source_alpha)
+    self:_draw_evolution_label(support.name,
+      right_x, source_y + 104, 260, { 0.76, 0.45, 1 }, source_alpha)
+    self.app.assets:draw_weapon_icon(result.icon, center_x, center_y, 218, {
+      color = { 1, 1, 1, result_alpha },
+    })
+    self:_draw_evolution_label(result.name,
+      center_x, center_y + 142, 420, { 1, 0.76, 0.22 }, result_alpha)
+    return
+  end
+
+  local convergence = smoothstep(progress / 0.49)
+  local source_alpha = 1 - smoothstep((progress - 0.43) / 0.13)
+  local source_size = lerp(156, 70, convergence)
+  local base_x = lerp(left_x, center_x, convergence)
+  local support_x = lerp(right_x, center_x, convergence)
+  local base_rotation = convergence * 0.28
+  local support_rotation = convergence * -0.28
+  local pulse = 0.20 + math.sin(progress * math.pi * 8) * 0.08
+
+  love.graphics.setLineWidth(2)
+  love.graphics.setColor(0.37, 0.84, 1, pulse)
+  love.graphics.circle("line", center_x, center_y, 84 + progress * 82)
+  love.graphics.setColor(0.57, 0.28, 1, pulse * 0.82)
+  love.graphics.circle("line", center_x, center_y, 136 - progress * 48)
+  love.graphics.setLineWidth(1)
+
+  self.app.assets:draw_weapon_icon(base.icon, base_x, source_y,
+    source_size, {
+      rotation = base_rotation,
+      color = { 1, 1, 1, source_alpha },
+    })
+  self.app.assets:draw_support_icon(support.icon, support_x, source_y,
+    source_size, {
+      rotation = support_rotation,
+      color = { 1, 1, 1, source_alpha },
+    })
+  self:_draw_evolution_label(base.name .. "  •  MAX RANK",
+    left_x, source_y + 108, 270, { 0.42, 0.88, 1 }, source_alpha)
+  self:_draw_evolution_label(support.name,
+    right_x, source_y + 108, 270, { 0.76, 0.45, 1 }, source_alpha)
+
+  love.graphics.setColor(1, 0.76, 0.22, source_alpha)
+  love.graphics.setFont(Fonts.get(42))
+  love.graphics.printf("+", center_x - 45, center_y - 24, 90, "center")
+
+  local flash = smoothstep(1 - math.abs(progress - 0.54) / 0.12)
+  if flash > 0 and self:flash_enabled() then
+    love.graphics.setBlendMode("add")
+    love.graphics.setColor(0.68, 0.91, 1, flash * 0.86)
+    love.graphics.circle("fill", center_x, center_y, 48 + flash * 112)
+    love.graphics.setColor(0.58, 0.28, 1, flash * 0.58)
+    love.graphics.circle("line", center_x, center_y, 92 + flash * 132)
+    love.graphics.setBlendMode("alpha")
+  end
+
+  local result_entrance = smoothstep((progress - 0.56) / 0.17)
+  local result_exit = 1 - smoothstep((progress - 0.92) / 0.08)
+  local result_alpha = result_entrance * result_exit
+  local result_size = lerp(58, 230, result_entrance)
+  local result_rotation = lerp(-0.16, 0, result_entrance)
+  self.app.assets:draw_weapon_icon(result.icon, center_x, center_y,
+    result_size, {
+      rotation = result_rotation,
+      color = { 1, 1, 1, result_alpha },
+    })
+  self:_draw_evolution_label(result.name,
+    center_x, center_y + 146, 440, { 1, 0.76, 0.22 }, result_alpha)
+end
+
 function ChestRewardScreen:_draw_orbiting_chests(w, h, progress)
   local center_x = w / 2
   local center_y = math.min(h * 0.50, 310)
@@ -246,7 +426,8 @@ function ChestRewardScreen:_draw_chest_animation(w, h, phase)
   local lock_elapsed = math.max(0, self.elapsed - COUNT_ROLL_DURATION)
   if phase == "flash" then
     local flash_progress = math.min(1, lock_elapsed / COUNT_LOCK_DURATION)
-    local flash = math.sin(flash_progress * math.pi)
+    local flash = self:flash_enabled()
+      and math.sin(flash_progress * math.pi) or 0
     local size = 178 + flash * 24
     love.graphics.setBlendMode("add")
     love.graphics.setColor(1, 1, 1, flash * 0.72)
@@ -267,17 +448,24 @@ function ChestRewardScreen:draw()
 
   love.graphics.setColor(1.0, 0.76, 0.22, 1)
   love.graphics.setFont(Fonts.get(38))
-  love.graphics.printf("MYSTERY CHEST", 0, 30, w, "center")
+  love.graphics.printf(self.reveal.source == "level_up"
+      and "WEAPON EVOLUTION" or "MYSTERY CHEST",
+    0, 30, w, "center")
   love.graphics.setFont(Fonts.get(16))
   love.graphics.setColor(0.86, 0.84, 0.94, 1)
-  love.graphics.printf(phase == "converge"
-      and "CHESTS CONVERGING"
+  local evolution_index = self:active_evolution_index()
+  love.graphics.printf(phase == "converge" and "CHESTS CONVERGING"
       or phase == "flash" and "DROP LOCKED"
+      or phase == "evolution" and string.format(
+        "WEAPON EVOLUTION  %d / %d",
+        evolution_index, self:evolution_count())
       or "REWARDS REVEALED",
     0, 76, w, "center")
 
   if phase == "converge" or phase == "flash" then
     self:_draw_chest_animation(w, h, phase)
+  elseif phase == "evolution" then
+    self:_draw_evolution_theatre(w, h)
   else
     local count = self:visible_reel_count()
     local gap = count >= 5 and 10 or 18
@@ -297,16 +485,12 @@ function ChestRewardScreen:draw()
 
   if self.complete then
     local rect = self.continue_rect
-    local pulse = 0.88 + math.sin(self.elapsed * 4) * 0.10
-    love.graphics.setColor(0.035, 0.012, 0.08, 0.98)
-    love.graphics.rectangle("fill", rect.x, rect.y, rect.w, rect.h, 8, 8)
-    love.graphics.setColor(1.0, 0.76, 0.22, pulse)
-    love.graphics.setLineWidth(3)
-    love.graphics.rectangle("line", rect.x, rect.y, rect.w, rect.h, 8, 8)
-    love.graphics.setLineWidth(1)
-    love.graphics.setColor(settings.ui.text_color)
-    love.graphics.setFont(Fonts.get(20))
-    love.graphics.printf("CONTINUE", rect.x, rect.y + 14, rect.w, "center")
+    MenuChrome.action(self.app.assets, {
+      x = rect.x, y = rect.y, w = rect.w, h = rect.h,
+      focused = true, hovered = false, variant = "primary",
+    }, {
+      label = "CONTINUE", menu_cell = 1, font_size = 20, icon_size = 42,
+    })
   end
 
   love.graphics.setColor(0.012, 0.006, 0.04, 0.96)

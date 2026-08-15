@@ -1,12 +1,12 @@
--- Canonical World Tour catalog. Funk and Soul have authored wave sets; the
--- remaining worlds stay catalog-visible but are not routed into gameplay yet.
+-- Canonical World Tour catalog. Playable worlds own authored two-stage routes;
+-- the remaining worlds stay catalog-visible until their route is implemented.
 
 local worlds = {
   { "funk", 1, "core", "The Pocket District", "Funk", "funk_v1", "funk_hold_the_pocket", "Mothership of Funk", "soul" },
   { "soul", 2, "core", "Velvet Chapel", "Soul", "soul_v1", "soul_resonance_reserve", "Velvet Titan", "disco" },
-  { "disco", 3, "core", "Mirrorball Metro", "Disco", "disco_v1", "disco_spotlight_flow", "Prism Monarch", "house" },
-  { "house", 4, "core", "Warehouse 909", "House", "house_v1", "house_floor_cycles", "Kickdrum Constructor", "electro" },
-  { "electro", 5, "core", "Neon Circuit", "Electro", "electro_v1", "electro_node_chains", "Voltage Vandal", "techno" },
+  { "disco", 3, "core", "Mirrorball Metro", "Disco", "disco_v1", "disco_spotlight_flow", "Prism Monarch", "jazz" },
+  { "jazz", 4, "core", "Blue Note Borough", "Jazz", "jazz_v1", "jazz_improvisation", "Midnight Maestro", "house" },
+  { "house", 5, "core", "Warehouse 909", "House", "house_v1", "house_floor_cycles", "Kickdrum Constructor", "techno" },
   { "techno", 6, "core", "The Iron Loop", "Techno", "techno_v1", "techno_loop_memory", "Loop Architect", nil },
   { "cosmic_boogie", 7, "secret", "Orbital Dance Deck", "Cosmic Boogie",
     "cosmic_boogie_v1", "cosmic_orbit_pocket", "Celestial Selector", nil },
@@ -35,7 +35,8 @@ for _, row in ipairs(worlds) do
     music_route = "world_" .. id, environment_atlas = "world_" .. id,
     floor_atlas = "world_" .. id .. "_floor", first_clear_unlock = next_world,
     starter_loadout = starter_loadouts[math.min(order, 6)],
-    implementation_status = (id == "funk" or id == "soul" or id == "disco")
+    implementation_status = (id == "funk" or id == "soul" or id == "disco"
+      or id == "jazz")
       and "playable" or "planned",
     rewards = {
       C = "world_" .. id .. "_grade_c", B = "world_" .. id .. "_grade_b",
@@ -46,6 +47,6 @@ end
 
 catalog.cosmic_boogie.parents = { "funk", "disco" }
 catalog.soulful_garage.parents = { "soul", "house" }
-catalog.future_funk.parents = { "electro", "techno" }
+catalog.future_funk.parents = { "jazz", "techno" }
 
 return catalog

@@ -3,18 +3,18 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <meta name="description" content="Choose Joe or Lyra, survive two connected stages, collect musical weapons, and build powerful fusions in Groove Bound.">
+    <meta name="description" content="Choose a character, evolve a musical arsenal, survive the Prologue, and carry one build into Groove Bound's World Tour.">
     <meta name="theme-color" content="#090612">
     <meta property="og:title" content="Groove Bound | Music-powered survival roguelike">
     <meta property="og:description" content="Choose a character, survive the Prologue, and take your build into World Tour.">
     <meta property="og:image" content="assets/campaign-banner.png">
     <title>Groove Bound | Music-powered survival roguelike</title>
-    <link rel="icon" type="image/png" href="assets/favicon.png">
-    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" href="assets/favicon.png?v=20260813-02">
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png?v=20260813-02">
     <link rel="preload" href="assets/groove-bound-title.png" as="image">
     <link rel="preload" href="assets/video/main-menu.mp4" as="video" type="video/mp4">
     <link rel="preload" href="assets/m6x11plus.ttf" as="font" type="font/ttf" crossorigin>
-    <link rel="stylesheet" href="styles.css?v=20260811-04">
+    <link rel="stylesheet" href="styles.css?v=20260812-13">
   </head>
   <body data-page="home">
     <div class="loader" data-loader role="status" aria-live="polite">
@@ -25,7 +25,7 @@
     <div class="page-progress" aria-hidden="true"></div>
 
     <header class="site-header" data-header>
-      <a class="brand" href="index.html" aria-label="Groove Bound home"><img src="assets/gb-icon.png" alt="Groove Bound" width="512" height="512"></a>
+      <a class="brand" href="index.html" aria-label="Groove Bound home"><img src="assets/gb-icon.png?v=20260813-02" alt="Groove Bound" width="512" height="512"></a>
       <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
       <nav class="site-nav" id="site-nav" aria-label="Primary navigation">
         <a class="is-current" href="index.html">Home</a>
@@ -35,10 +35,10 @@
         <a href="builder.html">Builder</a>
       </nav>
       <div class="header-actions">
-        <a class="header-version" href="https://github.com/raoniai/groovebound-2026/releases/tag/v0.7.1" target="_blank" rel="noreferrer" aria-label="View public build v0.7.1 release"><span>Public build</span><strong>v0.7.1</strong></a>
+        <a class="header-version" href="https://github.com/raoniai/groovebound-2026/releases/tag/v0.9.4" target="_blank" rel="noreferrer" aria-label="View Groove Bound v0.9.4"><span>Version</span><strong>v0.9.4</strong></a>
         <a class="button button--glass header-repo" href="https://github.com/raoniai/groovebound-2026" target="_blank" rel="noreferrer"><img class="button__icon" src="assets/icons/github.svg" alt="" width="20" height="20"><span>GitHub</span></a>
-        <a class="button button--windows header-download magnetic" href="https://github.com/raoniai/groovebound-2026/releases/latest/download/Groove-Bound-Windows-x64.zip" target="_blank" rel="noreferrer"><span class="windows-mark" aria-hidden="true">⊞</span><span>Windows</span></a>
         <a class="button button--gold header-download magnetic" href="https://github.com/raoniai/groovebound-2026/releases/latest/download/Groove-Bound-macOS.dmg" target="_blank" rel="noreferrer"><span class="apple-mark" aria-hidden="true">&#63743;</span><span>Mac</span></a>
+        <a class="button button--glass header-download magnetic" href="https://github.com/raoniai/groovebound-2026/releases/latest/download/Groove-Bound-Windows-x64.zip" target="_blank" rel="noreferrer"><span class="windows-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span>Windows</span></a>
       </div>
     </header>
 
@@ -51,14 +51,13 @@
         <div class="hero__content reveal is-visible">
           <img class="hero__logo" src="assets/groove-bound-title.png" alt="Groove Bound" width="700" height="389">
           <h1 id="hero-title">Build your set.<br>Survive the run.</h1>
-          <p>Choose Joe or Lyra, fight through connected stages, and combine 16 musical weapons with eight supports.</p>
-          <div class="hero__actions cta-pair">
-            <a class="button button--windows button--large magnetic" href="https://github.com/raoniai/groovebound-2026/releases/latest/download/Groove-Bound-Windows-x64.zip" target="_blank" rel="noreferrer"><span class="windows-mark" aria-hidden="true">⊞</span><span>Download for Windows</span></a>
+          <p>Choose Joe or Lyra, fight through connected stages, and carry one evolving build into worlds with their own stage and boss music.</p>
+          <div class="hero__actions cta-pair cta-pair--platforms">
             <a class="button button--gold button--large magnetic" href="https://github.com/raoniai/groovebound-2026/releases/latest/download/Groove-Bound-macOS.dmg" target="_blank" rel="noreferrer"><span class="apple-mark" aria-hidden="true">&#63743;</span><span>Download for Mac</span></a>
+            <a class="button button--glass button--large magnetic" href="https://github.com/raoniai/groovebound-2026/releases/latest/download/Groove-Bound-Windows-x64.zip" target="_blank" rel="noreferrer"><span class="windows-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span>Download for Windows</span></a>
             <a class="button button--gold button--large magnetic" href="https://github.com/raoniai/groovebound-2026" target="_blank" rel="noreferrer"><img class="button__icon" src="assets/icons/github.svg" alt="" width="22" height="22"><span>View repository</span></a>
-            <small class="platform-note">Windows x64 and macOS / Linux via LÖVE</small>
+            <small class="platform-note">macOS universal build / Windows x64 portable build</small>
           </div>
-          <a class="hero__lore-link" href="#story"><img src="assets/sprites/gems/gem-4.png?v=site005" alt="" width="24" height="24"><span>Start with the Prologue</span></a>
         </div>
         <button class="media-control" type="button" data-video-sound="#hero-video" aria-pressed="false" aria-label="Unmute scene" title="Unmute scene">
           <span class="sound-icon is-muted" data-sound-icon aria-hidden="true"><img data-sound-glyph src="assets/icons/sound-off.png" alt="" width="96" height="96"></span>
@@ -90,7 +89,7 @@
         </div>
       </section>
 
-      <section class="signal-strip" data-signal-strip tabindex="0" aria-label="Current game highlights. Drag or use arrow keys to explore.">
+      <section class="signal-strip" data-signal-strip tabindex="0" aria-label="Groove Bound highlights. Drag or use arrow keys to explore.">
         <div class="signal-strip__track" data-signal-track>
           <div class="signal-strip__set">
             <span class="signal-item"><img src="assets/sprites/talking/joe-1.png" alt=""><b>2</b><em>Playable Resonants</em></span>
@@ -108,56 +107,71 @@
         </div>
       </section>
 
-      <section id="story" class="story-portal cinematic-section" aria-labelledby="story-title">
-        <video id="prologue-video" class="ambient-video cinematic-section__video" muted loop playsinline preload="none" poster="assets/cutscene-dialogue.png">
-          <source src="assets/video/prologue.mp4" type="video/mp4">
-        </video>
-        <div class="media-scrim media-scrim--cinematic" aria-hidden="true"></div>
-        <div class="story-portal__copy cinematic-section__content reveal">
-          <h2 id="story-title">Start with the Prologue.</h2>
-          <p>The public build contains the complete two-stage Prologue. The Break has taken over Backbeat. Choose Joe or Lyra, protect Pulse Tower, and follow the First Press to the Orbit Line.</p>
-          <a class="button button--glass" href="#backbeat"><img class="button__icon button__icon--pixel" src="assets/sprites/gems/gem-4.png?v=site005" alt="" width="27" height="27"><span>See Stage 1</span></a>
+      <section id="story" class="prologue-tour section-pad" aria-labelledby="story-title">
+        <div class="prologue-tour__signal" aria-hidden="true"></div>
+        <div class="prologue-campaign reveal">
+          <div class="prologue-lockup">
+            <img class="prologue-lockup__game" src="assets/groove-bound-title.png" alt="Groove Bound" width="700" height="389">
+            <h2 id="story-title"><img src="assets/prologue-logo.png" alt="Prologue" width="1672" height="941"></h2>
+          </div>
+          <p>Choose Joe or Lyra and take one evolving build through both connected stages. Defend Backbeat Streets, claim the First Press, then follow its signal into the Orbit Line.</p>
+          <div class="prologue-campaign__status"><strong>The complete Prologue</strong><span>Two stages. One continuous run. Your weapons, supports, health, and upgrades carry forward.</span></div>
         </div>
-        <button class="media-control media-control--cinematic" type="button" data-video-sound="#prologue-video" aria-pressed="false" aria-label="Unmute scene" title="Unmute scene"><span class="sound-icon is-muted" data-sound-icon aria-hidden="true"><img data-sound-glyph src="assets/icons/sound-off.png" alt="" width="96" height="96"></span></button>
-      </section>
 
-      <section id="backbeat" class="lore-stage lore-stage--home section-pad" aria-labelledby="backbeat-title">
-        <div class="lore-stage__mast reveal">
-          <img src="assets/backbeat-environment.png" alt="Backbeat city environment under the Break" width="1517" height="936" loading="lazy" decoding="async">
-          <div><span class="stage-tag">Stage 01</span><h2 id="backbeat-title">Backbeat</h2><p>Protect Pulse Tower and stop the Static Baron.</p></div>
+        <div class="prologue-route reveal" role="tablist" aria-label="Prologue stages">
+          <button class="prologue-route__card is-active" type="button" role="tab" aria-selected="true" aria-controls="prologue-panel-backbeat" data-prologue-tab="backbeat">
+            <span>Stage 01</span><img class="prologue-route__logo" src="assets/prologue/backbeat-streets-logo-horizontal.png" alt="Backbeat Streets" width="2168" height="725"><small>Protect Pulse Tower</small>
+          </button>
+          <div class="prologue-route__bridge" aria-hidden="true"><i></i><img src="assets/sprites/weapons/weapon-7.png" alt="" width="256" height="256"><b>The First Press</b><i></i></div>
+          <button class="prologue-route__card" type="button" role="tab" aria-selected="false" aria-controls="prologue-panel-orbit" data-prologue-tab="orbit" tabindex="-1">
+            <span>Stage 02</span><img class="prologue-route__logo" src="assets/prologue/orbit-line-logo-horizontal.png" alt="Orbit Line" width="2172" height="724"><small>Stop the broadcast</small>
+          </button>
         </div>
-        <div class="lore-stage__brief reveal">
-          <article><strong>Objective</strong><p>Survive the waves, collect Resonance, and defeat the Static Baron.</p></article>
-          <article><strong>Enemies</strong><p>Fight fast skitters, heavy chargers, ranged turrets, and spectral chasers.</p></article>
-          <article><strong>Next stage</strong><p>The Static Baron drops the First Press, a record that contains the route to Stage 2.</p></article>
-        </div>
-      </section>
 
-      <section id="first-press" class="first-press first-press--linear section-pad" aria-labelledby="first-press-title">
-        <div class="first-press__copy reveal"><span class="stage-tag">Between stages</span><h2 id="first-press-title">The First Press leads to Stage 2.</h2><p>The record contains a route from Backbeat to the abandoned Orbit Line below Pulse Tower. Drag it across the map to find the signal.</p><p class="route-status" data-route-status aria-live="polite">Starting point: Pulse Tower</p></div>
-        <div class="route-map reveal" data-drag-zone data-route-map>
-          <img src="assets/first-press-orbit.png" alt="The First Press route from Backbeat to the Orbit Line" width="1672" height="941" loading="lazy" decoding="async">
-          <button class="route-record draggable" type="button" data-drag data-route-marker data-inspect-key="weapon-7" data-name="The First Press. Drag or inspect." aria-label="Drag or inspect the First Press record"><img src="assets/sprites/weapons/weapon-7.png" alt="The First Press record" width="256" height="256"></button>
-          <span class="route-target" aria-hidden="true">Orbit signal</span>
-        </div>
-      </section>
+        <div class="prologue-showcase reveal" data-prologue-showcase>
+          <article id="prologue-panel-backbeat" class="prologue-panel prologue-panel--backbeat is-active" role="tabpanel" data-prologue-panel="backbeat" style="--prologue-scene:url('assets/backbeat-environment.png')">
+            <div class="prologue-panel__copy">
+              <span>Stage 01</span>
+              <h3 class="prologue-panel__logo"><img src="assets/prologue/backbeat-streets-logo-horizontal.png" alt="Backbeat Streets" width="2168" height="725"></h3>
+              <p>The Break has taken over the city. Survive the waves, collect Resonance, protect Pulse Tower, and defeat the Static Baron.</p>
+              <ol><li><b>Objective</b><span>Hold the streets and build your loadout.</span></li><li><b>Route forward</b><span>Claim the First Press from the Static Baron.</span></li></ol>
+            </div>
+            <div class="prologue-roster" aria-label="Backbeat Streets enemy orchestra">
+              <figure data-inspect-key="enemy-1"><img src="assets/sprites/enemies/backbeat-1.png?v=site005" alt="Monotone"><figcaption>Monotone</figcaption></figure>
+              <figure data-inspect-key="enemy-2"><img src="assets/sprites/enemies/backbeat-2.png?v=site005" alt="Tempo Leech"><figcaption>Tempo Leech</figcaption></figure>
+              <figure data-inspect-key="enemy-7"><img src="assets/sprites/enemies/backbeat-7.png?v=site005" alt="Bass Brute"><figcaption>Bass Brute</figcaption></figure>
+              <figure data-inspect-key="enemy-8"><img src="assets/sprites/enemies/backbeat-8.png?v=site005" alt="Noise Turret"><figcaption>Noise Turret</figcaption></figure>
+              <figure class="prologue-roster__boss" data-inspect-key="enemy-4"><span>Boss</span><img src="assets/sprites/enemies/backbeat-4.png?v=site005" alt="Static Baron"><figcaption>Static Baron</figcaption></figure>
+            </div>
+            <figure class="prologue-panel__player">
+              <video controls playsinline preload="metadata" poster="assets/cutscene-dialogue.png" data-manual-video aria-label="Play the Groove Bound Prologue cutscene">
+                <source src="assets/video/prologue.mp4" type="video/mp4">
+              </video>
+              <figcaption>Watch the Prologue</figcaption>
+            </figure>
+          </article>
 
-      <section class="cinematic-section lore-cinematic" aria-labelledby="stage2-title">
-        <video id="stage2-video" class="ambient-video cinematic-section__video" muted loop playsinline preload="none" poster="assets/screens/stage2-arrival.png"><source src="assets/video/stage2-transition.mp4" type="video/mp4"></video>
-        <div class="media-scrim media-scrim--cinematic" aria-hidden="true"></div>
-        <div class="cinematic-section__content reveal"><h2 id="stage2-title">Continue to the Orbit Line.</h2><p>Your weapons, supports, health, and upgrades carry into the second stage.</p></div>
-        <button class="media-control media-control--cinematic" type="button" data-video-sound="#stage2-video" aria-pressed="false" aria-label="Unmute Stage 2 transition" title="Unmute Stage 2 transition"><span class="sound-icon is-muted" data-sound-icon aria-hidden="true"><img data-sound-glyph src="assets/icons/sound-off.png" alt="" width="96" height="96"></span></button>
-      </section>
-
-      <section id="orbit" class="lore-stage lore-stage--orbit lore-stage--home section-pad" aria-labelledby="orbit-title">
-        <div class="lore-stage__mast reveal">
-          <img src="assets/orbit-environment.png" alt="Alien Orbit Line platform" width="1926" height="1137" loading="lazy" decoding="async">
-          <div><span class="stage-tag">Stage 02</span><h2 id="orbit-title">Orbit Line</h2><p>Stop the broadcast coming from the abandoned platform.</p></div>
-        </div>
-        <div class="lore-stage__brief reveal">
-          <article><strong>Objective</strong><p>Keep your Backbeat build and shut down the broadcast.</p></article>
-          <article><strong>Enemies</strong><p>Fight ranged rays, pulse fields, lane chargers, and elite predators.</p></article>
-          <article><strong>Final boss</strong><p>Defeat the Grand Orchestrator and stop its Resonance pulse.</p></article>
+          <article id="prologue-panel-orbit" class="prologue-panel prologue-panel--orbit" role="tabpanel" data-prologue-panel="orbit" style="--prologue-scene:url('assets/orbit-environment.png')" hidden>
+            <div class="prologue-panel__copy">
+              <span>Stage 02</span>
+              <h3 class="prologue-panel__logo"><img src="assets/prologue/orbit-line-logo-horizontal.png" alt="Orbit Line" width="2172" height="724"></h3>
+              <p>Carry your full Backbeat build below Pulse Tower and shut down the hostile signal broadcasting from the abandoned platform.</p>
+              <ol><li><b>Objective</b><span>Break through the platform's ranged orchestra.</span></li><li><b>Finale</b><span>Defeat the Grand Orchestrator and stop its pulse.</span></li></ol>
+            </div>
+            <div class="prologue-roster" aria-label="Orbit Line enemy orchestra">
+              <figure data-inspect-key="enemy-10"><img src="assets/sprites/enemies/orbit-2.png?v=site005" alt="Trumpet Ray"><figcaption>Trumpet Ray</figcaption></figure>
+              <figure data-inspect-key="enemy-11"><img src="assets/sprites/enemies/orbit-3.png?v=site005" alt="Drum Wheel"><figcaption>Drum Wheel</figcaption></figure>
+              <figure data-inspect-key="enemy-13"><img src="assets/sprites/enemies/orbit-5.png?v=site005" alt="Amp Hound"><figcaption>Amp Hound</figcaption></figure>
+              <figure data-inspect-key="enemy-15"><img src="assets/sprites/enemies/orbit-7.png?v=site005" alt="Turntable Sentinel"><figcaption>Turntable Sentinel</figcaption></figure>
+              <figure class="prologue-roster__boss" data-inspect-key="enemy-16"><span>Final boss</span><img src="assets/sprites/enemies/orbit-8.png?v=site005" alt="Grand Orchestrator"><figcaption>Grand Orchestrator</figcaption></figure>
+            </div>
+            <figure class="prologue-panel__player">
+              <video controls playsinline preload="metadata" poster="assets/screens/stage2-arrival.png" data-manual-video aria-label="Play the Stage 2 transition cutscene">
+                <source src="assets/video/stage2-transition.mp4" type="video/mp4">
+              </video>
+              <figcaption>Watch the Stage 2 transition</figcaption>
+            </figure>
+          </article>
         </div>
       </section>
 
@@ -195,8 +209,8 @@
 
       <section class="remix section-pad" aria-labelledby="remix-title">
         <div class="remix__intro reveal">
-          <h2 id="remix-title">Move the game pieces.</h2>
-          <p>Drag the sprites around the stage. Select any piece to see what it does.</p>
+          <h2 id="remix-title">Meet the rest of the roster.</h2>
+          <p>Drag enemies, supports, evolutions, gems, and other catalog pieces around the stage. Select any piece to inspect it.</p>
           <button class="button button--glass" type="button" data-reset-drag>Reset the mix</button>
         </div>
         <div class="remix-stage reveal" data-drag-zone data-remix-stage aria-label="Draggable Groove Bound enemy, weapon, and gem sprites"></div>
@@ -212,12 +226,15 @@
 
       <section class="fusion-lab section-pad" aria-labelledby="fusion-title">
         <div class="fusion-lab__copy reveal">
-          <h2 id="fusion-title">Combine weapons and supports.</h2>
+          <h2 id="fusion-title">Evolve Your Weapons</h2>
           <p>Reach rank 10 with a weapon and collect its matching support to create an evolved weapon.</p>
           <div class="fusion-picker" data-fusion-picker aria-label="Fusion recipes"></div>
         </div>
         <div class="fusion-stage reveal" data-fusion-stage aria-live="polite">
           <div class="fusion-wave" aria-hidden="true"></div>
+          <div class="fusion-pulse fusion-pulse--one" aria-hidden="true"></div>
+          <div class="fusion-pulse fusion-pulse--two" aria-hidden="true"></div>
+          <div class="fusion-core" aria-hidden="true"></div>
           <button class="fusion-piece fusion-piece--weapon" type="button" data-fusion-inspect="weapon"><img data-fusion-weapon src="assets/sprites/weapons/weapon-1.png" alt="Kazoo Pistol"><b data-fusion-weapon-name>Kazoo Pistol R10</b></button>
           <span class="fusion-plus" aria-hidden="true">+</span>
           <button class="fusion-piece fusion-piece--support" type="button" data-fusion-inspect="support"><img data-fusion-support src="assets/sprites/supports/support-3.png" alt="Breath Control"><b data-fusion-support-name>Breath Control</b></button>
@@ -226,31 +243,18 @@
         </div>
       </section>
 
-      <section class="current-build section-pad" aria-labelledby="build-title">
-        <div class="current-build__head reveal">
-          <h2 id="build-title">See the current game.</h2>
-          <p>These screenshots come directly from the active development build.</p>
-        </div>
-        <div class="screenshot-grid screenshot-grid--latest">
-          <button class="screenshot-shot reveal" type="button" data-shot="assets/screens/gameplay-combat.png" data-shot-alt="Current Groove Bound combat run with live enemies, projectiles, and HUD"><img src="assets/screens/gameplay-combat.png" alt="Current Groove Bound combat run with live enemies, projectiles, and HUD" width="1366" height="768" loading="lazy" decoding="async"><span>Live Backbeat combat</span></button>
-          <button class="screenshot-shot reveal" type="button" data-shot="assets/screens/gameplay-level-up.png" data-shot-alt="Current Groove Bound in-run level-up choice"><img src="assets/screens/gameplay-level-up.png" alt="Current Groove Bound in-run level-up choice" width="1366" height="768" loading="lazy" decoding="async"><span>Current in-run level-up</span></button>
-          <button class="screenshot-shot reveal" type="button" data-shot="assets/screens/stage2-arrival.png" data-shot-alt="Joe and Lyra entering the current Stage 2 transition"><img src="assets/screens/stage2-arrival.png" alt="Joe and Lyra entering the current Stage 2 transition" width="1366" height="768" loading="lazy" decoding="async"><span>Stage 2 arrival</span></button>
-          <button class="screenshot-shot reveal" type="button" data-shot="assets/screens/stage2-escalation.png" data-shot-alt="Current Stage 2 transition revealing the Orbit Line threat"><img src="assets/screens/stage2-escalation.png" alt="Current Stage 2 transition revealing the Orbit Line threat" width="1366" height="768" loading="lazy" decoding="async"><span>Orbit Line escalation</span></button>
-        </div>
-      </section>
-
       <section class="download-stage" aria-labelledby="download-title">
         <video id="download-video" class="ambient-video" muted loop playsinline preload="none" poster="assets/screens/stage2-escalation.png"><source src="assets/video/ending.mp4" type="video/mp4"></video>
         <div class="media-scrim media-scrim--center" aria-hidden="true"></div>
         <div class="download-stage__content reveal">
-          <img src="assets/gb-icon.png" alt="Groove Bound GB icon" width="512" height="512">
-          <h2 id="download-title">Play on Windows or Mac.</h2>
-          <p>The public v0.7.1 build includes the complete Prologue plus the playable Funk, Soul, and Disco World Tour routes.</p>
-          <div class="download-stage__actions cta-pair">
-            <a class="button button--windows button--large magnetic" href="https://github.com/raoniai/groovebound-2026/releases/latest/download/Groove-Bound-Windows-x64.zip" target="_blank" rel="noreferrer"><span class="windows-mark" aria-hidden="true">⊞</span><span>Download for Windows</span></a>
+          <img src="assets/gb-icon-characters.png?v=20260813-02" alt="Groove Bound characters Joe and Lyra Vex" width="512" height="512">
+          <h2 id="download-title">Play Groove Bound on desktop.</h2>
+          <p>Choose your Resonant, shape a musical arsenal, and carry one evolving build from the Prologue into Funk, Soul, Disco, and Jazz.</p>
+          <div class="download-stage__actions cta-pair cta-pair--platforms">
             <a class="button button--gold button--large magnetic" href="https://github.com/raoniai/groovebound-2026/releases/latest/download/Groove-Bound-macOS.dmg" target="_blank" rel="noreferrer"><span class="apple-mark" aria-hidden="true">&#63743;</span><span>Download for Mac</span></a>
+            <a class="button button--glass button--large magnetic" href="https://github.com/raoniai/groovebound-2026/releases/latest/download/Groove-Bound-Windows-x64.zip" target="_blank" rel="noreferrer"><span class="windows-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span>Download for Windows</span></a>
             <a class="button button--gold button--large magnetic" href="https://github.com/raoniai/groovebound-2026" target="_blank" rel="noreferrer"><img class="button__icon" src="assets/icons/github.svg" alt="" width="22" height="22"><span>View repository</span></a>
-            <small class="platform-note">Windows x64 and macOS / Linux via LÖVE</small>
+            <small class="platform-note">macOS universal build / Windows x64 portable build</small>
           </div>
         </div>
         <button class="media-control" type="button" data-video-sound="#download-video" aria-pressed="false" aria-label="Unmute scene" title="Unmute scene"><span class="sound-icon is-muted" data-sound-icon aria-hidden="true"><img data-sound-glyph src="assets/icons/sound-off.png" alt="" width="96" height="96"></span></button>
@@ -258,114 +262,87 @@
 
       <section id="world-tour" class="world-tour section-pad" aria-labelledby="world-tour-title">
         <div class="world-tour__signal" aria-hidden="true"></div>
-        <div class="world-tour__intro reveal">
-          <div>
-            <h2 id="world-tour-title">World Tour</h2>
-            <p>After the Prologue, take one build through genre-based worlds. Each world has two stages, its own enemies and bosses, a gameplay mechanic, a grade, and permanent rewards.</p>
+        <div class="world-tour__campaign reveal">
+          <div class="campaign-lockup">
+            <img class="campaign-lockup__game" src="assets/groove-bound-title.png" alt="Groove Bound" width="700" height="389">
+            <h2 id="world-tour-title"><img src="assets/world-tour/logos/world-tour-header-logo-festival.png" alt="World Tour" width="1672" height="941"></h2>
           </div>
-          <div class="world-tour__status">
-            <strong>Included in v0.7.1</strong>
-            <span>Funk, Soul, and Disco are playable in the public Windows and Mac downloads. Six further routes remain in development.</span>
-          </div>
-        </div>
-
-        <div class="world-tour__stats reveal" aria-label="World Tour scope">
-          <div><strong>9</strong><span>World slots</span></div>
-          <div><strong>3</strong><span>Playable worlds</span></div>
-          <div><strong>6</strong><span>Playable stages</span></div>
-          <div><strong>19</strong><span>Permanent perks</span></div>
-          <div><strong>3</strong><span>Progression slots</span></div>
-        </div>
-
-        <div class="world-route reveal" aria-label="World Tour route">
-          <article class="world-route__card is-playable" data-world-route="funk"><span>01</span><h3>Funk</h3><p>The Pocket District</p><strong>Playable</strong></article>
-          <article class="world-route__card is-playable" data-world-route="soul"><span>02</span><h3>Soul</h3><p>Velvet Chapel</p><strong>Playable</strong></article>
-          <article class="world-route__card is-playable" data-world-route="disco"><span>03</span><h3>Disco</h3><p>Mirrorball Metro</p><strong>Playable</strong></article>
-          <article class="world-route__card"><span>04</span><h3>House</h3><p>Warehouse 909</p><strong>Planned</strong></article>
-          <article class="world-route__card"><span>05</span><h3>Electro</h3><p>Neon Circuit</p><strong>Planned</strong></article>
-          <article class="world-route__card"><span>06</span><h3>Techno</h3><p>The Iron Loop</p><strong>Planned</strong></article>
-          <article class="world-route__card world-route__card--secret"><span>07</span><h3>Cosmic Boogie</h3><p>Orbital Dance Deck</p><strong>Secret / planned</strong></article>
-          <article class="world-route__card world-route__card--secret"><span>08</span><h3>Soulful Garage</h3><p>Midnight Garage</p><strong>Secret / planned</strong></article>
-          <article class="world-route__card world-route__card--secret"><span>09</span><h3>Future Funk</h3><p>Tomorrow Mall</p><strong>Secret / planned</strong></article>
+          <p>Carry one build beyond the Prologue and through a living map of musical worlds. A continuous pulse connects the tour, while every world brings its own routes, rules, enemies, bosses, and musical identity.</p>
         </div>
 
         <div class="world-showcase reveal" data-world-showcase>
           <div class="world-showcase__head">
-            <h3>Three worlds are playable in v0.7.1.</h3>
-            <div class="world-tabs" role="tablist" aria-label="Playable World Tour worlds">
-              <button class="is-active" type="button" role="tab" aria-selected="true" aria-controls="world-panel-funk" data-world-tab="funk">Funk</button>
-              <button type="button" role="tab" aria-selected="false" aria-controls="world-panel-soul" data-world-tab="soul">Soul</button>
-              <button type="button" role="tab" aria-selected="false" aria-controls="world-panel-disco" data-world-tab="disco">Disco</button>
+            <div class="world-tabs world-tabs--icons" role="tablist" aria-label="World Tour worlds">
+              <button class="is-active" type="button" role="tab" aria-selected="true" aria-controls="world-panel-funk" data-world-tab="funk"><img class="world-tabs__icon" src="assets/world-tour/sprites/ui/world-tour/funk.png" alt="" width="400" height="400"><img class="world-tabs__logo" src="assets/world-tour/logos/funk.png" alt="Funk" width="1672" height="941"></button>
+              <button type="button" role="tab" aria-selected="false" aria-controls="world-panel-soul" data-world-tab="soul"><img class="world-tabs__icon" src="assets/world-tour/sprites/ui/world-tour/soul.png" alt="" width="400" height="400"><img class="world-tabs__logo" src="assets/world-tour/logos/soul.png" alt="Soul" width="1740" height="904"></button>
+              <button type="button" role="tab" aria-selected="false" aria-controls="world-panel-disco" data-world-tab="disco"><img class="world-tabs__icon" src="assets/world-tour/sprites/ui/interface/disco.png" alt="" width="400" height="400"><img class="world-tabs__logo" src="assets/world-tour/logos/disco.png" alt="Disco" width="1672" height="941"></button>
+              <button type="button" role="tab" aria-selected="false" aria-controls="world-panel-jazz" data-world-tab="jazz"><img class="world-tabs__icon" src="assets/world-tour/emblems/jazz.png" alt="" width="512" height="512"><img class="world-tabs__logo" src="assets/world-tour/logos/jazz.png" alt="Jazz" width="1750" height="899"></button>
+              <button class="is-coming-soon" type="button" role="tab" aria-selected="false" aria-disabled="true" tabindex="-1" disabled><img class="world-tabs__icon" src="assets/world-tour/emblems/house.png" alt="" width="512" height="512"><img class="world-tabs__logo" src="assets/world-tour/logos/house.png" alt="House" width="1672" height="941"><span class="world-tabs__status">Coming soon</span></button>
+              <button class="is-coming-soon" type="button" role="tab" aria-selected="false" aria-disabled="true" tabindex="-1" disabled><img class="world-tabs__icon" src="assets/world-tour/emblems/techno.png" alt="" width="512" height="512"><img class="world-tabs__logo" src="assets/world-tour/logos/techno.png" alt="Techno" width="1774" height="887"><span class="world-tabs__status">Coming soon</span></button>
             </div>
           </div>
 
-          <article id="world-panel-funk" class="world-panel world-panel--funk is-active" role="tabpanel" data-world-panel="funk">
+          <article id="world-panel-funk" class="world-panel world-panel--funk is-active" role="tabpanel" data-world-panel="funk" style="--world-floor:url('assets/world-tour/sprites/floors/funk/surface-01.png')">
             <div class="world-panel__copy">
+              <img class="world-panel__logo" src="assets/world-tour/logos/funk.png" alt="Funk" width="1672" height="941">
               <h4>Build the Pocket chain.</h4>
               <p>Stand on the active downbeat pad to build a chain and trigger a temporary damage boost.</p>
               <ol><li><b>The Pocket District</b><span>Boogie Tank</span></li><li><b>The Golden Afterparty</b><span>Mothership of Funk</span></li></ol>
             </div>
-            <div class="world-panel__art">
-              <figure class="world-atlas world-atlas--environment"><div class="sprite-collection sprite-collection--eight" data-sprite-collection="funk-environments"></div><figcaption>Environment set</figcaption></figure>
-              <figure class="world-atlas"><div class="sprite-collection sprite-collection--eight" data-sprite-collection="funk-enemies"></div><figcaption>Eight-enemy orchestra</figcaption></figure>
-              <figure class="world-atlas world-atlas--floor"><div class="sprite-collection sprite-collection--floors" data-sprite-collection="funk-floors"></div><figcaption>Floor set</figcaption></figure>
+            <div class="world-roster" aria-label="Funk enemy orchestra">
+              <figure data-inspect-key="world-enemy-funk-1"><img src="assets/world-tour/sprites/enemies/funk/pocket-gremlin.png" alt="Pocket Gremlin"><figcaption>Pocket Gremlin</figcaption></figure><figure data-inspect-key="world-enemy-funk-2"><img src="assets/world-tour/sprites/enemies/funk/slapback-hound.png" alt="Slapback Hound"><figcaption>Slapback Hound</figcaption></figure><figure data-inspect-key="world-enemy-funk-3"><img src="assets/world-tour/sprites/enemies/funk/groove-guard.png" alt="Groove Guard"><figcaption>Groove Guard</figcaption></figure><figure data-inspect-key="world-enemy-funk-4"><img src="assets/world-tour/sprites/enemies/funk/talkbox-oracle.png" alt="Talkbox Oracle"><figcaption>Talkbox Oracle</figcaption></figure><figure data-inspect-key="world-enemy-funk-6"><img src="assets/world-tour/sprites/enemies/funk/funkadelic-wasp.png" alt="Funkadelic Wasp"><figcaption>Funkadelic Wasp</figcaption></figure><figure data-inspect-key="world-enemy-funk-8"><img src="assets/world-tour/sprites/enemies/funk/pocket-phantom.png" alt="Pocket Phantom"><figcaption>Pocket Phantom</figcaption></figure><figure class="world-roster__boss" data-inspect-key="world-enemy-funk-5"><span>Boss</span><img src="assets/world-tour/sprites/enemies/funk/boogie-tank.png" alt="Boogie Tank"><figcaption>Boogie Tank</figcaption></figure><figure class="world-roster__boss" data-inspect-key="world-enemy-funk-7"><span>Final boss</span><img src="assets/world-tour/sprites/enemies/funk/mothership-of-funk.png" alt="Mothership of Funk"><figcaption>Mothership of Funk</figcaption></figure>
             </div>
           </article>
 
-          <article id="world-panel-soul" class="world-panel world-panel--soul" role="tabpanel" data-world-panel="soul" hidden>
+          <article id="world-panel-soul" class="world-panel world-panel--soul" role="tabpanel" data-world-panel="soul" style="--world-floor:url('assets/world-tour/sprites/floors/soul/surface-01.png')" hidden>
             <div class="world-panel__copy">
+              <img class="world-panel__logo" src="assets/world-tour/logos/soul.png" alt="Soul" width="1740" height="904">
               <h4>Charge the Soul reserve.</h4>
               <p>Fight to charge a shared reserve, then spend it to recover health.</p>
               <ol><li><b>The Velvet Nave</b><span>Organ Colossus</span></li><li><b>The Sanctuary Chorus</b><span>Velvet Titan</span></li></ol>
             </div>
-            <div class="world-panel__art">
-              <figure class="world-atlas world-atlas--environment"><div class="sprite-collection sprite-collection--eight" data-sprite-collection="soul-environments"></div><figcaption>Environment set</figcaption></figure>
-              <figure class="world-atlas"><div class="sprite-collection sprite-collection--eight" data-sprite-collection="soul-enemies"></div><figcaption>Eight-enemy orchestra</figcaption></figure>
-              <figure class="world-atlas world-atlas--floor"><div class="sprite-collection sprite-collection--floors" data-sprite-collection="soul-floors"></div><figcaption>Floor set</figcaption></figure>
+            <div class="world-roster" aria-label="Soul enemy orchestra">
+              <figure data-inspect-key="world-enemy-soul-1"><img src="assets/world-tour/sprites/enemies/soul/choir-automaton.png" alt="Choir Automaton"><figcaption>Choir Automaton</figcaption></figure><figure data-inspect-key="world-enemy-soul-2"><img src="assets/world-tour/sprites/enemies/soul/string-sentinel.png" alt="String Sentinel"><figcaption>String Sentinel</figcaption></figure><figure data-inspect-key="world-enemy-soul-3"><img src="assets/world-tour/sprites/enemies/soul/organ-walker.png" alt="Organ Walker"><figcaption>Organ Walker</figcaption></figure><figure data-inspect-key="world-enemy-soul-4"><img src="assets/world-tour/sprites/enemies/soul/harmony-linker.png" alt="Harmony Linker"><figcaption>Harmony Linker</figcaption></figure><figure data-inspect-key="world-enemy-soul-5"><img src="assets/world-tour/sprites/enemies/soul/gospel-moth.png" alt="Gospel Moth"><figcaption>Gospel Moth</figcaption></figure><figure data-inspect-key="world-enemy-soul-6"><img src="assets/world-tour/sprites/enemies/soul/velvet-knight.png" alt="Velvet Knight"><figcaption>Velvet Knight</figcaption></figure><figure class="world-roster__boss" data-inspect-key="world-enemy-soul-7"><span>Boss</span><img src="assets/world-tour/sprites/enemies/soul/organ-colossus.png" alt="Organ Colossus"><figcaption>Organ Colossus</figcaption></figure><figure class="world-roster__boss" data-inspect-key="world-enemy-soul-8"><span>Final boss</span><img src="assets/world-tour/sprites/enemies/soul/velvet-titan.png" alt="Velvet Titan"><figcaption>Velvet Titan</figcaption></figure>
             </div>
           </article>
 
-          <article id="world-panel-disco" class="world-panel world-panel--disco" role="tabpanel" data-world-panel="disco" hidden>
+          <article id="world-panel-disco" class="world-panel world-panel--disco" role="tabpanel" data-world-panel="disco" style="--world-floor:url('assets/world-tour/sprites/floors/disco/surface-01.png')" hidden>
             <div class="world-panel__copy">
+              <img class="world-panel__logo" src="assets/world-tour/logos/disco.png" alt="Disco" width="1672" height="941">
               <h4>Follow the spotlight.</h4>
               <p>Stay inside the moving light to gain a temporary speed boost.</p>
               <ol><li><b>Mirrorball Concourse</b><span>Laser Conductor</span></li><li><b>The Prism Platform</b><span>Prism Monarch</span></li></ol>
             </div>
-            <div class="world-panel__art">
-              <figure class="world-atlas world-atlas--environment"><div class="sprite-collection sprite-collection--eight" data-sprite-collection="disco-environments"></div><figcaption>Environment set</figcaption></figure>
-              <figure class="world-atlas"><div class="sprite-collection sprite-collection--eight" data-sprite-collection="disco-enemies"></div><figcaption>Eight-enemy orchestra</figcaption></figure>
-              <figure class="world-atlas world-atlas--floor"><div class="sprite-collection sprite-collection--floors" data-sprite-collection="disco-floors"></div><figcaption>Floor set</figcaption></figure>
+            <div class="world-roster" aria-label="Disco enemy orchestra">
+              <figure data-inspect-key="world-enemy-disco-6"><img src="assets/world-tour/sprites/enemies/disco/glitter-guard.png" alt="Glitter Guard"><figcaption>Glitter Guard</figcaption></figure><figure data-inspect-key="world-enemy-disco-3"><img src="assets/world-tour/sprites/enemies/disco/laser-fan.png" alt="Laser Fan"><figcaption>Laser Fan</figcaption></figure><figure data-inspect-key="world-enemy-disco-2"><img src="assets/world-tour/sprites/enemies/disco/mirror-drone.png" alt="Mirror Drone"><figcaption>Mirror Drone</figcaption></figure><figure data-inspect-key="world-enemy-disco-5"><img src="assets/world-tour/sprites/enemies/disco/platform-pouncer.png" alt="Platform Pouncer"><figcaption>Platform Pouncer</figcaption></figure><figure data-inspect-key="world-enemy-disco-1"><img src="assets/world-tour/sprites/enemies/disco/prism-roller.png" alt="Prism Roller"><figcaption>Prism Roller</figcaption></figure><figure data-inspect-key="world-enemy-disco-4"><img src="assets/world-tour/sprites/enemies/disco/reflection-twin.png" alt="Reflection Twin"><figcaption>Reflection Twin</figcaption></figure><figure class="world-roster__boss" data-inspect-key="world-enemy-disco-7"><span>Boss</span><img src="assets/world-tour/sprites/enemies/disco/laser-conductor.png" alt="Laser Conductor"><figcaption>Laser Conductor</figcaption></figure><figure class="world-roster__boss" data-inspect-key="world-enemy-disco-8"><span>Final boss</span><img src="assets/world-tour/sprites/enemies/disco/prism-monarch.png" alt="Prism Monarch"><figcaption>Prism Monarch</figcaption></figure>
+            </div>
+          </article>
+
+          <article id="world-panel-jazz" class="world-panel world-panel--jazz" role="tabpanel" data-world-panel="jazz" style="--world-floor:url('assets/world-tour/sprites/floors/jazz/surface-01.png')" hidden>
+            <div class="world-panel__copy">
+              <img class="world-panel__logo" src="assets/world-tour/logos/jazz.png" alt="Jazz" width="1750" height="899">
+              <h4>Catch the blue note.</h4>
+              <p>Enter each active improvisation window to gain a temporary speed boost and keep the phrase moving.</p>
+              <ol><li><b>Blue Note Borough</b><span>Brass Regent</span></li><li><b>Midnight Changes</b><span>Midnight Maestro</span></li></ol>
+            </div>
+            <div class="world-roster" aria-label="Jazz enemy orchestra">
+              <figure data-inspect-key="world-enemy-jazz-1"><img src="assets/world-tour/sprites/enemies/jazz/syncopated-imp.png" alt="Syncopated Imp"><figcaption>Syncopated Imp</figcaption></figure><figure data-inspect-key="world-enemy-jazz-2"><img src="assets/world-tour/sprites/enemies/jazz/blue-note-bat.png" alt="Blue Note Bat"><figcaption>Blue Note Bat</figcaption></figure><figure data-inspect-key="world-enemy-jazz-3"><img src="assets/world-tour/sprites/enemies/jazz/walking-bass-bot.png" alt="Walking Bass Bot"><figcaption>Walking Bass Bot</figcaption></figure><figure data-inspect-key="world-enemy-jazz-4"><img src="assets/world-tour/sprites/enemies/jazz/scat-cannon.png" alt="Scat Cannon"><figcaption>Scat Cannon</figcaption></figure><figure data-inspect-key="world-enemy-jazz-5"><img src="assets/world-tour/sprites/enemies/jazz/bebop-behemoth.png" alt="Bebop Behemoth"><figcaption>Bebop Behemoth</figcaption></figure><figure data-inspect-key="world-enemy-jazz-6"><img src="assets/world-tour/sprites/enemies/jazz/brushfire-skitter.png" alt="Brushfire Skitter"><figcaption>Brushfire Skitter</figcaption></figure><figure class="world-roster__boss" data-inspect-key="world-enemy-jazz-7"><span>Boss</span><img src="assets/world-tour/sprites/enemies/jazz/brass-regent.png" alt="Brass Regent"><figcaption>Brass Regent</figcaption></figure><figure class="world-roster__boss" data-inspect-key="world-enemy-jazz-8"><span>Final boss</span><img src="assets/world-tour/sprites/enemies/jazz/midnight-maestro.png" alt="Midnight Maestro"><figcaption>Midnight Maestro</figcaption></figure>
             </div>
           </article>
         </div>
 
-        <div class="world-systems">
-          <div class="world-systems__head reveal"><h3>Each world adds a gameplay mechanic.</h3><p>The current systems cover world selection, timing mechanics, grades, rewards, permanent perks, and three save slots.</p></div>
-          <div class="world-systems__grid">
-            <figure class="system-atlas system-atlas--wide reveal"><div class="sprite-collection sprite-collection--ten" data-sprite-collection="world-mechanics"></div><figcaption><strong>Gameplay mechanics</strong><span>Funk timing pads and the Disco spotlight.</span></figcaption></figure>
-            <figure class="system-atlas reveal"><div class="sprite-collection sprite-collection--ten" data-sprite-collection="world-tour-ui"></div><figcaption><strong>World selection and grades</strong><span>Choose a world and track the grade for each clear.</span></figcaption></figure>
-            <figure class="system-atlas reveal"><div class="sprite-collection sprite-collection--ten" data-sprite-collection="world-interface"></div><figcaption><strong>World Tour interface</strong><span>World records, rewards, completion, and mastery.</span></figcaption></figure>
-            <figure class="system-atlas reveal"><div class="sprite-collection sprite-collection--ten" data-sprite-collection="menu-icons"></div><figcaption><strong>Menu controls</strong><span>Continue, start a run, open World Tour, change settings, or reset.</span></figcaption></figure>
-            <figure class="system-atlas reveal"><div class="sprite-collection sprite-collection--eight" data-sprite-collection="evolutions"></div><figcaption><strong>Eight more fusions</strong><span>The second half of the 16-fusion roster.</span></figcaption></figure>
-            <figure class="system-atlas reveal"><div class="sprite-collection sprite-collection--perks" data-sprite-collection="perks"></div><figcaption><strong>Permanent perks</strong><span>19 upgrades earned from the Prologue and World grades.</span></figcaption></figure>
-          </div>
-        </div>
+      </section>
 
-        <div class="encore-system reveal">
-          <div class="encore-system__copy">
-            <h3>Open chests for rewards.</h3>
-            <p>Musical chests roll five hidden reels and give one, three, or five rewards. World bosses drop an Encore Gate chest that completes the stage and moves the run forward.</p>
-          </div>
-          <div class="encore-system__hero" aria-label="Animated musical chest and Encore Gate chest">
-            <div><span class="frame-animation frame-animation--chest" data-frame-sequence="assets/world-tour/sprites/chests/musical/frame" data-frame-count="8" aria-hidden="true"></span><strong>Musical chest</strong><small>Eight-frame loop</small></div>
-            <div><img src="assets/world-tour/stage-clear-chest.png" alt="Encore Gate stage-clear chest" width="1024" height="1024" loading="lazy" decoding="async"><strong>Encore Gate</strong><small>Completes the stage</small></div>
-          </div>
-          <div class="encore-system__atlases">
-            <figure><div class="sprite-collection sprite-collection--eight" data-sprite-collection="musical-chest"></div><figcaption>Musical chest frames</figcaption></figure>
-            <figure><div class="sprite-collection sprite-collection--ten" data-sprite-collection="chest-luck"></div><figcaption>Reward rolls and reveal states</figcaption></figure>
-            <figure><div class="sprite-collection sprite-collection--eight" data-sprite-collection="completion"></div><figcaption>Completion and results</figcaption></figure>
-            <figure><div class="sprite-collection sprite-collection--five" data-sprite-collection="funk-pocket"></div><figcaption>Funk Pocket pad sequence</figcaption></figure>
-          </div>
+      <section class="current-build section-pad" aria-labelledby="build-title">
+        <div class="current-build__head reveal">
+          <h2 id="build-title">Step inside the game.</h2>
+          <p>Explore combat, progression, story transitions, and the worlds beyond Pulse Tower.</p>
+        </div>
+        <div class="screenshot-grid screenshot-grid--latest">
+          <button class="screenshot-shot reveal" type="button" data-shot="assets/screens/gameplay-combat.png" data-shot-alt="Groove Bound combat with enemies, projectiles, and HUD"><img src="assets/screens/gameplay-combat.png" alt="Groove Bound combat with enemies, projectiles, and HUD" width="1366" height="768" loading="lazy" decoding="async"><span>Backbeat combat</span></button>
+          <button class="screenshot-shot reveal" type="button" data-shot="assets/screens/gameplay-level-up.png" data-shot-alt="Groove Bound in-run level-up choice"><img src="assets/screens/gameplay-level-up.png" alt="Groove Bound in-run level-up choice" width="1366" height="768" loading="lazy" decoding="async"><span>Shape your loadout</span></button>
+          <button class="screenshot-shot reveal" type="button" data-shot="assets/screens/stage2-arrival.png" data-shot-alt="Joe and Lyra entering the Stage 2 transition"><img src="assets/screens/stage2-arrival.png" alt="Joe and Lyra entering the Stage 2 transition" width="1366" height="768" loading="lazy" decoding="async"><span>Stage 2 arrival</span></button>
+          <button class="screenshot-shot reveal" type="button" data-shot="assets/screens/stage2-escalation.png" data-shot-alt="Stage 2 transition revealing the Orbit Line threat"><img src="assets/screens/stage2-escalation.png" alt="Stage 2 transition revealing the Orbit Line threat" width="1366" height="768" loading="lazy" decoding="async"><span>Orbit Line escalation</span></button>
         </div>
       </section>
 
@@ -373,10 +350,10 @@
 
     <footer class="site-footer">
       <div class="footer-main">
-        <div class="footer-intro"><a class="footer-brand" href="index.html"><img src="assets/gb-icon.png" alt="" width="512" height="512"><span>Groove Bound</span></a><p>Choose a character, build a set, and survive the run.</p><a class="footer-version" href="https://github.com/raoniai/groovebound-2026/releases/tag/v0.7.1" target="_blank" rel="noreferrer">Public build v0.7.1</a></div>
-        <nav class="footer-map" aria-label="Website map"><div><h2>Explore</h2><a href="index.html">Home</a><a href="index.html#story">Prologue</a><a href="index.html#world-tour">World Tour</a><a href="catalog.html">Catalog</a><a href="index.html#arsenal">Arsenal</a></div><div><h2>Play and build</h2><a href="https://github.com/raoniai/groovebound-2026/releases/latest/download/Groove-Bound-Windows-x64.zip" target="_blank" rel="noreferrer">Download for Windows</a><a href="https://github.com/raoniai/groovebound-2026/releases/latest/download/Groove-Bound-macOS.dmg" target="_blank" rel="noreferrer">Download for Mac</a><a href="https://github.com/raoniai/groovebound-2026" target="_blank" rel="noreferrer">GitHub repository</a><a href="https://github.com/raoniai/groovebound-2026/releases/tag/v0.7.1" target="_blank" rel="noreferrer">Release notes</a></div><div><h2>Creator</h2><a href="builder.html">Meet Raoni</a><a href="https://www.linkedin.com/in/raonilima" target="_blank" rel="noreferrer">LinkedIn</a><a href="https://github.com/raoniai" target="_blank" rel="noreferrer">GitHub profile</a></div></nav>
+        <div class="footer-intro"><a class="footer-brand" href="index.html"><img src="assets/gb-icon.png?v=20260813-02" alt="" width="512" height="512"><span>Groove Bound</span></a><p>Choose a character, build a set, and survive the run.</p></div>
+        <nav class="footer-map" aria-label="Website map"><div><h2>Explore</h2><a href="index.html">Home</a><a href="index.html#story">Prologue</a><a href="index.html#world-tour">World Tour</a><a href="catalog.html">Catalog</a><a href="index.html#arsenal">Arsenal</a></div><div><h2>Play and build</h2><a href="https://github.com/raoniai/groovebound-2026/releases/latest/download/Groove-Bound-macOS.dmg" target="_blank" rel="noreferrer">Download for Mac</a><a href="https://github.com/raoniai/groovebound-2026/releases/latest/download/Groove-Bound-Windows-x64.zip" target="_blank" rel="noreferrer">Download for Windows</a><a href="https://github.com/raoniai/groovebound-2026" target="_blank" rel="noreferrer">GitHub repository</a></div><div><h2>Creator</h2><a href="builder.html">Meet Raoni</a><a href="https://www.linkedin.com/in/raonilima" target="_blank" rel="noreferrer">LinkedIn</a><a href="https://github.com/raoniai" target="_blank" rel="noreferrer">GitHub profile</a></div></nav>
       </div>
-      <div class="footer-bottom"><p>© 2026 Raoni Lima. Available for Windows x64 and macOS.</p><div class="social-links" aria-label="Raoni Lima social profiles"><a href="https://github.com/raoniai" target="_blank" rel="noreferrer" data-name="GitHub" aria-label="Raoni Lima on GitHub"><img src="assets/icons/github.svg" alt="" width="24" height="24"></a><a href="https://www.linkedin.com/in/raonilima" target="_blank" rel="noreferrer" data-name="LinkedIn" aria-label="Raoni Lima on LinkedIn"><img src="assets/icons/linkedin.svg" alt="" width="24" height="24"></a><a href="https://x.com/raonilima" target="_blank" rel="noreferrer" data-name="X" aria-label="Raoni Lima on X"><img src="assets/icons/x.svg" alt="" width="24" height="24"></a></div></div>
+      <div class="footer-bottom"><p>© 2026 Raoni Lima. Available for macOS and Windows x64.</p><div class="social-links" aria-label="Raoni Lima social profiles"><a href="https://github.com/raoniai" target="_blank" rel="noreferrer" data-name="GitHub" aria-label="Raoni Lima on GitHub"><img src="assets/icons/github.svg" alt="" width="24" height="24"></a><a href="https://www.linkedin.com/in/raonilima" target="_blank" rel="noreferrer" data-name="LinkedIn" aria-label="Raoni Lima on LinkedIn"><img src="assets/icons/linkedin.svg" alt="" width="24" height="24"></a><a href="https://x.com/raonilima" target="_blank" rel="noreferrer" data-name="X" aria-label="Raoni Lima on X"><img src="assets/icons/x.svg" alt="" width="24" height="24"></a></div></div>
     </footer>
 
     <dialog class="shot-dialog" data-shot-dialog>
@@ -385,6 +362,6 @@
     </dialog>
 
     <audio data-audio src="assets/title-theme.ogg" preload="none"></audio>
-    <script src="script.js?v=20260811-04" defer></script>
+    <script src="script.js?v=20260813-04" defer></script>
   </body>
 </html>

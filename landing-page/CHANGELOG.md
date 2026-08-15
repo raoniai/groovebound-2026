@@ -2,22 +2,299 @@
 
 This file is the local implementation record. Add a new entry at the top after every material site pass.
 
+## 2026-08-15 | SITE-055 | v0.9.4 individual enemy state animation
+
+Prepared Home, Catalog, and Builder for v0.9.4 while retaining the stable
+GitHub Latest desktop routes. Added the newly distinct Breakbeat Bruiser using
+its canonical runtime walk pose as the 213th inspectable record, and recorded
+the 170-strip, 600-frame enemy suite: walk, hit, and death for every enemy plus
+authored attack sequences for all 23 projectile enemies.
+
+## 2026-08-15 | SITE-054 | v0.9.3 enemy animation suite
+
+Prepared the Home, Catalog, and Builder version badges for v0.9.3 while
+retaining stable GitHub Latest download routes. The desktop release adds
+deterministic three- or four-frame movement animation to all 49 enemy
+definitions across Backbeat, Orbit, Funk, Soul, Disco, and Jazz without
+changing enemy mechanics, collision, balance, or gameplay RNG.
+
+## 2026-08-15 | SITE-053 | v0.9.2 projectile system
+
+Prepared the Home, Catalog, and Builder version badges for v0.9.2 while
+retaining stable GitHub Latest download routes. The desktop release replaces
+weapon-shaped shots with 32 independent five-stage projectile animations,
+adds nine attack families, preserves rank-scaled protective coverage, and
+slows the strongest beam and scenario attacks for cleaner combat readability.
+
+## 2026-08-14 | SITE-052 | v0.9.1 desktop package hotfix
+
+Updated the public release badge to v0.9.1 while preserving the stable Latest
+desktop download routes. The patch restores the World Tour lock sprite omitted
+from v0.9.0 and adds a package gate that rejects missing runtime-referenced
+assets before publication.
+
+## 2026-08-14 | SITE-051 | v0.9.0 world overhaul sync
+
+Published the verified 420-file v0.9.0 site through encrypted FTPS after saving
+a local rollback bundle. GitHub Latest now serves the synchronized macOS,
+Windows, and `.love` packages with all required manifests and SHA-256 records.
+The desktop build adds distinct Funk, Soul, Disco, and Jazz mechanic loops;
+animated second-stage environments; Encore and boss Break rewards; and harder,
+knockback-resistant bosses with escalating projectile patterns. Public page,
+version badge, and stable download-route checks all passed.
+
+## 2026-08-14 | SITE-050 | Consolidated World Tour selector
+
+Removed the duplicate six-world route strip and the redundant playable-world
+heading and helper copy from Home. The centered selector is now the single World
+Tour menu: Funk, Soul, Disco, and Jazz remain interactive, while House and
+Techno have moved into the same grid as clearly disabled Coming soon cards.
+
+## 2026-08-14 | SITE-049 | Jazz Home selector emblem correction
+
+Replaced the duplicated Jazz wordmark in the Home World Tour selector with the
+canonical 512px transparent Jazz emblem. The selector now pairs one emblem with
+the existing Jazz wordmark, matching the visual structure of Funk, Soul, and
+Disco while preserving the accessible Jazz label.
+
+## 2026-08-14 | SITE-048 | Public v0.8.5 catalog release
+
+Published the verified 420-file v0.8.5 site through encrypted FTPS after saving
+a local rollback bundle. Public byte checks passed for Home, Catalog, Builder,
+shared styles, scripts, status data, and representative campaign assets. GitHub
+Latest is v0.8.5 with all seven required desktop assets and SHA-256 digests; the
+stable macOS and Windows actions resolve to the new release packages.
+
+## 2026-08-14 | SITE-047 | Compact multi-filter Catalog controls
+
+Rebuilt the Catalog toolbar around compact text-and-count category chips that
+can be combined, independently toggled, and reset with one accessible X clear
+control. Removed the visible result counter, section-heading icons and counts,
+and every mouse-following Inspect cue across the site. Added a compact magnified
+search field, persistent category-colour outlines for all Catalog assets, and
+replaced the Jazz, House, Techno, Cosmic Boogie, Soulful Garage, and Future Funk
+world-card art with byte-identical copies of the canonical v0.8.5 emblems.
+
+## 2026-08-14 | SITE-046 | v0.8.5 catalog and interface release sync
+
+Updated the Home, Catalog, and Builder release identity for the v0.8.5 desktop
+packages. Stable macOS and Windows actions continue to use GitHub Latest and
+will resolve to the synchronized catalog-polish build after publication.
+
+## 2026-08-14 | SITE-045 | Complete scenario archive and world-card correction
+
+Removed the standalone General category and moved the Jazz emblem into the Jazz
+World record. Replaced all three winged secret-route placeholders with the
+authentic chained lock sprite, matching the locked House and Techno routes.
+Expanded Scenario Backgrounds from 12 Jazz-only records to 88 authentic assets:
+all environment props, expansion props, floors, and background surfaces from
+both Prologue stages and every currently playable World Tour world. The complete
+Catalog now contains 212 records across 10 focused categories.
+
+## 2026-08-14 | SITE-044 | Jazz asset catalog expansion
+
+Expanded the Resonance Archive with 13 new records and corrected its visible
+total from the stale pre-Jazz count of 116 to the live inventory of 137. Added a dedicated
+one-block General category led by a new transparent Jazz World emblem, cataloged
+all eight Jazz environment sprites and all four floor/background surfaces as
+inspectable scenario records, and retained the complete eight-enemy Jazz roster.
+Added world/emblem/scenario relationships and responsive category presentation.
+The Jazz emblem has a preserved source candidate, canonical generated derivative,
+byte-identical website copy, and recorded generation and transparency provenance.
+
+## 2026-08-14 | SITE-043 | v0.8.4 Jazz release sync
+
+Published the Home, Catalog, and Builder for v0.8.4. Promoted Jazz to the fourth
+playable World Tour route, added its two-stage path and full eight-enemy roster,
+generated isolated website sprites from the canonical Jazz atlases, and updated
+the public version badge and deployment contract. The 374-file FTPS release was
+uploaded after rollback capture; core pages, scripts, representative assets,
+GitHub Latest, and stable Mac/Windows routes are public-live verified.
+
+## 2026-08-13 | SITE-042 | Local v0.8.3 badge reconciliation
+
+Corrected the local Home, Catalog, and Builder header badges from v0.8.2 to the
+verified GitHub Latest v0.8.3 release. Stable macOS and Windows Latest download
+routes remain unchanged. Public deployment is not implied; the live pages still
+require a separately approved upload and post-deployment parity check.
+
+## 2026-08-13 | SITE-041 | Public v0.8.2 interface release sync
+
+Updated the Home, Catalog, and Builder version badges to the verified v0.8.2
+GitHub Latest release. All Mac and Windows actions continue to use the stable
+Latest routes, which now resolve to the synchronized sprite-polished interface
+packages from clean release commit `693885a`. Refreshed the deployment verifier
+with the published Windows ZIP and Mac DMG sizes and SHA-256 digests.
+
+## 2026-08-13 | SITE-040 | Evergreen public-facing presentation
+
+Kept v0.8.1 only in the top navigation badge and removed release-difference,
+development-build, and release-notes language from Home, Catalog, Builder,
+metadata, footers, screenshots, and interactive world records. Replaced it with
+evergreen player-facing copy centred on characters, musical combat, progression,
+the Prologue, and World Tour. Locked routes now read as polished coming-soon and
+secret-route teasers rather than development status reports. Updated the public
+deployment verifier to assert the new evergreen headlines instead of removed
+release-update phrases.
+
+## 2026-08-13 | SITE-039 | Public v0.8.1 desktop release sync
+
+Updated Home, Catalog, and Builder to the verified v0.8.1 GitHub Latest release.
+All Mac and Windows actions retain their stable Latest routes, which now deliver
+native packages built from clean commit `66b58bb` with the same deterministic
+payload. Updated the visible badges and release-note links, and added the new
+player-controlled level-up points and compact alert-stack story without removing
+the v0.8.0 World Tour soundtrack information.
+
+## 2026-08-13 | SITE-038 | Transparent game icon refresh
+
+Replaced the flattened Groove Bound identity images with the two supplied
+transparent game icons. The GB monogram now carries navigation, footer,
+catalog-filter, and favicon identity; the Joe and Lyra Vex artwork now leads the
+desktop download scene and Apple touch icon. Added cache-versioned references
+across all three pages and recorded the preserved promotional sources and
+website derivatives.
+
+## 2026-08-13 | SITE-037 | Public v0.8.0 FTPS deployment
+
+Published the verified v0.8.0 site to `https://raoni.ai/groovebound/` through
+the new encrypted FTPS workflow. Captured the previous Home, Catalog, Builder,
+CSS, JavaScript, and status data in a local rollback bundle, then uploaded 353
+allowlisted public files with assets first and HTML last. Byte-for-byte public
+checks passed for all three pages, shared code, and representative campaign
+logos; both stable GitHub Latest downloads still resolve to the exact v0.8.0
+desktop assets. Desktop and mobile browser checks found no broken images or
+horizontal overflow.
+
+## 2026-08-13 | SITE-036 | Automated FTP deployment
+
+Added a release-aware FTP publisher for the three-page site. The workflow now
+builds a clean allowlisted package with SHA-256 manifest, keeps credentials in a
+dedicated macOS Keychain item, confirms the remote path and FTPS/FTP protocol,
+captures a local rollback bundle, uploads assets before scripts and HTML, and
+verifies the public pages plus the stable GitHub Latest download routes. Live
+upload remains an explicit `--release ... --publish` action.
+
+## 2026-08-13 | SITE-035 | v0.8.0 World Tour soundtrack release
+
+Updated Home, Catalog, and Builder to the public v0.8.0 release and linked every
+visible release badge and notes action to the exact v0.8.0 GitHub release. Added
+the verified music story throughout the site: one continuous World Tour hub
+theme, nine world-specific soundtrack packs, and 28 optimized runtime cues with
+distinct route, pressure or boss, and finale music. Retained the stable GitHub
+Latest routes for macOS and Windows so future releases do not strand download
+actions on an older tag.
+
+## 2026-08-12 | SITE-034 | Direct World Tour-to-screenshots flow
+
+Removed the complete World Tour mechanics presentation from Home, including its
+gameplay-mechanic sprites, world-selection and grade menus, World Tour interface,
+menu controls, extra fusion and perk galleries, and the chest-reward subsection.
+The three playable world panels now finish the World Tour chapter and flow
+directly into the current-development screenshots in both the source HTML and
+the enhanced module order.
+
+## 2026-08-12 | SITE-033 | Simplified Home hero actions
+
+Removed the secondary “Start with the Prologue” link from the Home hero. The
+top section now ends with the macOS, Windows, and repository actions while the
+existing primary navigation still links directly to the Prologue section.
+
+## 2026-08-12 | SITE-032 | Inspectable campaign enemy rosters
+
+Connected every enemy and boss shown in the selectable Prologue and playable
+World Tour stage rosters to its existing catalog record. All 34 visible figures
+now open the shared detail inspector by click, Enter, or Space, expose a visible
+focus state and Inspect cue, return focus when closed, and retain the inspector's
+record-specific View in full catalog action. World Tour enemy records also link
+to their matching world and Resonance-drop records inside the popup.
+
+## 2026-08-12 | SITE-031 | Equal evolution selector ratios
+
+Locked all sixteen evolution selector buttons to the same square aspect ratio.
+Removed each sprite's intrinsic dimensions from grid sizing and contained the
+artwork inside a consistent inset, so tall evolution art can no longer stretch
+individual controls. The balanced desktop rows and compact mobile grid retain
+their existing ordering and spacing.
+
+## 2026-08-12 | SITE-030 | Horizontal Prologue stage wordmarks
+
+Created and integrated one wide, font-led transparent wordmark variation for
+each Prologue stage. Backbeat Streets now combines its distressed street stencil
+with speaker, waveform, road-case, graffiti, and hazard details. Orbit Line uses
+exactly those two words—without “The”—inside a broadcast-rail treatment built
+from vinyl grooves, orbital signal lines, purple energy, cyan, magenta, and brass.
+The previous circular emblems remain preserved as source identity assets, while
+the selector cards and stage headers now use the more legible horizontal marks.
+
+## 2026-08-12 | SITE-029 | Prologue stage video players
+
+Added a full-width native 16:9 campaign player inside each selectable Prologue
+stage block. Backbeat Streets uses the authentic Prologue MP4, while The Orbit
+Line uses the authentic Stage 2 transition MP4. Both website files remain byte-
+identical to their canonical source videos, use native playback controls, and do
+not autoplay. Switching stages pauses any video in the panel being hidden so its
+audio cannot continue beneath the newly selected stage.
+
+## 2026-08-12 | SITE-028 | Windows download parity
+
+Added the published v0.7.1 Windows x64 portable ZIP beside every active macOS
+download CTA across Home, Catalog, Builder, shared headers, and shared footers.
+Replaced the obsolete Mac-only and Windows-coming-soon language with verified
+desktop availability, added a compact Windows mark and balanced three-action
+download groups, and aligned the repository README with the same stable Latest-
+release routes. The public Windows ZIP, release manifest, checksum file, and
+stable download redirect were verified against the live GitHub release before
+the site copy was changed.
+
+## 2026-08-12 | SITE-027 | Home flow and selectable Prologue
+
+Reordered Home around the requested journey: trailer, character selection,
+unified Prologue, World Tour, current game captures, weapon evolution, weapons,
+and the remaining interactive roster. Consolidated the previous five-part
+Prologue sequence into a keyboard-accessible two-stage selector with Backbeat
+Streets and Orbit Line environments, enemies, bosses, objectives, and the First
+Press bridge. Added a transparent Prologue cutout whose foreground pixels come
+from the newly extracted logo, plus an isolated transparent World Tour festival-
+passport lockup derived from the first generated thumbnail option for the World
+Tour header.
+Rebuilt the sixteen evolution choices as a larger balanced five-five-six grid,
+renamed the section to “Evolve Your Weapons,” and accelerated the fusion sequence
+with layered pulses, earlier convergence, three rapid white flashes, and a static
+reduced-motion presentation. Removed the World Tour number strip and public-build
+disclaimer, tightened the six-world route cards, and replaced their sprite locks
+with small CSS locks beside the status text. Added isolated transparent Backbeat
+Streets and Orbit Line destination badges from the Prologue signal-route thumbnail
+to both the stage selector and stage-panel headers.
+
+## 2026-08-11 | SITE-026 | Builder portrait restoration
+
+Restored Raoni's supplied AI Raoni V2 portrait directly beneath his name in the
+Builder hero. The site uses a byte-identical copy of the original 1520-by-1520
+image and a responsive contained treatment so the portrait remains fully visible
+without destructive edge cropping on desktop or mobile.
+
 ## 2026-08-11 | SITE-025 | v0.7.1 menu and controller release
 
-Updated the visible public-build links and version copy to v0.7.1 while
-preserving the stable GitHub Latest asset routes. The release adds clear
+Updated the visible public-build links and version copy to v0.7.1 while keeping
+every Mac CTA on the stable GitHub Latest DMG route. The release adds clear
 sprite-backed menu focus, true four-direction controller navigation, complete
 controller access through Pause, Settings, Controls and Admin, the cleaner
 level-up/evolution presentation, evolution-aware capped-build chest handling,
 and gradual free starter loadouts for harder World Tour routes.
 
-## 2026-08-11 | SITE-024 | Windows x64 public download
+## 2026-08-11 | SITE-024 | World Tour campaign system and Builder art edit
 
-Added a parallel Windows x64 download route to Home, Catalog, Builder, shared
-headers, hero and closing calls to action, and every footer. Updated the public
-build to v0.7.1, retained the stable Mac DMG route, replaced Mac-only wording,
-and added responsive cyan Windows controls without changing the site's cinematic
-identity or reduced-motion behavior.
+Created a reusable World Tour campaign lockup plus individual transparent
+lettering marks for Funk, Soul, Disco, Jazz, House, and Techno. Rebuilt the Home
+campaign around the requested six-world order, a large icon-led selector for the
+three playable routes, authentic floor-tile backgrounds, individually extracted
+enemy orchestras, and enlarged bosses. Replaced multi-frame sprite presentations
+with representative open states and increased the lower system-card titles.
+Reworked House around a communal dancefloor and Techno around an obscure dark
+club identity. Stripped Builder down to a short Groove Bound-first introduction,
+current gameplay, two web-optimised first-party RAOVERSE films, and a compact
+archive of Raoni's original RAOVERSE, Subjekt, and speculative artworks.
 
 ## 2026-08-11 | SITE-023 | v0.7.0 public World Tour release
 

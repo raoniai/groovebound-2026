@@ -17,6 +17,7 @@ local content = {
     funk = require("src.content.world_tour_waves.funk"),
     soul = require("src.content.world_tour_waves.soul"),
     disco = require("src.content.world_tour_waves.disco"),
+    jazz = require("src.content.world_tour_waves.jazz"),
   },
   world_stages = require("src.content.world_stages"),
   meta_perks = require("src.content.meta_perks"),

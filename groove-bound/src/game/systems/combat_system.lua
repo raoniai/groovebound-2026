@@ -118,6 +118,7 @@ function CombatSystem:init(opts)
   self.pickup_notice_text = nil
   self.pending_chest_reveals = {}
   self.buffs = { damage = 0, defense = 0, speed = 0 }
+  self.world_mechanic_effects = { damage = 1, cadence = 1, encore = false }
   self.stages = opts.stages or self.content.stages
   self.stage_index = 0
   self.stage_started_at = 0
@@ -126,6 +127,24 @@ function CombatSystem:init(opts)
   self.stage_clear_reported = false
   self.overtime_latched = false
   self:begin_stage(1, self.arena, true)
+end
+
+function CombatSystem:set_world_mechanic_effects(effects)
+  self.world_mechanic_effects = effects or { damage = 1, cadence = 1 }
+end
+
+function CombatSystem:on_world_mechanic_success(definition)
+  local broken = false
+  self.ctx.world:each("enemy", function(enemy)
+    if enemy.definition.boss_type == "final" then
+      broken = enemy:apply_world_break(definition.boss_break or 1) or broken
+    end
+  end)
+  if broken then
+    self.wave_notice = "ENCORE BREAK  •  BOSS CORE EXPOSED"
+    self.wave_notice_time = 3.5
+  end
+  return broken
 end
 
 function CombatSystem:_stage_duration(stage)
@@ -341,10 +360,27 @@ function CombatSystem:_nearest_target()
   return best
 end
 
-function CombatSystem:_spawn_projectile(snapshot, angle)
+function CombatSystem:_spawn_projectile(snapshot, angle, shot, count, target)
   if self.ctx.world:count("projectile") >= self.tuning:get("projectiles.max_active") then return end
-  local offset = settings.combat.projectile_spawn_offset
+  local centered = snapshot.attack_family == "area_effect"
+    or snapshot.attack_family == "orbital"
+    or snapshot.attack_family == "beam"
+    or snapshot.attack_family == "storm"
+  local offset = centered and 0 or settings.combat.projectile_spawn_offset
   local dx, dy = math.cos(angle), math.sin(angle)
+  local target_x = self.player.x + dx * snapshot.coverage
+  local target_y = self.player.y + dy * snapshot.coverage
+  if target and (snapshot.attack_family == "lobbed_bomb"
+      or snapshot.attack_family == "deployable")
+  then
+    local vx, vy = target.x - self.player.x, target.y - self.player.y
+    local distance = math.sqrt(vx * vx + vy * vy)
+    local travel = math.min(snapshot.coverage, distance)
+    if distance > 0 then
+      target_x = self.player.x + vx / distance * travel
+      target_y = self.player.y + vy / distance * travel
+    end
+  end
   local projectile = self.projectile_pool:acquire({
     assets = self.assets,
     x = self.player.x + dx * offset,
@@ -359,6 +395,25 @@ function CombatSystem:_spawn_projectile(snapshot, angle)
     knockback = snapshot.knockback,
     color = snapshot.color,
     source_weapon_id = snapshot.source_weapon_id,
+    attack_family = snapshot.attack_family,
+    visual_id = snapshot.visual_id,
+    animation_frames = snapshot.animation_frames,
+    animation_fps = snapshot.animation_fps,
+    animation_mode = snapshot.animation_mode,
+    player = self.player,
+    target_x = target_x,
+    target_y = target_y,
+    coverage = snapshot.coverage,
+    effect_radius = snapshot.effect_radius,
+    hit_cooldown = snapshot.hit_cooldown,
+    flight_time = snapshot.flight_time,
+    active_duration = snapshot.active_duration,
+    return_delay = snapshot.return_delay,
+    angular_speed = snapshot.angular_speed,
+    orbit_angle = count and count > 0
+      and ((shot or 1) - 1) / count * math.pi * 2 or 0,
+    max_targets = snapshot.max_targets,
+    follow_player = snapshot.follow_player,
   })
   self.ctx.world:add("projectile", projectile)
   self.stats.shots = self.stats.shots + 1
@@ -382,11 +437,27 @@ function CombatSystem:_update_weapons(dt)
 
   for slot = 1, self.inventory:count() do
     local emitter = self.weapon_runtime:get(slot)
-    emitter.cooldown_remaining = emitter.cooldown_remaining - dt
+    emitter.cooldown_remaining = emitter.cooldown_remaining
+      - dt * (self.world_mechanic_effects.cadence or 1)
     local activations = 0
     while emitter.cooldown_remaining <= 0 and activations < 3 do
       local snapshot = self.weapon_runtime:projectile_snapshot(slot)
       local count = snapshot.count
+      if snapshot.attack_family == "lobbed_bomb"
+        or snapshot.attack_family == "area_effect"
+        or snapshot.attack_family == "beam"
+        or snapshot.attack_family == "storm"
+        or snapshot.attack_family == "wave"
+        or snapshot.attack_family == "deployable"
+      then
+        count = 1
+      elseif snapshot.attack_family == "orbital" then
+        count = math.min(4, count)
+      elseif snapshot.attack_family == "boomerang" then
+        count = math.min(3, count)
+      else
+        count = math.min(5, count)
+      end
       local spread = math.rad(snapshot.spread or 0)
       for shot = 1, count do
         local angle
@@ -413,7 +484,7 @@ function CombatSystem:_update_weapons(dt)
           local offset = (shot - (count + 1) / 2) * spread
           angle = base_angle + offset
         end
-        self:_spawn_projectile(snapshot, angle)
+        self:_spawn_projectile(snapshot, angle, shot, count, target)
       end
       emitter.cooldown_remaining = emitter.cooldown_remaining + emitter.cooldown
       activations = activations + 1
@@ -422,12 +493,38 @@ function CombatSystem:_update_weapons(dt)
   end
 end
 
-function CombatSystem:_spawn_static_wave(enemy, damage_multiplier)
-  local count = enemy.definition.projectile_count or 16
+function CombatSystem:_spawn_static_wave(enemy, damage_multiplier, action)
+  action = action or {}
+  local phase = action.phase or 1
+  local count = (action.count or enemy.definition.projectile_count or 16)
+    + (phase - 1) * 4
   for index = 1, count do
     local angle = (index - 1) / count * math.pi * 2
     self:_spawn_enemy_projectile(enemy, {
       kind = "static_wave",
+      projectile_class = index % (phase == 3 and 3 or 4) == 0
+        and "heavy" or "light",
+      dx = math.cos(angle),
+      dy = math.sin(angle),
+    }, damage_multiplier)
+  end
+end
+
+function CombatSystem:_spawn_pattern(enemy, action, damage_multiplier)
+  if action.kind == "static_wave" then
+    return self:_spawn_static_wave(enemy, damage_multiplier, action)
+  end
+  local count = action.count or (action.kind == "cross_wave" and 8 or 7)
+  local base = math.atan2(action.dy, action.dx)
+  local spread = math.rad(action.spread or 14)
+  for index = 1, count do
+    local angle = action.kind == "cross_wave"
+      and (index - 1) / count * math.pi * 2
+      or base + (index - (count + 1) / 2) * spread
+    self:_spawn_enemy_projectile(enemy, {
+      kind = action.kind,
+      projectile_class = action.projectile_class or "light",
+      phase = action.phase,
       dx = math.cos(angle),
       dy = math.sin(angle),
     }, damage_multiplier)
@@ -513,6 +610,14 @@ function CombatSystem:_kill_enemy(enemy)
     self:_try_spawn_rare_pickup(enemy)
     if not enemy.suppress_reward_chest then self:_try_spawn_reward_chest(enemy) end
   end
+  self.vfx:spawn(
+    "enemy_death", enemy.x, enemy.y,
+    {
+      enemy_id = enemy.id,
+      enemy_size = enemy.definition.sprite_size or 82,
+      flip_x = enemy.anim_row == 3,
+      duration = enemy.definition.boss_type and 0.72 or 0.48,
+    })
   self.vfx:spawn(
     "explosion", enemy.x, enemy.y,
     {
@@ -669,7 +774,8 @@ function CombatSystem:_update_buffs(dt)
     self.buffs[kind] = math.max(0, remaining - dt)
   end
   self.weapon_runtime:set_temporary_damage_multiplier(
-    self.buffs.damage > 0 and 1.5 or 1)
+    (self.buffs.damage > 0 and 1.5 or 1)
+      * (self.world_mechanic_effects.damage or 1))
   self.player.temporary_defense_multiplier = self.buffs.defense > 0 and 1.5 or 1
   self.player.temporary_speed_multiplier = self.buffs.speed > 0 and 1.35 or 1
 end
@@ -687,58 +793,102 @@ function CombatSystem:_update_overtime()
   end)
 end
 
+function CombatSystem:_apply_projectile_hit(projectile, candidate)
+  if candidate.dead or projectile.dead or not projectile:register_hit(candidate) then
+    return false
+  end
+  self.stats.damage = self.stats.damage + projectile.damage
+  local weapon_damage = self.stats.damage_by_weapon[projectile.source_weapon_id] or 0
+  self.stats.damage_by_weapon[projectile.source_weapon_id] =
+    weapon_damage + projectile.damage
+  local push = projectile.knockback
+    * self.tuning:get("combat.knockback_multiplier")
+    * (self.character.knockback_mult or 1)
+  candidate:push(projectile.dx, projectile.dy, push * 7)
+  self.vfx:spawn("hit", candidate.x, candidate.y, {
+    scale = 0.18 + math.min(0.16, projectile.base_radius / 70),
+    rotation = math.atan2(projectile.dy, projectile.dx),
+  })
+  if candidate:take_damage(projectile.damage) then
+    self:_kill_enemy(candidate)
+  else
+    self.vfx:spawn("damage", candidate.x, candidate.y, {
+      scale = 0.18,
+      duration = 0.20,
+    })
+  end
+  return true
+end
+
 function CombatSystem:_update_projectiles(dt)
   self.ctx.world:each("projectile", function(projectile)
     projectile:update(dt, self.arena)
-    if not projectile.dead then
-      self.ctx.world:moved(projectile)
-      self.ctx.world.hash:each_in_circle(
-        projectile.x,
-        projectile.y,
-        projectile.radius,
-        function(candidate)
-          if candidate.kind == "enemy_projectile"
-            and not candidate.dead
-            and not projectile.dead
-          then
-            projectile.dead = true
-            candidate.dead = true
+    if projectile.dead then return end
+    self.ctx.world:moved(projectile)
+    if not projectile:claim_collision_scan() then return end
+
+    if projectile.attack_family == "storm" then
+      local candidates = {}
+      self.ctx.world:each("enemy", function(candidate)
+        if projectile:contains_target(candidate) then
+          candidates[#candidates + 1] = candidate
+        end
+      end)
+      table.sort(candidates, function(a, b)
+        local ad = distance_sq(projectile.x, projectile.y, a.x, a.y)
+        local bd = distance_sq(projectile.x, projectile.y, b.x, b.y)
+        if ad ~= bd then return ad < bd end
+        local aid = tostring(a.id or (a.definition and a.definition.id) or "")
+        local bid = tostring(b.id or (b.definition and b.definition.id) or "")
+        if aid ~= bid then return aid < bid end
+        if a.x ~= b.x then return a.x < b.x end
+        return a.y < b.y
+      end)
+      for _, candidate in ipairs(candidates) do
+        self:_apply_projectile_hit(projectile, candidate)
+      end
+      return
+    end
+
+    if projectile.attack_family == "beam" then
+      self.ctx.world:each("enemy", function(candidate)
+        if projectile:contains_target(candidate) then
+          self:_apply_projectile_hit(projectile, candidate)
+        end
+      end)
+      return
+    end
+
+    local scan_radius = projectile.radius
+    if projectile.attack_family == "wave" then
+      scan_radius = math.max(projectile.wave_width / 2, projectile.wave_depth)
+    end
+    self.ctx.world.hash:each_in_circle(
+      projectile.x, projectile.y, scan_radius,
+      function(candidate)
+        local cancels_shots = projectile.attack_family == "linear"
+          or projectile.attack_family == "boomerang"
+          or projectile.attack_family == "wave"
+        if candidate.kind == "enemy_projectile"
+          and not candidate.dead
+          and not projectile.dead
+          and cancels_shots
+        then
+          projectile.dead = true
+          local cancelled = candidate.register_cancel_hit
+            and candidate:register_cancel_hit() or false
+          if cancelled then
             self.stats.enemy_shots_cancelled =
               self.stats.enemy_shots_cancelled + 1
-            self.vfx:spawn("hit", projectile.x, projectile.y, {
-              scale = 0.22,
-              rotation = math.atan2(projectile.dy, projectile.dx),
-            })
-          elseif candidate.kind == "enemy"
-            and not candidate.dead
-            and not projectile.dead
-            and projectile:register_hit(candidate)
-          then
-            self.stats.damage = self.stats.damage + projectile.damage
-            local weapon_damage = self.stats.damage_by_weapon[projectile.source_weapon_id] or 0
-            self.stats.damage_by_weapon[projectile.source_weapon_id] =
-              weapon_damage + projectile.damage
-            local push = projectile.knockback
-              * self.tuning:get("combat.knockback_multiplier")
-              * (self.character.knockback_mult or 1)
-            candidate:push(projectile.dx, projectile.dy, push * 7)
-            self.vfx:spawn(
-              "hit", projectile.x, projectile.y,
-              {
-                scale = 0.18 + math.min(0.16, projectile.radius / 70),
-                rotation = math.atan2(projectile.dy, projectile.dx),
-              })
-            if candidate:take_damage(projectile.damage) then
-              self:_kill_enemy(candidate)
-            else
-              self.vfx:spawn("damage", candidate.x, candidate.y, {
-                scale = 0.18,
-                duration = 0.20,
-              })
-            end
           end
-        end)
-    end
+          self.vfx:spawn("hit", projectile.x, projectile.y, {
+            scale = 0.22,
+            rotation = math.atan2(projectile.dy, projectile.dx),
+          })
+        elseif candidate.kind == "enemy" and not candidate.dead then
+          self:_apply_projectile_hit(projectile, candidate)
+        end
+      end)
   end)
 end
 
@@ -782,8 +932,10 @@ function CombatSystem:_update_enemies(dt)
     end
     if action and action.kind == "note_bolt" then
       self:_spawn_enemy_projectile(enemy, action, damage_multiplier)
-    elseif action and action.kind == "static_wave" then
-      self:_spawn_static_wave(enemy, damage_multiplier)
+    elseif action and (action.kind == "static_wave"
+      or action.kind == "aimed_fan" or action.kind == "cross_wave")
+    then
+      self:_spawn_pattern(enemy, action, damage_multiplier)
     elseif action and action.kind == "resonance_pulse" then
       local range = enemy.definition.attack_range or 160
       if distance_sq(self.player.x, self.player.y, enemy.x, enemy.y)
@@ -817,10 +969,13 @@ function CombatSystem:_spawn_enemy_projectile(enemy, action, damage_multiplier)
     y = enemy.y,
     dx = action.dx,
     dy = action.dy,
-    speed = enemy.definition.projectile_speed or 270,
+    speed = (enemy.definition.projectile_speed or 270)
+      * (1 + ((action.phase or 1) - 1) * .10),
     damage = enemy.definition.damage * damage_multiplier * enemy.overtime_multiplier,
     radius = action.kind == "static_wave" and 15
       or enemy.definition.boss_type and 11 or 8,
+    projectile_class = action.projectile_class,
+    cancel_health = action.projectile_class == "heavy" and 3 or 1,
     color = enemy.definition.color,
   })
   self.ctx.world:add("enemy_projectile", projectile)

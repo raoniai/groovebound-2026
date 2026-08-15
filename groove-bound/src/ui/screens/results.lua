@@ -1,20 +1,19 @@
 local class = require("src.core.class")
 local Fonts = require("src.ui.fonts")
-local Icons = require("src.ui.icons")
 local settings = require("src.config.settings")
 local widgets = require("src.ui.widgets.button")
 local UIScale = require("src.ui.scale")
+local MenuChrome = require("src.ui.menu_chrome")
+local NumberFormat = require("src.ui.number_format")
+local RankBadge = require("src.ui.rank_badge")
 
 local ResultsScreen = class()
 ResultsScreen.kind = "results"
 
 ResultsScreen.opaque = true
 
-local function draw_chip(x, y, w, h)
-  love.graphics.setColor(0.025, 0.018, 0.06, 0.58)
-  love.graphics.rectangle("fill", x, y, w, h, 7, 7)
-  love.graphics.setColor(0.38, 0.32, 0.56, 0.72)
-  love.graphics.rectangle("line", x, y, w, h, 7, 7)
+local function draw_chip(assets, x, y, w, h)
+  MenuChrome.cta(assets, { x = x, y = y, w = w, h = h }, { alpha = 0.78 })
 end
 
 function ResultsScreen:init(app, result)
@@ -32,18 +31,25 @@ function ResultsScreen:_layout()
   self.ui_scale = scale
   local bw, bh, gap = 280, 54, 14
   local x = (w - bw) / 2
-  local y = h * 0.79
+  local y = h * 0.70
   local next_label = self.result.outcome == "victory"
     and (self.result.mode == "world_tour" and "WORLD TOUR CATALOG"
       or "ENTER WORLD TOUR") or "CONTINUE CAMPAIGN"
-  local draw_icon = self.app.assets and function(icon, ix, iy, iw, ih, opts)
-    self.app.assets:draw_world_interface(icon.col, icon.row, ix, iy, iw, ih, opts)
-  end or nil
+  local function button(opts)
+    opts.renderer = function(value)
+      MenuChrome.action(self.app.assets, value, {
+        menu_cell = opts.menu_cell,
+        label = opts.label,
+        font_size = opts.font_size,
+      })
+    end
+    return widgets.Button(opts)
+  end
   self.buttons = widgets.ButtonList({
-    widgets.Button({
+    button({
       label = next_label, x = x, y = y, w = bw, h = bh,
       font_size = 21,
-      icon = { col = 3, row = 2 }, draw_icon = draw_icon,
+      menu_cell = self.result.outcome == "victory" and 3 or 1,
       variant = "primary",
       on_press = function()
         if self.result.outcome == "victory" then
@@ -55,10 +61,10 @@ function ResultsScreen:_layout()
         end
       end,
     }),
-    widgets.Button({
-      label = "Return to Title", x = x, y = y + bh + gap, w = bw, h = bh,
+    button({
+      label = "RETURN TO TITLE", x = x, y = y + bh + gap, w = bw, h = bh,
       font_size = 20,
-      icon = { col = 1, row = 1 }, draw_icon = draw_icon,
+      menu_cell = 8,
       on_press = function()
         local TitleScreen = require("src.ui.screens.title")
         self.app.states:switch(TitleScreen(self.app))
@@ -100,14 +106,14 @@ function ResultsScreen:draw()
 
   local stats = self.result.stats
   local summary = {
-    { icon = "stage", label = "STAGES", value = (self.result.stages_cleared or 0)
+    { icon = 9, label = "STAGES", value = (self.result.stages_cleared or 0)
       .. "/" .. (self.result.stage_count or 2) },
-    { icon = "clock", label = "TIME", value = string.format("%02d:%02d",
+    { icon = 10, label = "TIME", value = string.format("%02d:%02d",
       math.floor(self.result.time / 60), math.floor(self.result.time % 60)) },
-    { icon = "score", label = "SCORE", value = tostring(stats.score) },
-    { icon = "combo", label = "MAX COMBO", value = "×" .. stats.max_combo },
-    { icon = "damage", label = "DAMAGE", value = tostring(math.floor(stats.damage)) },
-    { icon = "chest", label = "COINS", value = tostring(
+    { icon = 11, label = "SCORE", value = NumberFormat.integer(stats.score) },
+    { icon = 12, label = "MAX COMBO", value = "×" .. stats.max_combo },
+    { icon = 13, label = "DAMAGE", value = NumberFormat.integer(stats.damage) },
+    { icon = 14, label = "COINS", value = NumberFormat.integer(
       stats.coins + self.result.progression.coins) },
   }
   local panel_w = math.min(1040, w - 80)
@@ -117,12 +123,14 @@ function ResultsScreen:draw()
   local chip_y = h * 0.29
   for index, item in ipairs(summary) do
     local x = start_x + (index - 1) * (chip_w + gap)
-    draw_chip(x, chip_y, chip_w, 76)
+    draw_chip(self.app.assets, x, chip_y, chip_w, 76)
     local compact_chip = chip_w < 130
     local icon_x = x + (compact_chip and 18 or 28)
     local text_x = x + (compact_chip and 34 or 52)
-    Icons.draw(item.icon, icon_x, chip_y + 38, compact_chip and 22 or 28,
-      { 0.34, 0.92, 1.0, 0.92 })
+    local icon_size = compact_chip and 30 or 38
+    self.app.assets:draw_menu_stat_icon(item.icon,
+      icon_x - icon_size / 2, chip_y + (76 - icon_size) / 2,
+      icon_size, { color = { 1, 1, 1, 0.94 } })
     love.graphics.setColor(0.68, 0.72, 0.84, 1)
     love.graphics.setFont(Fonts.get(12))
     love.graphics.printf(item.label, text_x, chip_y + 15,
@@ -133,13 +141,35 @@ function ResultsScreen:draw()
       x + chip_w - text_x - 6, "left")
   end
 
-  love.graphics.setColor(0.72, 0.78, 0.90, 1)
-  love.graphics.setFont(Fonts.get(15))
-  love.graphics.printf(
-    string.format("LEVEL %d  •  KILLS %d  •  XP %d  •  SHOTS %d  •  BOSSES %d",
-      self.result.level, stats.kills, math.floor(stats.xp),
-      stats.shots, stats.bosses),
-    0, chip_y + 88, w, "center")
+  local progress = {
+    { label = "LEVEL", value = NumberFormat.integer(self.result.level), rank = true },
+    { label = "KILLS", value = NumberFormat.integer(stats.kills), icon = 15 },
+    { label = "XP GAIN", value = NumberFormat.integer(stats.xp), icon = 16 },
+  }
+  local progress_w = math.min(620, w - 120)
+  local progress_gap = 12
+  local progress_chip_w = (progress_w - progress_gap * 2) / 3
+  local progress_x = (w - progress_w) / 2
+  local progress_y = chip_y + 84
+  for index, item in ipairs(progress) do
+    local x = progress_x + (index - 1) * (progress_chip_w + progress_gap)
+    draw_chip(self.app.assets, x, progress_y, progress_chip_w, 58)
+    if item.rank then
+      RankBadge.draw(self.app.assets, x + 14, progress_y + 8, 42,
+        self.result.level)
+    else
+      self.app.assets:draw_menu_stat_icon(item.icon,
+        x + 14, progress_y + 10, 38, { color = { 1, 1, 1, 0.94 } })
+    end
+    love.graphics.setColor(0.68, 0.72, 0.84, 1)
+    love.graphics.setFont(Fonts.get(11))
+    love.graphics.printf(item.label, x + 62, progress_y + 9,
+      progress_chip_w - 72, "left")
+    love.graphics.setColor(settings.ui.text_color)
+    love.graphics.setFont(Fonts.get(21))
+    love.graphics.printf(item.value, x + 62, progress_y + 26,
+      progress_chip_w - 72, "left")
+  end
 
   local weapons = self.result.progression.weapons
   local rack_w = math.min(620, w - 100)
@@ -147,10 +177,7 @@ function ResultsScreen:draw()
     / math.max(1, #weapons))
   local rack_total = #weapons * slot_size + math.max(0, #weapons - 1) * 10
   local rack_x = (w - rack_total) / 2
-  local rack_y = h * 0.49
-  love.graphics.setColor(settings.ui.accent_color)
-  love.graphics.setFont(Fonts.get(14))
-  love.graphics.printf("FINAL SETLIST", 0, rack_y - 27, w, "center")
+  local rack_y = progress_y + 72
   for index, weapon in ipairs(weapons) do
     local definition = self.app.content.weapons[weapon.id]
     local x = rack_x + (index - 1) * (slot_size + 10)
@@ -162,24 +189,8 @@ function ResultsScreen:draw()
     self.app.assets:draw_weapon_icon(
       definition.icon, x + slot_size / 2, rack_y + slot_size / 2,
       slot_size * 0.75)
-    love.graphics.setColor(settings.ui.accent_color)
-    love.graphics.setFont(Fonts.get(13))
-    love.graphics.printf("R" .. weapon.level, x, rack_y + slot_size - 18,
-      slot_size - 5, "right")
-  end
-
-  local evolution_names = {}
-  for _, evolution in ipairs(self.result.progression.evolutions) do
-    local result = self.app.content.weapons[evolution.result_weapon]
-    if result then
-      evolution_names[#evolution_names + 1] =
-        string.upper(evolution.branch) .. " " .. result.name
-    end
-  end
-  if #evolution_names > 0 then
-    love.graphics.setColor(settings.ui.accent_color)
-    love.graphics.printf("Evolved: " .. table.concat(evolution_names, ", "),
-      w * 0.1, h * 0.64, w * 0.8, "center")
+    RankBadge.draw(self.app.assets, x + slot_size - 28, rack_y - 7, 34,
+      weapon.level, { maxed = weapon.level >= definition.max_level })
   end
 
   self.buttons:draw()

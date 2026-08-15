@@ -22,6 +22,25 @@ local function fresh()
     function() return popped end
 end
 
+local function evolution_fresh(count, reduced_motion)
+  local ids = { "kazoo_studio", "bass_supernova", "cymbal_ovation" }
+  local rewards = {}
+  for index = 1, count do
+    local recipe = Content.evolutions[ids[index]]
+    rewards[#rewards + 1] = {
+      kind = "evolution",
+      id = recipe.id,
+      title = Content.weapons[recipe.result_weapon].name,
+      description = recipe.name,
+    }
+  end
+  return ChestRewardScreen({
+    content = Content,
+    profile = { options = { reduced_motion = reduced_motion == true } },
+    states = { pop = function() end },
+  }, { roll = count == 2 and 3 or 1, rewards = rewards })
+end
+
 T["spinning chests converge, flash, then reveal every exact reward"] = function()
   local screen = fresh()
   H.eq(screen:phase(), "converge")
@@ -75,6 +94,68 @@ T["luck multiplier resolves directly into the reward cards"] = function()
   screen:update(screen:count_lock_duration())
   H.eq(screen:phase(), "rewards")
   H.eq(screen:visible_symbol(3).id, screen.rewards[3].id)
+end
+
+T["evolutions play one quick fusion beat at a time before reward cards"] = function()
+  local screen = evolution_fresh(2)
+  H.eq(screen:evolution_count(), 2)
+  H.is_true(screen:evolution_reveal_duration() < 4.8)
+
+  screen:update(screen:count_roll_duration() + screen:count_lock_duration())
+  H.eq(screen:phase(), "evolution")
+  H.eq(screen:active_evolution_index(), 1)
+  H.eq(screen:current_evolution().id, "kazoo_studio")
+  H.eq(screen:visible_reel_count(), 0)
+
+  screen:update(screen:evolution_reveal_duration() + 0.01)
+  H.eq(screen:phase(), "evolution")
+  H.eq(screen:active_evolution_index(), 2)
+  H.eq(screen:current_evolution().id, "bass_supernova")
+  H.eq(screen:visible_reel_count(), 0)
+
+  screen:update(screen:evolution_reveal_duration() + 0.01)
+  H.eq(screen:phase(), "rewards")
+  H.eq(screen:visible_reel_count(), 3)
+end
+
+T["non-evolution rewards wait while multiple chest evolutions resolve in reward order"] = function()
+  local screen = evolution_fresh(2)
+  table.insert(screen.rewards, 2, {
+    kind = "coins", id = "coins", title = "Tip Jar",
+    description = "Bank 25 coins.",
+  })
+  screen.reveal.roll = 3
+
+  H.eq(screen:evolution_count(), 2)
+  screen:update(screen:count_roll_duration() + screen:count_lock_duration()
+    + screen:evolution_reveal_duration() + 0.01)
+  H.eq(screen:active_evolution_index(), 2)
+  H.eq(screen:current_evolution().id, "bass_supernova")
+  H.eq(screen:visible_reel_count(), 0)
+
+  screen:update(screen:evolution_reveal_duration())
+  H.eq(screen:phase(), "rewards")
+  H.eq(screen:visible_reel_count(), 3)
+end
+
+T["reduced motion preserves sequential evolution timing with shorter static beats"] = function()
+  local standard = evolution_fresh(2)
+  local reduced = evolution_fresh(2, true)
+  H.is_true(reduced:evolution_reveal_duration()
+    < standard:evolution_reveal_duration())
+  H.eq(reduced:animation_duration(),
+    reduced:reward_reveal_at() + 0.95)
+end
+
+T["flash accessibility options suppress chest and evolution flashes"] = function()
+  local reduced_flash = evolution_fresh(1)
+  reduced_flash.app.profile.options.reduced_flash = true
+  H.is_false(reduced_flash:flash_enabled())
+
+  local disabled_flash = evolution_fresh(1)
+  disabled_flash.app.profile.options.hit_flash = false
+  H.is_false(disabled_flash:flash_enabled())
+  H.is_true(evolution_fresh(1):flash_enabled())
 end
 
 return T

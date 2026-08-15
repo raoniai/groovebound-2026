@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - codex/world-tour-v1
+      - codex/world-overhaul-v090
       - codex/windows-version
   pull_request:
 

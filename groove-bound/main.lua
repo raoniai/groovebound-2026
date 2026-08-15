@@ -174,6 +174,10 @@ function love.gamepadpressed(joystick, button)
   app.states:gamepadpressed(joystick, button)
 end
 
+function love.gamepadreleased(joystick, button)
+  app.states:gamepadreleased(joystick, button)
+end
+
 function love.joystickpressed(joystick, button)
   if app.input_gate:joystick_button(button) ~= "pause" then return end
   if not app.input_gate:accept("joystick", button) then return end

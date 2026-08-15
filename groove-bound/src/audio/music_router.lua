@@ -1,5 +1,35 @@
 local MusicRouter = {}
 
+local world_routes = {
+  funk = "world_funk_route",
+  soul = "world_soul_route",
+  disco = "world_disco_route",
+  jazz = "world_electro_route",
+  house = "world_house_route",
+  electro = "world_electro_route",
+  techno = "world_techno_route",
+  cosmic_boogie = "world_cosmic_boogie_route",
+  soulful_garage = "world_soulful_garage_route",
+  future_funk = "world_future_funk_route",
+}
+
+local world_bosses = {
+  boogie_tank = "world_funk_boogie_tank",
+  mothership_of_funk = "world_funk_mothership",
+  organ_colossus = "world_soul_organ_colossus",
+  velvet_titan = "world_soul_velvet_titan",
+  laser_conductor = "world_disco_laser_conductor",
+  prism_monarch = "world_disco_prism_monarch",
+  brass_regent = "world_electro_pressure",
+  midnight_maestro = "world_electro_voltage_vandal",
+  kickdrum_constructor = "world_house_kickdrum_constructor",
+  voltage_vandal = "world_electro_voltage_vandal",
+  loop_architect = "world_techno_loop_architect",
+  celestial_selector = "world_cosmic_boogie_celestial_selector",
+  night_shift_conductor = "world_soulful_garage_night_shift_conductor",
+  the_recompiler = "world_future_funk_recompiler",
+}
+
 local function modal(cue)
   return {
     cue = cue,
@@ -7,6 +37,16 @@ local function modal(cue)
     duck_db = 0,
     preserve_underlay = true,
     immediate = true,
+  }
+end
+
+local function continuous(context, fallback)
+  return {
+    cue = context.current_cue or fallback or "title",
+    overlay = nil,
+    duck_db = -5,
+    preserve_underlay = false,
+    immediate = false,
   }
 end
 
@@ -28,6 +68,11 @@ local function cutscene(context)
 end
 
 local function gameplay(context)
+  if context.world_id then
+    return world_bosses[context.boss_id]
+      or world_routes[context.world_id]
+      or "world_tour_hub"
+  end
   if context.boss_id == "grand_orchestrator" then
     return context.boss_phase_two
       and "grand_orchestrator_final" or "grand_orchestrator_p1"
@@ -75,15 +120,18 @@ function MusicRouter.route(context)
   end
 
   if screen == "options" or screen == "controls" then
-    screen = context.modal_origin or "title"
+    return continuous(context, context.modal_origin or "title")
   end
   if screen == "admin" then return modal("admin") end
   if screen == "arsenal" then return modal("arsenal") end
+  if screen == "perk_database" then return modal("arsenal") end
   if screen == "level_up" then
-    return modal(context.has_evolution and "evolution" or "level_up")
+    if context.has_evolution then return modal("evolution") end
+    return continuous(context, "level_up")
   end
-  if screen == "chest_reward" then return modal("level_up") end
-  if screen == "pause" then return modal("pause") end
+  if screen == "chest_reward" then return continuous(context, "level_up") end
+  if screen == "pause" then return continuous(context, "pause") end
+  if screen == "stage_complete" then return modal("stage_clear") end
 
   if screen == "run" then
     local cue = gameplay(context)
@@ -103,6 +151,15 @@ function MusicRouter.route(context)
       overlay = nil,
       duck_db = 0,
       preserve_underlay = false,
+    }
+  end
+  if screen == "world_tour" or screen == "world_loadout" then
+    return {
+      cue = "world_tour_hub",
+      overlay = nil,
+      duck_db = 0,
+      preserve_underlay = false,
+      immediate = false,
     }
   end
   return {

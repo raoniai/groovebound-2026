@@ -39,9 +39,11 @@ T["starter-loadout dpad moves vertically within the icon grid"] = function()
     })
     screen:_layout()
     screen:gamepadpressed(nil, "dpdown")
-    H.eq(screen.buttons.focus_index, 9)
+    H.eq(screen.buttons.focus_index, 6)
     screen:gamepadpressed(nil, "dpright")
-    H.eq(screen.buttons.focus_index, 10)
+    H.eq(screen.buttons.focus_index, 7)
+    H.is_true(screen.sidebar.w >= 236)
+    H.is_true(screen.sidebar.x > screen.weapon_group.x + screen.weapon_group.w)
   end)
 end
 

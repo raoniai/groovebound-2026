@@ -22,7 +22,7 @@ local function ranked(opts)
   return result
 end
 
-return {
+local weapons = {
   kazoo_pistol = {
     id          = "kazoo_pistol",
     name        = "Kazoo Pistol",
@@ -630,3 +630,231 @@ return {
       size = 8, lifetime = 2.0, spread = 12, pierce = 4, knockback = 14 } },
   },
 }
+
+-- Inventory icons identify the equipment; these profiles define what its
+-- attack actually does in the arena. Every stable weapon id owns a separate
+-- five-frame runtime strip so combat never reuses the literal weapon sprite.
+local attack_profiles = {
+  kazoo_pistol = {
+    family = "linear", coverage = 650, coverage_growth = 0.35,
+    effect_radius = 12, effect_growth = 0.45, damage_scale = 1.00,
+    description = "Fires clean golden sound darts before threats reach the player.",
+  },
+  bass_drop = {
+    family = "lobbed_bomb", coverage = 540, coverage_growth = 0.50,
+    effect_radius = 130, effect_growth = 0.65, damage_scale = 1.30,
+    flight_time = 0.52, active_duration = 0.34,
+    description = "Lobs a bass charge to the target and opens a broad shock ring.",
+  },
+  cymbal_slicer = {
+    family = "boomerang", coverage = 600, coverage_growth = 0.42,
+    effect_radius = 16, effect_growth = 0.50, damage_scale = 0.76,
+    return_delay = 0.55,
+    description = "Sends clean crescent blades out and back through the same lane.",
+  },
+  feedback_loop = {
+    family = "storm", coverage = 820, coverage_growth = 0.46,
+    effect_radius = 54, effect_growth = 0.48, damage_scale = 0.26,
+    max_targets = 4, target_growth = 3, hit_cooldown = 0.42,
+    cooldown_scale = 1.25, minimum_cooldown = 0.70,
+    description = "Calls forked feedback bolts onto enemies across the visible fight.",
+  },
+  drum_circle = {
+    family = "area_effect", coverage = 190, coverage_growth = 0.65,
+    effect_radius = 190, effect_growth = 0.65, damage_scale = 0.18,
+    hit_cooldown = 0.62, follow_player = true,
+    cooldown_scale = 1.15, minimum_cooldown = 1.00,
+    description = "Maintains a readable rhythm ring that grows around the player.",
+  },
+  trumpet_burst = {
+    family = "beam", coverage = 560, coverage_growth = 0.46,
+    effect_radius = 86, effect_growth = 0.46, damage_scale = 0.18,
+    hit_cooldown = 0.52, active_duration = 0.72,
+    cooldown_scale = 1.25, minimum_cooldown = 0.75,
+    description = "Projects a broad pressure cone with strong forward knockback.",
+  },
+  vinyl_scratch = {
+    family = "boomerang", coverage = 660, coverage_growth = 0.44,
+    effect_radius = 18, effect_growth = 0.52, damage_scale = 0.74,
+    return_delay = 0.64,
+    description = "Cuts crossing lanes with violet return arcs.",
+  },
+  synth_wave = {
+    family = "wave", coverage = 520, coverage_growth = 0.56,
+    effect_radius = 240, effect_growth = 0.58, damage_scale = 0.64,
+    description = "Advances a restrained cyan waveform wall through crowds.",
+  },
+  triangle_tracer = {
+    family = "linear", coverage = 850, coverage_growth = 0.36,
+    effect_radius = 10, effect_growth = 0.50, damage_scale = 1.00,
+    description = "Traces a long precision line with compact triangular pings.",
+  },
+  cello_lance = {
+    family = "beam", coverage = 900, coverage_growth = 0.38,
+    effect_radius = 34, effect_growth = 0.38, damage_scale = 0.20,
+    hit_cooldown = 0.60, active_duration = 0.84,
+    cooldown_scale = 1.20, minimum_cooldown = 1.20,
+    description = "Sustains a narrow amber lance through distant enemies.",
+  },
+  maraca_orbit = {
+    family = "orbital", coverage = 145, coverage_growth = 0.58,
+    effect_radius = 145, effect_growth = 0.58, damage_scale = 0.28,
+    angular_speed = 3.1, hit_cooldown = 0.34,
+    description = "Keeps paired mint motes orbiting outside contact range.",
+  },
+  tuning_fork = {
+    family = "storm", coverage = 780, coverage_growth = 0.50,
+    effect_radius = 48, effect_growth = 0.48, damage_scale = 0.27,
+    max_targets = 3, target_growth = 3, hit_cooldown = 0.48,
+    cooldown_scale = 1.20, minimum_cooldown = 0.75,
+    description = "Splits tuned lightning forward and backward across the arena.",
+  },
+  keytar_chord = {
+    family = "wave", coverage = 540, coverage_growth = 0.58,
+    effect_radius = 280, effect_growth = 0.62, damage_scale = 0.60,
+    description = "Pushes a wide formation of indigo chord tiles forward.",
+  },
+  bell_tower = {
+    family = "lobbed_bomb", coverage = 520, coverage_growth = 0.55,
+    effect_radius = 170, effect_growth = 0.70, damage_scale = 1.10,
+    flight_time = 0.62, active_duration = 0.40,
+    cooldown_scale = 1.15, minimum_cooldown = 1.20,
+    description = "Drops a bronze toll marker that expands into a heavy nova.",
+  },
+  tape_repeater = {
+    family = "deployable", coverage = 520, coverage_growth = 0.48,
+    effect_radius = 180, effect_growth = 0.64, damage_scale = 0.25,
+    flight_time = 0.34, active_duration = 2.3, hit_cooldown = 0.38,
+    description = "Places a clean echo node that repeats bounded side pulses.",
+  },
+  laser_harp = {
+    family = "beam", coverage = 620, coverage_growth = 0.50,
+    effect_radius = 140, effect_growth = 0.50, damage_scale = 0.15,
+    hit_cooldown = 0.52, active_duration = 0.72,
+    cooldown_scale = 1.70, minimum_cooldown = 0.75,
+    description = "Fans five luminous strings across the full front line.",
+  },
+
+  brass_barrage = {
+    family = "linear", coverage = 920, effect_radius = 20,
+    damage_scale = 1.00, cooldown_scale = 1.10, minimum_cooldown = 0.40,
+    description = "Fires a polished converging three-dart phrase.",
+  },
+  improvised_solo = {
+    family = "storm", coverage = 1200, effect_radius = 76,
+    damage_scale = 0.24, max_targets = 8, hit_cooldown = 0.44,
+    cooldown_scale = 2.40, minimum_cooldown = 0.95,
+    description = "Conducts a full-scenario electric solo through ten threats.",
+  },
+  subwoofer_supernova = {
+    family = "area_effect", coverage = 360, effect_radius = 360,
+    damage_scale = 0.16, hit_cooldown = 0.72, follow_player = true,
+    cooldown_scale = 2.35, minimum_cooldown = 1.35,
+    description = "Maintains a large, uncluttered supernova protection ring.",
+  },
+  orbital_ovation = {
+    family = "orbital", coverage = 260, effect_radius = 260,
+    damage_scale = 0.18, angular_speed = 3.4, hit_cooldown = 0.58,
+    cooldown_scale = 4.50, minimum_cooldown = 0.80,
+    description = "Sweeps a broad double-crescent orbit around the player.",
+  },
+  thunderhead_ensemble = {
+    family = "storm", coverage = 1350, effect_radius = 96,
+    damage_scale = 0.24, max_targets = 10, hit_cooldown = 0.48,
+    cooldown_scale = 2.70, minimum_cooldown = 1.25,
+    description = "Calls twelve large lightning strikes across the scenario.",
+  },
+  golden_fortissimo = {
+    family = "beam", coverage = 920, effect_radius = 260,
+    damage_scale = 0.15, hit_cooldown = 0.56, active_duration = 0.86,
+    cooldown_scale = 3.70, minimum_cooldown = 1.10,
+    description = "Sustains a wide golden pressure front.",
+  },
+  gravity_groove = {
+    family = "deployable", coverage = 760, effect_radius = 330,
+    damage_scale = 0.16, flight_time = 0.30,
+    active_duration = 2.4, hit_cooldown = 0.66,
+    cooldown_scale = 4.00, minimum_cooldown = 1.35,
+    description = "Places a distant gravity well that holds a wide damage zone.",
+  },
+  neon_crescendo = {
+    family = "wave", coverage = 880, effect_radius = 500,
+    damage_scale = 0.46, cooldown_scale = 2.00, minimum_cooldown = 1.00,
+    description = "Drives a tall, clean crescendo wall through the stage.",
+  },
+  prismatic_triangle = {
+    family = "linear", coverage = 1040, effect_radius = 24,
+    damage_scale = 1.00,
+    description = "Splits prismatic tracer darts along deep piercing lines.",
+  },
+  velvet_impaler = {
+    family = "beam", coverage = 1220, effect_radius = 92,
+    damage_scale = 0.18, hit_cooldown = 0.60, active_duration = 0.92,
+    cooldown_scale = 2.40, minimum_cooldown = 1.00,
+    description = "Pins the full lane with a long velvet energy beam.",
+  },
+  carnival_superorbit = {
+    family = "orbital", coverage = 310, effect_radius = 310,
+    damage_scale = 0.17, angular_speed = 3.8, hit_cooldown = 0.56,
+    cooldown_scale = 4.50, minimum_cooldown = 0.80,
+    description = "Runs a spacious double orbit beyond enemy contact range.",
+  },
+  resonance_rupture = {
+    family = "storm", coverage = 1260, effect_radius = 90,
+    damage_scale = 0.25, max_targets = 8, hit_cooldown = 0.48,
+    cooldown_scale = 3.70, minimum_cooldown = 1.10,
+    description = "Ruptures ten tuned strike points across the arena.",
+  },
+  stadium_keytar = {
+    family = "wave", coverage = 1040, effect_radius = 620,
+    damage_scale = 0.44, cooldown_scale = 2.20, minimum_cooldown = 1.10,
+    description = "Fills the front of the stage with clean luminous columns.",
+  },
+  cathedral_overdrive = {
+    family = "lobbed_bomb", coverage = 920, effect_radius = 430,
+    damage_scale = 1.05, flight_time = 0.48, active_duration = 0.52,
+    cooldown_scale = 2.20, minimum_cooldown = 1.50,
+    description = "Drops a cathedral strike circle that clears a vast radius.",
+  },
+  infinite_mixtape = {
+    family = "deployable", coverage = 920, effect_radius = 370,
+    damage_scale = 0.16, flight_time = 0.26,
+    active_duration = 2.8, hit_cooldown = 0.62,
+    cooldown_scale = 5.00, minimum_cooldown = 1.00,
+    description = "Places an infinite echo loop with a broad repeating radius.",
+  },
+  aurora_harp = {
+    family = "beam", coverage = 1120, effect_radius = 580,
+    damage_scale = 0.13, hit_cooldown = 0.58, active_duration = 0.90,
+    cooldown_scale = 5.60, minimum_cooldown = 0.90,
+    description = "Fans aurora strings across nearly the entire front field.",
+  },
+}
+
+for id, profile in pairs(attack_profiles) do
+  local weapon = assert(weapons[id], "attack profile without weapon: " .. id)
+  weapon.attack_family = profile.family
+  weapon.visual_id = id
+  weapon.sprite_path = "assets/generated/projectiles/" .. id .. ".png"
+  weapon.animation_frames = 5
+  weapon.animation_mode = "one_shot"
+  weapon.animation_fps = weapon.evolved and 15 or 12
+  weapon.coverage = profile.coverage
+  weapon.coverage_growth = profile.coverage_growth or 0
+  weapon.effect_radius = profile.effect_radius
+  weapon.effect_growth = profile.effect_growth or 0
+  weapon.damage_scale = profile.damage_scale or 1
+  weapon.cooldown_scale = profile.cooldown_scale or 1
+  weapon.minimum_cooldown = profile.minimum_cooldown
+  weapon.hit_cooldown = profile.hit_cooldown
+  weapon.flight_time = profile.flight_time
+  weapon.active_duration = profile.active_duration
+  weapon.return_delay = profile.return_delay
+  weapon.angular_speed = profile.angular_speed
+  weapon.max_targets = profile.max_targets
+  weapon.target_growth = profile.target_growth or 0
+  weapon.follow_player = profile.follow_player
+  weapon.description = profile.description
+end
+
+return weapons

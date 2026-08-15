@@ -53,6 +53,20 @@ local schemas = {
     name        = { type = "string" },
     description = { type = "string" },
     archetype   = { type = "string", one_of = { "projectile", "aoe_pulse", "orbital", "spread" } },
+    attack_family = {
+      type = "string",
+      one_of = {
+        "linear", "boomerang", "lobbed_bomb", "area_effect",
+        "orbital", "beam", "storm", "wave", "deployable",
+      },
+    },
+    visual_id   = { type = "string" },
+    sprite_path = { type = "string" },
+    animation_frames = { type = "number", min = 5 },
+    animation_mode = { type = "string", one_of = { "one_shot" } },
+    animation_fps = { type = "number", min = 1 },
+    coverage = { type = "number", min = 1 },
+    effect_radius = { type = "number", min = 1 },
     max_level   = { type = "number", min = 1, max = 10 },
     levels      = { type = "table" },
   },
@@ -310,6 +324,15 @@ local function check_world_stages(errors, stage_catalog, content)
           check_field(errors, where .. ".mechanic.id", stage.mechanic.id, {
             type = "string",
           })
+          check_field(errors, where .. ".mechanic.stage_variant",
+            stage.mechanic.stage_variant, { type = "string" })
+          check_field(errors, where .. ".mechanic.kind", stage.mechanic.kind, {
+            type = "string",
+            one_of = { "timed_zone", "relay", "charge", "call_response",
+              "flow", "prism_relay", "phrase", "changes" },
+          })
+          check_field(errors, where .. ".mechanic.encore_threshold",
+            stage.mechanic.encore_threshold, { type = "number", min = 2, max = 8 })
           check_field(
             errors, where .. ".mechanic.cycle_seconds",
             stage.mechanic.cycle_seconds, { type = "number", min = 0.2 })
@@ -318,6 +341,10 @@ local function check_world_stages(errors, stage_catalog, content)
           then
             errors[#errors + 1] = where
               .. ".mechanic.pads: expected at least three pads"
+          end
+          if stage.mechanic.stage_variant ~= stage.id then
+            errors[#errors + 1] = where
+              .. ".mechanic.stage_variant: must match stage id"
           end
         end
       end

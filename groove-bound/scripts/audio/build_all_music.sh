@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-PYTHONPATH="${PYTHONPATH:-/tmp/groove_music_tools}"
+PYTHONPATH="/tmp/groove_music_tools${PYTHONPATH:+:${PYTHONPATH}}"
 export PYTHONPATH
 
 build() {
