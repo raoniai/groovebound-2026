@@ -4,8 +4,8 @@
 
 **Target release:** v0.9.4
 
-**Status:** locally implemented and committed; clean-package, native, public
-release, and deployment verification remain in progress.
+**Status:** implemented, committed, pushed, packaged, released as v0.9.4, and
+public-live verified on GitHub and the Groove Bound site.
 
 ## Corrected outcome
 
