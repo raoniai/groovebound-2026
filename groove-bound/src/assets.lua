@@ -4,6 +4,7 @@
 -- depends on filenames and future art replacement stays mechanical.
 
 local SpriteSheet = require("src.render.sprite_sheet")
+local EnemyAnimation = require("src.render.enemy_animation")
 
 local Assets = {}
 Assets.__index = Assets
@@ -179,6 +180,20 @@ function Assets.load()
     self.enemy[id .. "_quads"],
       self.enemy[id .. "_cell_w"],
       self.enemy[id .. "_cell_h"] = grid_quads(self.enemy[id], 4, 2, 8)
+  end
+  self.enemy.animation = {}
+  for _, id in ipairs({ "backbeat", "orbit", "funk", "soul", "disco", "jazz" }) do
+    local rows = id == "jazz" and 8 or 6
+    local atlas = image(
+      "assets/generated/campaign/enemy-animation/" .. id
+        .. "-movement-atlas.png")
+    local quads, cell_w, cell_h = grid_quads(atlas, 4, rows)
+    self.enemy.animation[id] = {
+      atlas = atlas,
+      quads = quads,
+      cell_w = cell_w,
+      cell_h = cell_h,
+    }
   end
 
   self.floor = image("assets/legacy/images/floor-tiles1.jpg")
@@ -650,6 +665,19 @@ end
 
 function Assets:draw_enemy_variant(icon, x, y, size, opts)
   opts = opts or {}
+  if opts.frame then
+    local animation = self.enemy.animation[EnemyAnimation.atlas_id(icon)]
+    local row, col = EnemyAnimation.cell(icon, opts.frame)
+    if animation and animation.quads[row] and animation.quads[row][col] then
+      local scale = size / math.max(animation.cell_w, animation.cell_h)
+      love.graphics.setColor(opts.color or { 1, 1, 1, 1 })
+      love.graphics.draw(
+        animation.atlas, animation.quads[row][col], x, y, 0,
+        opts.flip_x and -scale or scale, scale,
+        animation.cell_w / 2, animation.cell_h / 2)
+      return true
+    end
+  end
   local atlas = self.enemy.variants
   local quad = self.enemy.variant_quads[icon.row][icon.col]
   local cell_size = 256
@@ -684,6 +712,7 @@ function Assets:draw_enemy_variant(icon, x, y, size, opts)
       or (icon.atlas == "soul" or icon.atlas == "disco"
         or icon.atlas == "jazz")
         and self.enemy[icon.atlas .. "_cell_h"] / 2 or 128)
+  return true
 end
 
 local function environment_source(self, icon, atlas_id)

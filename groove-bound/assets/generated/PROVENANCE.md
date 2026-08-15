@@ -805,3 +805,33 @@ manufacture motion from a single frame or create a combined runtime atlas.
 `assets/generated/projectiles/`. The retired
 `campaign/projectile-atlas.png` is removed from runtime and packaging; its old
 source candidate remains reference-only for historical provenance.
+
+## Enemy movement animation suite
+
+**Generated:** 2026-08-14 with OpenAI image generation in Codex built-in mode
+**Promoted to runtime:** 2026-08-15 for v0.9.3
+
+| Runtime file | Grid / role | SHA-256 |
+|---|---|---|
+| `campaign/enemy-animation/backbeat-movement-atlas.png` | 4x6 RGBA atlas; three frames for eight Backbeat visuals | `c2bddc0b4b1392fae8f7c5491656172e7d5c8cccd0d46e8455827d37f6677a1a` |
+| `campaign/enemy-animation/orbit-movement-atlas.png` | 4x6 RGBA atlas; three frames for eight Orbit visuals | `fb1acb6f17f0b9682d8ff59d7abfebc767b7b52ca31097cd74bdd9f079bc3bdf` |
+| `campaign/enemy-animation/funk-movement-atlas.png` | 4x6 RGBA atlas; three frames for eight Funk visuals | `9422e1eb841d39748ca4cbee13e5c51642f8e4ff6c8217a871ace5a822d67a6d` |
+| `campaign/enemy-animation/soul-movement-atlas.png` | 4x6 RGBA atlas; three frames for eight Soul visuals | `383a777749ffdd2a2efaae5d91b5409a9d5c1411e34c74e113fb95323fe48270` |
+| `campaign/enemy-animation/disco-movement-atlas.png` | 4x6 RGBA atlas; three frames for eight Disco visuals | `ce30f223a853ba4a852a6de2d5de2dec9d89d682e190130f2c8236b69e834c67` |
+| `campaign/enemy-animation/jazz-movement-atlas.png` | 4x8 RGBA atlas; four frames for eight Jazz visuals | `986eef555664b80e1524936cfafb18312e0f88cf673cb3d90ce00258b46edfa8` |
+
+The six existing Groove Bound enemy atlases were the only visual references.
+The prompts preserved every established silhouette while requesting a
+character-specific walk, hover, pulse, recoil, wingbeat or planted motion.
+Untouched generator outputs, rejected key-conflict sources, prompts, manifests,
+build script, per-enemy frames, and review GIFs remain below
+`source-candidates/2026-08-14-enemy-animation/` and are package-excluded.
+
+The runtime atlases are promoted byte-for-byte from the verified `*-clean.png`
+candidate atlases. Five use three vertical frames per original source cell;
+Jazz uses one enemy per row with four horizontal frames. The runtime mapping
+covers all 49 enemy definitions and 48 unique visuals. `breakbeat_bruiser`
+continues to share the current `turntable_sentinel` Orbit visual explicitly.
+Animation phase is derived deterministically without consuming gameplay RNG;
+the existing static atlas remains the renderer fallback when no frame is
+requested.

@@ -1,4 +1,5 @@
 local class = require("src.core.class")
+local EnemyAnimation = require("src.render.enemy_animation")
 
 local Enemy = class()
 
@@ -36,6 +37,7 @@ function Enemy:reset(opts)
   self.anim_time = 0
   self.anim_frame = 1
   self.anim_row = directions.down
+  self.variant_anim_phase = EnemyAnimation.phase(self.id, self.x, self.y)
   self.contact_cooldown = 0
   self.attack_cooldown = opts.definition.attack_interval or 0
   self.attack_windup = 0
@@ -235,6 +237,8 @@ function Enemy:draw()
   end
 
   if self.assets and self.definition.sprite then
+    local variant_frame = EnemyAnimation.frame(
+      self.definition, self.anim_time, self.variant_anim_phase)
     self.assets:draw_enemy_variant(
       self.definition.sprite,
       self.x,
@@ -243,6 +247,7 @@ function Enemy:draw()
       {
         color = color,
         flip_x = self.anim_row == directions.left,
+        frame = variant_frame,
       })
   elseif self.assets and self.assets.enemy then
     self.assets.enemy.walk:draw(

@@ -2,6 +2,14 @@
 
 This file is the local implementation record. Add a new entry at the top after every material site pass.
 
+## 2026-08-15 | SITE-054 | v0.9.3 enemy animation suite
+
+Prepared the Home, Catalog, and Builder version badges for v0.9.3 while
+retaining stable GitHub Latest download routes. The desktop release adds
+deterministic three- or four-frame movement animation to all 49 enemy
+definitions across Backbeat, Orbit, Funk, Soul, Disco, and Jazz without
+changing enemy mechanics, collision, balance, or gameplay RNG.
+
 ## 2026-08-15 | SITE-053 | v0.9.2 projectile system
 
 Prepared the Home, Catalog, and Builder version badges for v0.9.2 while
