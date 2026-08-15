@@ -1,9 +1,10 @@
 # Groove Bound Enemy Animation Asset Implementation Plan
 
 **Date:** 2026-08-14  
-**Current delivery state:** implementation approved and integrated on the clean
-v0.9.2 release baseline; automated and visual release verification in progress;
-not yet committed, packaged, pushed, or published  
+**Current delivery state:** locally complete and committed on the clean v0.9.2
+release baseline as v0.9.3; automated, media, renderer, source-package, macOS,
+and local cross-platform payload-parity checks passed; push, native Windows CI
+smoke, GitHub publication, and public-site deployment pending
 **Approval received:** 2026-08-15. The current `breakbeat_bruiser` visual alias
 is retained so implementation matches the canonical enemy definitions.
 
