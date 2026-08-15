@@ -14,20 +14,20 @@ This document answers four questions: what is authoritative, what the latest ver
 
 <!-- LIVE-SNAPSHOT:START -->
 
-_Generated from live repository evidence: 2026-08-14 18:26 AEST_
+_Generated from live repository evidence: 2026-08-15 15:28 AEST_
 
 | Field | Live value |
 |---|---|
-| Branch | `codex/world-overhaul-v090` |
-| HEAD | `ed092b9` — release: publish desktop v0.9.1 package asset hotfix |
-| Upstream | `origin/codex/world-overhaul-v090` |
-| Compared with `origin/main` | 33 ahead, 1 behind |
+| Branch | `codex/enemy-animation-v093` |
+| HEAD | `3b4c47a` — docs: prepare v0.9.3 release records |
+| Upstream | `unavailable` |
+| Compared with `origin/main` | 37 ahead, 1 behind |
 | Working changes | 0 files: 0 game, 0 site, 0 skills/package |
-| Lua source/test files | 120 source, 64 test |
-| Game tree excluding `dist/` | 692.5 MiB |
-| Current `.love` artifact | 219.0 MiB |
-| Test suite | passed: 398 tests, 0 failures |
-| Lint | passed: 0 warnings / 0 errors in 186 files |
+| Lua source/test files | 121 source, 66 test |
+| Game tree excluding `dist/` | 774.3 MiB |
+| Current `.love` artifact | 228.7 MiB |
+| Test suite | passed: 415 tests, 0 failures |
+| Lint | passed: 0 warnings / 0 errors in 189 files |
 | Skill packages | 12 |
 
 <!-- LIVE-SNAPSHOT:END -->
