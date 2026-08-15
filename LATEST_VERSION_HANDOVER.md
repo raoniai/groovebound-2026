@@ -14,20 +14,20 @@ This document answers four questions: what is authoritative, what the latest ver
 
 <!-- LIVE-SNAPSHOT:START -->
 
-_Generated from live repository evidence: 2026-08-14 18:26 AEST_
+_Generated from live repository evidence: 2026-08-15 10:28 AEST_
 
 | Field | Live value |
 |---|---|
-| Branch | `codex/world-overhaul-v090` |
-| HEAD | `ed092b9` — release: publish desktop v0.9.1 package asset hotfix |
-| Upstream | `origin/codex/world-overhaul-v090` |
-| Compared with `origin/main` | 33 ahead, 1 behind |
+| Branch | `codex/projectile-redesign-v092` |
+| HEAD | `eeadf67` — release: publish desktop v0.9.2 |
+| Upstream | `origin/codex/projectile-redesign-v092` |
+| Compared with `origin/main` | 35 ahead, 1 behind |
 | Working changes | 0 files: 0 game, 0 site, 0 skills/package |
-| Lua source/test files | 120 source, 64 test |
-| Game tree excluding `dist/` | 692.5 MiB |
-| Current `.love` artifact | 219.0 MiB |
-| Test suite | passed: 398 tests, 0 failures |
-| Lint | passed: 0 warnings / 0 errors in 186 files |
+| Lua source/test files | 120 source, 65 test |
+| Game tree excluding `dist/` | 704.8 MiB |
+| Current `.love` artifact | 220.1 MiB |
+| Test suite | passed: 410 tests, 0 failures |
+| Lint | passed: 0 warnings / 0 errors in 187 files |
 | Skill packages | 12 |
 
 <!-- LIVE-SNAPSHOT:END -->
@@ -36,12 +36,12 @@ _Generated from live repository evidence: 2026-08-14 18:26 AEST_
 
 Groove Bound is a bright urban-supernatural survival roguelike built in Lua with LÖVE 11.5. Its current development preview follows:
 
-The canonical source is now **v0.9.2**. Loose-folder play displays
-`v0.9.2-dev`; packaged builds display `v0.9.2`. The v0.9.2 release candidate
-contains the complete projectile-system replacement and is passing source,
-simulation, lint, media, portability, and local landing-version gates. GitHub
-Latest and the deployed public site remain v0.9.1 until publication and any
-separately approved site deployment are independently verified.
+The canonical source and desktop release are now **v0.9.2**. Loose-folder play
+displays `v0.9.2-dev`; packaged builds display `v0.9.2`. GitHub Latest exposes
+seven synchronized v0.9.2 assets built from clean release commit `eeadf67`.
+The deployed public site remains v0.9.1 because site deployment is a separate
+approval-gated delivery surface; its local source is already prepared for
+v0.9.2 and retains the stable Latest desktop download routes.
 
 **Title → Prologue → Character Selection → Character Intro → Backbeat Streets → The Orbit Line → World Tour → playable Funk, Soul, Disco, and Jazz routes**
 
@@ -103,15 +103,15 @@ The public landing site is a separate static presentation under `landing-page/`.
 | Save system | Version 2 profiles and slots | Save, migration, profile, export and World Tour session tests | Cross-platform clean-machine fixtures |
 | Landing page and repository README | Local source prepared for v0.9.2; public site remains v0.9.1 | Home, Catalog, and Builder source badges show v0.9.2 and retain stable Latest desktop URLs | Site deployment is separately approval-gated; physical-phone refresh and `main` promotion remain open |
 | World Tour runtime atlases | v0.9.1 package verified after the v0.9.0 lock-sprite omission | Four Stage 2 environment atlases, four eight-state mechanic atlases, 32 individual mechanic sprites, and the directly loaded World Tour lock sprite pass source, archive, RGBA, transparency, grid, and packaged-reference checks | Full in-motion readability and collision/layering pass in all eight World Tour stages |
-| Desktop distribution | v0.9.2 source verified; native packaging pending clean commit | One common payload will feed local, macOS and Windows artifacts; superseded active local binaries were moved to versioned archives | Package parity, GitHub publication, physical Windows QA, unlocked-Mac visual check, signing, and notarization remain open |
+| Desktop distribution | v0.9.2 published as GitHub Latest and mirrored locally | One clean common payload feeds the universal macOS ZIP/DMG and branded Windows x64 ZIP; all seven public assets expose SHA-256 digests and the local mirror matches them | Physical Windows QA, prolonged unlocked-Mac graphical play, Apple signing, and notarization remain open |
 | Engine migration | Planned | Engine migration research and parity roadmap | Clean baseline and bounded target-engine spike |
 | Groove Bound skills | Twelve repository skills validated; version-sync skill committed and pushed | The fail-closed checker is wired into source, local/candidate, GitHub, landing, and public phases; repository package validation passes 12 of 12 | Unlocked-Mac visual forward test remains open |
 
 ## Active working state
 
-An isolated local projectile-redesign candidate now exists on
-`codex/projectile-redesign-v091`, based on the post-release World Overhaul head
-`50c16f6`. It replaces the retired combined projectile atlas with 32 separate
+The released projectile redesign is on `codex/projectile-redesign-v092` and the
+canonical release branch `codex/world-overhaul-v090`, based on World Overhaul
+head `50c16f6`. It replaces the retired combined projectile atlas with 32 separate
 five-stage attack strips and adds deterministic linear, boomerang, bomb, area,
 orbit, beam, scenario-storm, wave and deployable behavior. Every weapon now has
 five genuinely authored states—charge, formation, peak, breakup and remnant—in
@@ -119,18 +119,18 @@ its own atlas. Rankable weapons expand their relevant coverage and effect
 geometry through immutable firing snapshots. High-power beams, storms and
 scenario effects now have longer recovery windows and bounded mid-animation
 damage phases; renderer scaling is uniform so beam art is never stretched.
-This candidate is locally implemented and fully source-verified. It is being
-prepared as v0.9.2 for one clean release commit and synchronized local, macOS,
-Windows, and GitHub packages. It is not yet pushed or released.
+Release commit `eeadf676dfe49ec11f666f42579fcd0706b95be4` is pushed and tagged
+`v0.9.2`. The exact seven GitHub assets are mirrored locally; superseded local
+builds and old release notes are retained only under versioned archive folders.
 
-GitHub release `v0.9.1` is public as Latest and tag `v0.9.1` resolves to clean
-release commit `ed092b99b65a822253e2bf4765c86601291d8d96`. Its seven desktop
-assets expose GitHub SHA-256 digests. Release workflow `31783132056` completed
-source verification, common packaging, macOS and Windows native packaging,
-candidate parity, boot markers, publication, and GitHub Latest verification.
-CI workflow `31783131840` and standalone Windows workflow `31783131924` also
-passed. The current 420-file landing bundle was deployed by FTPS with rollback
-`20260814-182535-v0.9.1` and passed byte-for-byte public verification. The
+GitHub release `v0.9.2` is public as Latest and targets clean release commit
+`eeadf676dfe49ec11f666f42579fcd0706b95be4`. Its seven desktop assets expose
+GitHub SHA-256 digests. Release workflow `31853004722` completed source
+verification, common packaging, macOS and Windows native packaging, candidate
+parity, boot markers, publication, and GitHub Latest verification. CI workflow
+`31853004637` and standalone Windows workflow `31853004643` also passed. The
+current deployed 420-file landing bundle remains the v0.9.1 FTPS release with
+rollback `20260814-182535-v0.9.1` and passed byte-for-byte public verification. The
 original protected workspace remains on its pre-release local branch with
 unrelated dirty material intact; release work was isolated so those files were
 neither overwritten nor included.
@@ -174,18 +174,18 @@ Do not infer `main` promotion from the feature-branch push, GitHub release, or l
 
 | Layer | Latest state | Meaning |
 |---|---|---|
-| Automated tests | v0.9.2 candidate: 410 passed, 0 failed locally on 2026-08-15 | Projectile lifecycle, cooldown recovery, rank-scaled coverage, deterministic campaign completion, and existing systems are covered |
+| Automated tests | v0.9.2 release: 410 passed, 0 failed locally and in release CI on 2026-08-15 | Projectile lifecycle, cooldown recovery, rank-scaled coverage, deterministic campaign completion, and existing systems are covered |
 | Lint | 0 warnings and 0 errors across 187 files on 2026-08-15 | Current Lua source and tests statically checked |
-| Common package | v0.9.2 packaging pending clean release commit | Dirty inspection package passed content checks earlier; public payload must be rebuilt clean |
-| macOS artifacts | v0.9.2 packaging pending clean common payload | Universal app, ZIP and DMG will be ad-hoc signed and not notarized |
-| Windows artifact | v0.9.2 packaging pending clean common payload | Branded fused x64 ZIP will use the pinned official LÖVE 11.5 runtime and remain unsigned |
-| Packaged boot | Verified in Windows and macOS release CI on 2026-08-14 | Both packages reached the validated boot-complete marker; this is a startup-integrity check, not full graphical/audio play |
+| Common package | Published v0.9.2 `.love`, 230,806,584 bytes, SHA-256 `ceb20559830f250b4fe43c222e553587f28779764a2cddfec3ddd77aa0564f09` | Clean release marker, complete runtime assets, and identical embedding in both native packages |
+| macOS artifacts | Published universal ZIP SHA-256 `e48b50f8334b75c79558a5478db0b815ee5d6365c0b4a8b694d166340854cc0b`; DMG SHA-256 `980de1b156821bf19816c42178c2a2f156470d5ecdae6771ae2e879df34667c3` | Archive integrity, bundle version, code-signature structure, DMG checksum, common payload, and packaged boot passed; ad-hoc signed and not notarized |
+| Windows artifact | Published branded x64 ZIP SHA-256 `72275ae8375759a17244e6b4e47ce50d084f5e617aa5a0682e2b0b72ebc039e7` | Pinned official LÖVE 11.5 runtime, icon/version metadata, common-payload equality, archive integrity, and native packaged boot passed; unsigned |
+| Packaged boot | Verified in Windows and macOS release CI on 2026-08-15; published macOS app also passed a fresh local boot marker | Both packages reached `boot-complete`; this proves startup integrity, not a full graphical/audio playthrough |
 | Manual graphical QA | v0.8.2 changed interface states verified at 1280 x 720 and 800 x 600 | Active World Tour mechanic, timer, HP/XP, build slots, level-point CTA, pause, level-up, results, title, and settings were visually inspected; full campaign, physical controller, audio and prolonged play-feel remain open |
-| Source release commit | `ed092b9` — release: publish desktop v0.9.1 package asset hotfix | Tag `v0.9.1` resolves to full commit `ed092b99b65a822253e2bf4765c86601291d8d96` |
-| Feature-branch push | `origin/codex/world-overhaul-v090` matches release commit `ed092b9` | `main` remains independently unpromoted; original local dirty work is preserved |
+| Source release commit | `eeadf67` — release: publish desktop v0.9.2 | Tag `v0.9.2` targets full commit `eeadf676dfe49ec11f666f42579fcd0706b95be4` |
+| Feature-branch push | `origin/codex/projectile-redesign-v092` and `origin/codex/world-overhaul-v090` contain the release commit | `main` remains independently unpromoted; original local dirty work is preserved |
 | Main promotion | Not current | Verify `origin/main` independently |
-| Public release/download | v0.9.1 is published as GitHub Latest with seven synchronized desktop assets | GitHub API confirms every required asset and SHA-256 digest; stable Latest routes resolve to v0.9.1 |
-| Landing download links | Stable macOS and Windows CTAs are public-live verified against v0.9.1 | Home, Catalog, and Builder display v0.9.1 and link to the stable Latest routes |
+| Public release/download | v0.9.2 is published as GitHub Latest with seven synchronized desktop assets | GitHub API and the fail-closed version gate confirm every required asset and SHA-256 digest; stable Latest routes resolve to v0.9.2 |
+| Landing download links | Stable macOS and Windows CTAs now resolve to GitHub Latest v0.9.2 | Deployed Home, Catalog, and Builder still display v0.9.1 until a separately approved site deployment; local source displays v0.9.2 |
 | GitHub README presentation | Landing-styled rewrite committed and pushed at `f96acf9` | GitHub Markdown API rendered 21,124 bytes with 28 images, 50 links, and 3 tables; all 29 local references and 7 navigation anchors resolve; default-page visibility still depends on merging to `main` |
 | Landing deployment | v0.9.1 420-file bundle deployed and public-live verified | Rollback captured at `20260814-182535-v0.9.1`; six core files, directory index, representative assets, badges, GitHub Latest, and stable desktop routes passed public parity |
 
@@ -231,7 +231,7 @@ For an engine migration, keep LÖVE as the golden reference. The leading researc
 
 ## Continuation history
 
-### 2026-08-15 — v0.9.2 projectile release preparation
+### 2026-08-15 — v0.9.2 projectile release
 
 - Promoted the canonical source version to v0.9.2 and synchronized loose-source
   and local landing-page labels while retaining stable Latest download routes.
@@ -241,8 +241,16 @@ For an engine migration, keep LÖVE as the golden reference. The leading researc
 - Passed 410 tests, zero lint findings across 187 files, clean diff whitespace,
   zero-risk media audit, portability audit, World Overhaul art verification,
   and source plus landing version gates.
-- Delivery state: locally implemented and source-verified; clean commit, common
-  package, native packages, push, GitHub release, and final parity checks remain.
+- Published release commit `eeadf67` to both the projectile feature branch and
+  canonical World Overhaul release branch; tagged v0.9.2 is GitHub Latest.
+- Passed all three GitHub workflows: CI `31853004637`, standalone Windows
+  `31853004643`, and desktop release `31853004722`.
+- Mirrored the exact seven published assets locally, passed checksum, archive,
+  candidate/local version, Mac signature/DMG, embedded-payload, and packaged
+  Mac boot checks. The game was opened locally from the published Mac bundle.
+- Delivery state: committed, pushed, packaged locally for Mac and Windows, and
+  public-live verified on GitHub. Public-site v0.9.2 deployment and physical
+  Windows play remain separate approval/QA gates.
 
 ### 2026-08-14 — separate animated projectile-system candidate
 
