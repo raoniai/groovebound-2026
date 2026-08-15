@@ -633,7 +633,7 @@ local weapons = {
 
 -- Inventory icons identify the equipment; these profiles define what its
 -- attack actually does in the arena. Every stable weapon id owns a separate
--- five-frame runtime strip so combat never reuses the literal weapon sprite.
+-- eight-frame runtime sheet so combat never reuses the literal weapon sprite.
 local attack_profiles = {
   kazoo_pistol = {
     family = "linear", coverage = 650, coverage_growth = 0.35,
@@ -836,7 +836,7 @@ for id, profile in pairs(attack_profiles) do
   weapon.attack_family = profile.family
   weapon.visual_id = id
   weapon.sprite_path = "assets/generated/projectiles/" .. id .. ".png"
-  weapon.animation_frames = 5
+  weapon.animation_frames = 8
   weapon.animation_mode = "one_shot"
   weapon.animation_fps = weapon.evolved and 15 or 12
   weapon.coverage = profile.coverage

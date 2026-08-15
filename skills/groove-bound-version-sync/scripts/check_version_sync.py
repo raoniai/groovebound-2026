@@ -73,7 +73,10 @@ class Check:
                      "loose source exposes an explicit dev label")
         for relative in ("src/ui/screens/title.lua", "src/ui/screens/pause.lua"):
             text = (self.game / relative).read_text(encoding="utf-8")
-            self.require("BuildInfo.label()" in text, f"{relative} renders build identity")
+            self.require(
+                "BuildInfo.label()" in text or "BuildInfo.version_label()" in text,
+                f"{relative} renders canonical build identity",
+            )
 
     def love_payload(self, path: Path | None = None) -> None:
         path = path or self.dist / "groove-bound.love"

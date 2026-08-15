@@ -86,10 +86,10 @@ def main() -> int:
     invalid_projectiles = [
         str(path.relative_to(root))
         for path in projectile_files
-        if png_dimensions(path) != (1920, 128) or png_color_type(path) != 6
+        if png_dimensions(path) != (2048, 1024) or png_color_type(path) != 6
     ]
     if invalid_projectiles:
-        risks.append("projectile strips must be 1920x128 RGBA")
+        risks.append("projectile sheets must be 2048x1024 RGBA")
     projectile_hashes = {
         hashlib.sha256(path.read_bytes()).hexdigest() for path in projectile_files
     }

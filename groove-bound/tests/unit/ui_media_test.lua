@@ -2,6 +2,7 @@ local H = require("tests.helpers")
 local UIScale = require("src.ui.scale")
 local EnemyAnimation = require("src.render.enemy_animation")
 local enemies = require("src.content.enemies")
+local weapons = require("src.content.weapons")
 
 local T = {}
 
@@ -26,6 +27,17 @@ local function png_color_type(path)
 end
 
 T["runtime UI artwork and character logos have stable production mappings"] = function()
+  local projectile_sheets = 0
+  for id in pairs(weapons) do
+    local path = "assets/generated/projectiles/" .. id .. ".png"
+    local width, height = png_dimensions(path)
+    H.eq(width, 2048, id .. " projectile sheet width")
+    H.eq(height, 1024, id .. " projectile sheet height")
+    H.eq(png_color_type(path), 6, id .. " projectile alpha")
+    projectile_sheets = projectile_sheets + 1
+  end
+  H.eq(projectile_sheets, 32)
+
   for _, font_path in ipairs({
     "assets/fonts/Anton-Regular.ttf",
     "assets/fonts/Oswald-Variable.ttf",

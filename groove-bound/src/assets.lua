@@ -238,10 +238,10 @@ function Assets.load()
   for _, id in ipairs(player_attack_ids) do
     self.player_attacks[id] = SpriteSheet({
       path = "assets/generated/projectiles/" .. id .. ".png",
-      frame_w = 384,
-      frame_h = 128,
-      cols = 5,
-      rows = 1,
+      frame_w = 512,
+      frame_h = 512,
+      cols = 4,
+      rows = 2,
     })
   end
   self.combat_fx = SpriteSheet({
@@ -825,41 +825,44 @@ function Assets.attack_transform(opts)
   local x, y = opts.x, opts.y
   local rotation = opts.rotation or 0
   local scale
+  local source_span = 448
 
   if opts.family == "beam" then
     local length = opts.beam_length or opts.coverage or 560
-    x = x + (opts.dx or 1) * length * 0.5
-    y = y + (opts.dy or 0) * length * 0.5
-    scale = length / 264
+    local visual_length = math.min(length, source_span)
+    x = x + (opts.dx or 1) * visual_length * 0.5
+    y = y + (opts.dy or 0) * visual_length * 0.5
+    scale = visual_length / source_span
   elseif opts.family == "area_effect"
     or ((opts.family == "lobbed_bomb" or opts.family == "deployable")
       and opts.phase == "active")
   then
     local diameter = math.max(64, (opts.effect_radius or 64) * 2)
-    scale = diameter / 104
+    scale = math.min(1, diameter / source_span)
   elseif opts.family == "wave" then
-    scale = (opts.wave_width or opts.effect_radius or 220) / 270
+    scale = math.min(
+      1, (opts.wave_width or opts.effect_radius or 220) / source_span)
     rotation = rotation + math.pi / 2
   elseif opts.family == "storm" then
     local diameter = math.max(92, (opts.effect_radius or 52) * 2)
-    scale = diameter / 104
+    scale = math.min(1, diameter / source_span)
     rotation = 0
   elseif opts.family == "orbital" then
     local draw_size = math.max(48, (opts.size or 12) * 3.5)
-    scale = draw_size / 104
+    scale = math.min(1, draw_size / source_span)
     rotation = rotation + (opts.age or 0) * 3.5
   else
     local draw_size = opts.phase == "flight"
       and math.max(42, (opts.size or 12) * 3)
       or math.max(34, (opts.size or 12) * 3.4)
-    scale = draw_size / 104
+    scale = math.min(1, draw_size / source_span)
     if opts.family == "boomerang" then
       rotation = rotation + (opts.age or 0) * 7
     end
   end
 
   local pose_scale = ((opts.scale_x or 1) + (opts.scale_y or 1)) * 0.5
-  scale = scale * pose_scale
+  scale = math.min(1, scale * pose_scale)
   return {
     x = x,
     y = y,
@@ -872,12 +875,14 @@ end
 function Assets:draw_attack(opts)
   local sheet = self.player_attacks[opts.visual_id]
   if not sheet then return false end
-  local frame_count = opts.animation_frames or 5
+  local frame_count = opts.animation_frames or 8
   local frame = opts.frame or (
     math.floor((opts.age or 0) * (opts.animation_fps or 12))
       % frame_count + 1)
   local transform = Assets.attack_transform(opts)
-  sheet:draw(frame, 1, transform.x, transform.y, {
+  local column = ((frame - 1) % sheet.cols) + 1
+  local row = math.floor((frame - 1) / sheet.cols) + 1
+  sheet:draw(column, row, transform.x, transform.y, {
     rotation = transform.rotation,
     scale = transform.scale_x,
     scale_y = transform.scale_y,

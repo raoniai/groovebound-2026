@@ -62,4 +62,8 @@ function BuildInfo.label()
   return BuildInfo.current().label
 end
 
+function BuildInfo.version_label(info)
+  return "v" .. (info or BuildInfo.current()).version
+end
+
 return BuildInfo

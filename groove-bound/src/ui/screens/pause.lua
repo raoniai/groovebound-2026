@@ -8,6 +8,7 @@ local settings = require("src.config.settings")
 local widgets = require("src.ui.widgets.button")
 local MenuChrome = require("src.ui.menu_chrome")
 local BuildInfo = require("src.config.build_info")
+local VersionTag = require("src.ui.version_tag")
 
 local PauseScreen = class()
 PauseScreen.kind = "pause"
@@ -44,6 +45,7 @@ function PauseScreen:_layout()
     w = panel_w,
     h = panel_h,
   }
+  self.version_tag = VersionTag.layout(self.panel, "bottom-right", 12)
   local bw, bh, gap = panel_w - 104, 54, 8
   local x = self.panel.x + 52
   local y = self.panel.y + 82
@@ -104,10 +106,7 @@ function PauseScreen:draw()
 
   self.button_list:draw()
 
-  love.graphics.setFont(Fonts.get(10))
-  love.graphics.setColor(0.68, 0.72, 0.82, 0.78)
-  love.graphics.printf(BuildInfo.label(), self.panel.x + 16,
-    self.panel.y + self.panel.h - 22, self.panel.w - 32, "right")
+  VersionTag.draw(BuildInfo.version_label(), self.version_tag)
 end
 
 function PauseScreen:keypressed(key)

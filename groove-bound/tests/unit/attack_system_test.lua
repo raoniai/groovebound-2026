@@ -1,6 +1,7 @@
 local H = require("tests.helpers")
 local Content = require("src.content.init")
 local Projectile = require("src.game.entities.projectile")
+local CombatSystem = require("src.game.systems.combat_system")
 local Tuning = require("src.debug.tuning")
 local definitions = require("src.config.admin_controls")
 local WeaponInventory = require("src.game.systems.weapon_inventory")
@@ -32,14 +33,14 @@ local function emitter_for(id, level)
   return runtime:get(1)
 end
 
-T["all 32 attacks own separate five-frame animation strips"] = function()
+T["all 32 attacks own separate eight-frame animation sheets"] = function()
   local paths = {}
   local count = 0
   for id, weapon in pairs(Content.weapons) do
     count = count + 1
     H.is_true(type(weapon.attack_family) == "string", id)
     H.eq(weapon.visual_id, id)
-    H.is_true(weapon.animation_frames >= 5, id)
+    H.eq(weapon.animation_frames, 8, id)
     H.eq(weapon.animation_mode, "one_shot", id)
     H.eq(weapon.sprite_path, "assets/generated/projectiles/" .. id .. ".png")
     H.is_nil(paths[weapon.sprite_path], "duplicate sprite path")
@@ -80,19 +81,22 @@ T["beam animation charges peaks and ends without looping"] = function()
     x = 0, y = 0, dx = 1, dy = 0, speed = 0,
     damage = 10, size = 8, lifetime = 2,
     attack_family = "beam", effect_radius = 80, coverage = 600,
-    active_duration = 0.75, animation_frames = 5,
+    active_duration = 0.80, animation_frames = 8,
     animation_mode = "one_shot",
     source_weapon_id = "laser_harp", visual_id = "laser_harp",
   })
   H.eq(projectile:animation_frame(), 1)
   H.is_false(projectile:is_damage_active())
-  projectile:update(0.38, arena)
-  H.eq(projectile:animation_frame(), 3)
+  projectile:update(0.32, arena)
+  H.eq(projectile:animation_frame(), 4)
   H.is_true(projectile:is_damage_active())
-  projectile:update(0.30, arena)
+  projectile:update(0.16, arena)
   H.eq(projectile:animation_frame(), 5)
-  H.is_false(projectile:is_damage_active())
+  H.is_true(projectile:is_damage_active())
   projectile:update(0.08, arena)
+  H.eq(projectile:animation_frame(), 6)
+  H.is_false(projectile:is_damage_active())
+  projectile:update(0.25, arena)
   H.is_true(projectile.dead)
 end
 
@@ -103,27 +107,49 @@ T["projectile stage animation advances once from launch to dissipation"] = funct
     x = 0, y = 0, dx = 1, dy = 0, speed = 100,
     damage = 10, size = 8, lifetime = 1,
     attack_family = "linear", coverage = 1000,
-    animation_frames = 5, animation_mode = "one_shot",
+    animation_frames = 8, animation_mode = "one_shot",
     source_weapon_id = "kazoo_pistol",
     visual_id = "kazoo_pistol",
   })
   local frames = { projectile:animation_frame() }
-  for _ = 1, 4 do
-    projectile:update(0.24, arena)
+  for _ = 1, 7 do
+    projectile:update(0.13, arena)
     frames[#frames + 1] = projectile:animation_frame()
   end
-  H.deep_eq(frames, { 1, 2, 3, 4, 5 })
+  H.deep_eq(frames, { 1, 2, 3, 4, 5, 6, 7, 8 })
 end
 
-T["beam art keeps its authored proportions instead of stretching"] = function()
+T["beam art keeps authored proportions and never exceeds native scale"] = function()
   local transform = Assets.attack_transform({
     family = "beam", x = 40, y = 50, dx = 1, dy = 0,
     beam_length = 900, beam_width = 34,
     scale_x = 0.97, scale_y = 1.03,
   })
   H.eq(transform.scale_x, transform.scale_y)
-  H.eq(transform.x, 490)
+  H.is_true(transform.scale_x <= 1)
+  H.eq(transform.x, 264)
   H.eq(transform.y, 50)
+end
+
+T["multi-shot visual phase delays are deterministic and subtle"] = function()
+  local delays = {}
+  for shot = 1, 5 do
+    delays[shot] = CombatSystem.visual_phase_delay(shot, 5)
+  end
+  H.deep_eq(delays, { 0, 0.02, 0.04, 0.06, 0 })
+
+  local projectile = Projectile()
+  local arena = { contains = function() return true end }
+  projectile:reset({
+    x = 0, y = 0, dx = 1, dy = 0, speed = 0,
+    damage = 1, size = 8, lifetime = 1,
+    source_weapon_id = "kazoo_pistol", animation_frames = 8,
+    animation_mode = "one_shot", visual_delay = delays[4],
+  })
+  projectile:update(0.10, arena)
+  H.eq(projectile:animation_frame(), 1)
+  projectile:update(0.10, arena)
+  H.eq(projectile:animation_frame(), 2)
 end
 
 T["base roster spans the replacement attack categories"] = function()
