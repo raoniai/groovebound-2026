@@ -14,20 +14,20 @@ This document answers four questions: what is authoritative, what the latest ver
 
 <!-- LIVE-SNAPSHOT:START -->
 
-_Generated from live repository evidence: 2026-08-15 15:46 AEST_
+_Generated from live repository evidence: 2026-08-15 23:21 AEST_
 
 | Field | Live value |
 |---|---|
-| Branch | `codex/enemy-animation-v093` |
-| HEAD | `87e96fa` — docs: record v0.9.3 public release |
-| Upstream | `origin/codex/enemy-animation-v093` |
-| Compared with `origin/main` | 42 ahead, 1 behind |
+| Branch | `codex/enemy-state-animation-v094` |
+| HEAD | `4224db8` — feat: add individual enemy state animations |
+| Upstream | `unavailable` |
+| Compared with `origin/main` | 44 ahead, 1 behind |
 | Working changes | 0 files: 0 game, 0 site, 0 skills/package |
-| Lua source/test files | 121 source, 66 test |
-| Game tree excluding `dist/` | 774.3 MiB |
-| Current `.love` artifact | 228.7 MiB |
-| Test suite | passed: 415 tests, 0 failures |
-| Lint | passed: 0 warnings / 0 errors in 189 files |
+| Lua source/test files | 121 source, 67 test |
+| Game tree excluding `dist/` | 882.4 MiB |
+| Current `.love` artifact | 261.5 MiB |
+| Test suite | passed: 416 tests, 0 failures |
+| Lint | passed: 0 warnings / 0 errors in 190 files |
 | Skill packages | 12 |
 
 <!-- LIVE-SNAPSHOT:END -->
