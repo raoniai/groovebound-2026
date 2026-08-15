@@ -9,7 +9,11 @@ local function valid_content()
     weapons = {
       test_gun = {
         id = "test_gun", name = "Test Gun", description = "d",
-        archetype = "projectile", max_level = 2,
+        archetype = "projectile", attack_family = "linear",
+        visual_id = "test_gun",
+        sprite_path = "assets/generated/projectiles/test_gun.png",
+        animation_frames = 5, animation_mode = "one_shot", animation_fps = 12,
+        coverage = 500, effect_radius = 8, max_level = 2,
         levels = {
           { damage = 10, cooldown = 0.5 },
           { damage = 12, cooldown = 0.5 },

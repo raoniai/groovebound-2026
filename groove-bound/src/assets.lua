@@ -191,10 +191,8 @@ function Assets.load()
   end
 
   self.projectile = image("assets/legacy/images/projectile.png")
-  self.projectile_atlas = image("assets/generated/campaign/projectile-atlas.png")
-  self.projectile_quads = grid_quads(self.projectile_atlas, 6, 4)
-  self.projectile_cells = {}
-  local projectile_ids = {
+  self.player_attacks = {}
+  local player_attack_ids = {
     "kazoo_pistol", "bass_drop", "cymbal_slicer", "feedback_loop",
     "drum_circle", "trumpet_burst", "vinyl_scratch", "synth_wave",
     "triangle_tracer", "cello_lance", "maraca_orbit", "tuning_fork",
@@ -202,25 +200,18 @@ function Assets.load()
     "brass_barrage", "improvised_solo", "subwoofer_supernova",
     "orbital_ovation", "thunderhead_ensemble", "golden_fortissimo",
     "gravity_groove", "neon_crescendo",
+    "prismatic_triangle", "velvet_impaler", "carnival_superorbit",
+    "resonance_rupture", "stadium_keytar", "cathedral_overdrive",
+    "infinite_mixtape", "aurora_harp",
   }
-  for index, id in ipairs(projectile_ids) do
-    self.projectile_cells[id] = {
-      col = (index - 1) % 6 + 1,
-      row = math.floor((index - 1) / 6) + 1,
-    }
-  end
-  local projectile_aliases = {
-    prismatic_triangle = "triangle_tracer",
-    velvet_impaler = "cello_lance",
-    carnival_superorbit = "maraca_orbit",
-    resonance_rupture = "tuning_fork",
-    stadium_keytar = "keytar_chord",
-    cathedral_overdrive = "bell_tower",
-    infinite_mixtape = "tape_repeater",
-    aurora_harp = "laser_harp",
-  }
-  for id, base_id in pairs(projectile_aliases) do
-    self.projectile_cells[id] = self.projectile_cells[base_id]
+  for _, id in ipairs(player_attack_ids) do
+    self.player_attacks[id] = SpriteSheet({
+      path = "assets/generated/projectiles/" .. id .. ".png",
+      frame_w = 384,
+      frame_h = 128,
+      cols = 5,
+      rows = 1,
+    })
   end
   self.combat_fx = SpriteSheet({
     path = "assets/generated/campaign/combat-fx-atlas.png",
@@ -771,28 +762,103 @@ function Assets:draw_environment_upper(icon, x, y, size, opts)
     atlas, upper, x, y, 0, scale, scale, cell_w / 2, cell_h / 2)
 end
 
+function Assets.attack_transform(opts)
+  local x, y = opts.x, opts.y
+  local rotation = opts.rotation or 0
+  local scale
+
+  if opts.family == "beam" then
+    local length = opts.beam_length or opts.coverage or 560
+    x = x + (opts.dx or 1) * length * 0.5
+    y = y + (opts.dy or 0) * length * 0.5
+    scale = length / 264
+  elseif opts.family == "area_effect"
+    or ((opts.family == "lobbed_bomb" or opts.family == "deployable")
+      and opts.phase == "active")
+  then
+    local diameter = math.max(64, (opts.effect_radius or 64) * 2)
+    scale = diameter / 104
+  elseif opts.family == "wave" then
+    scale = (opts.wave_width or opts.effect_radius or 220) / 270
+    rotation = rotation + math.pi / 2
+  elseif opts.family == "storm" then
+    local diameter = math.max(92, (opts.effect_radius or 52) * 2)
+    scale = diameter / 104
+    rotation = 0
+  elseif opts.family == "orbital" then
+    local draw_size = math.max(48, (opts.size or 12) * 3.5)
+    scale = draw_size / 104
+    rotation = rotation + (opts.age or 0) * 3.5
+  else
+    local draw_size = opts.phase == "flight"
+      and math.max(42, (opts.size or 12) * 3)
+      or math.max(34, (opts.size or 12) * 3.4)
+    scale = draw_size / 104
+    if opts.family == "boomerang" then
+      rotation = rotation + (opts.age or 0) * 7
+    end
+  end
+
+  local pose_scale = ((opts.scale_x or 1) + (opts.scale_y or 1)) * 0.5
+  scale = scale * pose_scale
+  return {
+    x = x,
+    y = y,
+    rotation = rotation,
+    scale_x = scale,
+    scale_y = scale,
+  }
+end
+
+function Assets:draw_attack(opts)
+  local sheet = self.player_attacks[opts.visual_id]
+  if not sheet then return false end
+  local frame_count = opts.animation_frames or 5
+  local frame = opts.frame or (
+    math.floor((opts.age or 0) * (opts.animation_fps or 12))
+      % frame_count + 1)
+  local transform = Assets.attack_transform(opts)
+  sheet:draw(frame, 1, transform.x, transform.y, {
+    rotation = transform.rotation,
+    scale = transform.scale_x,
+    scale_y = transform.scale_y,
+    color = opts.color or { 1, 1, 1, 1 },
+  })
+  return true
+end
+
 function Assets:draw_projectile(
   weapon_id, x, y, size, rotation, color, scale_x, scale_y)
-  local cell = self.projectile_cells[weapon_id]
-  if not cell then return false end
-  local quad = self.projectile_quads[cell.row][cell.col]
-  local scale = math.max(12, size * 2.5) / 256
-  scale_x = scale_x or 1
-  scale_y = scale_y or 1
-  love.graphics.setColor(color or { 1, 1, 1, 1 })
-  love.graphics.draw(
-    self.projectile_atlas, quad, x, y, rotation or 0,
-    scale * scale_x, scale * scale_y, 128, 128)
-  return true
+  return self:draw_attack({
+    visual_id = weapon_id,
+    family = "linear",
+    age = 0,
+    x = x,
+    y = y,
+    size = size,
+    rotation = rotation,
+    color = color,
+    scale_x = scale_x,
+    scale_y = scale_y,
+  })
 end
 
 function Assets:draw_enemy_projectile(
   projectile_kind, x, y, size, rotation, color, scale_x, scale_y)
   local sprite = projectile_kind == "note_bolt"
     and "brass_barrage" or "neon_crescendo"
-  return self:draw_projectile(
-    sprite, x, y, math.max(size, 10), rotation,
-    color, scale_x * 1.18, scale_y * 1.18)
+  return self:draw_attack({
+    visual_id = sprite,
+    family = "linear",
+    age = love.timer.getTime(),
+    x = x,
+    y = y,
+    size = math.max(size, 10),
+    rotation = rotation,
+    color = color,
+    scale_x = scale_x * 1.18,
+    scale_y = scale_y * 1.18,
+  })
 end
 
 function Assets:draw_portrait(icon, x, y, w, h, opts)

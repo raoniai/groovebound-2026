@@ -44,7 +44,7 @@ return {
   },
 
   combat = {
-    target_range = 900,
+    target_range = 1400,
     player_invulnerability = 0.75,
     enemy_contact_cooldown = 0.65,
     projectile_spawn_offset = 22,

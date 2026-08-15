@@ -36,11 +36,12 @@ _Generated from live repository evidence: 2026-08-14 18:26 AEST_
 
 Groove Bound is a bright urban-supernatural survival roguelike built in Lua with LÖVE 11.5. Its current development preview follows:
 
-The current release is **v0.9.1**. Loose-folder play displays `v0.9.1-dev`;
-packaged builds display `v0.9.1`. GitHub Latest, all seven desktop assets, the
-Home, Catalog, Builder, and stable Mac/Windows download routes are published
-and public-live verified at v0.9.1. This patch supersedes the v0.9.0 desktop
-packages, whose common payload omitted a lock sprite required during startup.
+The canonical source is now **v0.9.2**. Loose-folder play displays
+`v0.9.2-dev`; packaged builds display `v0.9.2`. The v0.9.2 release candidate
+contains the complete projectile-system replacement and is passing source,
+simulation, lint, media, portability, and local landing-version gates. GitHub
+Latest and the deployed public site remain v0.9.1 until publication and any
+separately approved site deployment are independently verified.
 
 **Title → Prologue → Character Selection → Character Intro → Backbeat Streets → The Orbit Line → World Tour → playable Funk, Soul, Disco, and Jazz routes**
 
@@ -97,16 +98,30 @@ The public landing site is a separate static presentation under `landing-page/`.
 | Music system | Published in v0.8.0; tests and release media checks passed | One continuous World Tour hub theme, nine world-specific soundtrack packs, and 28 optimized route, pressure or boss, and finale cues; connected menu overlays preserve or duck the current musical context | Final creative listening pass across all cues; BeatClock, latency calibration, groove scoring, and accessibility remain future work |
 | Application icon | Published in the v0.6.0 macOS app; tests passed, package verified, and manual small-size QA verified | Commit `097c883`; Joe/Lyra adventure emblem at 512px RGBA; native `GrooveBound.icns` present and referenced in the verified app bundle | Confirm the rebuilt native app icon in the macOS Dock on another clean Mac |
 | Generic controller and camera support | Published in v0.8.1 and tests passed | Level-up navigation uses strict spatial rows for D-pad, arrow keys, and WASD: left/right never wrap into another row, while up/down selects the nearest aligned item; existing right-stick aim and controller parity remain intact | Physical PlayStation controller check; hot-plug identity, glyphs/remapping, wired/wireless matrix |
-| Combat readability and HUD | v0.9.0 layout and boss-warning changes tested; earlier v0.8.2 states manually verified | The mechanic guide reserves `y=76` below the top-right Score/Combo band ending at `y=64`; alerts consume the published rectangle and flow below it; boss range uses thin low-alpha outlines and reduced-flash remains authoritative | Fresh graphical pass at minimum and reference sizes plus full combat feel with flash/reduced-flash options |
+| Combat readability and HUD | v0.9.2 projectile candidate tested; earlier interface states manually verified | Every player weapon owns a separate five-stage atlas; high-power effects have longer recovery windows; beams preserve authored proportions; rank increases protective geometry | Fresh unlocked graphical pass at minimum and reference sizes plus prolonged combat feel with flash/reduced-flash options |
 | Character, upgrade, and results interface | Published in v0.7.1, tests passed, and visually sampled | Anton/Oswald typography, modular nine-slice upgrade cards, relevant-equipped evolution rows only, exact icon-led gain-to-total attributes, generated NEW badge, pickup-art utility choices, existing reroll/skip sprite CTAs, and bright sprite-backed menu focus | Manual defeat/victory results pass and final small-screen readability review |
 | Save system | Version 2 profiles and slots | Save, migration, profile, export and World Tour session tests | Cross-platform clean-machine fixtures |
-| Landing page and repository README | v0.9.1 deployed and public-live verified | The 420-file public bundle is byte-matched on all core pages and scripts; all three pages show v0.9.1 and both stable desktop CTAs resolve to v0.9.1 | Physical-phone refresh, audio listening, and `main` promotion remain separate checks |
+| Landing page and repository README | Local source prepared for v0.9.2; public site remains v0.9.1 | Home, Catalog, and Builder source badges show v0.9.2 and retain stable Latest desktop URLs | Site deployment is separately approval-gated; physical-phone refresh and `main` promotion remain open |
 | World Tour runtime atlases | v0.9.1 package verified after the v0.9.0 lock-sprite omission | Four Stage 2 environment atlases, four eight-state mechanic atlases, 32 individual mechanic sprites, and the directly loaded World Tour lock sprite pass source, archive, RGBA, transparency, grid, and packaged-reference checks | Full in-motion readability and collision/layering pass in all eight World Tour stages |
-| Desktop distribution | GitHub Latest publishes synchronized v0.9.1 Mac and Windows assets | Seven digest-bearing assets were built from one common payload; macOS and Windows native test/package boot markers passed in release CI; generated `dist/` was cleared and repopulated from the exact published assets, including the extracted `.app` and `.exe` | Physical Windows QA, unlocked-Mac visual check, signing, and notarization if required |
+| Desktop distribution | v0.9.2 source verified; native packaging pending clean commit | One common payload will feed local, macOS and Windows artifacts; superseded active local binaries were moved to versioned archives | Package parity, GitHub publication, physical Windows QA, unlocked-Mac visual check, signing, and notarization remain open |
 | Engine migration | Planned | Engine migration research and parity roadmap | Clean baseline and bounded target-engine spike |
 | Groove Bound skills | Twelve repository skills validated; version-sync skill committed and pushed | The fail-closed checker is wired into source, local/candidate, GitHub, landing, and public phases; repository package validation passes 12 of 12 | Unlocked-Mac visual forward test remains open |
 
 ## Active working state
+
+An isolated local projectile-redesign candidate now exists on
+`codex/projectile-redesign-v091`, based on the post-release World Overhaul head
+`50c16f6`. It replaces the retired combined projectile atlas with 32 separate
+five-stage attack strips and adds deterministic linear, boomerang, bomb, area,
+orbit, beam, scenario-storm, wave and deployable behavior. Every weapon now has
+five genuinely authored states—charge, formation, peak, breakup and remnant—in
+its own atlas. Rankable weapons expand their relevant coverage and effect
+geometry through immutable firing snapshots. High-power beams, storms and
+scenario effects now have longer recovery windows and bounded mid-animation
+damage phases; renderer scaling is uniform so beam art is never stretched.
+This candidate is locally implemented and fully source-verified. It is being
+prepared as v0.9.2 for one clean release commit and synchronized local, macOS,
+Windows, and GitHub packages. It is not yet pushed or released.
 
 GitHub release `v0.9.1` is public as Latest and tag `v0.9.1` resolves to clean
 release commit `ed092b99b65a822253e2bf4765c86601291d8d96`. Its seven desktop
@@ -159,11 +174,11 @@ Do not infer `main` promotion from the feature-branch push, GitHub release, or l
 
 | Layer | Latest state | Meaning |
 |---|---|---|
-| Automated tests | v0.9.1: 398 passed, 0 failed locally and in release CI on 2026-08-14 | Mechanics, boss phases, Break, heavy projectiles, Stage 2 atlases, HUD clearance, version identity, progression, and platform behaviors are covered |
-| Lint | 0 warnings and 0 errors across 186 files on 2026-08-14 | Current Lua source and tests statically checked |
-| Common package | Published v0.9.1 `.love`: 229,637,661 bytes, SHA-256 `3863014985993e998df391a9777219eb7b786812c01673ed637b894296fd3a14` | Clean payload embeds release commit `ed092b99b65a`, exact VERSION, release marker, required lock sprite, zero missing complete runtime asset references, and no forbidden entries |
-| macOS artifacts | v0.9.1 universal ZIP and icon-bearing DMG released | ZIP SHA-256 `0d23df7bf9194fa766939b45e6503cd1209485c91bac4c43aa9721e11b2029c1`; DMG SHA-256 `c8dc4754eead38b229e71097284d6dc5a0caa8cd11eb15ea749342af2c65810c`; same common payload; DMG validated; extracted published app reached `boot-complete`; ad-hoc signed, not notarized |
-| Windows artifact | v0.9.1 branded x64 portable ZIP released | ZIP SHA-256 `d4c69957aa456967fb9b08f189c02c89e09c4fc7565dde2b94de1d76fb3ce8e5`; manifest SHA-256 `faf24086da893ed2f6a6d22d99773ff3312dd79878fedb5d0386c840b6f7b052`; extracted EXE contains the v0.9.1 common payload and lock sprite; unsigned |
+| Automated tests | v0.9.2 candidate: 410 passed, 0 failed locally on 2026-08-15 | Projectile lifecycle, cooldown recovery, rank-scaled coverage, deterministic campaign completion, and existing systems are covered |
+| Lint | 0 warnings and 0 errors across 187 files on 2026-08-15 | Current Lua source and tests statically checked |
+| Common package | v0.9.2 packaging pending clean release commit | Dirty inspection package passed content checks earlier; public payload must be rebuilt clean |
+| macOS artifacts | v0.9.2 packaging pending clean common payload | Universal app, ZIP and DMG will be ad-hoc signed and not notarized |
+| Windows artifact | v0.9.2 packaging pending clean common payload | Branded fused x64 ZIP will use the pinned official LÖVE 11.5 runtime and remain unsigned |
 | Packaged boot | Verified in Windows and macOS release CI on 2026-08-14 | Both packages reached the validated boot-complete marker; this is a startup-integrity check, not full graphical/audio play |
 | Manual graphical QA | v0.8.2 changed interface states verified at 1280 x 720 and 800 x 600 | Active World Tour mechanic, timer, HP/XP, build slots, level-point CTA, pause, level-up, results, title, and settings were visually inspected; full campaign, physical controller, audio and prolonged play-feel remain open |
 | Source release commit | `ed092b9` — release: publish desktop v0.9.1 package asset hotfix | Tag `v0.9.1` resolves to full commit `ed092b99b65a822253e2bf4765c86601291d8d96` |
@@ -215,6 +230,44 @@ For an engine migration, keep LÖVE as the golden reference. The leading researc
    a separate, reviewed pass; do not overwrite its unrelated dirty material.
 
 ## Continuation history
+
+### 2026-08-15 — v0.9.2 projectile release preparation
+
+- Promoted the canonical source version to v0.9.2 and synchronized loose-source
+  and local landing-page labels while retaining stable Latest download routes.
+- Moved historical release notes to `packaging/archive/` and preserved active
+  v0.8.4 local binaries under `dist/archive/v0.8.4-original-workspace/` rather
+  than deleting them.
+- Passed 410 tests, zero lint findings across 187 files, clean diff whitespace,
+  zero-risk media audit, portability audit, World Overhaul art verification,
+  and source plus landing version gates.
+- Delivery state: locally implemented and source-verified; clean commit, common
+  package, native packages, push, GitHub release, and final parity checks remain.
+
+### 2026-08-14 — separate animated projectile-system candidate
+
+- Created the work only in an isolated branch from verified World Overhaul
+  v0.9.1 head `50c16f6`; the original protected 0.8.4 workspace and its earlier
+  mistaken shared-atlas implementation remain untouched as recovery material.
+- Replaced player attacks with nine deterministic families and 32 unique
+  five-frame RGBA strips under `assets/generated/projectiles/`. The old runtime
+  projectile atlas is removed, while source candidates and prompt provenance
+  remain package-excluded.
+- Added rank-scaled coverage, blast radius, area radius, orbit distance, beam
+  length/width, storm reach/target count and wave width. Rank-one protective
+  ranges and evolved scenario-wide storms have focused regression coverage.
+- Passed 410 tests, zero lint findings across 187 files, World Overhaul art
+  verification, media audit with zero risks, clean diff whitespace and package
+  inspection. The dirty candidate package contained all 32 separate strips,
+  no source candidates and no retired atlas; the release verifier correctly
+  rejected only its dirty marker.
+- Replaced the earlier single-concept procedural animation with four retained
+  source boards and 160 distinct authored frames. All 32 independent runtime
+  atlases are 1920x128 RGBA, contain five unique frame hashes, and preserve
+  beam proportions with uniform runtime scaling.
+- Delivery state: locally implemented, booted and ready for a new manual pass.
+  Commit, push, release,
+  deployment and manual in-motion approval remain open.
 
 ### 2026-08-14 — v0.9.1 desktop startup package hotfix
 

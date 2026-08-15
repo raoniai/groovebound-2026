@@ -58,9 +58,10 @@ function WeaponRuntime:_build_emitter(slot, instance, previous)
   local tempo = (self.character.stats or {}).tempo or 1
   local stability = self:_passive_bonus("cooldown_stability")
   local overdrive = self:_passive_bonus("fire_rate")
-  local cooldown = stats.cooldown
+  local cooldown = stats.cooldown * (definition.cooldown_scale or 1)
     * (1 - math.min(0.30, stability))
     / (fire_rate * tempo * (1 + overdrive))
+  cooldown = math.max(definition.minimum_cooldown or 0, cooldown)
   local cooldown_remaining = 0
 
   if previous and previous.cooldown > 0 then
@@ -116,6 +117,19 @@ function WeaponRuntime:projectile_snapshot(slot)
   local emitter = assert(self.emitters[slot], "no active emitter in slot " .. tostring(slot))
   local definition = self.content.weapons[emitter.weapon_id]
   local stats = definition.levels[emitter.level]
+  local rank_progress = definition.max_level > 1
+    and (emitter.level - 1) / (definition.max_level - 1) or 1
+  local coverage_scale = 1 + rank_progress * (definition.coverage_growth or 0)
+  local effect_scale = 1 + rank_progress * (definition.effect_growth or 0)
+  local speed = (stats.speed or 0) * self:_value("projectiles.speed_multiplier", 1)
+  local coverage = definition.coverage * coverage_scale
+  local lifetime = stats.lifetime
+  if speed > 0 and (definition.attack_family == "linear"
+      or definition.attack_family == "boomerang"
+      or definition.attack_family == "wave")
+  then
+    lifetime = math.max(lifetime, coverage / speed)
+  end
   return {
     source_weapon_id = emitter.weapon_id,
     source_weapon_level = emitter.level,
@@ -124,20 +138,37 @@ function WeaponRuntime:projectile_snapshot(slot)
       * TestMode.factor(self.tuning)
       * ((self.character.stats or {}).power or 1)
       * (1 + self:_passive_bonus("damage"))
-      * self.temporary_damage_multiplier,
-    speed = (stats.speed or 0) * self:_value("projectiles.speed_multiplier", 1),
+      * self.temporary_damage_multiplier
+      * (definition.damage_scale or 1),
+    speed = speed,
     count = math.max(1,
       (stats.count or 1)
       + self:_value("projectiles.per_shot_bonus", 0)
       + math.floor(self:_passive_bonus("amount"))),
     size = stats.size,
-    lifetime = stats.lifetime,
+    lifetime = lifetime,
     spread = (stats.spread or 0)
       * (1 - math.min(0.35, (self.passives.breath_control or 0) * 0.06)),
     pierce = stats.pierce or 0,
     knockback = stats.knockback or 8,
     pattern = definition.pattern or "aimed",
     color = definition.projectile_color,
+    attack_family = definition.attack_family,
+    visual_id = definition.visual_id,
+    animation_frames = definition.animation_frames,
+    animation_mode = definition.animation_mode,
+    animation_fps = definition.animation_fps,
+    coverage = coverage,
+    effect_radius = definition.effect_radius * effect_scale,
+    effect_scale = effect_scale,
+    hit_cooldown = definition.hit_cooldown,
+    flight_time = definition.flight_time,
+    active_duration = definition.active_duration,
+    return_delay = definition.return_delay,
+    angular_speed = definition.angular_speed,
+    max_targets = math.max(1, (definition.max_targets or 1)
+      + math.floor(rank_progress * (definition.target_growth or 0))),
+    follow_player = definition.follow_player,
   }
 end
 

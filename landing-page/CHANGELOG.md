@@ -2,6 +2,14 @@
 
 This file is the local implementation record. Add a new entry at the top after every material site pass.
 
+## 2026-08-15 | SITE-053 | v0.9.2 projectile system
+
+Prepared the Home, Catalog, and Builder version badges for v0.9.2 while
+retaining stable GitHub Latest download routes. The desktop release replaces
+weapon-shaped shots with 32 independent five-stage projectile animations,
+adds nine attack families, preserves rank-scaled protective coverage, and
+slows the strongest beam and scenario attacks for cleaner combat readability.
+
 ## 2026-08-14 | SITE-052 | v0.9.1 desktop package hotfix
 
 Updated the public release badge to v0.9.1 while preserving the stable Latest

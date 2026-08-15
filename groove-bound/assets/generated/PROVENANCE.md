@@ -213,7 +213,6 @@ from release packages. Runtime assets are:
 | `campaign/stage2-environment-atlas.png` | 4×2 collision and decorative props |
 | `campaign/backbeat-environment-expansion-atlas.png` | 4×2 Backbeat trees, barriers, street equipment, and decoration |
 | `campaign/orbit-environment-expansion-atlas.png` | 4×2 Orbit Line crystal trees, rails, beacons, debris, and gates |
-| `campaign/projectile-atlas.png` | 6×4 unique base/evolved weapon bullets |
 | `campaign/combat-fx-atlas.png` | 4×4 impacts, explosions, deaths, damage |
 | `campaign/app-icon.png` | 512×512 RGBA application/window icon |
 | `campaign/groove-bound-logo.png` | menu logo extracted from the repository banner |
@@ -774,3 +773,35 @@ logo is an unchanged byte-for-byte runtime promotion of the project-owned
 `landing-page/assets/world-tour/logos/jazz.png`; the website source remains a
 separate public surface. Runtime dimensions, PNG colour types and loader paths
 are regression-tested.
+
+## Separate player attack animation strips
+
+**Generated:** 2026-08-14 with OpenAI image generation in Codex built-in mode
+
+| File | Classification / role | Dimensions | SHA-256 |
+|---|---|---:|---|
+| `source-candidates/2026-08-14-projectile-v091/stage-board-base-a-chroma-source.png` | Untouched source for base attacks 1-8; package-excluded | 1402x1122 RGB | `04d4e03b7403722c946b967994897a2fb92d10808fef5e1a78da0a35ef235125` |
+| `source-candidates/2026-08-14-projectile-v091/stage-board-base-a-transparent.png` | Keyed build source | 1402x1122 RGBA | `09d8cbff1b2f8d46489348fc45c92f98cf13060357e6a6df3b008198d13e15b8` |
+| `source-candidates/2026-08-14-projectile-v091/stage-board-base-b-chroma-source.png` | Untouched source for base attacks 9-16; package-excluded | 1672x941 RGB | `559b9ab57cb6df19062a8849a6ff081785d7b7a86415e7e17dee0d22e5d21d7b` |
+| `source-candidates/2026-08-14-projectile-v091/stage-board-base-b-transparent.png` | Keyed build source | 1672x941 RGBA | `430332acaee7c62b82d8a06d83df5dcdf730d87a4d38089b5ab972c95da02cb6` |
+| `source-candidates/2026-08-14-projectile-v091/stage-board-evolved-a-chroma-source.png` | Untouched source for evolved attacks 1-8; package-excluded | 1536x1024 RGB | `586219f0e94a7f199158aa45e866078cd64548b57d20ac90939a32cf51d6406c` |
+| `source-candidates/2026-08-14-projectile-v091/stage-board-evolved-a-transparent.png` | Keyed build source | 1536x1024 RGBA | `1f2d4558627d77a4bd3edea087dfb236cc155e8ee15317b9e06e45638b56fe9f` |
+| `source-candidates/2026-08-14-projectile-v091/stage-board-evolved-b-chroma-source.png` | Untouched source for evolved attacks 9-16; package-excluded | 1619x971 RGB | `22539a43b8682a0a1b52b31776b329cda4689ee2847e2f3f6017e0cb254b7abb` |
+| `source-candidates/2026-08-14-projectile-v091/stage-board-evolved-b-transparent.png` | Keyed build source | 1619x971 RGBA | `f9ee2c9f8b4feaa79269d369474a21607bf51d108b274f25e5db2afcd959455d` |
+| `projectiles/<weapon-id>.png` | 32 separate runtime animation strips | 1920x128 RGBA each | Five unique frame hashes and unique per-file hashes verified by the build script |
+
+The source prompt is recorded beside the source images in `PROMPTS.md`. The
+v0.9.1 projectile atlas and combat-effects atlas were used only as visual
+references. The rejected shared attack atlas guided the category list but was
+not copied into this branch. The earlier concept board is retained as
+reference-only. Four accepted stage boards replace it as build inputs and paint
+all five states for every attack with controlled glow and generous empty space.
+
+`scripts/build_projectile_animations.py` splits the four source boards in
+stable row and stage order and produces five distinct 384x128 frames for every
+weapon ID. It preserves authored stage art and aspect ratio; it does not
+manufacture motion from a single frame or create a combined runtime atlas.
+`src/assets.lua` loads each strip independently from
+`assets/generated/projectiles/`. The retired
+`campaign/projectile-atlas.png` is removed from runtime and packaging; its old
+source candidate remains reference-only for historical provenance.
