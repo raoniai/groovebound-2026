@@ -611,6 +611,14 @@ function CombatSystem:_kill_enemy(enemy)
     if not enemy.suppress_reward_chest then self:_try_spawn_reward_chest(enemy) end
   end
   self.vfx:spawn(
+    "enemy_death", enemy.x, enemy.y,
+    {
+      enemy_id = enemy.id,
+      enemy_size = enemy.definition.sprite_size or 82,
+      flip_x = enemy.anim_row == 3,
+      duration = enemy.definition.boss_type and 0.72 or 0.48,
+    })
+  self.vfx:spawn(
     "explosion", enemy.x, enemy.y,
     {
       scale = enemy.definition.boss_type and 0.62 or 0.30,

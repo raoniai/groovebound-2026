@@ -2,6 +2,14 @@
 
 This file is the local implementation record. Add a new entry at the top after every material site pass.
 
+## 2026-08-15 | SITE-055 | v0.9.4 individual enemy state animation
+
+Prepared Home, Catalog, and Builder for v0.9.4 while retaining the stable
+GitHub Latest desktop routes. Added the newly distinct Breakbeat Bruiser using
+its canonical runtime walk pose as the 213th inspectable record, and recorded
+the 170-strip, 600-frame enemy suite: walk, hit, and death for every enemy plus
+authored attack sequences for all 23 projectile enemies.
+
 ## 2026-08-15 | SITE-054 | v0.9.3 enemy animation suite
 
 Prepared the Home, Catalog, and Builder version badges for v0.9.3 while

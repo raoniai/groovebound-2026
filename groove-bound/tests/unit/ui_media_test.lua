@@ -1,5 +1,7 @@
 local H = require("tests.helpers")
 local UIScale = require("src.ui.scale")
+local EnemyAnimation = require("src.render.enemy_animation")
+local enemies = require("src.content.enemies")
 
 local T = {}
 
@@ -34,6 +36,22 @@ T["runtime UI artwork and character logos have stable production mappings"] = fu
     H.is_true(#file:read(16) > 0)
     file:close()
   end
+  local enemy_state_strips = 0
+  for id, definition in pairs(enemies) do
+    for _, state in ipairs({ "walk", "hit", "death", "attack" }) do
+      if state ~= "attack" or definition.attack_kind then
+        local frames = EnemyAnimation.frame_count(id, state)
+        local path = "assets/generated/campaign/enemies/" .. id
+          .. "/" .. state .. ".png"
+        local width, height = png_dimensions(path)
+        H.eq(width, frames * 256, id .. " " .. state .. " width")
+        H.eq(height, 256, id .. " " .. state .. " height")
+        H.eq(png_color_type(path), 6, id .. " " .. state .. " alpha")
+        enemy_state_strips = enemy_state_strips + 1
+      end
+    end
+  end
+  H.eq(enemy_state_strips, 170)
   local new_w, new_h = png_dimensions(
     "assets/generated/campaign/ui/new-tag.png")
   H.is_true(new_w > new_h * 2)

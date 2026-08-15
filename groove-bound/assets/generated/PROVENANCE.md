@@ -835,3 +835,28 @@ continues to share the current `turntable_sentinel` Orbit visual explicitly.
 Animation phase is derived deterministically without consuming gameplay RNG;
 the existing static atlas remains the renderer fallback when no frame is
 requested.
+
+## Individual enemy state animation suite
+
+**Generated and prepared:** 2026-08-15 with OpenAI image generation in Codex
+built-in mode
+
+The package runtime now contains 170 individual RGBA animation strips under
+`campaign/enemies/<enemy-id>/`: walk, hit, and death for all 49 enemy IDs plus
+attack for the 23 definitions with `attack_kind`. The strips contain 600
+256x256 frames. `breakbeat_bruiser` has a new, independent orange-and-black
+drum-machine brawler identity instead of the former Turntable Sentinel alias.
+
+The prior movement atlases and every established Groove Bound enemy sprite
+were the only visual references. No third-party images were used. Generator
+boards, individual source frames, the reproducible preparation script, and the
+complete hash/path/frame manifest are preserved below
+`source-candidates/2026-08-15-enemy-state-animation/` and excluded from
+packages. The built-in generator does not expose a user-selectable model name
+or separate per-call price.
+
+`prepare_state_assets.py` normalizes generator boards to exact 256px cells,
+removes and despills their flat chroma backgrounds, preserves a transparent
+gutter, slices every state into individual frames, and writes one horizontal
+runtime strip per enemy/state. `state-manifest.json` records all source-frame
+and runtime hashes, dimensions, counts, and mappings.

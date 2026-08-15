@@ -429,7 +429,8 @@
     { name: "Amp Hound", behavior: "Fast elite orbiting predator", file: "orbit-5", hp:420, speed:132, damage:27, xp:68, coins:10, rank:"Elite" },
     { name: "Keyboard Centipede", behavior: "Elite zigzag and ranged lane pressure", file: "orbit-6", hp:560, speed:82, damage:31, xp:82, coins:12, rank:"Elite" },
     { name: "Turntable Sentinel", behavior: "Ranged Orbit Line miniboss", file: "orbit-7", hp:5200, speed:44, damage:30, xp:360, coins:150, rank:"Miniboss" },
-    { name: "Grand Orchestrator", behavior: "Final boss with Resonance pulses", file: "orbit-8", hp:14500, speed:34, damage:36, xp:1000, coins:500, rank:"Final boss" }
+    { name: "Grand Orchestrator", behavior: "Final boss with Resonance pulses", file: "orbit-8", hp:14500, speed:34, damage:36, xp:1000, coins:500, rank:"Final boss" },
+    { name: "Breakbeat Bruiser", behavior: "Backbeat Stage 2 boss with a large static wave", file: "backbeat-9", hp:6200, speed:54, damage:30, xp:720, coins:360, rank:"Final boss" }
   ].map((enemy, index) => ({
     ...enemy,
     key: `enemy-${index + 1}`,

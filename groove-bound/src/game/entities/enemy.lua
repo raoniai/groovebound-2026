@@ -38,6 +38,11 @@ function Enemy:reset(opts)
   self.anim_frame = 1
   self.anim_row = directions.down
   self.variant_anim_phase = EnemyAnimation.phase(self.id, self.x, self.y)
+  self.visual_state = "walk"
+  self.visual_state_time = 0
+  self.hit_remaining = 0
+  self.attack_recovery = 0
+  self.attack_windup_total = 0
   self.contact_cooldown = 0
   self.attack_cooldown = opts.definition.attack_interval or 0
   self.attack_windup = 0
@@ -72,6 +77,8 @@ function Enemy:update(dt, player, speed_multiplier, arena)
   if self.dead then return nil end
   self.contact_cooldown = math.max(0, self.contact_cooldown - dt)
   self.flash = math.max(0, self.flash - dt)
+  self.hit_remaining = math.max(0, self.hit_remaining - dt)
+  self.attack_recovery = math.max(0, self.attack_recovery - dt)
   self.attack_cooldown = math.max(0, self.attack_cooldown - dt)
   self.attack_just_fired = false
   self.brain_time = self.brain_time + dt
@@ -89,6 +96,7 @@ function Enemy:update(dt, player, speed_multiplier, arena)
     self.attack_windup = math.max(0, self.attack_windup - dt)
     if self.attack_windup == 0 then
       self.attack_just_fired = true
+      self.attack_recovery = 0.18
     end
   end
   if length > 0.001 and self.definition.brain ~= "static" then
@@ -149,6 +157,7 @@ function Enemy:update(dt, player, speed_multiplier, arena)
     and length <= attack_range
   then
     self.attack_windup = self.definition.windup or 0.45
+    self.attack_windup_total = self.attack_windup
     local phase_interval = self.phase == 3 and .72
       or self.phase == 2 and .86 or 1
     self.attack_cooldown = (self.definition.attack_interval or 2)
@@ -157,6 +166,16 @@ function Enemy:update(dt, player, speed_multiplier, arena)
 
   self.anim_time = self.anim_time + dt
   self.anim_frame = math.floor(self.anim_time * 12) % 6 + 1
+  local visual_state = self.hit_remaining > 0 and "hit"
+    or (self.definition.attack_kind
+      and (self.attack_windup > 0 or self.attack_recovery > 0)) and "attack"
+    or "walk"
+  if visual_state ~= self.visual_state then
+    self.visual_state = visual_state
+    self.visual_state_time = 0
+  else
+    self.visual_state_time = self.visual_state_time + dt
+  end
   if self.attack_just_fired then
     local attack_x, attack_y = player.x - self.x, player.y - self.y
     local attack_length = math.sqrt(attack_x * attack_x + attack_y * attack_y)
@@ -206,6 +225,9 @@ function Enemy:take_damage(amount)
   if self.dead then return false end
   self.hp = self.hp - amount
   self.flash = 0.08
+  self.hit_remaining = 0.22
+  self.visual_state = "hit"
+  self.visual_state_time = 0
   if self.hp <= 0 then
     self.hp = 0
     self.dead = true
@@ -236,9 +258,33 @@ function Enemy:draw()
     color = { 1, 0.70, 0.24, 1 }
   end
 
-  if self.assets and self.definition.sprite then
-    local variant_frame = EnemyAnimation.frame(
-      self.definition, self.anim_time, self.variant_anim_phase)
+  if self.assets and self.assets.draw_enemy_state then
+    local progress
+    if self.visual_state == "hit" then
+      progress = 1 - self.hit_remaining / 0.22
+    elseif self.visual_state == "attack" then
+      if self.attack_windup > 0 then
+        progress = 0.66 * (1 - self.attack_windup
+          / math.max(0.001, self.attack_windup_total))
+      else
+        progress = 0.66 + 0.34 * (1 - self.attack_recovery / 0.18)
+      end
+    end
+    local state_frame = EnemyAnimation.frame(
+      self.definition, self.visual_state, self.visual_state_time,
+      self.variant_anim_phase, progress)
+    self.assets:draw_enemy_state(
+      self.id,
+      self.visual_state,
+      state_frame,
+      self.x,
+      self.y,
+      self.definition.sprite_size or 82,
+      {
+        color = color,
+        flip_x = self.anim_row == directions.left,
+      })
+  elseif self.assets and self.definition.sprite then
     self.assets:draw_enemy_variant(
       self.definition.sprite,
       self.x,
@@ -247,7 +293,6 @@ function Enemy:draw()
       {
         color = color,
         flip_x = self.anim_row == directions.left,
-        frame = variant_frame,
       })
   elseif self.assets and self.assets.enemy then
     self.assets.enemy.walk:draw(

@@ -5,33 +5,24 @@ local enemies = require("src.content.enemies")
 
 local T = {}
 
-T["every enemy definition resolves to an in-bounds animation frame set"] = function()
+T["every enemy resolves to its required individual state frame counts"] = function()
   local count = 0
   for id, definition in pairs(enemies) do
     count = count + 1
-    local frame_count = EnemyAnimation.frame_count(definition.sprite)
-    H.is_true(frame_count == 3 or frame_count == 4, id)
-    local atlas_id = EnemyAnimation.atlas_id(definition.sprite)
-    H.is_true(atlas_id ~= nil, id)
-    local rows = atlas_id == "jazz" and 8 or 6
-    for frame = 1, frame_count do
-      local row, col = EnemyAnimation.cell(definition.sprite, frame)
-      H.is_true(row >= 1 and row <= rows, id .. " row")
-      H.is_true(col >= 1 and col <= 4, id .. " col")
+    H.is_true(EnemyAnimation.frame_count(id, "walk") >= 3, id .. " walk")
+    H.is_true(EnemyAnimation.frame_count(id, "hit") >= 3, id .. " hit")
+    H.eq(EnemyAnimation.frame_count(id, "death"), 4, id .. " death")
+    if definition.attack_kind then
+      H.eq(EnemyAnimation.frame_count(id, "attack"), 4, id .. " attack")
     end
   end
   H.eq(count, 49)
 end
 
-T["Breakbeat Bruiser explicitly shares the Turntable Sentinel animation"] = function()
-  for frame = 1, 3 do
-    local break_row, break_col = EnemyAnimation.cell(
-      enemies.breakbeat_bruiser.sprite, frame)
-    local sentinel_row, sentinel_col = EnemyAnimation.cell(
-      enemies.turntable_sentinel.sprite, frame)
-    H.eq(break_row, sentinel_row)
-    H.eq(break_col, sentinel_col)
-  end
+T["Breakbeat Bruiser has a four-frame identity independent of its old alias"] = function()
+  H.eq(EnemyAnimation.frame_count("breakbeat_bruiser", "walk"), 4)
+  H.eq(EnemyAnimation.frame_count("breakbeat_bruiser", "attack"), 4)
+  H.eq(EnemyAnimation.frame_count("turntable_sentinel", "walk"), 3)
 end
 
 T["visual phases are deterministic and do not require a gameplay RNG"] = function()
@@ -47,8 +38,8 @@ end
 T["static enemy animation advances without changing simulation state"] = function()
   local drawn = {}
   local assets = {
-    draw_enemy_variant = function(_, _, _, _, _, opts)
-      drawn[#drawn + 1] = opts.frame
+    draw_enemy_state = function(_, _, state, frame)
+      drawn[#drawn + 1] = state .. ":" .. frame
     end,
   }
   local enemy = Enemy()
@@ -74,7 +65,7 @@ end
 T["animated enemy rendering preserves left-facing horizontal flip"] = function()
   local flip_x
   local assets = {
-    draw_enemy_variant = function(_, _, _, _, _, opts)
+    draw_enemy_state = function(_, _, _, _, _, _, _, opts)
       flip_x = opts.flip_x
     end,
   }

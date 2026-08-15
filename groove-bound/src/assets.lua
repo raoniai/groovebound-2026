@@ -5,6 +5,7 @@
 
 local SpriteSheet = require("src.render.sprite_sheet")
 local EnemyAnimation = require("src.render.enemy_animation")
+local EnemyDefinitions = require("src.content.enemies")
 
 local Assets = {}
 Assets.__index = Assets
@@ -194,6 +195,21 @@ function Assets.load()
       cell_w = cell_w,
       cell_h = cell_h,
     }
+  end
+  self.enemy.states = {}
+  for id, definition in pairs(EnemyDefinitions) do
+    self.enemy.states[id] = {}
+    for _, state in ipairs({ "walk", "hit", "death", "attack" }) do
+      if state ~= "attack" or definition.attack_kind then
+        self.enemy.states[id][state] = SpriteSheet({
+          path = "assets/generated/campaign/enemies/" .. id .. "/" .. state .. ".png",
+          frame_w = 256,
+          frame_h = 256,
+          cols = EnemyAnimation.frame_count(id, state),
+          rows = 1,
+        })
+      end
+    end
   end
 
   self.floor = image("assets/legacy/images/floor-tiles1.jpg")
@@ -712,6 +728,20 @@ function Assets:draw_enemy_variant(icon, x, y, size, opts)
       or (icon.atlas == "soul" or icon.atlas == "disco"
         or icon.atlas == "jazz")
         and self.enemy[icon.atlas .. "_cell_h"] / 2 or 128)
+  return true
+end
+
+function Assets:draw_enemy_state(id, state, frame, x, y, size, opts)
+  opts = opts or {}
+  local enemy = self.enemy.states[id]
+  local sheet = enemy and (enemy[state] or enemy.walk)
+  if not sheet then return false end
+  sheet:draw(frame, 1, x, y, {
+    scale = size / 256,
+    flip_x = opts.flip_x,
+    color = opts.color,
+    rotation = opts.rotation,
+  })
   return true
 end
 

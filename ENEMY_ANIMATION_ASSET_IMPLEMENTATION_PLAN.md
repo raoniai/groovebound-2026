@@ -1,5 +1,9 @@
 # Groove Bound Enemy Animation Asset Implementation Plan
 
+> Superseded on 2026-08-15 by
+> `ENEMY_STATE_ANIMATION_IMPLEMENTATION_PLAN.md`. This document describes the
+> rejected v0.9.3 movement-only implementation and is retained for provenance.
+
 **Date:** 2026-08-14  
 **Current delivery state:** committed and pushed as v0.9.3; automated, media,
 renderer, source-package, native macOS/Windows boot, payload-parity, GitHub
