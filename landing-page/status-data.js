@@ -1,12 +1,33 @@
 window.GROOVE_STATUS = {
-  "generatedAt": "2026-08-16T13:12:51.194Z",
-  "generatedAtLabel": "16 Aug 2026, 11:12 pm",
+  "generatedAt": "2026-08-16T13:47:05.807Z",
+  "generatedAtLabel": "16 Aug 2026, 11:47 pm",
   "game": {
-    "branch": "codex/world-retry-v096",
-    "commit": "ecba52c",
+    "branch": "main",
+    "commit": "e033b6e",
     "dirty": false,
     "workingChanges": 0,
     "history": [
+      {
+        "hash": "e033b6e",
+        "date": "2026-08-16",
+        "dateLabel": "2026-08-16",
+        "sortKey": "2026-08-16T23:35:55+10:00",
+        "subject": "release: publish desktop v0.9.6"
+      },
+      {
+        "hash": "ec2fa52",
+        "date": "2026-08-16",
+        "dateLabel": "2026-08-16",
+        "sortKey": "2026-08-16T23:17:44+10:00",
+        "subject": "release: publish desktop v0.9.6"
+      },
+      {
+        "hash": "cb14a47",
+        "date": "2026-08-16",
+        "dateLabel": "2026-08-16",
+        "sortKey": "2026-08-16T23:13:00+10:00",
+        "subject": "docs: sync v0.9.6 release status"
+      },
       {
         "hash": "ecba52c",
         "date": "2026-08-16",
@@ -737,7 +758,7 @@ window.GROOVE_STATUS = {
         "dateLabel": "2026-08-16",
         "id": "SITE-057",
         "title": "v0.9.6 World Tour retry and opening balance",
-        "summary": "Prepared Home, Catalog, and Builder for v0.9.6 while retaining the stable GitHub Latest desktop routes. The release slightly softens fresh World Tour openings, adds immediate same-world retry with the original character and starting setup after defeat, and adds a separate Return to World Menu action.",
+        "summary": "Prepared Home, Catalog, and Builder for v0.9.6 while retaining the stable GitHub Latest desktop routes. The release slightly softens fresh World Tour openings, adds immediate same-world retry with the original character and starting setup after defeat, and adds a separate Return to World Menu action. The shared Options menu now also includes persistent Very Easy, Easy, Medium, Hard, and Super Hard profiles with independent dynamic multipliers for waves, regular enemies, bosses, spawn density, attack timing, and player damage.",
         "sortKey": "2026-08-16T23:59:59"
       },
       {
