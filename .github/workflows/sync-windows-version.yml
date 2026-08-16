@@ -3,7 +3,7 @@ name: Build and publish desktop release
 on:
   push:
     branches:
-      - codex/world-overhaul-v090
+      - main
   workflow_dispatch:
 
 permissions:
@@ -14,7 +14,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  CANONICAL_BRANCH: codex/world-overhaul-v090
+  CANONICAL_BRANCH: main
 
 jobs:
   sync:
@@ -25,7 +25,7 @@ jobs:
       - name: Check out canonical release source
         uses: actions/checkout@v4
         with:
-          ref: codex/world-overhaul-v090
+          ref: ${{ github.sha }}
           fetch-depth: 0
 
       - name: Install regression dependencies
@@ -53,7 +53,7 @@ jobs:
       - name: Check out canonical source
         uses: actions/checkout@v4
         with:
-          ref: codex/world-overhaul-v090
+          ref: ${{ github.sha }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -105,7 +105,7 @@ jobs:
       - name: Check out release metadata
         uses: actions/checkout@v4
         with:
-          ref: codex/world-overhaul-v090
+          ref: ${{ github.sha }}
 
       - name: Load canonical version
         run: echo "RELEASE_VERSION=$(tr -d '[:space:]' < groove-bound/VERSION)" >> "$GITHUB_ENV"

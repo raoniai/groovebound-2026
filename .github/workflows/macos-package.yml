@@ -19,7 +19,7 @@ jobs:
       - name: Check out canonical source
         uses: actions/checkout@v4
         with:
-          ref: codex/world-overhaul-v090
+          ref: ${{ github.sha }}
 
       - name: Set up Python
         uses: actions/setup-python@v5

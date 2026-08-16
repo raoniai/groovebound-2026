@@ -2,6 +2,14 @@
 
 This file is the local implementation record. Add a new entry at the top after every material site pass.
 
+## 2026-08-16 | SITE-056 | v0.9.5 projectile readability release
+
+Prepared Home, Catalog, and Builder for v0.9.5 while retaining the stable
+GitHub Latest desktop routes. The release replaces all 32 player projectile
+strips with separate eight-frame RGBA animations, keeps their authored scale
+native or smaller, caps long beam visuals without changing collision coverage,
+and adds subtle deterministic visual-only timing offsets to repeated attacks.
+
 ## 2026-08-15 | SITE-055 | v0.9.4 individual enemy state animation
 
 Prepared Home, Catalog, and Builder for v0.9.4 while retaining the stable
