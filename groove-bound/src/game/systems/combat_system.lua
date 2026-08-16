@@ -281,16 +281,16 @@ function CombatSystem:fresh_entry_factors()
   end
   -- A fresh World Tour launch begins with a rank-one weapon. Blend the assist
   -- away through early levels/time so the world reaches its authored curve.
-  local level_progress = math.min(1, math.max(0, (self.xp.level - 1) / 9))
+  local level_progress = math.min(1, math.max(0, (self.xp.level - 1) / 11))
   local time_progress = math.min(1,
-    math.max(0, (self.ctx.time - self.stage_started_at) / 120))
+    math.max(0, (self.ctx.time - self.stage_started_at) / 150))
   local progress = math.max(level_progress, time_progress)
   local function blend(start) return start + (1 - start) * progress end
   return {
-    health = blend(0.58),
-    damage = blend(0.70),
-    speed = blend(0.88),
-    spawn = blend(0.72),
+    health = blend(0.54),
+    damage = blend(0.66),
+    speed = blend(0.85),
+    spawn = blend(0.67),
   }
 end
 

@@ -18,6 +18,15 @@ local WorldTourSession = require("src.meta.world_tour_session")
 local RunScreen = class()
 RunScreen.kind = "run"
 
+local function deep_copy(value)
+  if type(value) ~= "table" then return value end
+  local result = {}
+  for key, item in pairs(value) do
+    result[deep_copy(key)] = deep_copy(item)
+  end
+  return result
+end
+
 local function world_stages(content, world_id)
   local stages = assert(content.world_stages[world_id])
   return stages[1] and stages or { stages }
@@ -192,6 +201,16 @@ function RunScreen:_results_payload(outcome)
     stage_count = #self.stages,
     health_fraction = self.player.hp / math.max(1, self.player.max_hp),
   }
+  if outcome == "defeat" and self.mode == "world_tour" then
+    payload.retry = {
+      mode = "world_tour",
+      world_id = self.world_id,
+      character_id = self.character.id,
+      build = self.opts.build and deep_copy(self.opts.build) or nil,
+      starter_loadout = self.opts.starter_loadout
+        and deep_copy(self.opts.starter_loadout) or nil,
+    }
+  end
   payload.world_mechanic = self:_world_mechanic_snapshot()
   return payload
 end
