@@ -77,4 +77,44 @@ T["settings shoulder hold repeats until release and persists once"] = function()
   end)
 end
 
+T["difficulty choice cycles directly and rebalances an active run"] = function()
+  with_dimensions(1280, 720, function()
+    local changed
+    local app = {
+      profile = { options = {
+        difficulty = "medium", master_volume = 1,
+        music_volume = 1, sfx_volume = 1, muted = false,
+      } },
+      active_run = { combat = {
+        set_difficulty = function(_, value, previous)
+          changed = { value = value, previous = previous }
+        end,
+      } },
+      save = { save = function() end },
+    }
+    local screen = OptionsScreen(app)
+    screen:_layout()
+    local difficulty
+    for _, row in ipairs(screen.rows) do
+      if row.key == "difficulty" then difficulty = row break end
+    end
+    H.is_true(difficulty ~= nil)
+    screen.selected = difficulty.focus
+    H.is_true(screen:gamepadpressed(nil, "rightshoulder"))
+    H.eq(app.profile.options.difficulty, "hard")
+    H.eq(changed.previous, "medium")
+    H.eq(changed.value, "hard")
+    H.is_true(screen:gamepadpressed(nil, "a"))
+    H.eq(app.profile.options.difficulty, "super_hard")
+    H.is_true(screen:keypressed("-"))
+    H.eq(app.profile.options.difficulty, "hard")
+    H.is_true(screen:mousepressed(
+      difficulty.minus_rect.x + 2, difficulty.minus_rect.y + 2, 1))
+    H.eq(app.profile.options.difficulty, "medium")
+    H.is_true(screen:mousepressed(
+      difficulty.plus_rect.x + 2, difficulty.plus_rect.y + 2, 1))
+    H.eq(app.profile.options.difficulty, "hard")
+  end)
+end
+
 return T

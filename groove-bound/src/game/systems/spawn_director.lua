@@ -65,11 +65,14 @@ function SpawnDirector:_spawn_position(radius)
   return wall, self.rng:uniform(wall, self.arena.height - wall)
 end
 
-function SpawnDirector:update(dt, time, enemy_definitions, escalation_multiplier)
+function SpawnDirector:update(dt, time, enemy_definitions, escalation_multiplier,
+    amount_multiplier)
   self:_activate_ready_waves(time)
+  amount_multiplier = amount_multiplier or 1
   local rate = self.tuning:get("enemies.spawn_rate_multiplier")
-    * (escalation_multiplier or 1)
-  local cap = self.tuning:get("enemies.max_active")
+    * (escalation_multiplier or 1) * amount_multiplier
+  local cap = math.max(1, math.floor(
+    self.tuning:get("enemies.max_active") * amount_multiplier + 0.5))
 
   for i = #self.streams, 1, -1 do
     local stream = self.streams[i]

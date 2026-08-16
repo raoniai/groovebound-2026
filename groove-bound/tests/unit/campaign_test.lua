@@ -31,8 +31,51 @@ local function fresh(character_id, opts)
     character = character,
     mode = opts.mode,
     fresh_world_entry = opts.fresh_world_entry,
+    options = opts.options,
   })
   return combat, ctx, player, tuning
+end
+
+T["difficulty profiles independently scale ordinary enemies and bosses"] = function()
+  local combat = fresh("joe", { options = { difficulty = "very_easy" } })
+  local ordinary = combat:enemy_difficulty_snapshot(Content.enemies.monotone)
+  local boss = combat:enemy_difficulty_snapshot(Content.enemies.static_baron)
+  H.eq(ordinary.health, 0.65)
+  H.eq(ordinary.damage, 0.60)
+  H.eq(ordinary.speed, 0.82)
+  H.eq(boss.health, 0.60)
+  H.eq(boss.damage, 0.55)
+  H.eq(boss.attack_interval, 1.25)
+  H.eq(boss.projectile_speed, 0.85)
+  H.eq(combat:difficulty_snapshot().player_damage, 1.35)
+end
+
+T["changing difficulty live preserves current health fractions"] = function()
+  local options = { difficulty = "medium" }
+  local combat = fresh("joe", { options = options })
+  local ordinary = combat:spawn_enemy(Content.enemies.monotone, 100, 100)
+  ordinary.hp = ordinary.max_hp * 0.4
+  local boss = combat:spawn_enemy(Content.enemies.static_baron, 200, 200)
+  boss.hp = boss.max_hp * 0.7
+
+  combat:set_difficulty("super_hard", "medium")
+
+  H.eq(options.difficulty, "super_hard")
+  H.near(ordinary.hp / ordinary.max_hp, 0.4)
+  H.near(boss.hp / boss.max_hp, 0.7)
+  H.near(ordinary.max_hp / Content.enemies.monotone.hp, 1.42)
+  H.near(boss.max_hp / Content.enemies.static_baron.hp, 1.55)
+end
+
+T["difficulty changes player weapon damage dynamically"] = function()
+  local options = { difficulty = "medium" }
+  local combat = fresh("joe", { options = options })
+  combat:_update_buffs(0)
+  local baseline = combat.weapon_runtime:projectile_snapshot(1).damage
+  combat:set_difficulty("very_easy", "medium")
+  combat:_update_buffs(0)
+  local assisted = combat.weapon_runtime:projectile_snapshot(1).damage
+  H.near(assisted / baseline, 1.35)
 end
 
 T["fresh standalone World Tour entries receive bounded starter-build scaling"] = function()

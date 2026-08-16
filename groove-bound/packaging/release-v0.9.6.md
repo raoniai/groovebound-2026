@@ -1,7 +1,16 @@
 ## Groove Bound v0.9.6
 
 This release makes fresh World Tour entries slightly more approachable and
-removes the detour after losing a selected world.
+removes the detour after losing a selected world. It also adds a persistent,
+player-controlled difficulty system to the shared Options menu.
+
+- Adds Very Easy, Easy, Medium, Hard, and Super Hard choices; Medium preserves
+  the authored baseline.
+- Gives every tier independent multipliers for wave escalation, enemy health,
+  damage, speed, amount, and attack cadence; player damage; and boss health,
+  damage, speed, attack cadence, and projectile speed.
+- Applies difficulty changes live during a paused run, including enemies
+  already present while preserving their current health percentage.
 
 - Softens the existing fresh-world opening assist for enemy health, damage,
   movement speed, and spawn pressure.

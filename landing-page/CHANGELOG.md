@@ -8,6 +8,9 @@ Prepared Home, Catalog, and Builder for v0.9.6 while retaining the stable
 GitHub Latest desktop routes. The release slightly softens fresh World Tour
 openings, adds immediate same-world retry with the original character and
 starting setup after defeat, and adds a separate Return to World Menu action.
+The shared Options menu now also includes persistent Very Easy, Easy, Medium,
+Hard, and Super Hard profiles with independent dynamic multipliers for waves,
+regular enemies, bosses, spawn density, attack timing, and player damage.
 
 ## 2026-08-16 | SITE-056 | v0.9.5 projectile readability release
 

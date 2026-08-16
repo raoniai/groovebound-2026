@@ -73,7 +73,7 @@ function Enemy:enrage_overtime(multiplier)
   return true
 end
 
-function Enemy:update(dt, player, speed_multiplier, arena)
+function Enemy:update(dt, player, speed_multiplier, arena, attack_interval_multiplier)
   if self.dead then return nil end
   self.contact_cooldown = math.max(0, self.contact_cooldown - dt)
   self.flash = math.max(0, self.flash - dt)
@@ -161,7 +161,7 @@ function Enemy:update(dt, player, speed_multiplier, arena)
     local phase_interval = self.phase == 3 and .72
       or self.phase == 2 and .86 or 1
     self.attack_cooldown = (self.definition.attack_interval or 2)
-      * phase_interval
+      * phase_interval * (attack_interval_multiplier or 1)
   end
 
   self.anim_time = self.anim_time + dt

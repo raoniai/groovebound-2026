@@ -13,6 +13,7 @@ Defaults.device_settings = {
     controls = {},
     deadzone = 0.25,
     aim_assist = true,
+    difficulty = "medium",
     vibration = true,
     automatic_level_up = false,
     screen_shake = true,

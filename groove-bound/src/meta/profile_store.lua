@@ -1,6 +1,7 @@
 local class = require("src.core.class")
 local Save = require("src.core.save")
 local Defaults = require("src.meta.defaults")
+local DifficultyProfiles = require("src.config.difficulty_profiles")
 local SlotValidator = require("src.meta.slot_validator")
 local ExportCodec = require("src.meta.export_codec")
 local MigrationV1ToV2 = require("src.meta.migration_v1_to_v2")
@@ -39,6 +40,10 @@ local function validate_device_settings(device)
 
   local timing_windows = { relaxed = true, standard = true, tight = true }
   if not timing_windows[options.timing_window] then return nil, "invalid timing window" end
+  if options.difficulty ~= nil
+      and DifficultyProfiles.profiles[options.difficulty] == nil then
+    return nil, "invalid difficulty"
+  end
 
   local booleans = {
     "muted", "fullscreen", "aim_assist", "vibration", "screen_shake",

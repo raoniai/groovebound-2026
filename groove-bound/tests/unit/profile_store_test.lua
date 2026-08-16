@@ -35,16 +35,19 @@ T["Device Settings persist shared options independently of progression Slots"] =
   H.is_false(device.options.automatic_level_up)
   H.is_true(device.options.rhythm_visual_cues)
   H.eq(device.options.timing_window, "standard")
+  H.eq(device.options.difficulty, "medium")
 
   device.active_slot = 3
   device.options.camera_zoom = 1.5
   device.options.latency_offset_ms = -35
+  device.options.difficulty = "hard"
   H.is_true(store:save_device_settings(device))
 
   local loaded = store:load_device_settings()
   H.eq(loaded.active_slot, 3)
   H.near(loaded.options.camera_zoom, 1.5)
   H.eq(loaded.options.latency_offset_ms, -35)
+  H.eq(loaded.options.difficulty, "hard")
 end
 
 T["progression Slots are created lazily and persist in isolation"] = function()

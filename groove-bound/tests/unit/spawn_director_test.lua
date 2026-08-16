@@ -100,6 +100,31 @@ T["maximum-active admin control is a hard spawn cap"] = function()
   H.eq(#spawned, 2)
 end
 
+T["difficulty amount multiplier changes cadence and active enemy cap"] = function()
+  local easy, easy_spawned = make_director({
+    cap = 10,
+    waves = {
+      { at = 0, enemies = {
+          { id = "monotone", count = 20, cadence = 1 },
+      } },
+    },
+  })
+  easy:update(20, 0, definitions, 1, 0.7)
+  H.eq(#easy_spawned, 7)
+
+  local hard, hard_spawned = make_director({
+    cap = 10,
+    waves = {
+      { at = 0, enemies = {
+          { id = "monotone", count = 20, cadence = 1 },
+      } },
+    },
+  })
+  hard:update(20, 0, definitions, 1, 1.38)
+  hard:update(0, 0, definitions, 1, 1.38)
+  H.eq(#hard_spawned, 14)
+end
+
 T["the same seed produces the same edge spawn sequence"] = function()
   local a, spawned_a = make_director({ seed = 987 })
   local b, spawned_b = make_director({ seed = 987 })

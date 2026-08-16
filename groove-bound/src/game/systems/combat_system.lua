@@ -17,6 +17,7 @@ local XPSystem = require("src.game.systems.xp_system")
 local XPRewards = require("src.game.xp_rewards")
 local ProgressionSystem = require("src.game.systems.progression_system")
 local TestMode = require("src.game.test_mode")
+local DifficultyProfiles = require("src.config.difficulty_profiles")
 local settings = require("src.config.settings")
 local controllers = require("src.game.controller_manager").shared
 
@@ -294,24 +295,74 @@ function CombatSystem:fresh_entry_factors()
   }
 end
 
-function CombatSystem:_difficulty_multiplier(kind)
+function CombatSystem:difficulty_profile(id)
+  return DifficultyProfiles.get(id or self.options.difficulty)
+end
+
+function CombatSystem:difficulty_snapshot()
+  local id = DifficultyProfiles.resolve(self.options.difficulty)
+  local profile = self:difficulty_profile(id)
+  local snapshot = { id = id }
+  for key, value in pairs(profile) do snapshot[key] = value end
+  return snapshot
+end
+
+function CombatSystem:enemy_difficulty_snapshot(definition)
+  local profile = self:difficulty_profile()
+  local is_boss = definition and definition.boss_type ~= nil
+  return {
+    health = is_boss and profile.boss_health or profile.enemy_health,
+    damage = is_boss and profile.boss_attack_damage or profile.enemy_damage,
+    speed = is_boss and profile.boss_speed or profile.enemy_speed,
+    attack_interval = is_boss
+      and profile.boss_attack_interval or profile.enemy_attack_interval,
+    projectile_speed = is_boss and profile.boss_projectile_speed or 1,
+  }
+end
+
+function CombatSystem:set_difficulty(id, previous_id)
+  local previous = DifficultyProfiles.get(previous_id)
+  id = DifficultyProfiles.resolve(id)
+  local next_profile = self:difficulty_profile(id)
+  self.options.difficulty = id
+  local previous_curve = self:_difficulty_multiplier("health", previous)
+  local next_curve = self:_difficulty_multiplier("health", next_profile)
+  local previous_pressure = self:boss_pressure_snapshot(previous).enemy_health
+  local next_pressure = self:boss_pressure_snapshot(next_profile).enemy_health
+  self.ctx.world:each("enemy", function(enemy)
+    local key = enemy.definition.boss_type and "boss_health" or "enemy_health"
+    local ratio = (next_profile[key] * next_curve)
+      / (previous[key] * previous_curve)
+    if not enemy.definition.boss_type then
+      ratio = ratio * next_pressure / previous_pressure
+    end
+    enemy.hp = enemy.hp * ratio
+    enemy.max_hp = enemy.max_hp * ratio
+  end)
+  return self:difficulty_snapshot()
+end
+
+function CombatSystem:_difficulty_multiplier(kind, profile)
   local snapshot = self:stage_snapshot(self.ctx.time)
   local progress = math.min(1, snapshot.elapsed / math.max(1, snapshot.duration))
   local ramp = self.tuning:get("run.difficulty_ramp")
+  profile = profile or self:difficulty_profile()
   local authored = 1
-    + ((self.stage_index - 1) * 0.28 + progress * 0.62) * ramp
+    + ((self.stage_index - 1) * 0.28 + progress * 0.62)
+      * ramp * profile.wave_pressure
   return authored * (self:fresh_entry_factors()[kind or "health"] or 1)
 end
 
-function CombatSystem:boss_pressure_snapshot()
+function CombatSystem:boss_pressure_snapshot(profile)
   local elapsed = self.final_boss_spawned_at
     and math.max(0, self.ctx.time - self.final_boss_spawned_at) or 0
+  local pressure = (profile or self:difficulty_profile()).wave_pressure
   return {
     elapsed = elapsed,
-    spawn_rate = 1 + math.min(1.35, elapsed * 0.018),
-    enemy_health = 1 + math.min(1.0, elapsed * 0.012),
-    enemy_speed = 1 + math.min(0.70, elapsed * 0.008),
-    enemy_damage = 1 + math.min(0.80, elapsed * 0.009),
+    spawn_rate = 1 + math.min(1.35, elapsed * 0.018 * pressure),
+    enemy_health = 1 + math.min(1.0, elapsed * 0.012 * pressure),
+    enemy_speed = 1 + math.min(0.70, elapsed * 0.008 * pressure),
+    enemy_damage = 1 + math.min(0.80, elapsed * 0.009 * pressure),
   }
 end
 
@@ -340,6 +391,7 @@ function CombatSystem:spawn_enemy(definition, x, y)
     local cx, cy = self.arena:center()
     x, y = cx + 360, cy
   end
+  local enemy_difficulty = self:enemy_difficulty_snapshot(definition)
   local enemy = self.enemy_pool:acquire({
     definition = definition,
     assets = self.assets,
@@ -347,6 +399,7 @@ function CombatSystem:spawn_enemy(definition, x, y)
     x = x,
     y = y,
     health_multiplier = self:_difficulty_multiplier("health")
+      * enemy_difficulty.health
       * (definition.boss_type and 1 or self:boss_pressure_snapshot().enemy_health),
   })
   if definition.boss_type == "final" then
@@ -783,7 +836,8 @@ function CombatSystem:_update_buffs(dt)
   end
   self.weapon_runtime:set_temporary_damage_multiplier(
     (self.buffs.damage > 0 and 1.5 or 1)
-      * (self.world_mechanic_effects.damage or 1))
+      * (self.world_mechanic_effects.damage or 1)
+      * self:difficulty_profile().player_damage)
   self.player.temporary_defense_multiplier = self.buffs.defense > 0 and 1.5 or 1
   self.player.temporary_speed_multiplier = self.buffs.speed > 0 and 1.35 or 1
 end
@@ -919,7 +973,12 @@ function CombatSystem:_update_enemies(dt)
     * damage_difficulty * pressure.enemy_damage
   local knockback = self.tuning:get("combat.knockback_multiplier")
   self.ctx.world:each("enemy", function(enemy)
-    local action = enemy:update(dt, self.player, speed, self.arena)
+    local enemy_difficulty = self:enemy_difficulty_snapshot(enemy.definition)
+    local enemy_speed = speed * enemy_difficulty.speed
+    local enemy_damage = damage_multiplier * enemy_difficulty.damage
+    local action = enemy:update(
+      dt, self.player, enemy_speed, self.arena,
+      enemy_difficulty.attack_interval)
     self.ctx.world:moved(enemy)
     local contact = self.player.radius + enemy.body_radius
     if enemy.contact_cooldown <= 0
@@ -929,7 +988,7 @@ function CombatSystem:_update_enemies(dt)
       local dx, dy = self.player.x - enemy.x, self.player.y - enemy.y
       local length = math.max(0.001, math.sqrt(dx * dx + dy * dy))
       if self.player:take_damage(
-        enemy.definition.damage * damage_multiplier * enemy.overtime_multiplier,
+        enemy.definition.damage * enemy_damage * enemy.overtime_multiplier,
         dx / length, dy / length, 155 * knockback)
       then
         self:_player_hit_feedback(0.28)
@@ -939,11 +998,11 @@ function CombatSystem:_update_enemies(dt)
       end
     end
     if action and action.kind == "note_bolt" then
-      self:_spawn_enemy_projectile(enemy, action, damage_multiplier)
+      self:_spawn_enemy_projectile(enemy, action, enemy_damage)
     elseif action and (action.kind == "static_wave"
       or action.kind == "aimed_fan" or action.kind == "cross_wave")
     then
-      self:_spawn_pattern(enemy, action, damage_multiplier)
+      self:_spawn_pattern(enemy, action, enemy_damage)
     elseif action and action.kind == "resonance_pulse" then
       local range = enemy.definition.attack_range or 160
       if distance_sq(self.player.x, self.player.y, enemy.x, enemy.y)
@@ -952,7 +1011,7 @@ function CombatSystem:_update_enemies(dt)
         local dx, dy = self.player.x - enemy.x, self.player.y - enemy.y
         local length = math.max(0.001, math.sqrt(dx * dx + dy * dy))
         if self.player:take_damage(
-          enemy.definition.damage * damage_multiplier * enemy.overtime_multiplier,
+          enemy.definition.damage * enemy_damage * enemy.overtime_multiplier,
           dx / length, dy / length, 210 * knockback)
         then
           self:_player_hit_feedback(0.42)
@@ -978,7 +1037,8 @@ function CombatSystem:_spawn_enemy_projectile(enemy, action, damage_multiplier)
     dx = action.dx,
     dy = action.dy,
     speed = (enemy.definition.projectile_speed or 270)
-      * (1 + ((action.phase or 1) - 1) * .10),
+      * (1 + ((action.phase or 1) - 1) * .10)
+      * self:enemy_difficulty_snapshot(enemy.definition).projectile_speed,
     damage = enemy.definition.damage * damage_multiplier * enemy.overtime_multiplier,
     radius = action.kind == "static_wave" and 15
       or enemy.definition.boss_type and 11 or 8,
@@ -1060,10 +1120,12 @@ function CombatSystem:update(dt)
   self:_update_overtime()
   local stage_time = self.ctx.time - self.stage_started_at
   local difficulty = self:_difficulty_multiplier("spawn")
+  local profile = self:difficulty_profile()
   if not self.final_boss_dead then
     self.spawner:update(
       dt, stage_time, self.content.enemies,
-      (0.85 + difficulty * 0.15) * self:boss_pressure_snapshot().spawn_rate)
+      (0.85 + difficulty * 0.15) * self:boss_pressure_snapshot().spawn_rate,
+      profile.enemy_amount)
   end
   self:_update_enemies(dt)
   self:_update_weapons(dt)

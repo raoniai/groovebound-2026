@@ -1,5 +1,6 @@
 local class = require("src.core.class")
 local AudioSettings = require("src.audio.audio_settings")
+local DifficultyProfiles = require("src.config.difficulty_profiles")
 local Fonts = require("src.ui.fonts")
 local Hints = require("src.ui.controller_hints")
 local MenuChrome = require("src.ui.menu_chrome")
@@ -29,12 +30,14 @@ local sections = {
       { key = "fullscreen", label = "Fullscreen", kind = "toggle", sprite = 5 },
       { key = "deadzone", label = "Controller dead zone", kind = "slider", sprite = 6,
         min = 0.05, max = 0.50 },
+      { key = "vibration", label = "Controller vibration", kind = "toggle", sprite = 12 },
       { key = "controls", label = "Keyboard bindings", kind = "action", sprite = 7 },
     },
   },
   {
     id = "gameplay", title = "GAMEPLAY", column = 2, sprite = 15,
     rows = {
+      { key = "difficulty", label = "Difficulty", kind = "choice", sprite = 16 },
       { key = "screen_shake", label = "Screen shake", kind = "toggle", sprite = 8 },
       { key = "hit_flash", label = "Hit flash", kind = "toggle", sprite = 9 },
       { key = "aim_assist", label = "Aim assist", kind = "toggle", sprite = 10 },
@@ -42,7 +45,6 @@ local sections = {
         kind = "toggle", sprite = 16 },
       { key = "camera_zoom", label = "Gameplay zoom", kind = "slider", sprite = 11,
         min = 0.75, max = 1.50, step = 0.25 },
-      { key = "vibration", label = "Controller vibration", kind = "toggle", sprite = 12 },
     },
   },
 }
@@ -73,6 +75,7 @@ end
 
 function OptionsScreen:_set_value(row, value, persist)
   local options = self.app.profile.options
+  local previous = options[row.key]
   if row.kind == "slider" then
     local minimum, maximum = row.min or 0, row.max or 1
     value = clamp(value, minimum, maximum)
@@ -86,11 +89,19 @@ function OptionsScreen:_set_value(row, value, persist)
     if row.key == "fullscreen" then
       love.window.setFullscreen(options[row.key], "desktop")
     end
+  elseif row.kind == "choice" then
+    options[row.key] = DifficultyProfiles.resolve(value)
   end
   if row.key == "camera_zoom" and self.app.active_run
     and self.app.active_run.camera
   then
     self.app.active_run.camera:set_zoom(options.camera_zoom)
+  end
+  if row.key == "difficulty" and self.app.active_run
+    and self.app.active_run.combat
+    and self.app.active_run.combat.set_difficulty
+  then
+    self.app.active_run.combat:set_difficulty(options.difficulty, previous)
   end
   if persist == false then AudioSettings.apply(self.app) else self:_save() end
 end
@@ -99,6 +110,8 @@ function OptionsScreen:_activate(row)
   if row.kind == "toggle" then
     self:_set_value(row, not self.app.profile.options[row.key])
   elseif row.kind == "slider" then
+    self:_adjust(row, 1)
+  elseif row.kind == "choice" then
     self:_adjust(row, 1)
   elseif row.kind == "action" then
     local ControlsScreen = require("src.ui.screens.controls")
@@ -112,6 +125,9 @@ function OptionsScreen:_adjust(row, direction, persist)
       self.app.profile.options[row.key] + direction * (row.step or 0.01), persist)
   elseif row.kind == "toggle" then
     self:_set_value(row, direction > 0, persist)
+  elseif row.kind == "choice" then
+    self:_set_value(row, DifficultyProfiles.step(
+      self.app.profile.options[row.key], direction), persist)
   end
 end
 
@@ -216,7 +232,7 @@ function OptionsScreen:_layout()
         x = row.rect.x + 46, y = row.rect.y,
         w = math.max(62, row.control.x - row.rect.x - 54), h = row.rect.h,
       }
-      if row.kind == "slider" then
+      if row.kind == "slider" or row.kind == "choice" then
         row.minus_rect = {
           x = row.control.x, y = row.rect.y + 6,
           w = 24, h = row.rect.h - 12,
@@ -233,6 +249,13 @@ function OptionsScreen:_layout()
           x = row.track.x, y = row.rect.y + 4,
           w = row.track.w, h = row.rect.h - 16,
         }
+        if row.kind == "choice" then
+          row.track = nil
+          row.value_rect = {
+            x = row.control.x + 25, y = row.rect.y + 4,
+            w = row.control.w - 50, h = row.rect.h - 8,
+          }
+        end
       end
       self.rows[#self.rows + 1] = row
       cursor_y[column] = cursor_y[column] + row_step
@@ -296,6 +319,9 @@ function OptionsScreen:_draw_row(row)
   elseif row.kind == "toggle" then
     value = options[row.key] and "ON" or "OFF"
     color = options[row.key] and on_color or off_color
+  elseif row.kind == "choice" then
+    value = DifficultyProfiles.label(options[row.key])
+    color = accent
   else
     value, color = "OPEN", accent
   end
@@ -327,6 +353,15 @@ function OptionsScreen:_draw_row(row)
     love.graphics.printf("−", row.minus_rect.x, row.minus_rect.y + 1,
       row.minus_rect.w, "center")
     love.graphics.printf("+", row.plus_rect.x, row.plus_rect.y + 1,
+      row.plus_rect.w, "center")
+  elseif row.kind == "choice" then
+    love.graphics.printf(value, row.value_rect.x, row.value_rect.y + 5,
+      row.value_rect.w, "center")
+    love.graphics.setFont(Fonts.heading(17))
+    love.graphics.setColor(0.58, 0.94, 1.0, 1)
+    love.graphics.printf("‹", row.minus_rect.x, row.minus_rect.y + 1,
+      row.minus_rect.w, "center")
+    love.graphics.printf("›", row.plus_rect.x, row.plus_rect.y + 1,
       row.plus_rect.w, "center")
   else
     love.graphics.printf(value, row.control.x, row.control.y + 5,
@@ -373,8 +408,14 @@ function OptionsScreen:keypressed(key)
   }
   if directions[key] then self:_move(directions[key]) return true end
   if key == "-" or key == "kp-" then
+    if self.rows[self.selected].kind == "choice" then
+      self:_adjust(self.rows[self.selected], -1) return true
+    end
     return self:_begin_hold(self.rows[self.selected], -1, "keyboard", key)
   elseif key == "=" or key == "+" or key == "kp+" then
+    if self.rows[self.selected].kind == "choice" then
+      self:_adjust(self.rows[self.selected], 1) return true
+    end
     return self:_begin_hold(self.rows[self.selected], 1, "keyboard", key)
   elseif key == "return" or key == "space" then
     self:_activate(self.rows[self.selected]) return true
@@ -401,9 +442,15 @@ function OptionsScreen:gamepadpressed(_, button)
   if directions[button] then self:_move(directions[button]) return true end
   if button == "a" then self:_activate(self.rows[self.selected]) return true end
   if button == "x" or button == "leftshoulder" then
+    if self.rows[self.selected].kind == "choice" then
+      self:_adjust(self.rows[self.selected], -1) return true
+    end
     return self:_begin_hold(self.rows[self.selected], -1, "gamepad", button)
   end
   if button == "rightshoulder" then
+    if self.rows[self.selected].kind == "choice" then
+      self:_adjust(self.rows[self.selected], 1) return true
+    end
     return self:_begin_hold(self.rows[self.selected], 1, "gamepad", button)
   end
   if button == "y" and settings.debug.admin.enabled then
@@ -441,14 +488,18 @@ function OptionsScreen:mousepressed(x, y, button)
   for _, row in ipairs(self.rows) do
     if contains(row.rect, x, y) then
       self.selected = row.focus
-      if row.kind == "slider" then
+      if row.kind == "slider" or row.kind == "choice" then
         if contains(row.minus_rect, x, y) then
+          if row.kind == "choice" then self:_adjust(row, -1) return true end
           return self:_begin_hold(row, -1, "mouse", "minus")
         elseif contains(row.plus_rect, x, y) then
+          if row.kind == "choice" then self:_adjust(row, 1) return true end
           return self:_begin_hold(row, 1, "mouse", "plus")
-        elseif contains(row.track, x, y) then
+        elseif row.kind == "slider" and contains(row.track, x, y) then
           self.dragging = row
           self:mousemoved(x, y)
+        elseif row.kind == "choice" then
+          self:_adjust(row, 1)
         end
       else
         self:_activate(row)

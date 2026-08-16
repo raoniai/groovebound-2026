@@ -71,6 +71,7 @@ The current build now includes:
   tools, a toggleable 5x speed/power/XP/magnetism test mode, and direct Arsenal
   access;
 - a unified Settings/Admin hub with 1% audio sliders, explicit ON/OFF states,
+  persistent Very Easy, Easy, Medium, Hard, and Super Hard difficulty profiles,
   persistent corner mute, PlayStation guidance, keyboard rebinding and seed copy;
 - deduplicated controller/keyboard navigation and PlayStation Options pause
   fallback across standardized Start/Back and common raw controller mappings;

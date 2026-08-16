@@ -102,6 +102,7 @@ return {
         hit_flash = true,
         vibration = true,
         aim_assist = true,
+        difficulty = "medium",
         camera_zoom = 1.0,
         deadzone = 0.25,
         fullscreen = false,
