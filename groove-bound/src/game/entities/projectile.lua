@@ -51,7 +51,7 @@ function Projectile:reset(opts)
   self.source_weapon_id = opts.source_weapon_id
   self.attack_family = opts.attack_family or "linear"
   self.visual_id = opts.visual_id or self.source_weapon_id
-  self.animation_frames = opts.animation_frames or 5
+  self.animation_frames = opts.animation_frames or 8
   self.animation_fps = opts.animation_fps or 12
   self.animation_mode = opts.animation_mode
   self.coverage = opts.coverage or math.max(
@@ -88,6 +88,7 @@ function Projectile:reset(opts)
   self.returning = false
   self.age = 0
   self.anim_time = 0
+  self.visual_delay = math.max(0, opts.visual_delay or 0)
   self.anim_phase = animation_phase(
     self.source_weapon_id, self.x, self.y)
   self.unique_hits = 0
@@ -103,9 +104,16 @@ function Projectile:animation_progress()
   return math.min(1, self.age / duration)
 end
 
-function Projectile:animation_frame()
-  local frames = math.max(1, self.animation_frames or 5)
-  return math.min(frames, math.floor(self:animation_progress() * frames) + 1)
+function Projectile:visual_animation_progress(extra_delay)
+  local duration = math.max(0.001, self.animation_duration or 0.001)
+  local delay = self.visual_delay + (extra_delay or 0)
+  return math.min(1, math.max(0, (self.age - delay) / duration))
+end
+
+function Projectile:animation_frame(extra_delay)
+  local frames = math.max(1, self.animation_frames or 8)
+  return math.min(frames,
+    math.floor(self:visual_animation_progress(extra_delay) * frames) + 1)
 end
 
 function Projectile:_update_flight()
@@ -299,6 +307,7 @@ function Projectile:register_hit(enemy)
         self.visual_targets[#self.visual_targets + 1] = {
           x = enemy.x,
           y = enemy.y,
+          delay = (#self.visual_targets % 4) * 0.02,
         }
       end
     end
@@ -316,16 +325,19 @@ function Projectile:register_hit(enemy)
   return true
 end
 
-function Projectile:_draw_attack_at(x, y, rotation, pose)
+function Projectile:_draw_attack_at(x, y, rotation, pose, extra_delay)
+  extra_delay = extra_delay or 0
+  local visual_age = math.max(
+    0, self.age - self.visual_delay - extra_delay)
   return self.assets:draw_attack({
     visual_id = self.visual_id,
     family = self.attack_family,
     phase = self.phase,
-    age = self.age,
+    age = visual_age,
     animation_frames = self.animation_frames,
     animation_fps = self.animation_fps,
     animation_mode = self.animation_mode,
-    frame = self:animation_frame(),
+    frame = self:animation_frame(extra_delay),
     x = x,
     y = y,
     size = self.base_radius * 2,
@@ -350,7 +362,8 @@ function Projectile:draw()
     if self.attack_family == "storm" and #self.visual_targets > 0 then
       local drawn = false
       for _, target in ipairs(self.visual_targets) do
-        drawn = self:_draw_attack_at(target.x, target.y, -math.pi / 2, pose)
+        drawn = self:_draw_attack_at(
+          target.x, target.y, -math.pi / 2, pose, target.delay)
           or drawn
       end
       if drawn then return end

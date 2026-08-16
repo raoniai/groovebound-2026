@@ -22,6 +22,13 @@ local controllers = require("src.game.controller_manager").shared
 
 local CombatSystem = class()
 
+local visual_phase_delays = { 0, 0.02, 0.04, 0.06 }
+
+function CombatSystem.visual_phase_delay(shot, count)
+  if not count or count <= 1 then return 0 end
+  return visual_phase_delays[((shot or 1) - 1) % #visual_phase_delays + 1]
+end
+
 local function distance_sq(ax, ay, bx, by)
   local dx, dy = bx - ax, by - ay
   return dx * dx + dy * dy
@@ -400,6 +407,7 @@ function CombatSystem:_spawn_projectile(snapshot, angle, shot, count, target)
     animation_frames = snapshot.animation_frames,
     animation_fps = snapshot.animation_fps,
     animation_mode = snapshot.animation_mode,
+    visual_delay = CombatSystem.visual_phase_delay(shot, count),
     player = self.player,
     target_x = target_x,
     target_y = target_y,

@@ -31,4 +31,12 @@ T["release marker cannot disagree with canonical VERSION"] = function()
   H.is_false(ok)
 end
 
+T["compact menu version contains only the canonical v number"] = function()
+  local source = BuildInfo.detect(function(path)
+    if path == "VERSION" then return "0.9.5\n" end
+  end)
+  H.eq(BuildInfo.version_label(source), "v0.9.5")
+  H.is_nil(BuildInfo.version_label(source):match("dev"))
+end
+
 return T

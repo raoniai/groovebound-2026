@@ -806,6 +806,30 @@ manufacture motion from a single frame or create a combined runtime atlas.
 `campaign/projectile-atlas.png` is removed from runtime and packaging; its old
 source candidate remains reference-only for historical provenance.
 
+## v0.9.5 projectile readability animation sheets
+
+**Generated:** 2026-08-15 with OpenAI image generation in Codex built-in mode
+
+The 32 files under `projectiles/<weapon-id>.png` are promoted from the accepted
+`source-candidates/2026-08-15-projectile-readability-v2/sheets/` set. Every
+runtime file is a separate 2048x1024 RGBA sheet containing eight authored
+512x512 frames in a 4x2 grid. Stable weapon IDs and runtime paths are unchanged.
+
+The new art uses one projectile or effect core per frame, large transparent
+gutters, partial alpha, sparse particles, and visible anticipation, formation,
+peak, breakup, retraction, and remnant states. Beam sheets contain authored
+start and end caps rather than a short texture intended for non-uniform
+stretching. Runtime transforms are uniform and capped at native scale; gameplay
+coverage and collision remain independent from visual size. Multi-shot attacks
+reuse the same sheet with deterministic 0-60 ms visual offsets and do not
+consume gameplay RNG.
+
+Untouched chroma sources, keyed intermediates, rejected Neon Crescendo output,
+prompts, build script, validation manifest, exact hashes, and implementation
+record are preserved beside the accepted sheets and excluded from packages.
+The previous five-frame strips remain documented above as superseded v0.9.4
+runtime provenance; they are no longer loaded in the v0.9.5 candidate.
+
 ## Enemy movement animation suite
 
 **Generated:** 2026-08-14 with OpenAI image generation in Codex built-in mode

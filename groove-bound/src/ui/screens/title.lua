@@ -1,11 +1,11 @@
 local class = require("src.core.class")
-local Fonts = require("src.ui.fonts")
 local settings = require("src.config.settings")
 local widgets = require("src.ui.widgets.button")
 local UIScale = require("src.ui.scale")
 local JourneyProgress = require("src.meta.journey_progress")
 local MenuChrome = require("src.ui.menu_chrome")
 local BuildInfo = require("src.config.build_info")
+local VersionTag = require("src.ui.version_tag")
 
 local TitleScreen = class()
 TitleScreen.kind = "title"
@@ -274,9 +274,8 @@ function TitleScreen:draw()
       divider.w, 1)
   end
 
-  love.graphics.setFont(Fonts.get(10))
-  love.graphics.setColor(0.68, 0.72, 0.82, 0.62)
-  love.graphics.print(BuildInfo.label(), 12, h - 14)
+  VersionTag.draw(BuildInfo.version_label(), VersionTag.layout(
+    { x = 0, y = 0, w = w, h = h }, "bottom-left"))
   UIScale.finish()
 end
 

@@ -14,20 +14,20 @@ This document answers four questions: what is authoritative, what the latest ver
 
 <!-- LIVE-SNAPSHOT:START -->
 
-_Generated from live repository evidence: 2026-08-15 23:21 AEST_
+_Generated from live repository evidence: 2026-08-15 23:45 AEST_
 
 | Field | Live value |
 |---|---|
-| Branch | `codex/enemy-state-animation-v094` |
-| HEAD | `4224db8` — feat: add individual enemy state animations |
+| Branch | `codex/projectile-readability-v095` |
+| HEAD | `4d8758d` — merge: promote v0.9.4 enemy state animation to main |
 | Upstream | `unavailable` |
-| Compared with `origin/main` | 44 ahead, 1 behind |
-| Working changes | 0 files: 0 game, 0 site, 0 skills/package |
-| Lua source/test files | 121 source, 67 test |
-| Game tree excluding `dist/` | 882.4 MiB |
-| Current `.love` artifact | 261.5 MiB |
-| Test suite | passed: 416 tests, 0 failures |
-| Lint | passed: 0 warnings / 0 errors in 190 files |
+| Compared with `origin/main` | 0 ahead, 0 behind |
+| Working changes | 152 files: 149 game, 0 site, 2 skills/package |
+| Lua source/test files | 122 source, 68 test |
+| Game tree excluding `dist/` | 946.0 MiB |
+| Current `.love` artifact | 267.9 MiB |
+| Test suite | passed: 419 tests, 0 failures |
+| Lint | passed: 0 warnings / 0 errors in 192 files |
 | Skill packages | 12 |
 
 <!-- LIVE-SNAPSHOT:END -->
@@ -36,12 +36,12 @@ _Generated from live repository evidence: 2026-08-15 23:21 AEST_
 
 Groove Bound is a bright urban-supernatural survival roguelike built in Lua with LÖVE 11.5. Its current development preview follows:
 
-The canonical source and desktop release are now **v0.9.3**. Loose-folder play
-displays `v0.9.3-dev`; packaged builds display `v0.9.3`. GitHub Latest exposes
-seven synchronized v0.9.3 assets built from clean release commit `ded61e1`.
-The 420-file v0.9.3 public-site bundle is deployed and public-live verified;
-Home, Catalog, Builder, shared files, representative assets, and both stable
-desktop download routes passed exact HTTPS checks.
+The canonical development source is now the **v0.9.5 candidate**, based directly
+on the verified v0.9.4 enemy-animation source merged into `main` at `4d8758d`.
+Loose-folder play identifies itself as `v0.9.5-dev`; the tiny boxed main-menu
+and pause-menu tags show only `v0.9.5`; packaged candidates identify as
+`v0.9.5`. GitHub Latest remains the older v0.9.3 public desktop release until a
+separate v0.9.5 publication is explicitly approved.
 
 **Title → Prologue → Character Selection → Character Intro → Backbeat Streets → The Orbit Line → World Tour → playable Funk, Soul, Disco, and Jazz routes**
 
@@ -99,7 +99,7 @@ The public landing site is a separate static presentation under `landing-page/`.
 | Music system | Published in v0.8.0; tests and release media checks passed | One continuous World Tour hub theme, nine world-specific soundtrack packs, and 28 optimized route, pressure or boss, and finale cues; connected menu overlays preserve or duck the current musical context | Final creative listening pass across all cues; BeatClock, latency calibration, groove scoring, and accessibility remain future work |
 | Application icon | Published in the v0.6.0 macOS app; tests passed, package verified, and manual small-size QA verified | Commit `097c883`; Joe/Lyra adventure emblem at 512px RGBA; native `GrooveBound.icns` present and referenced in the verified app bundle | Confirm the rebuilt native app icon in the macOS Dock on another clean Mac |
 | Generic controller and camera support | Published in v0.8.1 and tests passed | Level-up navigation uses strict spatial rows for D-pad, arrow keys, and WASD: left/right never wrap into another row, while up/down selects the nearest aligned item; existing right-stick aim and controller parity remain intact | Physical PlayStation controller check; hot-plug identity, glyphs/remapping, wired/wireless matrix |
-| Combat readability and HUD | v0.9.2 projectile candidate tested; earlier interface states manually verified | Every player weapon owns a separate five-stage atlas; high-power effects have longer recovery windows; beams preserve authored proportions; rank increases protective geometry | Fresh unlocked graphical pass at minimum and reference sizes plus prolonged combat feel with flash/reduced-flash options |
+| Combat readability and HUD | v0.9.5 implementation passed automated and media checks | All 32 player attacks own separate eight-frame 2048x1024 RGBA sheets; authored frames render at uniform native-or-smaller scale, beam art is never stretched, long collision coverage is visually capped, and deterministic 0-60 ms offsets desynchronize repeated shots without consuming gameplay RNG | Fresh unlocked graphical pass at minimum and reference sizes plus prolonged combat balance with both characters and flash/reduced-flash options |
 | Character, upgrade, and results interface | Published in v0.7.1, tests passed, and visually sampled | Anton/Oswald typography, modular nine-slice upgrade cards, relevant-equipped evolution rows only, exact icon-led gain-to-total attributes, generated NEW badge, pickup-art utility choices, existing reroll/skip sprite CTAs, and bright sprite-backed menu focus | Manual defeat/victory results pass and final small-screen readability review |
 | Save system | Version 2 profiles and slots | Save, migration, profile, export and World Tour session tests | Cross-platform clean-machine fixtures |
 | Landing page and repository README | v0.9.3 bundle deployed and public-live verified | Home, Catalog, and Builder show v0.9.3, match local bytes, and retain stable Latest desktop URLs | Complete physical-phone refresh; `main` promotion remains separate |
@@ -110,81 +110,43 @@ The public landing site is a separate static presentation under `landing-page/`.
 
 ## Active working state
 
-The released projectile redesign is on `codex/projectile-redesign-v092` and the
-canonical release branch `codex/world-overhaul-v090`, based on World Overhaul
-head `50c16f6`. It replaces the retired combined projectile atlas with 32 separate
-five-stage attack strips and adds deterministic linear, boomerang, bomb, area,
-orbit, beam, scenario-storm, wave and deployable behavior. Every weapon now has
-five genuinely authored states—charge, formation, peak, breakup and remnant—in
-its own atlas. Rankable weapons expand their relevant coverage and effect
-geometry through immutable firing snapshots. High-power beams, storms and
-scenario effects now have longer recovery windows and bounded mid-animation
-damage phases; renderer scaling is uniform so beam art is never stretched.
-Release commit `eeadf676dfe49ec11f666f42579fcd0706b95be4` is pushed and tagged
-`v0.9.2`. The exact seven GitHub assets are mirrored locally; superseded local
-builds and old release notes are retained only under versioned archive folders.
+The v0.9.4 enemy-animation source at `28fa8e5` was merged into `main` with merge
+commit `4d8758d` after 416 tests, zero lint findings, and exact local/remote ref
+verification. The isolated v0.9.5 work continues on
+`codex/projectile-readability-v095`; the original dirty workspace is protected
+and has not been staged or overwritten.
 
-GitHub release `v0.9.2` is public as Latest and targets clean release commit
-`eeadf676dfe49ec11f666f42579fcd0706b95be4`. Its seven desktop assets expose
-GitHub SHA-256 digests. Release workflow `31853004722` completed source
-verification, common packaging, macOS and Windows native packaging, candidate
-parity, boot markers, publication, and GitHub Latest verification. CI workflow
-`31853004637` and standalone Windows workflow `31853004643` also passed. The
-current deployed 420-file landing bundle remains the v0.9.1 FTPS release with
-rollback `20260814-182535-v0.9.1` and passed byte-for-byte public verification. The
-original protected workspace remains on its pre-release local branch with
-unrelated dirty material intact; release work was isolated so those files were
-neither overwritten nor included.
+The v0.9.5 candidate replaces all 32 five-frame projectile strips with one
+separate eight-frame RGBA sheet per stable weapon or fusion ID. The runtime
+retains the existing deterministic attack families, damage windows, collision,
+cooldowns, range growth, and immutable firing snapshots. Rendering now reads a
+4x2 sheet, never scales above the authored 512px cell, caps long beam visuals at
+448px while retaining their gameplay coverage, and applies small deterministic
+visual-only offsets to multi-shot and storm effects.
 
-The v0.9.0 startup failure was a package-manifest defect: `src/assets.lua`
-directly loaded `world-tour-sprites/ui/world-tour/locked-world.png`, while a
-blanket package exclusion removed that directory. v0.9.1 includes that required
-file and adds a release gate which scans complete runtime asset paths in Lua and
-rejects any archive that omits one. The old v0.9.0 release remains traceable but
-is no longer Latest.
+Generated chroma sources, keyed intermediates, accepted sheets, rejected
+variants, prompts, hashes, provenance, and the reproducible build script are
+preserved under the dated source-candidate folder. Only the 32 accepted runtime
+sheets enter the playable package; source candidates remain excluded.
 
-Current active themes include:
-
-- The two supplied MP4 files remain reference/source media and are excluded from
-  distribution; their OGV derivatives are packaged runtime media.
-- Generated source candidates and the earlier opaque UI-chrome atlas remain
-  reference-only and are excluded from distribution.
-- `landing-page/` is the canonical public-site source. The server supports FTPS
-  and the confirmed remote root is `/public_html/raoni.ai/groovebound`. The
-  dedicated `groove-bound-ftp` credential is stored in macOS Keychain; no secret
-  is stored in the repository.
-- The campaign identity, Builder redesign, Round 2 Home refinements, transparent
-  Prologue and World Tour marks, stage wordmarks, and Jazz public route are
-  committed, pushed, and deployed. The Orbit logo remains exactly `ORBIT LINE`.
-  All three public pages display v0.9.1 and retain stable Latest download URLs.
-- The Catalog has 212 rendered records across 10 focused categories. Category
-  filters combine independently and clear together; search is compact and
-  magnifier-led; section headings are text-only; record counts and the
-  pointer-following Inspect cue are removed; every card uses a category-colored
-  outline. Six unlocked and future World cards use their canonical emblem art.
-  Scenario Backgrounds contains 88 authentic
-  environment, expansion, floor, and background assets across both Prologue
-  stages and Funk, Soul, Disco, and Jazz. The durable site-sync rule now requires
-  this catalog and FTPS loop for every future playable world or game/playable
-  asset unless deployment is explicitly withheld.
-- This handover remains the canonical delivery record after release work.
-
-Do not infer `main` promotion from the feature-branch push, GitHub release, or landing deployment.
+The public GitHub release and deployed landing site remain v0.9.3. A v0.9.5
+feature-branch push or local package must not be described as a public release,
+site deployment, or GitHub Latest update.
 
 ## Verification and delivery ledger
 
 | Layer | Latest state | Meaning |
 |---|---|---|
-| Automated tests | v0.9.3 release: 415 passed, 0 failed locally and in Linux, macOS, and Windows release workflows on 2026-08-15 | Enemy animation mapping, deterministic visual phase, static-position preservation, facing, projectiles, deterministic campaign completion, and existing systems are covered |
-| Lint | 0 warnings and 0 errors across 189 files on 2026-08-15 | Current Lua source and tests statically checked |
-| Common package | Published v0.9.3 `.love`, 239,843,571 bytes, SHA-256 `5d70c74d3aac4df9bd9465890a5f6703f6470cc3538ded32e90d2e3c62617f36` | Clean release marker, all six runtime animation atlases, source-candidate exclusion, and identical embedding in both native packages |
+| Automated tests | v0.9.5 candidate: 419 passed, 0 failed locally on 2026-08-15 | Eight-frame mapping, deterministic visual-only phase offsets, native-scale beam transforms, compact version tags, enemy animation, campaign completion, and existing systems are covered |
+| Lint | v0.9.5 candidate: 0 warnings and 0 errors across 192 files on 2026-08-15 | Current Lua source and tests statically checked |
+| Common package | v0.9.5 preliminary `.love`: 574 entries, all referenced assets present, source candidates absent, archive integrity passed | Rebuild after the clean implementation commit so the embedded release marker records the exact commit and `dirty=false` |
 | macOS artifacts | Published universal ZIP SHA-256 `e9caa89540968826e51af85035e4da8cdb7b8778dd242657c8a87dfcb79eb10c`; DMG SHA-256 `e895106db214c41fed89a9c24e30ed12b7d9fd3e3e30785ab8a03a5b645677b7` | Archive integrity, bundle version, code-signature structure, DMG checksum, common payload, and packaged boot passed; ad-hoc signed and not notarized |
 | Windows artifact | Published branded x64 ZIP SHA-256 `4f4d64ad13b71841e1817b7e8398c1345f16d3cb299898dfeb7ef444f3399f4b` | Pinned official LÖVE 11.5 runtime, icon/version metadata, common-payload equality, archive integrity, and native packaged boot passed; unsigned |
 | Packaged boot | Verified in Windows and macOS release CI on 2026-08-15; published macOS app also passed a fresh local boot marker | Both packages reached `boot-complete`; this proves startup integrity, not a full graphical/audio playthrough |
-| Manual graphical QA | v0.8.2 changed interface states verified at 1280 x 720 and 800 x 600 | Active World Tour mechanic, timer, HP/XP, build slots, level-point CTA, pause, level-up, results, title, and settings were visually inspected; full campaign, physical controller, audio and prolonged play-feel remain open |
-| Source release commit | `ded61e1` — release: publish desktop v0.9.3 | Tag `v0.9.3` targets full commit `ded61e1e9863afdb09199c3281a0e599ab117d42` |
-| Feature-branch push | `origin/codex/enemy-animation-v093` and `origin/codex/world-overhaul-v090` contain the release commit | `main` remains independently unpromoted; original local dirty work is preserved |
-| Main promotion | Not current | Verify `origin/main` independently |
+| Manual graphical QA | Representative beam, bomb, and full-range lightning sheets inspected at full resolution | In-game unlocked graphical pass and prolonged high-rank combat feel remain open |
+| Source baseline | `4d8758d` — merge: promote v0.9.4 enemy state animation to main | Local and `origin/main` were independently confirmed at the same merge commit before v0.9.5 work began |
+| Feature-branch push | Pending final clean-package and boot checks for `codex/projectile-readability-v095` | Keep v0.9.5 isolated from `main` until the verified commit is reviewed |
+| Main promotion | v0.9.4 source is promoted; v0.9.5 is not | Do not infer v0.9.5 promotion from a feature-branch push |
 | Public release/download | v0.9.3 is published as GitHub Latest with seven synchronized desktop assets | GitHub API and the fail-closed version gate confirm every required asset and SHA-256 digest; stable Latest routes resolve to v0.9.3 |
 | Landing download links | Public Home, Catalog, and Builder display v0.9.3 and reference stable macOS/Windows Latest routes | HTTPS bytes match local source; both routes resolve to the expected v0.9.3 GitHub asset sizes |
 | GitHub README presentation | Landing-styled rewrite committed and pushed at `f96acf9` | GitHub Markdown API rendered 21,124 bytes with 28 images, 50 links, and 3 tables; all 29 local references and 7 navigation anchors resolve; default-page visibility still depends on merging to `main` |
@@ -217,8 +179,8 @@ For an engine migration, keep LÖVE as the golden reference. The leading researc
    remapping, wired, and wireless behavior.
 4. Perform a crowded-combat animation feel pass across all six enemy families
    on physical Mac and Windows hardware.
-5. Promote the verified source to `main` only through a separately approved
-   merge after reviewing the feature-branch delta and CI state.
+5. Review the verified v0.9.5 feature-branch delta and in-game graphical pass
+   before any v0.9.5 merge, tag, release, or landing deployment.
 6. Keep the stable GitHub Latest Download URL in future landing-page releases;
    run the dry-run and public-verification commands around each approved FTPS
    deployment. Apple signing/notarization remains a separate approval gate.
@@ -230,6 +192,20 @@ For an engine migration, keep LÖVE as the golden reference. The leading researc
    a separate, reviewed pass; do not overwrite its unrelated dirty material.
 
 ## Continuation history
+
+### 2026-08-15 — v0.9.5 eight-frame projectile implementation
+
+- Confirmed the v0.9.4 enemy-animation source at `28fa8e5`, merged it into
+  `main` at `4d8758d`, pushed `main`, and independently refetched the remote ref.
+- Replaced all 32 player-attack runtime strips with separate 2048x1024 RGBA
+  sheets containing eight distinct 512x512 animation frames per stable ID.
+- Kept combat timing, RNG, range growth, damage, collision, and cooldowns
+  unchanged; added deterministic visual-only offsets and native-or-smaller,
+  uniform rendering with bounded long-beam visuals.
+- Added tiny boxed `v0.9.5` tags only to the title and pause menus.
+- Passed 419 tests, zero lint findings across 192 files, source version sync,
+  zero-risk media audit, full runtime/source byte parity, and preliminary
+  package integrity. Clean-commit packaging and boot verification follow.
 
 ### 2026-08-15 — v0.9.3 complete enemy animation release
 
