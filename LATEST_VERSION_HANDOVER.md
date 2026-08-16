@@ -134,7 +134,9 @@ preserving their current health percentage.
 
 The exact seven public assets are mirrored under `v0.9.6-release/`. The public
 v0.9.5 mirror and earlier v0.9.5 local candidate are retained only under
-`_archive/` and must not be distributed as current builds.
+`_archive/260816-groovebound-v095-public-release/` and
+`_archive/260816-groovebound-v095-local-candidate-pre-public/`; they must not be
+distributed as current builds.
 
 ## Verification and delivery ledger
 
@@ -211,7 +213,7 @@ For an engine migration, keep LÖVE as the golden reference. The leading researc
   version gates, portability, archive, manifest, checksum, DMG, signature, and
   exact downloaded Mac boot verification.
 - Mirrored all seven public assets under `v0.9.6-release/`; moved the old public
-  v0.9.5 mirror to `_archive/v0.9.5-public-release/`.
+  v0.9.5 mirror to `_archive/260816-groovebound-v095-public-release/`.
 - Deployed and independently verified the 421-file v0.9.6 site with rollback
   `20260816-234738-v0.9.6`; core bytes, badges, representative assets, GitHub
   Latest, and both stable native download routes match the final release.
@@ -228,7 +230,7 @@ For an engine migration, keep LÖVE as the golden reference. The leading researc
   manifests, and checksum files. All seven GitHub assets expose SHA-256 digests;
   the exact public files are mirrored under `v0.9.5-release/`.
 - Archived the earlier local candidate under
-  `_archive/v0.9.5-local-candidate-pre-public/` so it cannot be confused with
+  `_archive/260816-groovebound-v095-local-candidate-pre-public/` so it cannot be confused with
   the public build.
 - Deployed the 421-file v0.9.5 site with rollback
   `20260816-225011-v0.9.5`; exact core bytes, page badges, representative assets,
