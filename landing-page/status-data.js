@@ -1,12 +1,26 @@
 window.GROOVE_STATUS = {
-  "generatedAt": "2026-08-16T12:34:50.220Z",
-  "generatedAtLabel": "16 Aug 2026, 10:34 pm",
+  "generatedAt": "2026-08-16T12:49:01.503Z",
+  "generatedAtLabel": "16 Aug 2026, 10:49 pm",
   "game": {
-    "branch": "codex/projectile-readability-v095",
-    "commit": "d23b583",
+    "branch": "main",
+    "commit": "c872313",
     "dirty": false,
     "workingChanges": 0,
     "history": [
+      {
+        "hash": "c872313",
+        "date": "2026-08-16",
+        "dateLabel": "2026-08-16",
+        "sortKey": "2026-08-16T22:36:33+10:00",
+        "subject": "release: publish desktop v0.9.5"
+      },
+      {
+        "hash": "fcf5e8b",
+        "date": "2026-08-16",
+        "dateLabel": "2026-08-16",
+        "sortKey": "2026-08-16T22:35:15+10:00",
+        "subject": "docs: refresh v0.9.5 release ledger"
+      },
       {
         "hash": "d23b583",
         "date": "2026-08-16",
