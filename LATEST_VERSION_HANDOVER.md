@@ -14,20 +14,20 @@ This document answers four questions: what is authoritative, what the latest ver
 
 <!-- LIVE-SNAPSHOT:START -->
 
-_Generated from live repository evidence: 2026-08-16 22:52 AEST_
+_Generated from live repository evidence: 2026-08-16 23:48 AEST_
 
 | Field | Live value |
 |---|---|
 | Branch | `main` |
-| HEAD | `ff238f0` — docs: sync v0.9.5 release status |
+| HEAD | `99e6f8c` — docs: sync final v0.9.6 release status |
 | Upstream | `origin/main` |
 | Compared with `origin/main` | 0 ahead, 0 behind |
-| Working changes | 1 files: 0 game, 0 site, 0 skills/package |
-| Lua source/test files | 122 source, 68 test |
+| Working changes | 0 files: 0 game, 0 site, 0 skills/package |
+| Lua source/test files | 123 source, 69 test |
 | Game tree excluding `dist/` | 946.0 MiB |
 | Current `.love` artifact | 267.9 MiB |
-| Test suite | passed: 419 tests, 0 failures |
-| Lint | passed: 0 warnings / 0 errors in 192 files |
+| Test suite | passed: 432 tests, 0 failures |
+| Lint | passed: 0 warnings / 0 errors in 194 files |
 | Skill packages | 12 |
 
 <!-- LIVE-SNAPSHOT:END -->
@@ -36,12 +36,12 @@ _Generated from live repository evidence: 2026-08-16 22:52 AEST_
 
 Groove Bound is a bright urban-supernatural survival roguelike built in Lua with LÖVE 11.5. Its current development preview follows:
 
-The current public release is **v0.9.5**, promoted from the verified v0.9.4
-enemy-animation baseline through release merge `c872313`. Loose-folder play
-identifies itself as `v0.9.5-dev`; the tiny boxed main-menu and pause-menu tags
-show only `v0.9.5`; public packages identify as `v0.9.5`. GitHub Latest, the
-stable desktop download routes, and the deployed landing site all resolve to
-v0.9.5.
+The current public release is **v0.9.6**, promoted from the verified v0.9.5
+projectile-readability baseline through release commit `e033b6e`. Loose-folder
+play identifies itself as `v0.9.6-dev`; the tiny boxed main-menu and pause-menu
+tags show only `v0.9.6`; public packages identify as `v0.9.6`. GitHub Latest,
+the stable desktop download routes, and the deployed landing site all resolve
+to v0.9.6.
 
 **Title → Prologue → Character Selection → Character Intro → Backbeat Streets → The Orbit Line → World Tour → playable Funk, Soul, Disco, and Jazz routes**
 
@@ -56,7 +56,10 @@ The player selects Joe or Lyra Vex, keeps one build across both stages, banks le
 - Sixteen base weapons, eight supports, and sixteen documented fusions.
 - Six authored enemy families across the Prologue and playable World Tour;
   all 49 definitions use deterministic three- or four-frame animation.
-- Persistent options, keyboard/mouse/gamepad controls, rebindings, deadzone, aim assistance, four camera zoom levels, vibration, flash, shake, fullscreen, and volume controls.
+- Persistent Very Easy, Easy, Medium, Hard, and Super Hard profiles with live
+  multi-factor combat scaling; keyboard/mouse/gamepad controls, rebindings,
+  deadzone, aim assistance, four camera zoom levels, vibration, flash, shake,
+  fullscreen, and volume controls.
 - Adaptive music routing, runtime OGG music, runtime OGV cutscenes, and storyboard fallbacks.
 - Arsenal, Admin, results, level-up, pause, options, character selection, cutscene, run, and chest-reward screens.
 
@@ -86,7 +89,7 @@ The public landing site is a separate static presentation under `landing-page/`.
 
 | System | Current state | Evidence | Open acceptance |
 |---|---|---|---|
-| Campaign flow | Committed and pushed preview on `GPT/stage-2-cutscenes` | Source, campaign tests, upstream branch | Full current-HEAD campaign playthrough |
+| Campaign flow | Published in v0.9.6 and tests passed | World Tour defeat retains the failed world; Retry starts it immediately with the original character and launch setup; Return to World Menu clears the active world without routing through the Prologue | Full current-HEAD campaign playthrough and manual results-button feel pass |
 | Deterministic simulation | Tests passed | Named RNG streams and seeded full-run tests | Replay-file format for engine differential testing |
 | Progression and fusion | Published in v0.8.2 and tests passed | Level gains bank spendable points without interrupting play by default; the green Triangle level-point CTA shows its balance in the shared rank badge and is mouse-clickable; every spend advances to a new seeded offer; seeded offers, anti-repeat, capacity and evolution tests remain green | Ongoing balance/play-feel evidence and a full physical-controller run |
 | Chest rewards | Published in v0.7.1, tests passed, visually sampled, and package verified | Five large spinning chests converge without number cycling, flash the centre chest, reveal large sprite-backed rewards, and accept Esc/Circle animation skip; capped builds auto-apply the selected utility reward unless an eligible evolution must be shown | Physical-controller timing and reward-feel playthrough with naturally dropped chests |
@@ -100,56 +103,57 @@ The public landing site is a separate static presentation under `landing-page/`.
 | Application icon | Published in the v0.6.0 macOS app; tests passed, package verified, and manual small-size QA verified | Commit `097c883`; Joe/Lyra adventure emblem at 512px RGBA; native `GrooveBound.icns` present and referenced in the verified app bundle | Confirm the rebuilt native app icon in the macOS Dock on another clean Mac |
 | Generic controller and camera support | Published in v0.8.1 and tests passed | Level-up navigation uses strict spatial rows for D-pad, arrow keys, and WASD: left/right never wrap into another row, while up/down selects the nearest aligned item; existing right-stick aim and controller parity remain intact | Physical PlayStation controller check; hot-plug identity, glyphs/remapping, wired/wireless matrix |
 | Combat readability and HUD | Published in v0.9.5; automated, media, package, and native boot checks passed | All 32 player attacks own separate eight-frame 2048x1024 RGBA sheets; authored frames render at uniform native-or-smaller scale, beam art is never stretched, long collision coverage is visually capped, and deterministic 0-60 ms offsets desynchronize repeated shots without consuming gameplay RNG | Prolonged combat balance with both characters and flash/reduced-flash options on physical Mac and Windows hardware |
+| Difficulty profiles | Published in v0.9.6; automated, layout, persistence, deterministic simulation, package, and native boot checks passed | Options exposes Very Easy, Easy, Medium, Hard, and Super Hard. Twelve independent multipliers control wave escalation, ordinary-enemy health/damage/speed/amount/cadence, player damage, and boss health/damage/speed/cadence/projectile speed. Medium preserves v0.9.5 balance; live changes preserve current HP percentage. | Multi-seed play-feel tuning for all five tiers with both characters and physical controller |
 | Character, upgrade, and results interface | Published in v0.7.1, tests passed, and visually sampled | Anton/Oswald typography, modular nine-slice upgrade cards, relevant-equipped evolution rows only, exact icon-led gain-to-total attributes, generated NEW badge, pickup-art utility choices, existing reroll/skip sprite CTAs, and bright sprite-backed menu focus | Manual defeat/victory results pass and final small-screen readability review |
 | Save system | Version 2 profiles and slots | Save, migration, profile, export and World Tour session tests | Cross-platform clean-machine fixtures |
-| Landing page and repository README | v0.9.5 bundle deployed and public-live verified | Home, Catalog, and Builder show v0.9.5, match local bytes, and retain stable Latest desktop URLs resolving to the v0.9.5 packages | Complete physical-phone refresh |
+| Landing page and repository README | v0.9.6 bundle deployed and public-live verified | Home, Catalog, and Builder show v0.9.6, match local bytes, and retain stable Latest desktop URLs resolving to the final v0.9.6 packages | Complete physical-phone refresh |
 | World Tour runtime atlases | v0.9.1 package verified after the v0.9.0 lock-sprite omission | Four Stage 2 environment atlases, four eight-state mechanic atlases, 32 individual mechanic sprites, and the directly loaded World Tour lock sprite pass source, archive, RGBA, transparency, grid, and packaged-reference checks | Full in-motion readability and collision/layering pass in all eight World Tour stages |
-| Desktop distribution | v0.9.5 published as GitHub Latest and mirrored locally | One clean common payload feeds the universal macOS ZIP/DMG and branded Windows x64 ZIP; all seven public assets expose SHA-256 digests and the local `v0.9.5-release/` mirror matches them | Physical Windows QA, prolonged unlocked-Mac graphical play, Apple signing, and notarization remain open |
+| Desktop distribution | v0.9.6 published as GitHub Latest and mirrored locally | One clean common payload feeds the universal macOS ZIP/DMG and branded Windows x64 ZIP; all seven public assets expose SHA-256 digests and the local `v0.9.6-release/` mirror matches them | Physical Windows QA, prolonged unlocked-Mac graphical play, Apple signing, and notarization remain open |
 | Engine migration | Planned | Engine migration research and parity roadmap | Clean baseline and bounded target-engine spike |
 | Groove Bound skills | Twelve repository skills validated; version-sync skill committed and pushed | The fail-closed checker is wired into source, local/candidate, GitHub, landing, and public phases; repository package validation passes 12 of 12 | Unlocked-Mac visual forward test remains open |
 
 ## Active working state
 
-The v0.9.5 projectile release was merged into `main` at `c872313`, tagged
-`v0.9.5`, and published as GitHub Latest. The release is based on the verified
-v0.9.4 enemy-animation source merged at `4d8758d`. The original dirty workspace
+The v0.9.6 release is tagged at `e033b6e` and published as GitHub Latest; the
+public-status follow-up is `99e6f8c` on `main`. It is based on the verified
+v0.9.5 projectile-readability source at `c872313`. The original dirty workspace
 remains protected and was not staged or overwritten during release work.
 
-The v0.9.5 release replaces all 32 five-frame projectile strips with one
-separate eight-frame RGBA sheet per stable weapon or fusion ID. The runtime
-retains the existing deterministic attack families, damage windows, collision,
-cooldowns, range growth, and immutable firing snapshots. Rendering now reads a
-4x2 sheet, never scales above the authored 512px cell, caps long beam visuals at
-448px while retaining their gameplay coverage, and applies small deterministic
-visual-only offsets to multi-shot and storm effects.
+Fresh World Tour starts receive a bounded opening assist for enemy health,
+damage, speed, and spawn pressure that fades to the authored curve by 150
+seconds or equivalent early-level progress. Defeat now offers immediate
+same-world retry with the original character and launch build, a separate World
+Menu action, and Return to Title; upgrades earned in the failed run do not leak
+into retry.
 
-Generated chroma sources, keyed intermediates, accepted sheets, rejected
-variants, prompts, hashes, provenance, and the reproducible build script are
-preserved under the dated source-candidate folder. Only the 32 accepted runtime
-sheets enter the playable package; source candidates remain excluded.
+The shared Options screen adds persistent Very Easy, Easy, Medium, Hard, and
+Super Hard profiles. Each tier controls twelve separate combat levers. Medium
+is exactly the prior authored balance. Changing a profile during a paused run
+updates live pressure and rescales existing ordinary enemies and bosses while
+preserving their current health percentage.
 
-The exact seven public assets are mirrored under `v0.9.5-release/`. The earlier
-local candidate is retained only as recovery material under
-`_archive/v0.9.5-local-candidate-pre-public/` and must not be distributed.
+The exact seven public assets are mirrored under `v0.9.6-release/`. The public
+v0.9.5 mirror and earlier v0.9.5 local candidate are retained only under
+`_archive/` and must not be distributed as current builds.
 
 ## Verification and delivery ledger
 
 | Layer | Latest state | Meaning |
 |---|---|---|
-| Automated tests | v0.9.5: 419 passed, 0 failed locally and in CI on 2026-08-16 | Eight-frame mapping, deterministic visual-only phase offsets, native-scale beam transforms, compact version tags, enemy animation, campaign completion, and existing systems are covered |
-| Lint | v0.9.5: 0 warnings and 0 errors across 192 files locally and in CI on 2026-08-16 | Current Lua source and tests statically checked |
-| Common package | Published `.love` SHA-256 `caf6e0deda65e6e566f7ccfac11d510294d96c582e40b50f43bf26cd52f53122` | 574 entries, all referenced assets present, source candidates absent, archive integrity passed, and marker records `version=0.9.5`, `commit=c872313e402e`, `dirty=false` |
-| macOS artifacts | Published universal ZIP SHA-256 `cc0e2f10c2db9075756429e4a74eb204caec0d7f2b2cfc5ebcf045c7ae509ee0`; DMG SHA-256 `92b78a4e177c3f4b0883ba75e21d51f564ae42d984d06a7677b50d48ae12fc39` | Archive integrity, bundle version, code-signature structure, DMG checksum, common payload, CI packaged boot, and fresh downloaded-package boot passed; ad-hoc signed and not notarized |
-| Windows artifact | Published branded x64 ZIP SHA-256 `69cdcb23c2fca81795387307b17fab814d94795851ba2729a956236d63530bc3` | Pinned official LÖVE 11.5 runtime, icon/version metadata, common-payload equality, archive integrity, and native packaged boot passed; unsigned |
+| Automated tests | v0.9.6: 432 passed, 0 failed locally and in CI on 2026-08-16 | Five complete profiles, live HP-preserving rebalance, player damage, spawn density/cap, settings persistence and input, compact layouts, retry ownership, deterministic route completion, and existing systems are covered |
+| Lint | v0.9.6: 0 warnings and 0 errors across 194 files locally and in CI on 2026-08-16 | Current Lua source and tests statically checked |
+| Common package | Published `.love` SHA-256 `8c8e0d6c5db3b799b94118dc077cc8acea74930fb1a62f9bccd83e3e338ff6c7` | 575 entries, all referenced assets present, source candidates absent, archive integrity passed, and marker records `version=0.9.6`, `commit=e033b6e6ead4`, `dirty=false` |
+| macOS artifacts | Published universal ZIP SHA-256 `7355683e7afb07b05650eb869965c3d8372d8f662500c0ca3e6d286fe3895252`; DMG SHA-256 `2cef0c48a1c166ccf07efb65e1d93293eef82451cf3fc7845480a0022be9e0db` | Archive integrity, bundle version, code-signature structure, DMG checksum, common payload, CI packaged boot, and fresh downloaded-package boot passed; ad-hoc signed and not notarized |
+| Windows artifact | Published branded x64 ZIP SHA-256 `ce23b15e6ea4550ec80127aa958aa69147a1a7682ea761de781cb61a23cfc812` | Pinned official LÖVE 11.5 runtime, icon/version metadata, common-payload equality, archive integrity, and native packaged boot passed; unsigned |
 | Packaged boot | Verified in Windows and macOS release CI on 2026-08-16; the exact downloaded public macOS app also passed a fresh local boot marker | Both packages reached `boot-complete`; this proves startup integrity, not a full graphical/audio playthrough |
 | Manual graphical QA | Representative beam, bomb, and full-range lightning sheets inspected at full resolution | In-game unlocked graphical pass and prolonged high-rank combat feel remain open |
-| Source baseline | `c872313` — release: publish desktop v0.9.5 | Release merge has parents `4d8758d` and `fcf5e8b`; tag `v0.9.5` points to the same commit |
-| Feature-branch push | `codex/projectile-readability-v095` pushed through `fcf5e8b` | Preserved as feature history; `main` is canonical |
-| Main promotion | v0.9.5 promoted at `c872313`; public-status follow-up at `ff238f0` | Local and remote refs were independently refetched and matched after promotion |
-| Public release/download | v0.9.5 is published as GitHub Latest with seven synchronized desktop assets | GitHub API and the fail-closed version gate confirm every required asset and SHA-256 digest; stable Latest routes resolve to v0.9.5 |
-| Landing download links | Public Home, Catalog, and Builder display v0.9.5 and reference stable macOS/Windows Latest routes | HTTPS bytes match local source; both routes resolve to the expected v0.9.5 GitHub asset sizes |
+| Source baseline | `e033b6e` — release: publish desktop v0.9.6 | Tag `v0.9.6`, release metadata, and all package payloads point to the same commit |
+| Feature-branch push | `codex/world-retry-v096` pushed through `cb14a47` | Preserved as feature history; `main` is canonical and includes the subsequent difficulty implementation |
+| Main promotion | v0.9.6 released at `e033b6e`; public-status follow-up at `99e6f8c` | Local and remote refs were independently verified after promotion; release tag remains on the exact package source commit |
+| Public release/download | v0.9.6 is published as GitHub Latest with seven synchronized desktop assets | GitHub API and the fail-closed version gate confirm every required asset and SHA-256 digest; stable Latest routes resolve to the final v0.9.6 assets |
+| Landing download links | Public Home, Catalog, and Builder display v0.9.6 and reference stable macOS/Windows Latest routes | HTTPS bytes match local source; both routes resolve to the expected final v0.9.6 GitHub asset sizes |
 | GitHub README presentation | Landing-styled rewrite committed and pushed at `f96acf9` | GitHub Markdown API rendered 21,124 bytes with 28 images, 50 links, and 3 tables; all 29 local references and 7 navigation anchors resolve; default-page visibility still depends on merging to `main` |
-| Landing deployment | v0.9.5 421-file bundle deployed and public-live verified | Rollback captured at `20260816-225011-v0.9.5`; six core files, directory index, representative assets, badges, GitHub Latest, and stable desktop routes pass public parity |
+| Landing deployment | v0.9.6 421-file bundle deployed and public-live verified | Rollback captured at `20260816-234738-v0.9.6`; six core files, directory index, representative assets, badges, GitHub Latest, and stable desktop routes pass public parity |
 
 ## Desktop and engine portability
 
@@ -177,9 +181,9 @@ For an engine migration, keep LÖVE as the golden reference. The leading researc
    remapping, wired, and wireless behavior.
 4. Perform a crowded-combat animation feel pass across all six enemy families
    on physical Mac and Windows hardware.
-5. Run a prolonged high-rank v0.9.5 combat pass with both characters and both
-   flash settings, focusing on projectile density, laser cadence, and readable
-   gaps between powerful attacks.
+5. Run a prolonged v0.9.6 balance matrix with both characters across all five
+   difficulty profiles, including fresh World starts, boss pressure, live
+   profile changes, projectile density, laser cadence, and readable gaps.
 6. Keep the stable GitHub Latest Download URL in future landing-page releases;
    run the dry-run and public-verification commands around each approved FTPS
    deployment. Apple signing/notarization remains a separate approval gate.
@@ -191,6 +195,26 @@ For an engine migration, keep LÖVE as the golden reference. The leading researc
    a separate, reviewed pass; do not overwrite its unrelated dirty material.
 
 ## Continuation history
+
+### 2026-08-16 — v0.9.6 World retry, difficulty profiles, desktop, and site release
+
+- Added persistent Very Easy, Easy, Medium, Hard, and Super Hard choices to the
+  shared Options screen with twelve independent pressure multipliers. Medium
+  preserves v0.9.5 balance and live changes preserve existing health fractions.
+- Softened fresh World Tour openings with a bounded assist that fades by 150
+  seconds or early-level progress. World defeats now support immediate
+  same-world retry, Return to World Menu, and Return to Title without routing
+  through the Prologue or retaining failed-run upgrades.
+- Published final release commit and tag `e033b6e`; CI `31950311516` and desktop
+  release workflow `31950311632` passed, including native Mac and Windows boot.
+- Passed 432 tests, zero lint findings across 194 files, source/candidate/public
+  version gates, portability, archive, manifest, checksum, DMG, signature, and
+  exact downloaded Mac boot verification.
+- Mirrored all seven public assets under `v0.9.6-release/`; moved the old public
+  v0.9.5 mirror to `_archive/v0.9.5-public-release/`.
+- Deployed and independently verified the 421-file v0.9.6 site with rollback
+  `20260816-234738-v0.9.6`; core bytes, badges, representative assets, GitHub
+  Latest, and both stable native download routes match the final release.
 
 ### 2026-08-16 — v0.9.5 public desktop and site release
 
