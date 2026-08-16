@@ -43,12 +43,31 @@ T["fresh standalone World Tour entries receive bounded starter-build scaling"] =
     mode = "world_tour", fresh_world_entry = false,
   })
   local assist = assisted:fresh_entry_factors()
-  H.is_true(assist.health < 1)
-  H.is_true(assist.damage < 1)
-  H.is_true(assist.spawn < 1)
+  H.near(assist.health, 0.54)
+  H.near(assist.damage, 0.66)
+  H.near(assist.speed, 0.85)
+  H.near(assist.spawn, 0.67)
   H.eq(carried:fresh_entry_factors().health, 1)
   H.is_true(assisted:_difficulty_multiplier()
     < carried:_difficulty_multiplier())
+end
+
+T["fresh World Tour assist blends away without lowering later difficulty"] = function()
+  local assisted, ctx = fresh("joe", {
+    mode = "world_tour", fresh_world_entry = true,
+  })
+  ctx.time = assisted.stage_started_at + 75
+  local midpoint = assisted:fresh_entry_factors()
+  H.near(midpoint.health, 0.77)
+  H.near(midpoint.damage, 0.83)
+  H.near(midpoint.speed, 0.925)
+  H.near(midpoint.spawn, 0.835)
+  ctx.time = assisted.stage_started_at + 150
+  local complete = assisted:fresh_entry_factors()
+  H.eq(complete.health, 1)
+  H.eq(complete.damage, 1)
+  H.eq(complete.speed, 1)
+  H.eq(complete.spawn, 1)
 end
 
 T["campaign exposes two distinct validated three-minute stages"] = function()

@@ -102,6 +102,21 @@ T["Disco victory unlocks Jazz and Jazz victory unlocks House"] = function()
   H.is_true(app.slot.worlds.house.unlocked)
 end
 
+T["World Tour defeat stays on the failed world until retry or menu choice"] = function()
+  local app = fresh()
+  app.content = require("src.content.init")
+  JourneyProgress.begin_run(app, "world_tour", "soul")
+  JourneyProgress.record_result(app, {
+    outcome = "defeat", mode = "world_tour", world_id = "soul",
+    time = 30, stats = {},
+  })
+  H.eq(app.slot.journey.current_route, "world_tour")
+  H.eq(app.slot.journey.active_world_id, "soul")
+  JourneyProgress.return_to_world_tour(app)
+  H.eq(app.slot.journey.current_route, "world_tour")
+  H.eq(app.slot.journey.active_world_id, "")
+end
+
 T["campaign reset clears the active Slot and in-memory journey"] = function()
   local app = fresh()
   local reset_slot

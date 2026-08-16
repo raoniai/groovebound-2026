@@ -134,8 +134,59 @@ T["character cards and result actions stay aligned at both supported canvases"] 
       H.is_true(inside(first, dimensions[1], dimensions[2]))
       H.is_true(inside(second, dimensions[1], dimensions[2]))
       H.is_false(overlaps(first, second))
+
+      local world_defeat = ResultsScreen({ content = Content, assets = {} }, {
+        outcome = "defeat", mode = "world_tour", world_id = "funk",
+        retry = { mode = "world_tour", world_id = "funk", character_id = "joe" },
+      })
+      world_defeat:_layout()
+      H.eq(#world_defeat.buttons.buttons, 3)
+      H.eq(world_defeat.buttons.buttons[1].label, "RETRY FUNK")
+      H.eq(world_defeat.buttons.buttons[2].label, "RETURN TO WORLD MENU")
+      H.eq(world_defeat.buttons.buttons[3].label, "RETURN TO TITLE")
+      for index, action in ipairs(world_defeat.buttons.buttons) do
+        H.is_true(inside(action, dimensions[1], dimensions[2]))
+        if index > 1 then
+          H.is_false(overlaps(world_defeat.buttons.buttons[index - 1], action))
+        end
+      end
     end)
   end
+end
+
+T["World Tour defeat actions retry immediately or return to the World Menu"] = function()
+  with_dimensions(1280, 720, function()
+    local switched
+    local slot = Defaults.new_slot(1, "now")
+    slot.prologue.completed = true
+    local app = {
+      content = Content, assets = {}, slot = slot, active_slot_id = 1,
+      profile_store = { save_slot = function() return true end },
+      states = { switch = function(_, state) switched = state end },
+    }
+    local result = {
+      outcome = "defeat", mode = "world_tour", world_id = "soul",
+      retry = {
+        mode = "world_tour", world_id = "soul", character_id = "lyra",
+        starter_loadout = { weapons = { "bell_tower" }, passives = {} },
+      },
+    }
+    local retry = ResultsScreen(app, result)
+    retry:_layout()
+    retry.buttons.buttons[1].on_press()
+    H.eq(switched.kind, "run")
+    H.eq(switched.opts.world_id, "soul")
+    H.eq(switched.opts.character_id, "lyra")
+    H.eq(switched.opts.starter_loadout.weapons[1], "bell_tower")
+    H.eq(app.slot.journey.active_world_id, "soul")
+
+    local menu = ResultsScreen(app, result)
+    menu:_layout()
+    menu.buttons.buttons[2].on_press()
+    H.eq(switched.kind, "world_tour")
+    H.eq(app.slot.journey.current_route, "world_tour")
+    H.eq(app.slot.journey.active_world_id, "")
+  end)
 end
 
 T["settings labels, controls, rows and guide remain disjoint at compact size"] = function()

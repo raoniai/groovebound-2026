@@ -2,6 +2,13 @@
 
 This file is the local implementation record. Add a new entry at the top after every material site pass.
 
+## 2026-08-16 | SITE-057 | v0.9.6 World Tour retry and opening balance
+
+Prepared Home, Catalog, and Builder for v0.9.6 while retaining the stable
+GitHub Latest desktop routes. The release slightly softens fresh World Tour
+openings, adds immediate same-world retry with the original character and
+starting setup after defeat, and adds a separate Return to World Menu action.
+
 ## 2026-08-16 | SITE-056 | v0.9.5 projectile readability release
 
 Prepared Home, Catalog, and Builder for v0.9.5 while retaining the stable

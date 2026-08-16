@@ -1,5 +1,5 @@
 {
-  "release": "v0.9.5",
+  "release": "v0.9.6",
   "protocol": "ftps",
   "host": "ftp.raoni.studio",
   "port": 21,

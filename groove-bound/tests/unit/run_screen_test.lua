@@ -306,4 +306,39 @@ T["World Tour stage confirmation advances into its second playable arena"] = fun
   H.is_false(screen.transitioning)
 end
 
+T["World Tour defeat payload keeps only the original retry setup"] = function()
+  local starting_build = {
+    weapons = { { id = "kazoo_pistol", level = 2 } },
+    passives = {}, rerolls = 1, coins = 0,
+  }
+  local screen = RunScreen({ content = Content }, {
+    mode = "world_tour", world_id = "funk", character_id = "lyra",
+    build = starting_build,
+  })
+  screen.mode = "world_tour"
+  screen.world_id = "funk"
+  screen.character = Content.characters.lyra
+  screen.stages = Content.world_stages.funk
+  screen.player = { hp = 0, max_hp = 90 }
+  screen.ctx = { time = 42 }
+  screen.combat = {
+    stats = {}, stage_index = 1, xp = { level = 5 },
+    progression = { snapshot = function()
+      return { weapons = { { id = "kazoo_pistol", level = 5 } } }
+    end },
+  }
+  screen.world_mechanic = nil
+  screen.world_mechanic_totals = {
+    activations = 0, opportunities = 0, best_chain = 0,
+  }
+  local payload = screen:_results_payload("defeat")
+  H.eq(payload.retry.world_id, "funk")
+  H.eq(payload.retry.character_id, "lyra")
+  H.eq(payload.retry.build.weapons[1].level, 2)
+  H.eq(payload.progression.weapons[1].level, 5)
+  starting_build.weapons[1].level = 6
+  H.eq(payload.retry.build.weapons[1].level, 2,
+    "retry snapshot must not alias mutable launch options")
+end
+
 return T

@@ -29,12 +29,19 @@ end
 function ResultsScreen:_layout()
   local w, h, scale = UIScale.dimensions()
   self.ui_scale = scale
-  local bw, bh, gap = 280, 54, 14
+  local compact = h < 680
+  local bw, bh, gap = 300, compact and 44 or 54, compact and 8 or 12
   local x = (w - bw) / 2
-  local y = h * 0.70
+  local world_defeat = self.result.outcome == "defeat"
+    and self.result.mode == "world_tour"
+  local action_count = world_defeat and 3 or 2
+  local action_height = action_count * bh + (action_count - 1) * gap
+  local y = math.min(h * 0.70, h - action_height - 24)
   local next_label = self.result.outcome == "victory"
     and (self.result.mode == "world_tour" and "WORLD TOUR CATALOG"
-      or "ENTER WORLD TOUR") or "CONTINUE CAMPAIGN"
+      or "ENTER WORLD TOUR")
+    or world_defeat and ("RETRY " .. string.upper(self.result.world_id))
+    or "CONTINUE CAMPAIGN"
   local function button(opts)
     opts.renderer = function(value)
       MenuChrome.action(self.app.assets, value, {
@@ -45,32 +52,53 @@ function ResultsScreen:_layout()
     end
     return widgets.Button(opts)
   end
-  self.buttons = widgets.ButtonList({
+  local actions = {
     button({
       label = next_label, x = x, y = y, w = bw, h = bh,
-      font_size = 21,
+      font_size = compact and 18 or 21,
       menu_cell = self.result.outcome == "victory" and 3 or 1,
       variant = "primary",
       on_press = function()
         if self.result.outcome == "victory" then
           local WorldTourScreen = require("src.ui.screens.world_tour")
           self.app.states:switch(WorldTourScreen(self.app))
+        elseif world_defeat then
+          local JourneyProgress = require("src.meta.journey_progress")
+          JourneyProgress.begin_run(
+            self.app, "world_tour", self.result.world_id)
+          local RunScreen = require("src.ui.screens.run")
+          self.app.states:switch(RunScreen(self.app, self.result.retry))
         else
           local CharacterSelectScreen = require("src.ui.screens.character_select")
           self.app.states:switch(CharacterSelectScreen(self.app))
         end
       end,
     }),
-    button({
-      label = "RETURN TO TITLE", x = x, y = y + bh + gap, w = bw, h = bh,
-      font_size = 20,
+  }
+  if world_defeat then
+    actions[#actions + 1] = button({
+      label = "RETURN TO WORLD MENU", x = x, y = y + bh + gap,
+      w = bw, h = bh, font_size = compact and 16 or 19,
+      menu_cell = 3,
+      on_press = function()
+        local JourneyProgress = require("src.meta.journey_progress")
+        JourneyProgress.return_to_world_tour(self.app)
+        local WorldTourScreen = require("src.ui.screens.world_tour")
+        self.app.states:switch(WorldTourScreen(self.app))
+      end,
+    })
+  end
+  actions[#actions + 1] = button({
+      label = "RETURN TO TITLE", x = x,
+      y = y + (action_count - 1) * (bh + gap), w = bw, h = bh,
+      font_size = compact and 16 or 20,
       menu_cell = 8,
       on_press = function()
         local TitleScreen = require("src.ui.screens.title")
         self.app.states:switch(TitleScreen(self.app))
       end,
-    }),
-  })
+    })
+  self.buttons = widgets.ButtonList(actions)
 end
 
 function ResultsScreen:resize()

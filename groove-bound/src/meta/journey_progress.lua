@@ -72,6 +72,14 @@ function JourneyProgress.begin_run(app, route, world_id)
   return JourneyProgress.save(app)
 end
 
+function JourneyProgress.return_to_world_tour(app)
+  local slot = JourneyProgress.ensure(app)
+  slot.journey.state = "in_progress"
+  slot.journey.current_route = "world_tour"
+  slot.journey.active_world_id = ""
+  return JourneyProgress.save(app)
+end
+
 function JourneyProgress.abandon_active_run(app)
   if not app.slot then return end
   app.slot.statistics.abandoned_runs = app.slot.statistics.abandoned_runs + 1
@@ -147,6 +155,8 @@ function JourneyProgress.record_result(app, result)
   if result.mode == "world_tour" then
     local world_id = assert(result.world_id)
     local world = ensure_world(slot, world_id)
+    slot.journey.current_route = "world_tour"
+    slot.journey.active_world_id = world_id
     if result.outcome == "victory" then
       local definition = content.world_tour[world_id]
       local profile = definition and content.grade_profiles.profiles[

@@ -34,12 +34,12 @@ uploads assets before HTML, and verifies the public pages after publishing.
 From `landing-page/`:
 
 ```sh
-python3 scripts/build_site_release.py --release v0.9.5
+python3 scripts/build_site_release.py --release v0.9.6
 python3 scripts/setup_site_ftp_credentials.py --copy-existing
 python3 scripts/publish_site.py --inspect-remote
-python3 scripts/publish_site.py --release v0.9.5
-python3 scripts/publish_site.py --release v0.9.5 --publish
-python3 scripts/publish_site.py --release v0.9.5 --verify-public
+python3 scripts/publish_site.py --release v0.9.6
+python3 scripts/publish_site.py --release v0.9.6 --publish
+python3 scripts/publish_site.py --release v0.9.6 --verify-public
 ```
 
 The publisher defaults to a local dry run. A live upload requires both
