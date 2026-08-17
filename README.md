@@ -32,7 +32,7 @@
 
 <p align="center">
   <a href="landing-page/assets/video/groove-bound-trailer-v1.mp4">
-    <img src="landing-page/assets/screens/trailer-thumbnail-v1.jpg" alt="Watch the official 30-second Groove Bound trailer" width="88%">
+    <img src="landing-page/assets/screens/title-menu.png" alt="Groove Bound title menu with Joe and Lyra Vex" width="88%">
   </a>
 </p>
 
@@ -275,13 +275,23 @@ See the [Weapon Database](groove-bound/docs/WEAPON_DATABASE.md) and
 </p>
 
 <p align="center">
-  <img src="groove-bound/docs/screenshots/world-tour-music/world-tour-selector.jpg" alt="World Tour route selector" width="49%">
-  <img src="groove-bound/docs/screenshots/world-tour-music/funk-live-combat.jpg" alt="Live combat in the Funk World Tour route" width="49%">
+  <img src="landing-page/assets/screens/world-tour.png" alt="Groove Bound World Tour route selector" width="49%">
+  <img src="landing-page/assets/screens/perk-catalog.png" alt="Groove Bound permanent perk catalog" width="49%">
 </p>
 
 <p align="center">
-  <img src="landing-page/assets/screens/stage2-arrival.png" alt="Arrival at the Orbit Line" width="49%">
-  <img src="landing-page/assets/screens/stage2-escalation.png" alt="Orbit Line battle escalation" width="49%">
+  <img src="landing-page/assets/screens/character-select.png" alt="Choose Joe or Lyra Vex" width="49%">
+  <img src="landing-page/assets/screens/settings-menu.png" alt="Groove Bound settings menu" width="49%">
+</p>
+
+<p align="center">
+  <img src="landing-page/assets/screens/pause-menu.png" alt="Groove Bound pause menu over active combat" width="49%">
+  <img src="landing-page/assets/screens/arsenal-database.png" alt="Groove Bound Arsenal database" width="49%">
+</p>
+
+<p align="center">
+  <img src="landing-page/assets/screens/admin-dashboard.png" alt="Groove Bound Admin live control deck" width="49%">
+  <img src="landing-page/assets/screens/title-menu.png" alt="Groove Bound title menu" width="49%">
 </p>
 
 ---

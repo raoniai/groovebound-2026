@@ -2,6 +2,15 @@
 
 This file is the local implementation record. Add a new entry at the top after every material site pass.
 
+## 2026-08-17 | SITE-058 | Complete current-build screenshot refresh
+
+Replaced every public game capture with a fresh 1280-by-720 frame rendered
+directly by the current v0.9.6 LÖVE runtime. Home now presents live combat,
+level-up, World Tour, Perk Catalog, character selection, Settings, Pause,
+Arsenal, Admin, and title states; Builder, Catalog, video posters, and repository
+galleries use the same current set. Moved the previous documentation and site
+screen grabs into the dated root archive with their original paths preserved.
+
 ## 2026-08-16 | SITE-057 | v0.9.6 World Tour retry and opening balance
 
 Prepared Home, Catalog, and Builder for v0.9.6 while retaining the stable

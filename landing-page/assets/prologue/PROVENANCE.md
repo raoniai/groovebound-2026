@@ -32,14 +32,14 @@ chroma field was removed to produce isolated transparent header assets.
 
 - Backbeat references: `backbeat-streets-logo.png`,
   `landing-page/assets/backbeat-environment.png`, and
-  `landing-page/assets/screens/gameplay-combat.png`
+  `docs/archive/screenshots/2026-08-17/landing-page/assets/screens/gameplay-combat.png`
 - Backbeat chroma source: `source-candidates/backbeat-streets-logo-horizontal-chroma.png`
 - Backbeat chroma SHA-256: `83ae194a7833453aa58abd8860bd63bbc10efd3d1417394b1630b169e1097d0f`
 - Backbeat final: `backbeat-streets-logo-horizontal.png`
 - Backbeat final SHA-256: `884b328b29fd86fe8c622207b8e6165c7d3072bb1c062a91b11290178125ca8a`
 - Orbit references: `orbit-line-logo.png`,
   `landing-page/assets/orbit-environment.png`, and
-  `landing-page/assets/screens/stage2-arrival.png`
+  `docs/archive/screenshots/2026-08-17/landing-page/assets/screens/stage2-arrival.png`
 - Orbit chroma source: `source-candidates/orbit-line-logo-horizontal-chroma.png`
 - Orbit chroma SHA-256: `f69758c6f13ee3427519961cdc8ff7849f5d999b95c81f8a3c4370ff54705d31`
 - Orbit final: `orbit-line-logo-horizontal.png`

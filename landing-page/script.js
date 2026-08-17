@@ -1180,7 +1180,7 @@
 
   const methodData = {
     direction: { label: "Creative direction", title: "Make every layer speak the same language.", copy: "Pixel art, cinematic cutscenes, music-powered fiction, UI, enemies, and weapon silhouettes reinforce one supernatural funk identity.", image: "assets/campaign-banner.png", alt: "Groove Bound creative direction overview" },
-    systems: { label: "Game systems", title: "Turn a build choice into a story beat.", copy: "Sixteen weapons, eight supports, rank-10 fusions, chests, enemy patterns, and persistent two-stage progression create expressive runs.", image: "assets/screens/level-up-cards.jpg", alt: "Groove Bound level-up system" },
+    systems: { label: "Game systems", title: "Turn a build choice into a story beat.", copy: "Sixteen weapons, eight supports, rank-10 fusions, chests, enemy patterns, and persistent two-stage progression create expressive runs.", image: "assets/screens/gameplay-level-up.png", alt: "Groove Bound level-up system" },
     world: { label: "World building", title: "Make the mechanics belong to the city.", copy: "The Resonance explains XP, power, transit, Pulse Tower, the Break, the First Press, and the enemy orchestra within the same fiction.", image: "assets/first-press-orbit.png", alt: "The First Press route to the Orbit Line" },
     verification: { label: "Play experience", title: "Make every choice feel alive.", copy: "Readable combat, expressive upgrades, musical feedback, and clear world transitions keep each run moving with purpose.", image: "assets/screens/gameplay-combat.png", alt: "Groove Bound combat in Backbeat Streets" }
   };

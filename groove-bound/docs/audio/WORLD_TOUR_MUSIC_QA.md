@@ -111,8 +111,8 @@ The packaged `.love` booted in LÖVE 11.5, validated content, entered the title,
 opened the World Tour selector, launched the playable Funk route, and exercised
 live combat plus repeated level-up overlays without an audio load error.
 
-- [`title-world-tour-entry.jpg`](../screenshots/world-tour-music/title-world-tour-entry.jpg)
-- [`world-tour-selector.jpg`](../screenshots/world-tour-music/world-tour-selector.jpg)
-- [`funk-stage-start.jpg`](../screenshots/world-tour-music/funk-stage-start.jpg)
-- [`funk-live-combat.jpg`](../screenshots/world-tour-music/funk-live-combat.jpg)
-- [`funk-level-up-continuity.jpg`](../screenshots/world-tour-music/funk-level-up-continuity.jpg)
+- [`title-world-tour-entry.jpg`](../../../docs/archive/screenshots/2026-08-17/groove-bound/docs/screenshots/world-tour-music/title-world-tour-entry.jpg)
+- [`world-tour-selector.jpg`](../../../docs/archive/screenshots/2026-08-17/groove-bound/docs/screenshots/world-tour-music/world-tour-selector.jpg)
+- [`funk-stage-start.jpg`](../../../docs/archive/screenshots/2026-08-17/groove-bound/docs/screenshots/world-tour-music/funk-stage-start.jpg)
+- [`funk-live-combat.jpg`](../../../docs/archive/screenshots/2026-08-17/groove-bound/docs/screenshots/world-tour-music/funk-live-combat.jpg)
+- [`funk-level-up-continuity.jpg`](../../../docs/archive/screenshots/2026-08-17/groove-bound/docs/screenshots/world-tour-music/funk-level-up-continuity.jpg)

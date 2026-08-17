@@ -92,10 +92,10 @@ and menu are rendered separately in the central safe area.
 
 ![Groove Bound full-screen title menu](docs/screenshots/title-menu.png)
 
-Cutscene dialogue now keeps the speaking player large and readable on the left,
-with a controlled head bleed and lower-body crop:
+The current character selection screen keeps both Resonants readable with their
+starting weapons, traits, and comparative stat profiles:
 
-![Joe speaking in the revised cutscene dialogue panel](docs/screenshots/cutscene-dialogue.png)
+![Groove Bound character selection](docs/screenshots/character-select.png)
 
 Rare consumables now use a dedicated transparent runtime atlas:
 
