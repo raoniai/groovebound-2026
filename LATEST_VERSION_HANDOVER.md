@@ -14,17 +14,17 @@ This document answers four questions: what is authoritative, what the latest ver
 
 <!-- LIVE-SNAPSHOT:START -->
 
-_Generated from live repository evidence: 2026-08-16 23:48 AEST_
+_Generated from live repository evidence: 2026-08-17 12:03 AEST_
 
 | Field | Live value |
 |---|---|
-| Branch | `main` |
-| HEAD | `99e6f8c` — docs: sync final v0.9.6 release status |
+| Branch | `codex/screenshots-v096` |
+| HEAD | `61db308` — docs: refresh game screenshots |
 | Upstream | `origin/main` |
 | Compared with `origin/main` | 0 ahead, 0 behind |
 | Working changes | 0 files: 0 game, 0 site, 0 skills/package |
 | Lua source/test files | 123 source, 69 test |
-| Game tree excluding `dist/` | 946.0 MiB |
+| Game tree excluding `dist/` | 948.5 MiB |
 | Current `.love` artifact | 267.9 MiB |
 | Test suite | passed: 432 tests, 0 failures |
 | Lint | passed: 0 warnings / 0 errors in 194 files |
@@ -106,7 +106,7 @@ The public landing site is a separate static presentation under `landing-page/`.
 | Difficulty profiles | Published in v0.9.6; automated, layout, persistence, deterministic simulation, package, and native boot checks passed | Options exposes Very Easy, Easy, Medium, Hard, and Super Hard. Twelve independent multipliers control wave escalation, ordinary-enemy health/damage/speed/amount/cadence, player damage, and boss health/damage/speed/cadence/projectile speed. Medium preserves v0.9.5 balance; live changes preserve current HP percentage. | Multi-seed play-feel tuning for all five tiers with both characters and physical controller |
 | Character, upgrade, and results interface | Published in v0.7.1, tests passed, and visually sampled | Anton/Oswald typography, modular nine-slice upgrade cards, relevant-equipped evolution rows only, exact icon-led gain-to-total attributes, generated NEW badge, pickup-art utility choices, existing reroll/skip sprite CTAs, and bright sprite-backed menu focus | Manual defeat/victory results pass and final small-screen readability review |
 | Save system | Version 2 profiles and slots | Save, migration, profile, export and World Tour session tests | Cross-platform clean-machine fixtures |
-| Landing page and repository README | v0.9.6 bundle deployed and public-live verified | Home, Catalog, and Builder show v0.9.6, match local bytes, and retain stable Latest desktop URLs resolving to the final v0.9.6 packages | Complete physical-phone refresh |
+| Landing page and repository README | v0.9.6 screenshot refresh committed, pushed, deployed, and public-live verified | Commit `61db308` replaces the current gallery and poster surfaces with ten direct 1280x720 runtime captures covering combat, level-up, title, Settings, Pause, World Tour, Perk Catalog, character selection, Arsenal, and Admin; GitHub renders the current README, the 412-file public bundle matches local core files, and every public screenshot matches its committed PNG byte-for-byte | Complete physical-phone refresh |
 | World Tour runtime atlases | v0.9.1 package verified after the v0.9.0 lock-sprite omission | Four Stage 2 environment atlases, four eight-state mechanic atlases, 32 individual mechanic sprites, and the directly loaded World Tour lock sprite pass source, archive, RGBA, transparency, grid, and packaged-reference checks | Full in-motion readability and collision/layering pass in all eight World Tour stages |
 | Desktop distribution | v0.9.6 published as GitHub Latest and mirrored locally | One clean common payload feeds the universal macOS ZIP/DMG and branded Windows x64 ZIP; all seven public assets expose SHA-256 digests and the local `v0.9.6-release/` mirror matches them | Physical Windows QA, prolonged unlocked-Mac graphical play, Apple signing, and notarization remain open |
 | Engine migration | Planned | Engine migration research and parity roadmap | Clean baseline and bounded target-engine spike |
@@ -118,6 +118,9 @@ The v0.9.6 release is tagged at `e033b6e` and published as GitHub Latest; the
 public-status follow-up is `99e6f8c` on `main`. It is based on the verified
 v0.9.5 projectile-readability source at `c872313`. The original dirty workspace
 remains protected and was not staged or overwritten during release work.
+The complete screenshot presentation was refreshed from the current runtime in
+`61db308`, pushed to `main`, and deployed with rollback capture
+`20260817-120109-v0.9.6`; the protected original workspace remains untouched.
 
 Fresh World Tour starts receive a bounded opening assist for enemy health,
 damage, speed, and spawn pressure that fades to the authored curve by 150
@@ -142,8 +145,8 @@ distributed as current builds.
 
 | Layer | Latest state | Meaning |
 |---|---|---|
-| Automated tests | v0.9.6: 432 passed, 0 failed locally and in CI on 2026-08-16 | Five complete profiles, live HP-preserving rebalance, player damage, spawn density/cap, settings persistence and input, compact layouts, retry ownership, deterministic route completion, and existing systems are covered |
-| Lint | v0.9.6: 0 warnings and 0 errors across 194 files locally and in CI on 2026-08-16 | Current Lua source and tests statically checked |
+| Automated tests | v0.9.6: 432 passed, 0 failed locally on 2026-08-17 and in release CI on 2026-08-16 | Five complete profiles, live HP-preserving rebalance, player damage, spawn density/cap, settings persistence and input, compact layouts, retry ownership, deterministic route completion, and existing systems are covered |
+| Lint | v0.9.6: 0 warnings and 0 errors across 194 files locally on 2026-08-17 and in release CI on 2026-08-16 | Current Lua source and tests statically checked |
 | Common package | Published `.love` SHA-256 `8c8e0d6c5db3b799b94118dc077cc8acea74930fb1a62f9bccd83e3e338ff6c7` | 575 entries, all referenced assets present, source candidates absent, archive integrity passed, and marker records `version=0.9.6`, `commit=e033b6e6ead4`, `dirty=false` |
 | macOS artifacts | Published universal ZIP SHA-256 `7355683e7afb07b05650eb869965c3d8372d8f662500c0ca3e6d286fe3895252`; DMG SHA-256 `2cef0c48a1c166ccf07efb65e1d93293eef82451cf3fc7845480a0022be9e0db` | Archive integrity, bundle version, code-signature structure, DMG checksum, common payload, CI packaged boot, and fresh downloaded-package boot passed; ad-hoc signed and not notarized |
 | Windows artifact | Published branded x64 ZIP SHA-256 `ce23b15e6ea4550ec80127aa958aa69147a1a7682ea761de781cb61a23cfc812` | Pinned official LÖVE 11.5 runtime, icon/version metadata, common-payload equality, archive integrity, and native packaged boot passed; unsigned |
@@ -154,8 +157,8 @@ distributed as current builds.
 | Main promotion | v0.9.6 released at `e033b6e`; public-status follow-up at `99e6f8c` | Local and remote refs were independently verified after promotion; release tag remains on the exact package source commit |
 | Public release/download | v0.9.6 is published as GitHub Latest with seven synchronized desktop assets | GitHub API and the fail-closed version gate confirm every required asset and SHA-256 digest; stable Latest routes resolve to the final v0.9.6 assets |
 | Landing download links | Public Home, Catalog, and Builder display v0.9.6 and reference stable macOS/Windows Latest routes | HTTPS bytes match local source; both routes resolve to the expected final v0.9.6 GitHub asset sizes |
-| GitHub README presentation | Landing-styled rewrite committed and pushed at `f96acf9` | GitHub Markdown API rendered 21,124 bytes with 28 images, 50 links, and 3 tables; all 29 local references and 7 navigation anchors resolve; default-page visibility still depends on merging to `main` |
-| Landing deployment | v0.9.6 421-file bundle deployed and public-live verified | Rollback captured at `20260816-234738-v0.9.6`; six core files, directory index, representative assets, badges, GitHub Latest, and stable desktop routes pass public parity |
+| GitHub README presentation | Current-build screenshot gallery committed and pushed to default `main` at `61db308` | GitHub renders the refreshed README; all ten current screenshot files plus 29 superseded assets and their archive manifest are present in the remote tree, with seven archive directories preserving their original path structure |
+| Landing deployment | v0.9.6 412-file bundle deployed and public-live verified | Rollback captured at `20260817-120109-v0.9.6`; six core files, directory index, all ten screenshots, badges, GitHub Latest, and stable desktop routes pass public parity |
 
 ## Desktop and engine portability
 
@@ -197,6 +200,29 @@ For an engine migration, keep LÖVE as the golden reference. The leading researc
    a separate, reviewed pass; do not overwrite its unrelated dirty material.
 
 ## Continuation history
+
+### 2026-08-17 — Complete current-build screenshot refresh
+
+- Captured ten new lossless 1280x720 frames directly from the v0.9.6 LÖVE
+  runtime: live Funk combat, three-card level-up, title, Settings, Pause, World
+  Tour, Perk Catalog, character selection, Arsenal, and Admin.
+- Replaced screenshot and video-poster surfaces across the root README, game
+  README, Home, Catalog, Builder, and lightbox gallery. Preserved source aspect
+  ratios, descriptive alt text, and the existing reduced-motion route.
+- Moved 29 superseded game/site screen-grab files into
+  `docs/archive/screenshots/2026-08-17/` with an archive manifest and historical
+  source paths. The archive is documentation-only and absent from the game and
+  public-site bundles.
+- Verified 432 tests, zero lint findings across 194 files, JavaScript syntax,
+  source/landing/GitHub/public version parity, a clean 575-entry game package,
+  ten exact gallery loads, and zero horizontal overflow on Home, Catalog, and
+  Builder at 1440x1000 and 390x844.
+- Committed and pushed `61db308` to `main`. Deployed the 412-file v0.9.6 site
+  bundle with rollback `20260817-120109-v0.9.6`; core public files, Latest
+  desktop routes, and all ten public PNGs passed direct byte comparison.
+- Delivery state: committed, pushed, deployed, and public-live verified. The
+  GitHub release payload remains v0.9.6 because documentation/site screenshots
+  are intentionally excluded from the desktop game package.
 
 ### 2026-08-16 — v0.9.6 World retry, difficulty profiles, desktop, and site release
 
